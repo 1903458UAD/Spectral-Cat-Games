@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Timer : MonoBehaviour
@@ -23,8 +20,8 @@ public class Timer : MonoBehaviour
         if (timeRemaining > 0)
         {
             timeRemaining -= Time.deltaTime;
-           // Debug.Log(timeRemaining);
-        }  
+            // Debug.Log(timeRemaining);
+        }
 
         else
         {
@@ -33,9 +30,19 @@ public class Timer : MonoBehaviour
         }
 
         if (timerRestart)
-        { 
+        {
             timeRemaining = waitingTime;
             timerRestart = false;
         }
     }
+
+    void DriveForward()
+    {
+
+    }
+    void Wait()
+    {
+
+    }
+
 }
