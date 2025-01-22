@@ -5,97 +5,122 @@ using UnityEngine;
 public class RunAway : MonoBehaviour
 {
     private GameObject player;
-    private GameObject[] waypoints;
+    private List<GameObject> waypoints; // List of dynamically assigned waypoints
     private int currentWaypointIndex = 0;
-    [SerializeField] private float maxRunSpeed = 0.004f; // Speed when running away from the player
-    [SerializeField] private float maxWalkSpeed = 0.002f; // Speed when moving between waypoints
+    [SerializeField] private float maxRunSpeed = 0.004f;
+    [SerializeField] private float maxWalkSpeed = 0.002f;
     [SerializeField] private float rotationSpeed = 3.0f;
-    [SerializeField] private float runRange = 10f; // Range from the player that will cause the Bean to run
-    [SerializeField] private float waypointProximityThreshold = 2f; // Distance to ignore the player
-    [SerializeField] private float waypointSwitchInterval = 10f; // Time interval to switch waypoints
-    private float waypointSwitchTimer = 0f; // Timer for periodic waypoint switching
-    private bool isRunningAway = false; // Indicates if the Bean is currently running away
+    [SerializeField] private float runRange = 10f;
+    [SerializeField] private float waypointProximityThreshold = 2f;
+    [SerializeField] private float stayAtWaypointDuration = 10f;
 
-    // Start is called before the first frame update
+    private float waypointArrivalTime = 0f; // Time when the Bean arrived at the waypoint
+    private bool isRunningAway = false;
+
+    // Static dictionary to track Beans at each waypoint
+    private static Dictionary<GameObject, int> waypointOccupancy = new Dictionary<GameObject, int>();
+
     void Start()
     {
+        // Find the player GameObject
         player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null)
+        {
+            enabled = false; // Disable the script if no player is found
+            return;
+        }
 
-        // Find and store all waypoints in an array
-        waypoints = new GameObject[3];
-        waypoints[0] = GameObject.FindGameObjectWithTag("Waypoint1");
-        waypoints[1] = GameObject.FindGameObjectWithTag("Waypoint2");
-        waypoints[2] = GameObject.FindGameObjectWithTag("Waypoint3");
+        // Find all waypoints and initialize the waypointOccupancy dictionary
+        waypoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("Waypoint"));
+        if (waypoints.Count == 0)
+        {
+            enabled = false; // Disable the script if no waypoints are found
+            return;
+        }
 
-        // Set the first waypoint as the starting target
+        foreach (var waypoint in waypoints)
+        {
+            if (!waypointOccupancy.ContainsKey(waypoint))
+            {
+                waypointOccupancy[waypoint] = 0;
+            }
+        }
+
+        // Shuffle the waypoints and set the first target
+        ShuffleWaypoints();
         currentWaypointIndex = GetFurthestValidWaypointIndex();
+        IncrementWaypointOccupancy(currentWaypointIndex);
     }
 
-    // Update is called once per frame
     void Update()
     {
+        if (currentWaypointIndex < 0 || currentWaypointIndex >= waypoints.Count)
+        {
+            return;
+        }
+
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         float distanceToWaypoint = Vector3.Distance(transform.position, waypoints[currentWaypointIndex].transform.position);
 
-        // Increment the waypoint switch timer
-        waypointSwitchTimer += Time.deltaTime;
-
-        // Skip player detection if the Bean is within the proximity of the current waypoint
+        // Handle proximity to waypoint
         if (distanceToWaypoint <= waypointProximityThreshold)
         {
-            if (waypointSwitchTimer >= waypointSwitchInterval)
+            if (waypointArrivalTime == 0f)
             {
-                currentWaypointIndex = GetNextWaypointIndex(); // Periodically switch to a new waypoint
-                waypointSwitchTimer = 0f; // Reset timer
+                waypointArrivalTime = Time.time; // Mark arrival time when reaching the waypoint
+            }
+
+            // Wait for the required duration before switching waypoints
+            if (Time.time - waypointArrivalTime >= stayAtWaypointDuration)
+            {
+                int nextWaypoint = GetNextWaypointIndex();
+
+                // Allow moving to the next waypoint, even if crowded, as a fallback
+                if (nextWaypoint != currentWaypointIndex)
+                {
+                    DecrementWaypointOccupancy(currentWaypointIndex);
+                    currentWaypointIndex = nextWaypoint;
+                    IncrementWaypointOccupancy(currentWaypointIndex);
+                    waypointArrivalTime = 0f; // Reset the arrival timer
+                }
             }
 
             MoveTowardsWaypoint(maxWalkSpeed);
             return;
         }
 
-        // If the Bean is within the run range, run away from the player
+        // Reset arrival time if no longer near the waypoint
+        waypointArrivalTime = 0f;
+
+        // Handle running away from the player
         if (distanceToPlayer <= runRange)
         {
             isRunningAway = true;
             RunAwayFromPlayer(maxRunSpeed);
-            return; // Exit to avoid waypoint logic while running away
+            return;
         }
 
-        // If the Bean is no longer in the player's range and was running away, select a new waypoint
         if (isRunningAway)
         {
             isRunningAway = false;
-            currentWaypointIndex = GetFurthestValidWaypointIndex();
-            waypointSwitchTimer = 0f; // Reset timer after leaving the player's range
+            waypointArrivalTime = Time.time; // Reset timer after escaping player
         }
 
-        // Switch waypoints periodically
-        if (waypointSwitchTimer >= waypointSwitchInterval)
-        {
-            currentWaypointIndex = GetNextWaypointIndex();
-            waypointSwitchTimer = 0f; // Reset timer
-        }
-
-        // Move towards the current target waypoint
         MoveTowardsWaypoint(maxWalkSpeed);
     }
 
-    // Function to make the Bean run away from the player
     void RunAwayFromPlayer(float speed)
     {
         Vector3 directionAwayFromPlayer = transform.position - player.transform.position;
-        directionAwayFromPlayer.y = 0; // Keep movement on the horizontal plane
+        directionAwayFromPlayer.y = 0;
         directionAwayFromPlayer = directionAwayFromPlayer.normalized;
 
-        // Rotate away from the player
         Quaternion targetRotation = Quaternion.LookRotation(directionAwayFromPlayer);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
-        // Move away from the player with the specified speed
         transform.Translate(directionAwayFromPlayer * speed, Space.World);
     }
 
-    // Function to move towards the current waypoint
     void MoveTowardsWaypoint(float speed)
     {
         Vector3 targetWaypointPos = waypoints[currentWaypointIndex].transform.position;
@@ -103,48 +128,54 @@ public class RunAway : MonoBehaviour
         directionToWaypoint.y = 0;
         directionToWaypoint = directionToWaypoint.normalized;
 
-        // Rotate towards the waypoint
         Quaternion targetRotation = Quaternion.LookRotation(directionToWaypoint);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
-        // Move towards the waypoint with the specified speed
         transform.Translate(directionToWaypoint * speed, Space.World);
     }
 
-    // Function to find the waypoint furthest from the player and not blocked by the player's range
     int GetFurthestValidWaypointIndex()
     {
         float furthestDistance = 0f;
-        int furthestIndex = 0;
+        int furthestIndex = -1;
 
-        for (int i = 0; i < waypoints.Length; i++)
+        for (int i = 0; i < waypoints.Count; i++)
         {
             float distanceToPlayer = Vector3.Distance(player.transform.position, waypoints[i].transform.position);
 
-            // Check if the waypoint is furthest and its path does not intersect the player's range
-            if (distanceToPlayer > furthestDistance && CanMoveToWaypoint(i))
+            // Ensure the waypoint is not overcrowded
+            if (distanceToPlayer > furthestDistance && waypointOccupancy[waypoints[i]] < 4 && CanMoveToWaypoint(i))
             {
                 furthestDistance = distanceToPlayer;
                 furthestIndex = i;
             }
         }
 
-        return furthestIndex;
+        return furthestIndex == -1 ? 0 : furthestIndex;
     }
 
-    // Function to get the next waypoint index in a cyclic order
     int GetNextWaypointIndex()
     {
-        return (currentWaypointIndex + 1) % waypoints.Length;
+        for (int i = 1; i <= waypoints.Count; i++)
+        {
+            int nextIndex = (currentWaypointIndex + i) % waypoints.Count;
+
+            // Allow moving to the least crowded waypoint
+            if (waypointOccupancy[waypoints[nextIndex]] < 4)
+            {
+                return nextIndex;
+            }
+        }
+
+        // Fallback: return current waypoint if no others are valid
+        return currentWaypointIndex;
     }
 
-    // Function to check if the path to the waypoint intersects the player's range
     bool CanMoveToWaypoint(int waypointIndex)
     {
         Vector3 waypointPosition = waypoints[waypointIndex].transform.position;
         Vector3 playerPosition = player.transform.position;
 
-        // Calculate the shortest distance between the player's position and the line to the waypoint
         Vector3 lineDirection = (waypointPosition - transform.position).normalized;
         Vector3 toPlayer = playerPosition - transform.position;
 
@@ -153,22 +184,39 @@ public class RunAway : MonoBehaviour
 
         if (projectionLength < 0)
         {
-            // Closest point is behind the Bean
             closestPoint = transform.position;
         }
         else if (projectionLength > Vector3.Distance(transform.position, waypointPosition))
         {
-            // Closest point is beyond the waypoint
             closestPoint = waypointPosition;
         }
         else
         {
-            // Closest point is along the line segment
             closestPoint = transform.position + lineDirection * projectionLength;
         }
 
-        // Check if the closest point is within the player's range
         float distanceToClosestPoint = Vector3.Distance(playerPosition, closestPoint);
         return distanceToClosestPoint > runRange;
+    }
+
+    void ShuffleWaypoints()
+    {
+        for (int i = 0; i < waypoints.Count; i++)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, waypoints.Count);
+            GameObject temp = waypoints[i];
+            waypoints[i] = waypoints[randomIndex];
+            waypoints[randomIndex] = temp;
+        }
+    }
+
+    void IncrementWaypointOccupancy(int waypointIndex)
+    {
+        waypointOccupancy[waypoints[waypointIndex]]++;
+    }
+
+    void DecrementWaypointOccupancy(int waypointIndex)
+    {
+        waypointOccupancy[waypoints[waypointIndex]]--;
     }
 }
