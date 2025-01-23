@@ -495,7 +495,7 @@ MonoBehaviour:
   rotationSpeed: 3
   runRange: 10
   waypointProximityThreshold: 2
-  waypointSwitchInterval: 10
+  stayAtWaypointDuration: 10
 --- !u!136 &894386303
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -692,7 +692,7 @@ GameObject:
   - component: {fileID: 1010188689}
   m_Layer: 0
   m_Name: Cube (2)
-  m_TagString: Waypoint2
+  m_TagString: Waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -931,7 +931,7 @@ GameObject:
   - component: {fileID: 1434644924}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Waypoint1
+  m_TagString: Waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1038,7 +1038,7 @@ GameObject:
   - component: {fileID: 1855474639}
   m_Layer: 0
   m_Name: Cube (1)
-  m_TagString: Waypoint3
+  m_TagString: Waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
