@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 144857338}
   - component: {fileID: 144857337}
   - component: {fileID: 144857336}
+  - component: {fileID: 144857340}
   m_Layer: 0
   m_Name: Cube (3)
   m_TagString: Waypoint
@@ -226,6 +227,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &144857340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144857335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef7f494a3b14f4478f2ec12dc2f2117, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  occupancyLimit: 4
 --- !u!1 &392132829
 GameObject:
   m_ObjectHideFlags: 0
@@ -1570,6 +1584,7 @@ GameObject:
   - component: {fileID: 1010188691}
   - component: {fileID: 1010188690}
   - component: {fileID: 1010188689}
+  - component: {fileID: 1010188693}
   m_Layer: 0
   m_Name: Cube (2)
   m_TagString: Waypoint
@@ -1665,6 +1680,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1010188693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010188688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef7f494a3b14f4478f2ec12dc2f2117, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  occupancyLimit: 4
 --- !u!1 &1098400776 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1773623360729482, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
@@ -2062,6 +2090,7 @@ GameObject:
   - component: {fileID: 1434644926}
   - component: {fileID: 1434644925}
   - component: {fileID: 1434644924}
+  - component: {fileID: 1434644928}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Waypoint
@@ -2157,6 +2186,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1434644928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1434644923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef7f494a3b14f4478f2ec12dc2f2117, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  occupancyLimit: 4
 --- !u!1001 &1455503801
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2610,6 +2652,7 @@ GameObject:
   - component: {fileID: 1855474641}
   - component: {fileID: 1855474640}
   - component: {fileID: 1855474639}
+  - component: {fileID: 1855474643}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Waypoint
@@ -2705,6 +2748,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1855474643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1855474638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef7f494a3b14f4478f2ec12dc2f2117, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  occupancyLimit: 4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Bean_Interact : MonoBehaviour
+public class RunAway : MonoBehaviour
 {
    
     public float interactionDistance = 1.5f; // Distance to interact with the bean (Pickup Range)
