@@ -11,7 +11,7 @@ public class RunAway : MonoBehaviour
     public float holdHeightOffset = 0.5f; // Offset to position the bean at the player's arm height -- To be Adjusted when crouching
     private bool isHeld = false; // Is the bean being held?
     private Rigidbody beanRigidbody; // Rigidbody of the bean
-    private RunAway runAway; // Reference to the bean's AI behavior script "NPC_AI"
+    private NPC_AI npc_AI; // Reference to the bean's AI behavior script "NPC_AI"
     private Transform player; // Reference to the player's transform
     private Collider playerCollider; // Reference the player's Collider to determine height of the bean suspension
 
@@ -26,7 +26,7 @@ public class RunAway : MonoBehaviour
 
         
         beanRigidbody = GetComponent<Rigidbody>();//Get the Rigidbody
-        runAway = GetComponent<RunAway>(); //Reference to the "NPC_AI" Script
+        npc_AI = GetComponent<NPC_AI>(); //Reference to the "NPC_AI" Script
 
     }
 
@@ -68,9 +68,9 @@ public class RunAway : MonoBehaviour
     private void PickUpBean()
     {
        
-        if (runAway != null)  //Disable the bean's AI script and physics to stop it from running away
+        if (npc_AI != null)  //Disable the bean's AI script and physics to stop it from running away
         {
-            runAway.enabled = false;
+            npc_AI.enabled = false;
         }
             
 
@@ -86,9 +86,9 @@ public class RunAway : MonoBehaviour
     public void ReleaseBean()
     {
        
-        if (runAway != null) //Enable the bean's AI and physics
-        { 
-            runAway.enabled = true; 
+        if (npc_AI != null) //Enable the bean's AI and physics
+        {
+            npc_AI.enabled = true; 
         }
 
         if (beanRigidbody != null)
