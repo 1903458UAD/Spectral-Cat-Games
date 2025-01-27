@@ -258,6 +258,7 @@ GameObject:
   - component: {fileID: 255107342}
   - component: {fileID: 255107341}
   - component: {fileID: 255107340}
+  - component: {fileID: 255107344}
   m_Layer: 6
   m_Name: Wall
   m_TagString: Untagged
@@ -353,6 +354,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!208 &255107344
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 255107339}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &392132829
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,7 +384,7 @@ GameObject:
   - component: {fileID: 392132831}
   - component: {fileID: 392132830}
   - component: {fileID: 392132835}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bean (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -516,7 +533,7 @@ GameObject:
   - component: {fileID: 523324806}
   - component: {fileID: 523324805}
   - component: {fileID: 523324804}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -612,6 +629,70 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &531579481
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 531579483}
+  - component: {fileID: 531579482}
+  m_Layer: 0
+  m_Name: NavMeshSurface
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &531579482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531579481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 320
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: e507950e30989ed4681cb70ae24435dc, type: 2}
+  m_BuildHeightMesh: 0
+--- !u!4 &531579483
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531579481}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.9899818, y: -2.9909105, z: -6.9700174}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &559199112
 GameObject:
   m_ObjectHideFlags: 0
@@ -626,7 +707,7 @@ GameObject:
   - component: {fileID: 559199114}
   - component: {fileID: 559199113}
   - component: {fileID: 559199118}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bean (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -834,7 +915,7 @@ GameObject:
   - component: {fileID: 603305946}
   - component: {fileID: 603305945}
   - component: {fileID: 603305950}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bean (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1078,7 +1159,7 @@ GameObject:
   - component: {fileID: 712989334}
   - component: {fileID: 712989333}
   - component: {fileID: 712989338}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bean (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1258,7 +1339,7 @@ GameObject:
   - component: {fileID: 783508539}
   - component: {fileID: 783508538}
   - component: {fileID: 783508543}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bean (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1409,7 +1490,7 @@ GameObject:
   - component: {fileID: 894386303}
   - component: {fileID: 894386302}
   - component: {fileID: 894386307}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bean
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1560,7 +1641,7 @@ GameObject:
   - component: {fileID: 934752322}
   - component: {fileID: 934752321}
   - component: {fileID: 934752326}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bean (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2031,7 +2112,7 @@ GameObject:
   - component: {fileID: 1111909694}
   - component: {fileID: 1111909693}
   - component: {fileID: 1111909698}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bean (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2353,7 +2434,7 @@ GameObject:
   - component: {fileID: 1391151393}
   - component: {fileID: 1391151392}
   - component: {fileID: 1391151397}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bean (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2686,6 +2767,7 @@ GameObject:
   - component: {fileID: 1646641993}
   - component: {fileID: 1646641992}
   - component: {fileID: 1646641991}
+  - component: {fileID: 1646641995}
   m_Layer: 6
   m_Name: Wall
   m_TagString: Untagged
@@ -2775,12 +2857,28 @@ Transform:
   m_GameObject: {fileID: 1646641990}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.69, y: 1.73, z: -8.56}
+  m_LocalPosition: {x: 13.69, y: 1.8, z: -8.56}
   m_LocalScale: {x: 10.521, y: 3.5835, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!208 &1646641995
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1646641990}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &1669969832
 GameObject:
   m_ObjectHideFlags: 0
@@ -2795,7 +2893,7 @@ GameObject:
   - component: {fileID: 1669969834}
   - component: {fileID: 1669969833}
   - component: {fileID: 1669969838}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bean (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2946,7 +3044,7 @@ GameObject:
   - component: {fileID: 1741450713}
   - component: {fileID: 1741450712}
   - component: {fileID: 1741450717}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bean (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3097,7 +3195,7 @@ GameObject:
   - component: {fileID: 1818012650}
   - component: {fileID: 1818012649}
   - component: {fileID: 1818012654}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bean (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3390,3 +3488,4 @@ SceneRoots:
   - {fileID: 1455503801}
   - {fileID: 255107343}
   - {fileID: 1646641994}
+  - {fileID: 531579483}
