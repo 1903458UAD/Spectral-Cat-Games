@@ -23,6 +23,11 @@ public class CustomerScript : MonoBehaviour
     private bool orderDelivered;
     private bool drive; // Determines whether customer is moving or stationary
 
+    public void setIsOrderedTrue()
+    {
+        orderDelivered = true;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
