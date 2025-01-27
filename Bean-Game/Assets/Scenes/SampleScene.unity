@@ -403,12 +403,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2f524a3b1ddb0444977b76c475ca25c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRunSpeed: 0.004
-  maxWalkSpeed: 0.002
-  rotationSpeed: 3
+  maxRunSpeed: 4
+  maxWalkSpeed: 2
   runRange: 10
-  waypointProximityThreshold: 2
-  stayAtWaypointDuration: 10
+  hidingSpotReevaluationInterval: 1
+  timeToWaitBeforeSwitching: 10
 --- !u!136 &392132831
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -493,7 +492,7 @@ Transform:
   m_GameObject: {fileID: 392132829}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.14, y: 0.27, z: -1.9779791}
+  m_LocalPosition: {x: 5.14, y: 0.32, z: -1.9779791}
   m_LocalScale: {x: 0.34003, y: 0.34003, z: 0.34003}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -513,7 +512,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.24
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -726,12 +725,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2f524a3b1ddb0444977b76c475ca25c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRunSpeed: 0.004
-  maxWalkSpeed: 0.002
-  rotationSpeed: 3
+  maxRunSpeed: 4
+  maxWalkSpeed: 2
   runRange: 10
-  waypointProximityThreshold: 2
-  stayAtWaypointDuration: 10
+  hidingSpotReevaluationInterval: 1
+  timeToWaitBeforeSwitching: 10
 --- !u!136 &559199114
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -816,7 +814,7 @@ Transform:
   m_GameObject: {fileID: 559199112}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.14, y: 0.27, z: -1.9779791}
+  m_LocalPosition: {x: 5.14, y: 0.32, z: -1.9779791}
   m_LocalScale: {x: 0.34003, y: 0.34003, z: 0.34003}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -836,7 +834,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.24
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -934,12 +932,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2f524a3b1ddb0444977b76c475ca25c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRunSpeed: 0.004
-  maxWalkSpeed: 0.002
-  rotationSpeed: 3
+  maxRunSpeed: 4
+  maxWalkSpeed: 2
   runRange: 10
-  waypointProximityThreshold: 2
-  stayAtWaypointDuration: 10
+  hidingSpotReevaluationInterval: 1
+  timeToWaitBeforeSwitching: 10
 --- !u!136 &603305946
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1024,7 +1021,7 @@ Transform:
   m_GameObject: {fileID: 603305944}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.14, y: 0.27, z: -1.9779791}
+  m_LocalPosition: {x: 5.14, y: 0.32, z: -1.9779791}
   m_LocalScale: {x: 0.34003, y: 0.34003, z: 0.34003}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1044,7 +1041,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.24
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -1178,12 +1175,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2f524a3b1ddb0444977b76c475ca25c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRunSpeed: 0.004
-  maxWalkSpeed: 0.002
-  rotationSpeed: 3
+  maxRunSpeed: 4
+  maxWalkSpeed: 2
   runRange: 10
-  waypointProximityThreshold: 2
-  stayAtWaypointDuration: 10
+  hidingSpotReevaluationInterval: 1
+  timeToWaitBeforeSwitching: 10
 --- !u!136 &712989334
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1268,7 +1264,7 @@ Transform:
   m_GameObject: {fileID: 712989332}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.14, y: 0.27, z: -1.9779791}
+  m_LocalPosition: {x: 5.14, y: 0.32, z: -1.9779791}
   m_LocalScale: {x: 0.34003, y: 0.34003, z: 0.34003}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1288,7 +1284,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.24
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -1325,6 +1321,133 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   incomeDisplay: {fileID: 717233171}
+--- !u!1 &717948617
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 717948622}
+  - component: {fileID: 717948621}
+  - component: {fileID: 717948620}
+  - component: {fileID: 717948619}
+  - component: {fileID: 717948618}
+  m_Layer: 0
+  m_Name: Cube (5)
+  m_TagString: Waypoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &717948618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 717948617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef7f494a3b14f4478f2ec12dc2f2117, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  occupancyLimit: 4
+  priority: 100
+  priorityReductionAmount: 50
+  player: {fileID: 1098400783}
+  raycastLayerMask:
+    serializedVersion: 2
+    m_Bits: 72
+--- !u!65 &717948619
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 717948617}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &717948620
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 717948617}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &717948621
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 717948617}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &717948622
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 717948617}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -19.9, y: 0.64, z: 23.8}
+  m_LocalScale: {x: 1.0825, y: 1.0825, z: 1.0825}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &783508537
 GameObject:
   m_ObjectHideFlags: 0
@@ -1358,12 +1481,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2f524a3b1ddb0444977b76c475ca25c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRunSpeed: 0.004
-  maxWalkSpeed: 0.002
-  rotationSpeed: 3
+  maxRunSpeed: 4
+  maxWalkSpeed: 2
   runRange: 10
-  waypointProximityThreshold: 2
-  stayAtWaypointDuration: 10
+  hidingSpotReevaluationInterval: 1
+  timeToWaitBeforeSwitching: 10
 --- !u!136 &783508539
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1448,7 +1570,7 @@ Transform:
   m_GameObject: {fileID: 783508537}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.14, y: 0.27, z: -1.9779791}
+  m_LocalPosition: {x: 5.14, y: 0.32, z: -1.9779791}
   m_LocalScale: {x: 0.34003, y: 0.34003, z: 0.34003}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1468,7 +1590,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.24
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -1509,12 +1631,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2f524a3b1ddb0444977b76c475ca25c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRunSpeed: 0.004
-  maxWalkSpeed: 0.002
-  rotationSpeed: 3
+  maxRunSpeed: 4
+  maxWalkSpeed: 2
   runRange: 10
-  waypointProximityThreshold: 2
-  stayAtWaypointDuration: 10
+  hidingSpotReevaluationInterval: 1
+  timeToWaitBeforeSwitching: 10
 --- !u!136 &894386303
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1599,7 +1720,7 @@ Transform:
   m_GameObject: {fileID: 894386301}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.14, y: 0.27, z: -1.9779791}
+  m_LocalPosition: {x: 5.14, y: 0.32, z: -1.9779791}
   m_LocalScale: {x: 0.34003, y: 0.34003, z: 0.34003}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1619,7 +1740,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.24
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -1660,12 +1781,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2f524a3b1ddb0444977b76c475ca25c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRunSpeed: 0.004
-  maxWalkSpeed: 0.002
-  rotationSpeed: 3
+  maxRunSpeed: 4
+  maxWalkSpeed: 2
   runRange: 10
-  waypointProximityThreshold: 2
-  stayAtWaypointDuration: 10
+  hidingSpotReevaluationInterval: 1
+  timeToWaitBeforeSwitching: 10
 --- !u!136 &934752322
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1750,7 +1870,7 @@ Transform:
   m_GameObject: {fileID: 934752320}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.14, y: 0.27, z: -1.9779791}
+  m_LocalPosition: {x: 5.14, y: 0.32, z: -1.9779791}
   m_LocalScale: {x: 0.34003, y: 0.34003, z: 0.34003}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1770,7 +1890,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.24
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -2029,7 +2149,7 @@ Transform:
   m_GameObject: {fileID: 1010188688}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.78, y: 0.64, z: 5.59}
+  m_LocalPosition: {x: -14.78, y: 0.55, z: 5.59}
   m_LocalScale: {x: 1.0825, y: 1.0825, z: 1.0825}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2131,12 +2251,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2f524a3b1ddb0444977b76c475ca25c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRunSpeed: 0.004
-  maxWalkSpeed: 0.002
-  rotationSpeed: 3
+  maxRunSpeed: 4
+  maxWalkSpeed: 2
   runRange: 10
-  waypointProximityThreshold: 2
-  stayAtWaypointDuration: 10
+  hidingSpotReevaluationInterval: 1
+  timeToWaitBeforeSwitching: 10
 --- !u!136 &1111909694
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2221,7 +2340,7 @@ Transform:
   m_GameObject: {fileID: 1111909692}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.14, y: 0.27, z: -1.9779791}
+  m_LocalPosition: {x: 5.14, y: 0.32, z: -1.9779791}
   m_LocalScale: {x: 0.34003, y: 0.34003, z: 0.34003}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2241,7 +2360,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.24
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -2453,12 +2572,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2f524a3b1ddb0444977b76c475ca25c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRunSpeed: 0.004
-  maxWalkSpeed: 0.002
-  rotationSpeed: 3
+  maxRunSpeed: 4
+  maxWalkSpeed: 2
   runRange: 10
-  waypointProximityThreshold: 2
-  stayAtWaypointDuration: 10
+  hidingSpotReevaluationInterval: 1
+  timeToWaitBeforeSwitching: 10
 --- !u!136 &1391151393
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2543,7 +2661,7 @@ Transform:
   m_GameObject: {fileID: 1391151391}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.14, y: 0.27, z: -1.9779791}
+  m_LocalPosition: {x: 5.14, y: 0.32, z: -1.9779791}
   m_LocalScale: {x: 0.34003, y: 0.34003, z: 0.34003}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2563,7 +2681,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.24
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -2755,6 +2873,133 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 105089a3161d4a14a87970519dd3aa86, type: 3}
+--- !u!1 &1638678849
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1638678854}
+  - component: {fileID: 1638678853}
+  - component: {fileID: 1638678852}
+  - component: {fileID: 1638678851}
+  - component: {fileID: 1638678850}
+  m_Layer: 0
+  m_Name: Cube (6)
+  m_TagString: Waypoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1638678850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638678849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef7f494a3b14f4478f2ec12dc2f2117, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  occupancyLimit: 4
+  priority: 100
+  priorityReductionAmount: 50
+  player: {fileID: 1098400783}
+  raycastLayerMask:
+    serializedVersion: 2
+    m_Bits: 72
+--- !u!65 &1638678851
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638678849}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1638678852
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638678849}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1638678853
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638678849}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1638678854
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638678849}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 22, y: 0.64, z: 24.35}
+  m_LocalScale: {x: 1.0825, y: 1.0825, z: 1.0825}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1646641990
 GameObject:
   m_ObjectHideFlags: 0
@@ -2912,12 +3157,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2f524a3b1ddb0444977b76c475ca25c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRunSpeed: 0.004
-  maxWalkSpeed: 0.002
-  rotationSpeed: 3
+  maxRunSpeed: 4
+  maxWalkSpeed: 2
   runRange: 10
-  waypointProximityThreshold: 2
-  stayAtWaypointDuration: 10
+  hidingSpotReevaluationInterval: 1
+  timeToWaitBeforeSwitching: 10
 --- !u!136 &1669969834
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3002,7 +3246,7 @@ Transform:
   m_GameObject: {fileID: 1669969832}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.14, y: 0.27, z: -1.9779791}
+  m_LocalPosition: {x: 5.14, y: 0.32, z: -1.9779791}
   m_LocalScale: {x: 0.34003, y: 0.34003, z: 0.34003}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3022,7 +3266,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.24
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -3063,12 +3307,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2f524a3b1ddb0444977b76c475ca25c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRunSpeed: 0.004
-  maxWalkSpeed: 0.002
-  rotationSpeed: 3
+  maxRunSpeed: 4
+  maxWalkSpeed: 2
   runRange: 10
-  waypointProximityThreshold: 2
-  stayAtWaypointDuration: 10
+  hidingSpotReevaluationInterval: 1
+  timeToWaitBeforeSwitching: 10
 --- !u!136 &1741450713
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3153,7 +3396,7 @@ Transform:
   m_GameObject: {fileID: 1741450711}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.14, y: 0.27, z: -1.9779791}
+  m_LocalPosition: {x: 5.14, y: 0.32, z: -1.9779791}
   m_LocalScale: {x: 0.34003, y: 0.34003, z: 0.34003}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3173,7 +3416,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.24
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -3214,12 +3457,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2f524a3b1ddb0444977b76c475ca25c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRunSpeed: 0.004
-  maxWalkSpeed: 0.002
-  rotationSpeed: 3
+  maxRunSpeed: 4
+  maxWalkSpeed: 2
   runRange: 10
-  waypointProximityThreshold: 2
-  stayAtWaypointDuration: 10
+  hidingSpotReevaluationInterval: 1
+  timeToWaitBeforeSwitching: 10
 --- !u!136 &1818012650
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3304,7 +3546,7 @@ Transform:
   m_GameObject: {fileID: 1818012648}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.14, y: 0.27, z: -1.9779791}
+  m_LocalPosition: {x: 5.14, y: 0.32, z: -1.9779791}
   m_LocalScale: {x: 0.34003, y: 0.34003, z: 0.34003}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3324,7 +3566,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.24
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -3459,6 +3701,133 @@ MonoBehaviour:
   raycastLayerMask:
     serializedVersion: 2
     m_Bits: 72
+--- !u!1 &1921833079
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1921833084}
+  - component: {fileID: 1921833083}
+  - component: {fileID: 1921833082}
+  - component: {fileID: 1921833081}
+  - component: {fileID: 1921833080}
+  m_Layer: 0
+  m_Name: Cube (4)
+  m_TagString: Waypoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1921833080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921833079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef7f494a3b14f4478f2ec12dc2f2117, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  occupancyLimit: 4
+  priority: 100
+  priorityReductionAmount: 50
+  player: {fileID: 1098400783}
+  raycastLayerMask:
+    serializedVersion: 2
+    m_Bits: 72
+--- !u!65 &1921833081
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921833079}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1921833082
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921833079}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1921833083
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921833079}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1921833084
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921833079}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -20.7, y: 0.64, z: -12.05}
+  m_LocalScale: {x: 1.0825, y: 1.0825, z: 1.0825}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -3467,6 +3836,9 @@ SceneRoots:
   - {fileID: 705507995}
   - {fileID: 523324807}
   - {fileID: 1434644927}
+  - {fileID: 1921833084}
+  - {fileID: 717948622}
+  - {fileID: 1638678854}
   - {fileID: 1855474642}
   - {fileID: 144857339}
   - {fileID: 1010188692}
