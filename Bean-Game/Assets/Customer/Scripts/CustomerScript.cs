@@ -19,7 +19,7 @@ public class CustomerScript : MonoBehaviour
     // Text Timer Display
     public TMP_Text timerDisplay;
 
-    private float speed = 100.0f; // Speed of customer
+    private float speed = 0.01f; // Speed of customer
     private float patienceTimer; // Timer - determines how long customer will wait at drive through
     private float initialTimer;
     private bool orderDelivered;
@@ -140,6 +140,7 @@ public class CustomerScript : MonoBehaviour
         Debug.Log(income.GetIncome());
         nextLocation = exit; // Move customer towards exit
         drive = true; // Begin driving
+        orderDelivered = false;
 
         timerDisplay.text = null;
     }
