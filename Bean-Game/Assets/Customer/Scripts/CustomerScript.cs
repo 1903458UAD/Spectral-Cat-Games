@@ -6,6 +6,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
+using System.Runtime.CompilerServices;
 
 public class CustomerScript : MonoBehaviour
 {
@@ -18,10 +19,14 @@ public class CustomerScript : MonoBehaviour
     // Text Timer Display
     public TMP_Text timerDisplay;
 
-    public float speed = 1.0f; // Speed of customer
-    public float patienceTimer; // Timer - determines how long customer will wait at drive through
+    private float speed = 0.01f; // Speed of customer
+    private float patienceTimer; // Timer - determines how long customer will wait at drive through
+    private float initialTimer;
     private bool orderDelivered;
     private bool drive; // Determines whether customer is moving or stationary
+
+    private float threshold;
+    private float tipFactor;
 
     public void setIsOrderedTrue()
     {
@@ -36,6 +41,32 @@ public class CustomerScript : MonoBehaviour
         drive = true; // Initially set customer to moving
         orderDelivered = false;
         nextLocation = driveThrough; // Set customers destination to drive through
+
+        int rand = UnityEngine.Random.Range(0, 3); // Generate random number to decide customer type
+
+        switch(rand) // Switch case - set values based on customer type
+        {
+            case 0: // Patient Customer
+                threshold = 0.10f;
+                patienceTimer = 120;
+                initialTimer = 120;
+                tipFactor = 0.030f;
+                break;
+
+            case 1: // Average Customer
+                threshold = 0.25f;
+                patienceTimer = 90;
+                initialTimer = 90;
+                tipFactor = 0.020f;
+                break;
+
+            case 2: // Inpatient Customer
+                threshold = 0.50f;
+                patienceTimer = 60;
+                initialTimer = 60;
+                tipFactor = 0.015f;
+                break;
+        }
     }
 
     // Update is called once per frame
@@ -98,12 +129,18 @@ public class CustomerScript : MonoBehaviour
     void Pay() // Include add to income here
     {
         player.TryGetComponent<IncomeSystem>(out IncomeSystem income);
-        income.IncreaseIncome(1);
+        income.IncreaseIncome(1.0f); // Price of cup without tip
+
+        if (patienceTimer > (initialTimer * threshold)) // Decide if customer should tip
+        {
+            income.IncreaseIncome(patienceTimer * tipFactor); // Calculate tip (currently the time remaining * tip percentage, subject to change)
+        }
 
         Debug.Log("Customer happy");
         Debug.Log(income.GetIncome());
         nextLocation = exit; // Move customer towards exit
         drive = true; // Begin driving
+        orderDelivered = false;
 
         timerDisplay.text = null;
     }

@@ -19,6 +19,8 @@ public class IncomeUI : MonoBehaviour
     {
         player.TryGetComponent<IncomeSystem>(out IncomeSystem income);
 
+
+
         incomeDisplay.text = string.Format("£{0}", income.GetIncome());
     }
 }
