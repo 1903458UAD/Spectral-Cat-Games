@@ -384,6 +384,7 @@ GameObject:
   - component: {fileID: 392132831}
   - component: {fileID: 392132830}
   - component: {fileID: 392132835}
+  - component: {fileID: 392132836}
   m_Layer: 7
   m_Name: Bean (10)
   m_TagString: Untagged
@@ -405,9 +406,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxRunSpeed: 4
   maxWalkSpeed: 2
+  rotationSpeed: 3
   runRange: 10
-  hidingSpotReevaluationInterval: 1
-  timeToWaitBeforeSwitching: 10
+  waypointProximityThreshold: 2
+  stayAtWaypointDuration: 10
 --- !u!136 &392132831
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -520,6 +522,21 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &392132836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 392132829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18c8be4315e27f040a870025a3ddef62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionDistance: 1.5
+  holdDistance: 1
+  holdHeightOffset: 0.5
 --- !u!1 &523324803
 GameObject:
   m_ObjectHideFlags: 0
@@ -706,6 +723,7 @@ GameObject:
   - component: {fileID: 559199114}
   - component: {fileID: 559199113}
   - component: {fileID: 559199118}
+  - component: {fileID: 559199119}
   m_Layer: 7
   m_Name: Bean (9)
   m_TagString: Untagged
@@ -727,9 +745,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxRunSpeed: 4
   maxWalkSpeed: 2
+  rotationSpeed: 3
   runRange: 10
-  hidingSpotReevaluationInterval: 1
-  timeToWaitBeforeSwitching: 10
+  waypointProximityThreshold: 2
+  stayAtWaypointDuration: 10
 --- !u!136 &559199114
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -842,6 +861,21 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &559199119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559199112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18c8be4315e27f040a870025a3ddef62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionDistance: 1.5
+  holdDistance: 1
+  holdHeightOffset: 0.5
 --- !u!1001 &562869375
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -913,6 +947,7 @@ GameObject:
   - component: {fileID: 603305946}
   - component: {fileID: 603305945}
   - component: {fileID: 603305950}
+  - component: {fileID: 603305951}
   m_Layer: 7
   m_Name: Bean (4)
   m_TagString: Untagged
@@ -934,9 +969,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxRunSpeed: 4
   maxWalkSpeed: 2
+  rotationSpeed: 3
   runRange: 10
-  hidingSpotReevaluationInterval: 1
-  timeToWaitBeforeSwitching: 10
+  waypointProximityThreshold: 2
+  stayAtWaypointDuration: 10
 --- !u!136 &603305946
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1049,6 +1085,21 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &603305951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 603305944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18c8be4315e27f040a870025a3ddef62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionDistance: 1.5
+  holdDistance: 1
+  holdHeightOffset: 0.5
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1156,6 +1207,7 @@ GameObject:
   - component: {fileID: 712989334}
   - component: {fileID: 712989333}
   - component: {fileID: 712989338}
+  - component: {fileID: 712989339}
   m_Layer: 7
   m_Name: Bean (5)
   m_TagString: Untagged
@@ -1177,9 +1229,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxRunSpeed: 4
   maxWalkSpeed: 2
+  rotationSpeed: 3
   runRange: 10
-  hidingSpotReevaluationInterval: 1
-  timeToWaitBeforeSwitching: 10
+  waypointProximityThreshold: 2
+  stayAtWaypointDuration: 10
 --- !u!136 &712989334
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1292,6 +1345,21 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &712989339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712989332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18c8be4315e27f040a870025a3ddef62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionDistance: 1.5
+  holdDistance: 1
+  holdHeightOffset: 0.5
 --- !u!1 &717233169 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3557387431867292692, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
@@ -1462,6 +1530,7 @@ GameObject:
   - component: {fileID: 783508539}
   - component: {fileID: 783508538}
   - component: {fileID: 783508543}
+  - component: {fileID: 783508544}
   m_Layer: 7
   m_Name: Bean (6)
   m_TagString: Untagged
@@ -1483,9 +1552,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxRunSpeed: 4
   maxWalkSpeed: 2
+  rotationSpeed: 3
   runRange: 10
-  hidingSpotReevaluationInterval: 1
-  timeToWaitBeforeSwitching: 10
+  waypointProximityThreshold: 2
+  stayAtWaypointDuration: 10
 --- !u!136 &783508539
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1598,6 +1668,21 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &783508544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 783508537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18c8be4315e27f040a870025a3ddef62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionDistance: 1.5
+  holdDistance: 1
+  holdHeightOffset: 0.5
 --- !u!1 &894386301
 GameObject:
   m_ObjectHideFlags: 0
@@ -1612,6 +1697,7 @@ GameObject:
   - component: {fileID: 894386303}
   - component: {fileID: 894386302}
   - component: {fileID: 894386307}
+  - component: {fileID: 894386308}
   m_Layer: 7
   m_Name: Bean
   m_TagString: Untagged
@@ -1633,9 +1719,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxRunSpeed: 4
   maxWalkSpeed: 2
+  rotationSpeed: 3
   runRange: 10
-  hidingSpotReevaluationInterval: 1
-  timeToWaitBeforeSwitching: 10
+  waypointProximityThreshold: 2
+  stayAtWaypointDuration: 10
 --- !u!136 &894386303
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1748,6 +1835,21 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &894386308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894386301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18c8be4315e27f040a870025a3ddef62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionDistance: 1.5
+  holdDistance: 1
+  holdHeightOffset: 0.5
 --- !u!1 &934752320
 GameObject:
   m_ObjectHideFlags: 0
@@ -1762,6 +1864,7 @@ GameObject:
   - component: {fileID: 934752322}
   - component: {fileID: 934752321}
   - component: {fileID: 934752326}
+  - component: {fileID: 934752327}
   m_Layer: 7
   m_Name: Bean (1)
   m_TagString: Untagged
@@ -1783,9 +1886,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxRunSpeed: 4
   maxWalkSpeed: 2
+  rotationSpeed: 3
   runRange: 10
-  hidingSpotReevaluationInterval: 1
-  timeToWaitBeforeSwitching: 10
+  waypointProximityThreshold: 2
+  stayAtWaypointDuration: 10
 --- !u!136 &934752322
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1898,6 +2002,21 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &934752327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 934752320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18c8be4315e27f040a870025a3ddef62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionDistance: 1.5
+  holdDistance: 1
+  holdHeightOffset: 0.5
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -2232,6 +2351,7 @@ GameObject:
   - component: {fileID: 1111909694}
   - component: {fileID: 1111909693}
   - component: {fileID: 1111909698}
+  - component: {fileID: 1111909699}
   m_Layer: 7
   m_Name: Bean (7)
   m_TagString: Untagged
@@ -2253,9 +2373,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxRunSpeed: 4
   maxWalkSpeed: 2
+  rotationSpeed: 3
   runRange: 10
-  hidingSpotReevaluationInterval: 1
-  timeToWaitBeforeSwitching: 10
+  waypointProximityThreshold: 2
+  stayAtWaypointDuration: 10
 --- !u!136 &1111909694
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2368,6 +2489,21 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1111909699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1111909692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18c8be4315e27f040a870025a3ddef62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionDistance: 1.5
+  holdDistance: 1
+  holdHeightOffset: 0.5
 --- !u!1001 &1214111134
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2462,15 +2598,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1953396039078697872, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.53
+      value: 1.054
       objectReference: {fileID: 0}
     - target: {fileID: 1953396039078697872, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1.14
+      value: 0.144
       objectReference: {fileID: 0}
     - target: {fileID: 1953396039078697872, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.01
+      value: 0.078
       objectReference: {fileID: 0}
     - target: {fileID: 1963958859065967600, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: m_Layer
@@ -2553,6 +2689,7 @@ GameObject:
   - component: {fileID: 1391151393}
   - component: {fileID: 1391151392}
   - component: {fileID: 1391151397}
+  - component: {fileID: 1391151398}
   m_Layer: 7
   m_Name: Bean (3)
   m_TagString: Untagged
@@ -2574,9 +2711,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxRunSpeed: 4
   maxWalkSpeed: 2
+  rotationSpeed: 3
   runRange: 10
-  hidingSpotReevaluationInterval: 1
-  timeToWaitBeforeSwitching: 10
+  waypointProximityThreshold: 2
+  stayAtWaypointDuration: 10
 --- !u!136 &1391151393
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2689,6 +2827,21 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1391151398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1391151391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18c8be4315e27f040a870025a3ddef62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionDistance: 1.5
+  holdDistance: 1
+  holdHeightOffset: 0.5
 --- !u!1 &1434644923
 GameObject:
   m_ObjectHideFlags: 0
@@ -2873,6 +3026,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 105089a3161d4a14a87970519dd3aa86, type: 3}
+--- !u!1001 &1472148927
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1935326062920242379, guid: 468d2099436e49c4ba58690b14516dd8, type: 3}
+      propertyPath: m_Name
+      value: CoffeeMachine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6720572910403276099, guid: 468d2099436e49c4ba58690b14516dd8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 15.228617
+      objectReference: {fileID: 0}
+    - target: {fileID: 6720572910403276099, guid: 468d2099436e49c4ba58690b14516dd8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 6720572910403276099, guid: 468d2099436e49c4ba58690b14516dd8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -16.006828
+      objectReference: {fileID: 0}
+    - target: {fileID: 6720572910403276099, guid: 468d2099436e49c4ba58690b14516dd8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6720572910403276099, guid: 468d2099436e49c4ba58690b14516dd8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6720572910403276099, guid: 468d2099436e49c4ba58690b14516dd8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6720572910403276099, guid: 468d2099436e49c4ba58690b14516dd8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6720572910403276099, guid: 468d2099436e49c4ba58690b14516dd8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6720572910403276099, guid: 468d2099436e49c4ba58690b14516dd8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -180
+      objectReference: {fileID: 0}
+    - target: {fileID: 6720572910403276099, guid: 468d2099436e49c4ba58690b14516dd8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 468d2099436e49c4ba58690b14516dd8, type: 3}
 --- !u!1 &1638678849
 GameObject:
   m_ObjectHideFlags: 0
@@ -3138,6 +3348,7 @@ GameObject:
   - component: {fileID: 1669969834}
   - component: {fileID: 1669969833}
   - component: {fileID: 1669969838}
+  - component: {fileID: 1669969839}
   m_Layer: 7
   m_Name: Bean (11)
   m_TagString: Untagged
@@ -3159,9 +3370,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxRunSpeed: 4
   maxWalkSpeed: 2
+  rotationSpeed: 3
   runRange: 10
-  hidingSpotReevaluationInterval: 1
-  timeToWaitBeforeSwitching: 10
+  waypointProximityThreshold: 2
+  stayAtWaypointDuration: 10
 --- !u!136 &1669969834
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3274,6 +3486,78 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1669969839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1669969832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18c8be4315e27f040a870025a3ddef62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionDistance: 1.5
+  holdDistance: 1
+  holdHeightOffset: 0.5
+--- !u!1001 &1729322160
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5757422469092821806, guid: 78a9af1f297cd0e49b204f794d1430fe, type: 3}
+      propertyPath: m_Name
+      value: CustomerWindow
+      objectReference: {fileID: 0}
+    - target: {fileID: 7130603157258010891, guid: 78a9af1f297cd0e49b204f794d1430fe, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 15.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 7130603157258010891, guid: 78a9af1f297cd0e49b204f794d1430fe, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.621
+      objectReference: {fileID: 0}
+    - target: {fileID: 7130603157258010891, guid: 78a9af1f297cd0e49b204f794d1430fe, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -17.903975
+      objectReference: {fileID: 0}
+    - target: {fileID: 7130603157258010891, guid: 78a9af1f297cd0e49b204f794d1430fe, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7130603157258010891, guid: 78a9af1f297cd0e49b204f794d1430fe, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7130603157258010891, guid: 78a9af1f297cd0e49b204f794d1430fe, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7130603157258010891, guid: 78a9af1f297cd0e49b204f794d1430fe, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7130603157258010891, guid: 78a9af1f297cd0e49b204f794d1430fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7130603157258010891, guid: 78a9af1f297cd0e49b204f794d1430fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7130603157258010891, guid: 78a9af1f297cd0e49b204f794d1430fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 78a9af1f297cd0e49b204f794d1430fe, type: 3}
 --- !u!1 &1741450711
 GameObject:
   m_ObjectHideFlags: 0
@@ -3288,6 +3572,7 @@ GameObject:
   - component: {fileID: 1741450713}
   - component: {fileID: 1741450712}
   - component: {fileID: 1741450717}
+  - component: {fileID: 1741450718}
   m_Layer: 7
   m_Name: Bean (2)
   m_TagString: Untagged
@@ -3309,9 +3594,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxRunSpeed: 4
   maxWalkSpeed: 2
+  rotationSpeed: 3
   runRange: 10
-  hidingSpotReevaluationInterval: 1
-  timeToWaitBeforeSwitching: 10
+  waypointProximityThreshold: 2
+  stayAtWaypointDuration: 10
 --- !u!136 &1741450713
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3424,6 +3710,21 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1741450718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741450711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18c8be4315e27f040a870025a3ddef62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionDistance: 1.5
+  holdDistance: 1
+  holdHeightOffset: 0.5
 --- !u!1 &1818012648
 GameObject:
   m_ObjectHideFlags: 0
@@ -3438,6 +3739,7 @@ GameObject:
   - component: {fileID: 1818012650}
   - component: {fileID: 1818012649}
   - component: {fileID: 1818012654}
+  - component: {fileID: 1818012655}
   m_Layer: 7
   m_Name: Bean (8)
   m_TagString: Untagged
@@ -3459,9 +3761,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxRunSpeed: 4
   maxWalkSpeed: 2
+  rotationSpeed: 3
   runRange: 10
-  hidingSpotReevaluationInterval: 1
-  timeToWaitBeforeSwitching: 10
+  waypointProximityThreshold: 2
+  stayAtWaypointDuration: 10
 --- !u!136 &1818012650
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3574,6 +3877,21 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1818012655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818012648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18c8be4315e27f040a870025a3ddef62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionDistance: 1.5
+  holdDistance: 1
+  holdHeightOffset: 0.5
 --- !u!1 &1855474638
 GameObject:
   m_ObjectHideFlags: 0
@@ -3861,3 +4179,5 @@ SceneRoots:
   - {fileID: 255107343}
   - {fileID: 1646641994}
   - {fileID: 531579483}
+  - {fileID: 1472148927}
+  - {fileID: 1729322160}
