@@ -61,7 +61,6 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2023.2.20f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\NPC_AI.cs" />
     <Compile Include="Assets\Mini First Person Controller\Scripts\Components\FirstPersonAudio.cs" />
     <Compile Include="Assets\Customer\Scripts\CustomerSpawnScript.cs" />
     <Compile Include="Assets\Customer\Scripts\CustomerScript.cs" />
@@ -69,14 +68,16 @@
     <Compile Include="Assets\CoffeeSystem\Scripts\CustomerWindow.cs" />
     <Compile Include="Assets\CoffeeSystem\Scripts\Bean_Interact.cs" />
     <Compile Include="Assets\IncomeUI.cs" />
+    <Compile Include="Assets\GameManager.cs" />
     <Compile Include="Assets\Mini First Person Controller\Scripts\FirstPersonMovement.cs" />
     <Compile Include="Assets\CoffeeSystem\Scripts\CoffeeInteract.cs" />
     <Compile Include="Assets\Mini First Person Controller\Scripts\Components\Jump.cs" />
     <Compile Include="Assets\Customer\IncomeSystem.cs" />
     <Compile Include="Assets\Mini First Person Controller\Scripts\Components\Crouch.cs" />
+    <Compile Include="Assets\AI Scripts\NPC_AI.cs" />
     <Compile Include="Assets\Mini First Person Controller\Scripts\Components\Zoom.cs" />
+    <Compile Include="Assets\AI Scripts\Hiding_Spots.cs" />
     <Compile Include="Assets\CoffeeSystem\Scripts\CoffeeMachine.cs" />
-    <Compile Include="Assets\Hiding_Spots.cs" />
     <Compile Include="Assets\Mini First Person Controller\Scripts\FirstPersonLook.cs" />
   </ItemGroup>
   <ItemGroup>
