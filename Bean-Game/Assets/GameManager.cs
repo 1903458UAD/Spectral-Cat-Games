@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform spawnArea; // Reference to the spawn area (optional)
 
     private List<GameObject> beanInstances = new List<GameObject>(); // List to keep track of spawned beans
+    private List<Hiding_Spots> hidingSpots = new List<Hiding_Spots>(); // List to keep track of hiding spots
 
     void Start()
     {
@@ -19,7 +20,14 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        FindAllHidingSpots();
         SpawnInitialBeans();
+    }
+
+    // Finds all hiding spot instances in the scene
+    private void FindAllHidingSpots()
+    {
+        hidingSpots = new List<Hiding_Spots>(FindObjectsOfType<Hiding_Spots>());
     }
 
     // Spawns the initial set of beans at the start of the game
@@ -86,6 +94,12 @@ public class GameManager : MonoBehaviour
     public List<GameObject> GetBeans()
     {
         return beanInstances;
+    }
+
+    // Gets the list of all hiding spots
+    public List<Hiding_Spots> GetHidingSpots()
+    {
+        return hidingSpots;
     }
 
     // Example update loop to showcase management logic
