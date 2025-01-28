@@ -16,7 +16,8 @@ GameObject:
   - component: {fileID: 9037358763321314766}
   - component: {fileID: 7719417097926658812}
   - component: {fileID: -6218115033867189176}
-  m_Layer: 7
+  - component: {fileID: -7223333705574870795}
+  m_Layer: 9
   m_Name: beanPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,9 +166,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18c8be4315e27f040a870025a3ddef62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionDistance: 1.5
-  holdDistance: 1
-  holdHeightOffset: 0.5
 --- !u!54 &-6218115033867189176
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -194,4 +192,18 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
+--- !u!114 &-7223333705574870795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252606356719339022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a35d27e0125c7214e98243ac5b70a5c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  holdDistance: 1
+  holdHeightOffset: 0.5

@@ -16,14 +16,14 @@ public class Hiding_Spots : MonoBehaviour
     public bool CanAcceptNPC()
     {
         bool canAccept = currentOccupancy + incomingNPCs < occupancyLimit;
-        UnityEngine.Debug.Log($"{gameObject.name}: CanAcceptNPC = {canAccept} (Current = {currentOccupancy}, Incoming = {incomingNPCs}, Limit = {occupancyLimit})");
+       // UnityEngine.Debug.Log($"{gameObject.name}: CanAcceptNPC = {canAccept} (Current = {currentOccupancy}, Incoming = {incomingNPCs}, Limit = {occupancyLimit})");
         return canAccept;
     }
 
     public void IncrementOccupancy()
     {
         currentOccupancy++;
-        UnityEngine.Debug.Log($"{gameObject.name}: IncrementOccupancy. Current = {currentOccupancy}");
+        //UnityEngine.Debug.Log($"{gameObject.name}: IncrementOccupancy. Current = {currentOccupancy}");
     }
 
     public void DecrementOccupancy()
@@ -31,13 +31,13 @@ public class Hiding_Spots : MonoBehaviour
         if (currentOccupancy > 0)
             currentOccupancy--;
 
-        UnityEngine.Debug.Log($"{gameObject.name}: DecrementOccupancy. Current = {currentOccupancy}");
+        //UnityEngine.Debug.Log($"{gameObject.name}: DecrementOccupancy. Current = {currentOccupancy}");
     }
 
     public void IncrementIncomingNPCs()
     {
         incomingNPCs++;
-        UnityEngine.Debug.Log($"{gameObject.name}: IncrementIncomingNPCs. Incoming = {incomingNPCs}");
+        //UnityEngine.Debug.Log($"{gameObject.name}: IncrementIncomingNPCs. Incoming = {incomingNPCs}");
     }
 
     public void DecrementIncomingNPCs()
@@ -45,7 +45,7 @@ public class Hiding_Spots : MonoBehaviour
         if (incomingNPCs > 0)
             incomingNPCs--;
 
-        UnityEngine.Debug.Log($"{gameObject.name}: DecrementIncomingNPCs. Incoming = {incomingNPCs}");
+        //UnityEngine.Debug.Log($"{gameObject.name}: DecrementIncomingNPCs. Incoming = {incomingNPCs}");
     }
 
     public float GetPriority()
@@ -53,7 +53,7 @@ public class Hiding_Spots : MonoBehaviour
         // Adjust priority based on current and incoming occupancy
         float adjustedPriority = priority - ((currentOccupancy + incomingNPCs) * 10f);
         adjustedPriority = Mathf.Max(adjustedPriority, 10); // Ensure priority is not negative
-        UnityEngine.Debug.Log($"{gameObject.name}: GetPriority = {adjustedPriority}");
+        //UnityEngine.Debug.Log($"{gameObject.name}: GetPriority = {adjustedPriority}");
         return adjustedPriority;
     }
 
@@ -76,7 +76,7 @@ public class Hiding_Spots : MonoBehaviour
             {
                 priority -= priorityReductionAmount;
                 priority = Mathf.Clamp(priority, 10, 100f); // Min priority is 10
-                UnityEngine.Debug.Log($"{gameObject.name}: Player visible. Priority reduced to {priority}");
+               // UnityEngine.Debug.Log($"{gameObject.name}: Player visible. Priority reduced to {priority}");
             }
         }
         else
@@ -84,7 +84,7 @@ public class Hiding_Spots : MonoBehaviour
             // Gradually restore priority when the player is not visible
             priority += priorityReductionAmount * Time.deltaTime;
             priority = Mathf.Clamp(priority, 10, 100f); // Restore to max 100
-            UnityEngine.Debug.Log($"{gameObject.name}: Player not visible. Priority recovering to {priority}");
+            //UnityEngine.Debug.Log($"{gameObject.name}: Player not visible. Priority recovering to {priority}");
         }
     }
 }

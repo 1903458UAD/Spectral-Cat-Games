@@ -13,6 +13,12 @@ public class CoffeeMachine : MonoBehaviour
     public GameObject coffeePrefab; // Prefab of the coffee in a cup
 
 
+
+
+
+
+
+
     public void AddBean(BeanInteraction bean)
     {
         if (bean != null)
@@ -22,15 +28,53 @@ public class CoffeeMachine : MonoBehaviour
             Destroy(bean.gameObject);
             Debug.Log("Bean added! Current beans: " + currentBeanCount);
 
-            // Check if enough beans are present to create coffee
-            if (currentBeanCount >= requiredBeans)
-            {
-                Debug.Log("Enough beans! Starting coffee creation...");
-                Invoke(nameof(CreateCoffee), coffeeCreationTime);
-                currentBeanCount = 0; // Reset beans for the next coffee
-            }
+
+
+
+            //// Check if enough beans are present to create coffee
+            //if (currentBeanCount >= requiredBeans)
+            //{
+            //    Debug.Log("Enough beans! Starting coffee creation...");
+            //    Invoke(nameof(CreateCoffee), coffeeCreationTime);
+            //    currentBeanCount = 0; // Reset beans for the next coffee
+            //}
         }
     }
+
+    public bool CanActivateMachine()
+    {
+        return currentBeanCount >= requiredBeans;
+    }
+
+    public void ActivateMachine()
+    {
+        if (CanActivateMachine())
+        {
+            Debug.Log("Enough beans! Starting coffee creation...");
+            Invoke(nameof(CreateCoffee), coffeeCreationTime);
+            currentBeanCount = 0; // Reset beans for the next coffee
+        }
+        else
+        {
+            Debug.Log("Not enough beans! Add more beans to activate.");
+        }
+    }
+
+
+
+//public void AttemptToActivateMachine()
+//    {
+//        if (currentBeanCount >= requiredBeans)
+//        {
+//            Debug.Log("Enough beans! Starting coffee creation...");
+//            Invoke(nameof(CreateCoffee), coffeeCreationTime);
+//            currentBeanCount = 0; // Reset beans for the next coffee
+//        }
+//        else
+//        {
+//            Debug.Log("Not enough beans! Add more beans to activate.");
+//        }
+//    }
 
     private void CreateCoffee()
     {
