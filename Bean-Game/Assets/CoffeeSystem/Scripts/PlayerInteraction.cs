@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    public float interactionDistance = 15f; // Distance within which the player can interact
+    public float interactionDistance = 5f; // Distance within which the player can interact
     public LayerMask InteractableObjectLayer; // LayerMask to filter interactable objects
     public Transform cameraTransform; // Reference to the player's camera
     private InteractableObject heldObject; // Track currently held object
@@ -37,10 +37,16 @@ public class PlayerInteraction : MonoBehaviour
         // Check if the ray hits something within interaction range
         if (Physics.Raycast(ray, out hit, interactionDistance, InteractableObjectLayer))
         {
+            GameObject hitObject = hit.collider.gameObject;
+
 
             Debug.Log("Raycast hit object: " + hit.collider.gameObject.name);
            // Debug.Log("raycast hit an object!");
             InteractableObject interactable = hit.collider.GetComponent<InteractableObject>();
+            BeanInteraction bean = hitObject.GetComponent<BeanInteraction>();
+            CoffeeInteraction coffee = hitObject.GetComponent<CoffeeInteraction>();
+       
+
 
             if (interactable != null)
             {
@@ -66,6 +72,21 @@ public class PlayerInteraction : MonoBehaviour
                 else
                 {
                     Debug.Log("Object is not interactable");
+                }
+
+                // Left-click to interact with specific objects
+                if (Input.GetMouseButtonDown(0)) // Left-click
+                {
+                    if (bean != null)
+                    {
+                        Debug.Log("Left-clicked a bean!");
+                        bean.TryAddToCoffeeMachine(); // Calls new function in BeanInteraction
+                    }
+                    else if (coffee != null)
+                    {
+                        Debug.Log("Left-clicked coffee near customer window!");
+                        coffee.TryAddToCustomerWindow();
+                    }
                 }
             }
         }

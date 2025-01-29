@@ -27,7 +27,7 @@ public class CustomerWindow : MonoBehaviour
                 currentCoffeeCount = 0; // Reset beans for the next coffee
                  
 
-}
+            }
         }
     }
 

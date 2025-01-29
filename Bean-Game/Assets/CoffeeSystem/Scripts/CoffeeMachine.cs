@@ -9,13 +9,7 @@ public class CoffeeMachine : MonoBehaviour
     public float coffeeCreationTime = 5f; // Time to create coffee after enough beans
     private int currentBeanCount = 0; // Number of beans currently in the machine
 
-
     public GameObject coffeePrefab; // Prefab of the coffee in a cup
-
-
-
-
-
 
 
 
@@ -28,16 +22,6 @@ public class CoffeeMachine : MonoBehaviour
             Destroy(bean.gameObject);
             Debug.Log("Bean added! Current beans: " + currentBeanCount);
 
-
-
-
-            //// Check if enough beans are present to create coffee
-            //if (currentBeanCount >= requiredBeans)
-            //{
-            //    Debug.Log("Enough beans! Starting coffee creation...");
-            //    Invoke(nameof(CreateCoffee), coffeeCreationTime);
-            //    currentBeanCount = 0; // Reset beans for the next coffee
-            //}
         }
     }
 
@@ -59,22 +43,6 @@ public class CoffeeMachine : MonoBehaviour
             Debug.Log("Not enough beans! Add more beans to activate.");
         }
     }
-
-
-
-//public void AttemptToActivateMachine()
-//    {
-//        if (currentBeanCount >= requiredBeans)
-//        {
-//            Debug.Log("Enough beans! Starting coffee creation...");
-//            Invoke(nameof(CreateCoffee), coffeeCreationTime);
-//            currentBeanCount = 0; // Reset beans for the next coffee
-//        }
-//        else
-//        {
-//            Debug.Log("Not enough beans! Add more beans to activate.");
-//        }
-//    }
 
     private void CreateCoffee()
     {
