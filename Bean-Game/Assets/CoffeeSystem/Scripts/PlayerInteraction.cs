@@ -7,6 +7,8 @@ public class PlayerInteraction : MonoBehaviour
     public float interactionDistance = 15f; // Distance within which the player can interact
     public LayerMask InteractableObjectLayer; // LayerMask to filter interactable objects
     public Transform cameraTransform; // Reference to the player's camera
+    private InteractableObject heldObject; // Track currently held object
+
 
     private void Update()
     {
@@ -22,6 +24,9 @@ public class PlayerInteraction : MonoBehaviour
             return;
         }
 
+
+
+
         Debug.Log("PlayerInteraction update function running");
         Ray ray = new Ray(cameraTransform.position, cameraTransform.forward); // Ray from the center of the screen
 
@@ -34,7 +39,7 @@ public class PlayerInteraction : MonoBehaviour
         {
 
             Debug.Log("Raycast hit object: " + hit.collider.gameObject.name);
-            Debug.Log("raycast hit an object!");
+           // Debug.Log("raycast hit an object!");
             InteractableObject interactable = hit.collider.GetComponent<InteractableObject>();
 
             if (interactable != null)
@@ -45,8 +50,16 @@ public class PlayerInteraction : MonoBehaviour
                 
                 if (Input.GetKeyDown(KeyCode.E)) // Pick up the object if 'e' is pressed
                 {
-                    Debug.Log(" Object Picked up!");
-                    interactable.PickUpObject();
+                    if (interactable.GetIsHeld())
+                    {
+                        interactable.ReleaseObject();
+                    }
+                    else
+                    {
+                        Debug.Log(" Object Picked up!");
+                        interactable.PickUpObject();
+                    }
+
 
                     
                 }

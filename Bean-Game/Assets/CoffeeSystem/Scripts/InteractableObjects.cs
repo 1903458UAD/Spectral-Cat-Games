@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class InteractableObject : MonoBehaviour
 {
     public float holdDistance = 1f; // Distance in front of the player for the object to hover
-    public float holdHeightOffset = 0.5f; // Offset to position the object at player hand height
+    public float holdHeightOffset = 0.0f; // Offset to position the object at player hand height
     public float pickupCooldown = 0.1f; // Minimum time before the object can be released
     private bool canRelease = true; // Determines if we can release the object
 
@@ -41,24 +41,9 @@ public class InteractableObject : MonoBehaviour
 
     }
 
-    private void Update()
+    public bool GetIsHeld()
     {
-        if (isHeld)
-        {
-            // Release the object if the player presses "E"
-            if (Input.GetKeyDown(KeyCode.E) && canRelease)
-            {
-                ReleaseObject();
-                return;
-            }
-
-            // Update the object's position to hover in front of the player
-            Vector3 holdPosition = playerCamera.position + playerCamera.forward * holdDistance;
-            holdPosition.y += holdHeightOffset; // Adjust height offset
-
-            objectRigidbody.MovePosition(holdPosition); // Smoothly move to the position
-            objectRigidbody.MoveRotation(playerCamera.rotation); // Rotate to match the player's camera
-        }
+        return isHeld;
     }
 
     public void PickUpObject()
@@ -83,6 +68,10 @@ public class InteractableObject : MonoBehaviour
         // Parent the object to the player camera
         transform.SetParent(playerCamera);
 
+        // Set a local position relative to the camera
+        transform.localPosition = new Vector3(0, holdHeightOffset, holdDistance);
+        transform.localRotation = Quaternion.identity;
+
         // Mark the object as held
         isHeld = true;
 
@@ -105,9 +94,9 @@ public class InteractableObject : MonoBehaviour
     }
     public void ReleaseObject()
     {
-        if (!isHeld)
+        if (!isHeld || !canRelease) // Ensure release is allowed
         {
-            return; // If not held, no action is needed
+            return;
         }
 
         // Mark the object as no longer held
@@ -120,8 +109,9 @@ public class InteractableObject : MonoBehaviour
             objectRigidbody.useGravity = true;
         }
 
-        // Detach from the player and restore the original parent
-        transform.SetParent(originalParent);
+        // Unparent from the camera
+        transform.SetParent(null, true); // Ensure the object is fully detached
+     
 
         // Re-enable AI and NavMeshAgent
         if (navMeshAgent != null)
@@ -129,6 +119,9 @@ public class InteractableObject : MonoBehaviour
 
         if (aiScript != null)
             aiScript.enabled = true;
+
+        canRelease = false;
+        Invoke(nameof(EnableRelease), pickupCooldown);
 
         Debug.Log(gameObject.name + " released!");
     }
