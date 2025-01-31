@@ -7,20 +7,18 @@ public class PlayerInteraction : MonoBehaviour
     public float interactionDistance = 5f; // Distance within which the player can interact
     public LayerMask InteractableObjectLayer; // LayerMask to filter interactable objects
     public Transform cameraTransform; // Reference to the player's camera
-    private InteractableObject heldObject; // Track currently held object
-
-
+    
     private void Update()
     {
         if (cameraTransform == null)
         {
-            Debug.LogError("cameraTransform is not assigned! Please assign the cameraTransform in the Inspector.");
+            Debug.LogError("cameraTransform is not assigned!!! Assign the cameraTransform in the Inspector.");
             return;
         }
 
         if (InteractableObjectLayer == 0)
         {
-            Debug.LogError("interactableObjects LayerMask is not assigned! Please assign a valid layer mask.");
+            Debug.LogError("interactableObjects LayerMask is not assigned!!! Assign a valid layer mask.");
             return;
         }
 
