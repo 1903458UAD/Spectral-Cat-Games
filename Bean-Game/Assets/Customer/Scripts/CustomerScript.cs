@@ -28,6 +28,9 @@ public class CustomerScript : MonoBehaviour
     private float threshold;
     private float tipFactor;
 
+    private PlayerHealth playerHealth; //Reference To the health system
+
+
     public void setIsOrderedTrue()
     {
         orderDelivered = true;
@@ -37,6 +40,12 @@ public class CustomerScript : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        playerHealth = player.GetComponent<PlayerHealth>(); // Get reference to PlayerHealth
+
+        if (playerHealth == null)
+        {
+            Debug.LogError("PlayerHealth component not found on Player!");
+        }
 
         drive = true; // Initially set customer to moving
         orderDelivered = false;
@@ -121,6 +130,12 @@ public class CustomerScript : MonoBehaviour
         else
         {
             Debug.Log("Customer ran out of patience!");
+
+            if (playerHealth != null)
+            {
+                Debug.Log("Call function to lose player health");
+                playerHealth.LoseLife(); // Deduct a life
+            }
             nextLocation = exit; // Move customer towards exit
             drive = true; // Begin driving
         }

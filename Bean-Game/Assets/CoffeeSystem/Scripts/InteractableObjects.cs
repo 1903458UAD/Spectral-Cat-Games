@@ -80,6 +80,19 @@ public class InteractableObject : MonoBehaviour
         {
             objectRigidbody.isKinematic = true;
             objectRigidbody.useGravity = false;
+
+            // Ignore collisions with the player only
+            Collider objectCollider = GetComponent<Collider>();
+            Collider playerCollider = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Collider>();
+
+            if (objectCollider != null && playerCollider != null)
+            {
+                Physics.IgnoreCollision(objectCollider, playerCollider, true);
+            }
+
+
+
+            //objectRigidbody.detectCollisions = false; //Breaks Coffee Machine Code
         }
         canRelease = false;
         Invoke(nameof(EnableRelease), pickupCooldown); // Set the cooldown before allowing release
@@ -107,6 +120,16 @@ public class InteractableObject : MonoBehaviour
         {
             objectRigidbody.isKinematic = false;
             objectRigidbody.useGravity = true;
+            // objectRigidbody.detectCollisions = true; // Breaks coffee Machine code 
+
+            Collider objectCollider = GetComponent<Collider>();
+            Collider playerCollider = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Collider>();
+
+            if (objectCollider != null && playerCollider != null)
+            {
+                Physics.IgnoreCollision(objectCollider, playerCollider, false);
+            }
+
         }
 
         // Unparent from the camera
