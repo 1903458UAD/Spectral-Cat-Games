@@ -43,7 +43,7 @@ public class PlayerInteraction : MonoBehaviour
             InteractableObject interactable = hit.collider.GetComponent<InteractableObject>();
             BeanInteraction bean = hitObject.GetComponent<BeanInteraction>();
             CoffeeInteraction coffee = hitObject.GetComponent<CoffeeInteraction>();
-       
+
 
 
             if (interactable != null)
@@ -51,7 +51,11 @@ public class PlayerInteraction : MonoBehaviour
                 Debug.Log("Object hit by raycast is interactable");
 
 
+                UIManager.Instance.SetCrosshairInteractable();
                 
+        
+
+
                 if (Input.GetKeyDown(KeyCode.E)) // Pick up the object if 'e' is pressed
                 {
                     if (interactable.GetIsHeld())
@@ -65,7 +69,7 @@ public class PlayerInteraction : MonoBehaviour
                     }
 
 
-                    
+
                 }
                 else
                 {
@@ -87,10 +91,12 @@ public class PlayerInteraction : MonoBehaviour
                     }
                 }
             }
+
         }
         else
         {
             Debug.Log("Raycast did not hit anything");
+            UIManager.Instance.SetCrosshairDefault();
         }
         //Debug.DrawRay(cameraTransform.position, cameraTransform.forward * interactionDistance, Color.green); //Doesnt really work only shows when game scene paused
 

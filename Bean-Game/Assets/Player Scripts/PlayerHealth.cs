@@ -28,7 +28,9 @@ public class PlayerHealth : MonoBehaviour
     private void GameOver()
     {
         Debug.Log("Game Over! Player ran out of lives.");
+        UIManager.Instance.ShowDeathScreen();
+        //Pause the Movement
 
-    //TOBE implemented: Reload/Reset System. Game Over UI etc....
+        //TOBE implemented: Reload/Reset System. Game Over UI etc....
     }
 }
