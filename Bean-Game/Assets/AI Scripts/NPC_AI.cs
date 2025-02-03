@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// Handles NPC movement, hiding behavior, and reactions to player presence.
+/// </summary>
 public class NPC_AI : MonoBehaviour
 {
     private GameObject player;
@@ -18,10 +21,10 @@ public class NPC_AI : MonoBehaviour
 
     private float waypointArrivalTime = 0f;
     private bool isRunningAway = false;
-    private bool isHiding = false; // ✅ NEW: Prevents NPC from running when actively hiding
+    private bool isHiding = false; // Prevents NPC from running when actively hiding
     private NavMeshAgent navMeshAgent;
 
-    void Start()
+    private void Start()
     {
         if (!enabled)
         {
@@ -31,7 +34,7 @@ public class NPC_AI : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         if (player == null)
         {
-            UnityEngine.Debug.LogError("[NPC_AI] No Player found in the scene!");
+            UnityEngine.Debug.LogError("[NPC_AI] No Player found in the scene! Disabling NPC.");
             enabled = false;
             return;
         }
@@ -39,14 +42,14 @@ public class NPC_AI : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         if (navMeshAgent == null)
         {
-            UnityEngine.Debug.LogError("[NPC_AI] No NavMeshAgent component found!");
+            UnityEngine.Debug.LogError("[NPC_AI] No NavMeshAgent component found! NPC cannot move.");
             enabled = false;
             return;
         }
 
         if (GameManager.Instance == null)
         {
-            UnityEngine.Debug.LogError("[NPC_AI] GameManager.Instance is NULL!");
+            UnityEngine.Debug.LogError("[NPC_AI] GameManager.Instance is NULL! Disabling NPC.");
             enabled = false;
             return;
         }
@@ -55,7 +58,7 @@ public class NPC_AI : MonoBehaviour
         SelectNewHidingSpot();
     }
 
-    void Update()
+    private void Update()
     {
         if (currentHidingSpot == null)
         {
@@ -66,35 +69,35 @@ public class NPC_AI : MonoBehaviour
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         float distanceToHidingSpot = Vector3.Distance(transform.position, currentHidingSpot.transform.position);
 
-        // ✅ FIXED: Stop NPC when it reaches the hiding spot and prevent it from running
+        // Check if NPC has reached its hiding spot
         if (distanceToHidingSpot <= waypointProximityThreshold && !isHiding)
         {
-            UnityEngine.Debug.Log("[NPC_AI] NPC " + gameObject.name + " is hiding at: " + currentHidingSpot.gameObject.name);
+            UnityEngine.Debug.Log($"[NPC_AI] {gameObject.name} has reached hiding spot: {currentHidingSpot.gameObject.name}");
 
             navMeshAgent.isStopped = true;
-            isHiding = true; // ✅ NPC is now in hiding mode
+            isHiding = true;
             waypointArrivalTime = Time.time;
         }
 
-        // ✅ NPC stays hidden and ignores player detection during hiding period
+        // NPC remains hidden for a set duration
         if (isHiding)
         {
             if (Time.time - waypointArrivalTime >= stayAtWaypointDuration)
             {
-                isHiding = false; // ✅ NPC is no longer hiding
+                isHiding = false;
                 navMeshAgent.isStopped = false;
                 currentHidingSpot.DecrementOccupancy();
                 SelectNewHidingSpot();
             }
-            return; // ✅ Ensures NPC does nothing else while hiding
+            return; // Prevents further updates while hiding
         }
 
-        // ✅ FIXED: Make sure NPCs only run from the player when NOT hiding
+        // NPC reacts to player's proximity (runs away if detected)
         if (distanceToPlayer <= runRange && !isHiding)
         {
             if (!isRunningAway)
             {
-                UnityEngine.Debug.Log("[NPC_AI] Player detected! Running away.");
+                UnityEngine.Debug.Log("[NPC_AI] Player detected! NPC is running away.");
             }
             isRunningAway = true;
             RunAwayFromPlayer();
@@ -108,7 +111,10 @@ public class NPC_AI : MonoBehaviour
         }
     }
 
-    void RunAwayFromPlayer()
+    /// <summary>
+    /// Moves NPC away from the player.
+    /// </summary>
+    private void RunAwayFromPlayer()
     {
         Vector3 directionAway = (transform.position - player.transform.position).normalized;
         directionAway.y = 0;
@@ -119,20 +125,24 @@ public class NPC_AI : MonoBehaviour
         navMeshAgent.speed = maxRunSpeed;
         navMeshAgent.isStopped = false;
         navMeshAgent.SetDestination(transform.position + directionAway * runRange);
-        UnityEngine.Debug.Log("[NPC_AI] Running away from player!");
+
+        UnityEngine.Debug.Log($"[NPC_AI] {gameObject.name} is running away from player.");
     }
 
-    void SelectNewHidingSpot()
+    /// <summary>
+    /// Selects a new hiding spot from GameManager's available locations.
+    /// </summary>
+    private void SelectNewHidingSpot()
     {
         currentHidingSpot = GameManager.Instance.GetRandomHidingSpot();
 
         if (currentHidingSpot == null)
         {
-            UnityEngine.Debug.LogError("[NPC_AI] No available hiding spots from GameManager!");
+            UnityEngine.Debug.LogError("[NPC_AI] No available hiding spots found! NPC will idle.");
             return;
         }
 
-        UnityEngine.Debug.Log("[NPC_AI] Moving to new hiding spot: " + currentHidingSpot.gameObject.name);
+        UnityEngine.Debug.Log($"[NPC_AI] {gameObject.name} moving to new hiding spot: {currentHidingSpot.gameObject.name}");
         navMeshAgent.isStopped = false;
         navMeshAgent.SetDestination(currentHidingSpot.transform.position);
     }
