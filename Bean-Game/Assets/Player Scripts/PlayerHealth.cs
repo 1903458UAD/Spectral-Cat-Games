@@ -1,36 +1,60 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int maxLives = 3; // Lives the player starts with (Likely needing to adjust for balancing)
-    private int currentLives;
+    public int maxHealth = 100;
+    private int currentHealth;
 
-    private void Start()
+    void Start()
     {
-        currentLives = maxLives; // Player starts with full lives
-
+        currentHealth = maxHealth;
     }
 
-   
-    public void LoseLife() // Reduce player health (Called when get an order wrong)
+    public void TakeDamage(int damage)
     {
-        currentLives--;
-        Debug.Log("Player lost a life! Remaining lives: " + currentLives);
+        currentHealth -= damage;
+        UnityEngine.Debug.Log("[PlayerHealth] Player took damage: " + damage);
 
-        if (currentLives <= 0)
+        if (GameManager.Instance != null)
         {
-            GameOver();
+            GameManager.Instance.UpdatePlayerLives(currentHealth);
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("[PlayerHealth] GameManager instance is null! Cannot update player lives.");
+        }
+
+        if (currentHealth <= 0)
+        {
+            Die();
         }
     }
 
-    private void GameOver()
+    private void Die()
     {
-        Debug.Log("Game Over! Player ran out of lives.");
-        UIManager.Instance.ShowDeathScreen();
-        //Pause the Movement
+        UnityEngine.Debug.Log("[PlayerHealth] Player has died.");
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.UpdatePlayerLives(0);
+        }
+    }
 
-        //TOBE implemented: Reload/Reset System. Game Over UI etc....
+    public void LoseLife()
+    {
+        if (currentHealth > 0)
+        {
+            currentHealth--;
+            UnityEngine.Debug.Log("[PlayerHealth] Player lost a life. Remaining: " + currentHealth);
+
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.UpdatePlayerLives(currentHealth);
+            }
+        }
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
     }
 }

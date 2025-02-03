@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -10,7 +8,8 @@ public class UIManager : MonoBehaviour
 
     [Header("UI Elements")]
     public GameObject deathScreen;
-    public Image crosshair;
+    public UnityEngine.UI.Image crosshair;
+    public TMP_Text incomeText;
 
     private Color defaultCrosshairColor = Color.black;
     private Color interactableCrosshairColor = Color.red;
@@ -33,18 +32,27 @@ public class UIManager : MonoBehaviour
         SetCrosshairDefault();
     }
 
-    // Show death screen when player dies
     public void ShowDeathScreen()
     {
-        deathScreen.SetActive(true);
+        // ✅ FIXED: Prevents null reference error if `deathScreen` is not assigned
+        if (deathScreen != null)
+        {
+            deathScreen.SetActive(true);
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("[UIManager] Death screen UI element is null!");
+        }
     }
 
     public void HideDeathScreen()
     {
-        deathScreen.SetActive(false);
+        if (deathScreen != null)
+        {
+            deathScreen.SetActive(false);
+        }
     }
 
-    // Change crosshair colour
     public void SetCrosshairInteractable()
     {
         crosshair.color = interactableCrosshairColor;
@@ -53,5 +61,18 @@ public class UIManager : MonoBehaviour
     public void SetCrosshairDefault()
     {
         crosshair.color = defaultCrosshairColor;
+    }
+
+    public void UpdateIncomeDisplay(float income)
+    {
+        // ✅ FIXED: Prevents null reference error if `incomeText` is not assigned
+        if (incomeText != null)
+        {
+            incomeText.text = $"£{income:F2}";
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("[UIManager] Income text UI element is null!");
+        }
     }
 }

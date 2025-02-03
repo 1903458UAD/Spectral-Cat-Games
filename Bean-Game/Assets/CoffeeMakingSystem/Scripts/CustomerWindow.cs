@@ -35,7 +35,10 @@ public class CustomerWindow : MonoBehaviour
     {
 
         GameObject customer = GameObject.FindWithTag("Customer"); // Find the customer (assumes it has the "Customer" tag)
-        customer.GetComponent<CustomerScript>().setIsOrderedTrue(); // Call the method to set the order as delivered
+        customer.GetComponent<CustomerScript>().SetIsOrderedTrue();
+        ; // Call the method to set the order as delivered
         Debug.Log("Customer has Coffee!");
     }
+
+
 }

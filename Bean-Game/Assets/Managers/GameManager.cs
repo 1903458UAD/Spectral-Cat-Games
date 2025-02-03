@@ -1,36 +1,66 @@
-using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private GameObject beanPrefab; // The prefab for the NPC AI
-    [SerializeField] private int initialBeanCount = 5; // Number of beans to spawn at the start
-    [SerializeField] private Transform spawnArea; // Reference to the spawn area (optional)
+    public static GameManager Instance { get; private set; }
 
-    private List<GameObject> beanInstances = new List<GameObject>(); // List to keep track of spawned beans
-    private List<Hiding_Spots> hidingSpots = new List<Hiding_Spots>(); // List to keep track of hiding spots
+    [Header("NPC Spawning")]
+    public GameObject beanPrefab;
+    public int initialBeanCount = 5;
+    public Transform spawnArea;
+
+    [Header("Game Tracking")]
+    [SerializeField] private int customersServed = 0;
+    [SerializeField] private float totalIncome = 0;
+    [SerializeField] private int playerLives = 3;
+
+
+    //[Header("Income Management")]
+    //private float totalIncome = 0;
+
+    //[Header("Player Stats")]
+    //private int playerLives = 3; // ✅ Added player lives tracking
+
+    [Header("NPC & Customer Management")]
+    public GameObject customerPrefab;
+    public Transform customerSpawnPoint;
+    private List<GameObject> activeCustomers = new List<GameObject>();
+
+    [Header("Hiding Spots")]
+    private List<Hiding_Spots> hidingSpots = new List<Hiding_Spots>();
+
+
+    private List<GameObject> beanInstances = new List<GameObject>();
+    private List<NPC_AI> npcInstances = new List<NPC_AI>();
+   // private List<Hiding_Spots> hidingSpots = new List<Hiding_Spots>();
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
-        if (beanPrefab == null)
-        {
-            return;
-        }
-
         FindAllHidingSpots();
         SpawnInitialBeans();
+        hidingSpots = new List<Hiding_Spots>(FindObjectsOfType<Hiding_Spots>());
     }
 
-    // Finds all hiding spot instances in the scene
     private void FindAllHidingSpots()
     {
         hidingSpots = new List<Hiding_Spots>(FindObjectsOfType<Hiding_Spots>());
     }
 
-    // Spawns the initial set of beans at the start of the game
     private void SpawnInitialBeans()
     {
         for (int i = 0; i < initialBeanCount; i++)
@@ -39,46 +69,82 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Spawns a single bean instance and adds it to the list
     public void SpawnBean()
     {
         Vector3 spawnPosition = GetRandomNavMeshPosition();
         GameObject newBean = Instantiate(beanPrefab, spawnPosition, Quaternion.identity);
+
+        NPC_AI npcAI = newBean.GetComponent<NPC_AI>();
+        if (npcAI != null)
+        {
+            npcAI.enabled = true;
+            npcInstances.Add(npcAI);
+        }
+
         beanInstances.Add(newBean);
     }
 
-    // Removes a bean instance from the list and destroys it
-    public void RemoveBean(GameObject bean)
+    // ✅ PLAYER LIVES MANAGEMENT
+    public void UpdatePlayerLives(int lives)
     {
-        if (beanInstances.Contains(bean))
+        playerLives = lives;
+        UnityEngine.Debug.Log("[GameManager] Player Lives: " + playerLives);
+
+        if (playerLives <= 0)
         {
-            beanInstances.Remove(bean);
-            Destroy(bean);
+            UIManager.Instance.ShowDeathScreen();
         }
     }
 
-    // Gets a random position on the NavMesh within the spawn area
+    public int GetPlayerLives()
+    {
+        return playerLives;
+    }
+
+    // ✅ INCOME MANAGEMENT
+    public void UpdateIncome(float amount)
+    {
+        totalIncome += amount;
+        totalIncome = Mathf.Round(totalIncome * 100.0f) * 0.01f;
+        UIManager.Instance.UpdateIncomeDisplay(totalIncome);
+    }
+
+    public float GetIncome()
+    {
+        return totalIncome;
+    }
+
+    // ✅ CUSTOMER MANAGEMENT
+    public void SpawnCustomer()
+    {
+        if (activeCustomers.Count == 0)
+        {
+            GameObject newCustomer = Instantiate(customerPrefab, customerSpawnPoint.position, Quaternion.identity);
+            activeCustomers.Add(newCustomer);
+        }
+    }
+
+    public void RemoveCustomer(GameObject customer)
+    {
+        activeCustomers.Remove(customer);
+        Destroy(customer);
+    }
+
+    // ✅ HIDING SPOT MANAGEMENT
+    public Hiding_Spots GetRandomHidingSpot()
+    {
+        if (hidingSpots.Count == 0) return null;
+        return hidingSpots[UnityEngine.Random.Range(0, hidingSpots.Count)];
+    }
+
     private Vector3 GetRandomNavMeshPosition()
     {
-        Vector3 randomPosition;
-
-        if (spawnArea != null)
-        {
-            Bounds bounds = spawnArea.GetComponent<Collider>().bounds;
-            randomPosition = new Vector3(
-                UnityEngine.Random.Range(bounds.min.x, bounds.max.x),
-                bounds.center.y,
-                UnityEngine.Random.Range(bounds.min.z, bounds.max.z)
-            );
-        }
-        else
-        {
-            randomPosition = new Vector3(
-                UnityEngine.Random.Range(-10f, 10f),
-                0f,
-                UnityEngine.Random.Range(-10f, 10f)
-            );
-        }
+        Vector3 randomPosition = spawnArea != null
+            ? new Vector3(
+                UnityEngine.Random.Range(spawnArea.position.x - 5f, spawnArea.position.x + 5f),
+                spawnArea.position.y,
+                UnityEngine.Random.Range(spawnArea.position.z - 5f, spawnArea.position.z + 5f))
+            : new Vector3(UnityEngine.Random.Range(-10f, 10f), 0f, UnityEngine.Random.Range(-10f, 10f));
 
         NavMeshHit hit;
         if (NavMesh.SamplePosition(randomPosition, out hit, 10f, NavMesh.AllAreas))
@@ -86,33 +152,45 @@ public class GameManager : MonoBehaviour
             return hit.position;
         }
 
-        // If no valid NavMesh position is found, return a default position
         return transform.position;
     }
 
-    // Gets the list of all active beans
-    public List<GameObject> GetBeans()
+    public void NotifyNPCReachedHidingSpot(NPC_AI npc) // ✅ Restored: Allows NPCs to notify GameManager
     {
-        return beanInstances;
+        UnityEngine.Debug.Log("[GameManager] NPC " + npc.gameObject.name + " reached a hiding spot.");
     }
 
-    // Gets the list of all hiding spots
-    public List<Hiding_Spots> GetHidingSpots()
+    //public Hiding_Spots GetRandomHidingSpot() // ✅ Restored: NPCs use this to find a hiding spot
+    //{
+    //    if (hidingSpots == null || hidingSpots.Count == 0)
+    //    {
+    //        return null;
+    //    }
+    //    return hidingSpots[UnityEngine.Random.Range(0, hidingSpots.Count)];
+    //}
+
+    //public void UpdatePlayerLives(int lives)
+    //{
+    //    playerLives = lives;
+    //    UnityEngine.Debug.Log("[GameManager] Player Lives: " + playerLives);
+
+    //    if (playerLives <= 0)
+    //    {
+    //        UIManager.Instance.ShowDeathScreen();
+    //    }
+    //}
+
+    //public void UpdateIncome(float amount)
+    //{
+    //    totalIncome += amount;
+    //    UIManager.Instance.UpdateIncomeDisplay(totalIncome);
+    //}
+
+    public void CustomerServed()
     {
-        return hidingSpots;
+        customersServed++;
+        UnityEngine.Debug.Log("[GameManager] Customer Served: " + customersServed);
     }
 
-    // Example update loop to showcase management logic
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            SpawnBean();
-        }
 
-        if (Input.GetKeyDown(KeyCode.R) && beanInstances.Count > 0)
-        {
-            RemoveBean(beanInstances[0]);
-        }
-    }
 }
