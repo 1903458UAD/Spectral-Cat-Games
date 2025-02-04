@@ -51,7 +51,7 @@ public class PlayerInteraction : MonoBehaviour
             return;
         }
 
-        if (currentInput == InputType.Keyboard && Input.GetMouseButtonDown(0) || currentInput == InputType.Controller && Input.GetKeyDown(interaction))
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(interaction))
         {
             if (heldObjectRight != null)
             {

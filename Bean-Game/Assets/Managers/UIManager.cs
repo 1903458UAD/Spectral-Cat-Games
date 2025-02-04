@@ -55,14 +55,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateIncomeDisplay(float income)
     {
-
-        if (incomeText != null)
-        {
-            incomeText.text = $"£{income:F2}";
-        }
-        else
-        {
-            UnityEngine.Debug.LogError("[UIManager] Income text UI element is null!");
-        }
+        incomeText.text = string.Format("£{0}", income); ;
+        
     }
 }
