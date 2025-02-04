@@ -62,7 +62,7 @@ public class Crouch : MonoBehaviour
 
     void LateUpdate()
     {
-        if (Input.GetKey(key))
+        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.JoystickButton6))
         {
             // Enforce a low head.
             if (headToLower)
