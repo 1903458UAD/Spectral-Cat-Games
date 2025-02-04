@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     [Header("UI Elements")]
     public GameObject gameOverScreen;
     public Image crosshair;
+    public TMP_Text incomeText;
 
     private Color defaultCrosshairColor = Color.black;
     private Color interactableCrosshairColor = Color.red;
