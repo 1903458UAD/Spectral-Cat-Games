@@ -154,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1
   holdHeightOffset: 0
+  holdWidthOffset: 0
   pickupCooldown: 0.1
 --- !u!54 &35150540
 Rigidbody:
@@ -476,6 +477,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1
   holdHeightOffset: 0
+  holdWidthOffset: 0
   pickupCooldown: 0.1
 --- !u!54 &209531787
 Rigidbody:
@@ -627,6 +629,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1
   holdHeightOffset: 0
+  holdWidthOffset: 0
   pickupCooldown: 0.1
 --- !u!54 &234043687
 Rigidbody:
@@ -972,6 +975,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1
   holdHeightOffset: 0
+  holdWidthOffset: 0
   pickupCooldown: 0.1
 --- !u!54 &306009891
 Rigidbody:
@@ -1279,6 +1283,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1
   holdHeightOffset: 0
+  holdWidthOffset: 0
   pickupCooldown: 0.1
 --- !u!54 &389250747
 Rigidbody:
@@ -1430,6 +1435,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1
   holdHeightOffset: 0
+  holdWidthOffset: 0
   pickupCooldown: 0.1
 --- !u!54 &416591659
 Rigidbody:
@@ -1581,6 +1587,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1
   holdHeightOffset: 0
+  holdWidthOffset: 0
   pickupCooldown: 0.1
 --- !u!54 &462638201
 Rigidbody:
@@ -1960,6 +1967,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1
   holdHeightOffset: 0
+  holdWidthOffset: 0
   pickupCooldown: 0.1
 --- !u!54 &615257697
 Rigidbody:
@@ -2324,6 +2332,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1
   holdHeightOffset: 0
+  holdWidthOffset: 0
   pickupCooldown: 0.1
 --- !u!54 &800652398
 Rigidbody:
@@ -2475,6 +2484,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1
   holdHeightOffset: 0
+  holdWidthOffset: 0
   pickupCooldown: 0.1
 --- !u!54 &813837181
 Rigidbody:
@@ -2626,6 +2636,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1
   holdHeightOffset: 0
+  holdWidthOffset: 0
   pickupCooldown: 0.1
 --- !u!54 &834620658
 Rigidbody:
@@ -2777,6 +2788,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1
   holdHeightOffset: 0
+  holdWidthOffset: 0
   pickupCooldown: 0.1
 --- !u!54 &988505487
 Rigidbody:
@@ -3105,6 +3117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1
   holdHeightOffset: 0
+  holdWidthOffset: 0
   pickupCooldown: 0.1
 --- !u!54 &1040894889
 Rigidbody:
@@ -3256,6 +3269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1
   holdHeightOffset: 0
+  holdWidthOffset: 0
   pickupCooldown: 0.1
 --- !u!54 &1189100713
 Rigidbody:
@@ -3407,6 +3421,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1
   holdHeightOffset: 0
+  holdWidthOffset: 0
   pickupCooldown: 0.1
 --- !u!54 &1190528794
 Rigidbody:
@@ -3558,6 +3573,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1
   holdHeightOffset: 0
+  holdWidthOffset: 0
   pickupCooldown: 0.1
 --- !u!54 &1191661009
 Rigidbody:
@@ -3777,6 +3793,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1
   holdHeightOffset: 0
+  holdWidthOffset: 0
   pickupCooldown: 0.1
 --- !u!54 &1253863371
 Rigidbody:
@@ -4566,6 +4583,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1
   holdHeightOffset: 0
+  holdWidthOffset: 0
   pickupCooldown: 0.1
 --- !u!54 &1676542827
 Rigidbody:
@@ -5015,11 +5033,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10306f27da65d474db6ae76435fd9ae3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionDistance: 5
+  interactionDistance: 2
   InteractableObjectLayer:
     serializedVersion: 2
     m_Bits: 512
   cameraTransform: {fileID: 2077491163}
+  isPickupBothHands: 1
 --- !u!1 &1894218691
 GameObject:
   m_ObjectHideFlags: 0
@@ -5055,6 +5074,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1
   holdHeightOffset: 0
+  holdWidthOffset: 0
   pickupCooldown: 0.1
 --- !u!54 &1894218693
 Rigidbody:
@@ -5383,7 +5403,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2054618750
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5477,6 +5497,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1
   holdHeightOffset: 0
+  holdWidthOffset: 0
   pickupCooldown: 0.1
 --- !u!54 &2070970039
 Rigidbody:
@@ -5638,6 +5659,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1
   holdHeightOffset: 0
+  holdWidthOffset: 0
   pickupCooldown: 0.1
 --- !u!54 &2117173859
 Rigidbody:

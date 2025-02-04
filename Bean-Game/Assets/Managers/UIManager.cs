@@ -55,7 +55,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateIncomeDisplay(float income)
     {
-        // ✅ FIXED: Prevents null reference error if `incomeText` is not assigned
+
         if (incomeText != null)
         {
             incomeText.text = $"£{income:F2}";
