@@ -74,6 +74,7 @@ public class CustomerScript : MonoBehaviour
         {
             DriveForward();
         }
+
         else if (!orderDelivered)
         {
             Wait();
@@ -106,6 +107,7 @@ public class CustomerScript : MonoBehaviour
             patienceTimer -= Time.deltaTime;
             DisplayTime();
         }
+
         else
         {
             UnityEngine.Debug.Log("[CustomerScript] Customer ran out of patience!");
@@ -129,10 +131,13 @@ public class CustomerScript : MonoBehaviour
             GameManager.Instance.UpdateIncome(income);
             GameManager.Instance.RemoveCustomer(gameObject);
         }
+
         else
         {
             UnityEngine.Debug.LogError("[CustomerScript] GameManager instance is null! Cannot update income.");
         }
+
+        drive = true;
     }
 
     void DisplayTime()

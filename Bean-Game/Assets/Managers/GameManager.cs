@@ -155,7 +155,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            UnityEngine.Debug.LogError("Attempted to remove a non-existent customer.");
+            UnityEngine.Debug.Log("Attempted to remove a non-existent customer.");
         }
     }
 

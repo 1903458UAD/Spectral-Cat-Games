@@ -24,6 +24,7 @@ public class Crouch : MonoBehaviour
 
     public bool IsCrouched { get; private set; }
     public event System.Action CrouchStart, CrouchEnd;
+    private bool crouch;
 
 
     void Reset()
@@ -32,6 +33,33 @@ public class Crouch : MonoBehaviour
         movement = GetComponentInParent<FirstPersonMovement>();
         headToLower = movement.GetComponentInChildren<Camera>().transform;
         colliderToLower = movement.GetComponentInChildren<CapsuleCollider>();
+    }
+
+    private enum InputType { Controller, Keyboard };
+    private InputType currentInput;
+
+    InputType DetectInput()
+    {
+        string[] joysticks = Input.GetJoystickNames();
+
+        // Check if any joystick has a valid (non-empty) name
+        foreach (string joystick in joysticks)
+        {
+            if (!string.IsNullOrEmpty(joystick))
+            {
+                return InputType.Controller;
+            }
+        }
+
+        return InputType.Keyboard;
+    }
+
+    private void Update()
+    {
+        InputType currentInput = DetectInput();
+
+        if (currentInput == InputType.Controller) { key = KeyCode.Joystick1Button6; }
+        else {  key = KeyCode.LeftControl; }
     }
 
     void LateUpdate()

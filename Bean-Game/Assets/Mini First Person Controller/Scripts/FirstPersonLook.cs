@@ -10,6 +10,11 @@ public class FirstPersonLook : MonoBehaviour
     Vector2 velocity;
     Vector2 frameVelocity;
 
+    private string horizontalInput = "";
+    private string verticalInput = "";
+
+    private enum InputType { Controller, Keyboard };
+    private InputType currentInput;
 
     void Reset()
     {
@@ -23,10 +28,40 @@ public class FirstPersonLook : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
+    InputType DetectInput()
+    {
+        string[] joysticks = Input.GetJoystickNames();
+
+        // Check if any joystick has a valid (non-empty) name
+        foreach (string joystick in joysticks)
+        {
+            if (!string.IsNullOrEmpty(joystick))
+            {
+                return InputType.Controller;
+            }
+        }
+
+        return InputType.Keyboard;
+    }
+
     void Update()
     {
+        currentInput = DetectInput(); // Check input type in Update instead of FixedUpdate
+
+        if (currentInput == InputType.Controller)
+        {
+            horizontalInput = "Joystick X";
+            verticalInput = "Joystick Y";
+        }
+
+        else
+        {
+            horizontalInput = "Mouse X";
+            verticalInput = "Mouse Y";
+        }
+
         // Get smooth velocity.
-        Vector2 mouseDelta = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
+        Vector2 mouseDelta = new Vector2(Input.GetAxisRaw(horizontalInput), Input.GetAxisRaw(verticalInput));
         Vector2 rawFrameVelocity = Vector2.Scale(mouseDelta, Vector2.one * sensitivity);
         frameVelocity = Vector2.Lerp(frameVelocity, rawFrameVelocity, 1 / smoothing);
         velocity += frameVelocity;
