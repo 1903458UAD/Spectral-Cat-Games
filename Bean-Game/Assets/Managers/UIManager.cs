@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -44,7 +42,6 @@ public class UIManager : MonoBehaviour
         gameOverScreen.SetActive(false);
     }
 
-    // Change crosshair colour
     public void SetCrosshairInteractable()
     {
         crosshair.color = interactableCrosshairColor;
@@ -53,5 +50,18 @@ public class UIManager : MonoBehaviour
     public void SetCrosshairDefault()
     {
         crosshair.color = defaultCrosshairColor;
+    }
+
+    public void UpdateIncomeDisplay(float income)
+    {
+        // ✅ FIXED: Prevents null reference error if `incomeText` is not assigned
+        if (incomeText != null)
+        {
+            incomeText.text = $"£{income:F2}";
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("[UIManager] Income text UI element is null!");
+        }
     }
 }

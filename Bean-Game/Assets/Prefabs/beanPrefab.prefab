@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: -7223333705574870795}
   m_Layer: 9
   m_Name: beanPrefab
-  m_TagString: Untagged
+  m_TagString: Bean
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -64,8 +64,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -130,7 +128,7 @@ MonoBehaviour:
   maxWalkSpeed: 2
   rotationSpeed: 3
   runRange: 10
-  waypointProximityThreshold: 2
+  waypointProximityThreshold: 0.19
   stayAtWaypointDuration: 10
 --- !u!195 &9037358763321314766
 NavMeshAgent:
