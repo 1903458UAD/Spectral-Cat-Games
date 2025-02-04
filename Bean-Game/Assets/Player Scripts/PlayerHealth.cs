@@ -2,59 +2,33 @@
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int maxHealth = 100;
-    private int currentHealth;
+    public int maxLives = 3; // Lives the player starts with (Likely needing to adjust for balancing)
+    private int currentLives;
 
-    void Start()
+    private void Start()
     {
-        currentHealth = maxHealth;
+        currentLives = maxLives; // Player starts with full lives
+
     }
 
-    public void TakeDamage(int damage)
+   
+    public void LoseLife() // Reduce player health (Called when get an order wrong)
     {
-        currentHealth -= damage;
-        UnityEngine.Debug.Log("[PlayerHealth] Player took damage: " + damage);
+        currentLives--;
+        Debug.Log("Player lost a life! Remaining lives: " + currentLives);
 
-        if (GameManager.Instance != null)
+        if (currentLives <= 0)
         {
-            GameManager.Instance.UpdatePlayerLives(currentHealth);
-        }
-        else
-        {
-            UnityEngine.Debug.LogError("[PlayerHealth] GameManager instance is null! Cannot update player lives.");
-        }
-
-        if (currentHealth <= 0)
-        {
-            Die();
+            GameOver();
         }
     }
 
-    private void Die()
+    private void GameOver()
     {
-        UnityEngine.Debug.Log("[PlayerHealth] Player has died.");
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.UpdatePlayerLives(0);
-        }
-    }
+        Debug.Log("Game Over! Player ran out of lives.");
+        UIManager.Instance.ShowGameOverScreen();
+        //Pause the Movement
 
-    public void LoseLife()
-    {
-        if (currentHealth > 0)
-        {
-            currentHealth--;
-            UnityEngine.Debug.Log("[PlayerHealth] Player lost a life. Remaining: " + currentHealth);
-
-            if (GameManager.Instance != null)
-            {
-                GameManager.Instance.UpdatePlayerLives(currentHealth);
-            }
-        }
-
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
+        //TOBE implemented: Reload/Reset System. Game Over UI etc....
     }
 }

@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour
         if (playerLives <= 0)
         {
             UnityEngine.Debug.Log("Player has lost all lives. Triggering game over.");
-            UIManager.Instance.ShowDeathScreen();
+            UIManager.Instance.ShowGameOverScreen();
         }
     }
 
