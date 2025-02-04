@@ -9,7 +9,7 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     [Header("UI Elements")]
-    public GameObject deathScreen;
+    public GameObject gameOverScreen;
     public Image crosshair;
 
     private Color defaultCrosshairColor = Color.black;
@@ -29,19 +29,19 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        HideDeathScreen();
+        HideGameOverScreen();
         SetCrosshairDefault();
     }
 
     // Show death screen when player dies
-    public void ShowDeathScreen()
+    public void ShowGameOverScreen()
     {
-        deathScreen.SetActive(true);
+        gameOverScreen.SetActive(true);
     }
 
-    public void HideDeathScreen()
+    public void HideGameOverScreen()
     {
-        deathScreen.SetActive(false);
+        gameOverScreen.SetActive(false);
     }
 
     // Change crosshair colour
