@@ -34,6 +34,8 @@ public class PlayerInteraction : MonoBehaviour
             BeanInteraction bean = hitObject.GetComponent<BeanInteraction>();
             CoffeeInteraction coffee = hitObject.GetComponent<CoffeeInteraction>();
 
+     
+
             if (interactable != null && Input.GetKeyDown(KeyCode.E))
             {
                 if (interactable.GetIsHeld())
