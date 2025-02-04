@@ -33,8 +33,8 @@ public class PlayerInteraction : MonoBehaviour
             InteractableObject interactable = hitObject.GetComponent<InteractableObject>();
             BeanInteraction bean = hitObject.GetComponent<BeanInteraction>();
             CoffeeInteraction coffee = hitObject.GetComponent<CoffeeInteraction>();
+            UIManager.Instance.SetCrosshairInteractable();
 
-     
 
             if (interactable != null && Input.GetKeyDown(KeyCode.E))
             {
