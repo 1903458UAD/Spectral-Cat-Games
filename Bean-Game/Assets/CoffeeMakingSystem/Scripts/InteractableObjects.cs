@@ -77,9 +77,6 @@ public class InteractableObject : MonoBehaviour
         // Set the object's position and rotation
         transform.position = offsetPosition;
         transform.rotation = Quaternion.identity;
-        //// Set a local position relative to the camera
-        //transform.localPosition = new Vector3(holdHeightOffset, holdHeightOffset, holdDistance);
-        //transform.localRotation = Quaternion.identity;
 
         // Mark the object as held
         isHeld = true;
@@ -94,19 +91,21 @@ public class InteractableObject : MonoBehaviour
             Collider objectCollider = GetComponent<Collider>();
             Collider playerCollider = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Collider>();
 
+
+            if (GameObject.FindGameObjectWithTag("Player") == true)
+            {
+                playerCollider = GetComponent<Collider>();
+            }
+
             if (objectCollider != null && playerCollider != null)
             {
                 Physics.IgnoreCollision(objectCollider, playerCollider, true);
             }
-
-
-
-            //objectRigidbody.detectCollisions = false; //Breaks Coffee Machine Code
         }
         canRelease = false;
         Invoke(nameof(EnableRelease), pickupCooldown); // Set the cooldown before allowing release
 
-        Debug.Log(gameObject.name + " picked up in" + (isRightHand ? "right hand" : "left hand") + "!");
+    
     }
 
 
@@ -129,7 +128,7 @@ public class InteractableObject : MonoBehaviour
         {
             objectRigidbody.isKinematic = false;
             objectRigidbody.useGravity = true;
-            // objectRigidbody.detectCollisions = true; // Breaks coffee Machine code 
+      
 
             Collider objectCollider = GetComponent<Collider>();
             Collider playerCollider = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Collider>();
@@ -155,6 +154,7 @@ public class InteractableObject : MonoBehaviour
         canRelease = false;
         Invoke(nameof(EnableRelease), pickupCooldown);
 
-        Debug.Log(gameObject.name + " released!");
+        //Debug.Log(gameObject.name + " released!"); //Commented out log incase needed again
+
     }
 }

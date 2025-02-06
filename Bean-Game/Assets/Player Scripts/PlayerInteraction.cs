@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    public float interactionDistance = 2f;
+    public float interactionDistance = 2f; //Default interaction distance for interactable objects (Might need some fine tuning for balancing)
     public LayerMask InteractableObjectLayer;
     public Transform cameraTransform;
 
-   // private InteractableObject heldObject; // Track the currently held object
     private InteractableObject heldObjectRight; // Right-hand object
     private InteractableObject heldObjectLeft;  // Left-hand object
     public bool isPickupBothHands = false; // Enable dual wielding
@@ -31,93 +30,83 @@ public class PlayerInteraction : MonoBehaviour
         // Check if player is holding an object and presses 'E' to release it
         if (heldObjectRight != null && Input.GetKeyDown(KeyCode.E))
         {
-            heldObjectRight.ReleaseObject();
+            heldObjectRight.ReleaseObject();//Call function to release object being held from right hand
             heldObjectRight = null; // Clear reference after release
             return;
         }
 
         if (heldObjectLeft != null && Input.GetKeyDown(KeyCode.Q)) // Use 'Q' to drop left-hand object
         {
-            heldObjectLeft.ReleaseObject();
-            heldObjectLeft = null;
+            heldObjectLeft.ReleaseObject(); //Call function to release object being held from left hand
+            heldObjectLeft = null;// Clear reference after release
             return;
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0)) // If mouse left click
         {
-            if (heldObjectRight != null)
+            if (heldObjectRight != null)//If the player is holding an object in the right hand
             {
-                BeanInteraction bean = heldObjectRight.GetComponent<BeanInteraction>();
-                CoffeeInteraction coffee = heldObjectRight.GetComponent<CoffeeInteraction>();
-                bean?.TryAddToCoffeeMachine();
-                coffee?.TryAddToCustomerWindow();
+                BeanInteraction bean = heldObjectRight.GetComponent<BeanInteraction>(); //Get the BeanInteraction Component (If it has one) from the object being held
+                CoffeeInteraction coffee = heldObjectRight.GetComponent<CoffeeInteraction>(); //Get the CoffeeInteraction Component (If it has one) from the object being held
+                bean?.TryAddToCoffeeMachine(); //If it has a beanInteraction Component then call the 'TryAddToCoffeeMachine' function from the bean interaction script
+                coffee?.TryAddToCustomerWindow();//If it has a CoffeeInteraction Component then call the 'TryAddToCustomerWindow' function from the bean interaction script
             }
 
-            if (heldObjectLeft != null)
+            if (heldObjectLeft != null)//If the player is holding an object in the left hand
             {
-                BeanInteraction bean = heldObjectLeft.GetComponent<BeanInteraction>();
-                CoffeeInteraction coffee = heldObjectLeft.GetComponent<CoffeeInteraction>();
-                bean?.TryAddToCoffeeMachine();
-                coffee?.TryAddToCustomerWindow();
+                BeanInteraction bean = heldObjectLeft.GetComponent<BeanInteraction>();//Get the BeanInteraction Component (If it has one) from the object being held
+                CoffeeInteraction coffee = heldObjectLeft.GetComponent<CoffeeInteraction>();//Get the CoffeeInteraction Component (If it has one) from the object being held
+                bean?.TryAddToCoffeeMachine();//If it has a beanInteraction Component then call the 'TryAddToCoffeeMachine' function from the bean interaction script
+                coffee?.TryAddToCustomerWindow();//If it has a CoffeeInteraction Component then call the 'TryAddToCustomerWindow' function from the bean interaction script
             }
         }
 
 
-        Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
-        RaycastHit hit;
+        Ray ray = new Ray(cameraTransform.position, cameraTransform.forward); //Creates a ray from the players camera traveling forward
+        RaycastHit hit; //store information from the object hit by the raycast
 
-        if (Physics.Raycast(ray, out hit, interactionDistance, InteractableObjectLayer))
+        if (Physics.Raycast(ray, out hit, interactionDistance, InteractableObjectLayer)) //If ray hits an object within the interactable layer (Within interactable range)
         {
-            GameObject hitObject = hit.collider.gameObject;
+            GameObject hitObject = hit.collider.gameObject; //Store the object hit
             
+            InteractableObject interactable = hitObject.GetComponent<InteractableObject>(); //Get the IneractableObject component from the object that was hit (If it has one)
+            BeanInteraction bean = hitObject.GetComponent<BeanInteraction>();//Get the BeanInteraction component from the object that was hit (If it has one)
+            CoffeeInteraction coffee = hitObject.GetComponent<CoffeeInteraction>(); //Get the CoffeeInteraction component from the object that was hit (If it has one)
 
-            InteractableObject interactable = hitObject.GetComponent<InteractableObject>();
-            BeanInteraction bean = hitObject.GetComponent<BeanInteraction>();
-            CoffeeInteraction coffee = hitObject.GetComponent<CoffeeInteraction>();
-          
 
-            if (interactable != null)
+            if (interactable != null)// If the hit object is an interactable object
             {
 
+                UIManager.Instance.SetCrosshairInteractable(); //Changes color of the crosshair to indicate an interactable object
+                //UnityEngine.Debug.Log("[PlayerInteraction] Raycast hit: " + hitObject.name); //Commented as only for bug testing, checks what the raycast hit
 
-                //if (Input.GetMouseButtonDown(0))
-                //{
-                //    bean?.TryAddToCoffeeMachine();
-                //    coffee?.TryAddToCustomerWindow();
-                //}
-
-                UIManager.Instance.SetCrosshairInteractable();
-                UnityEngine.Debug.Log("[PlayerInteraction] Raycast hit: " + hitObject.name);
-
-                if (heldObjectRight == null && Input.GetKeyDown(KeyCode.E))
+                if (heldObjectRight == null && Input.GetKeyDown(KeyCode.E)) //If the right hand is empty and E is pressed
                 {
-                    interactable.PickUpObject(true); // Right side
-                    heldObjectRight = interactable;
-                    return;
+                    interactable.PickUpObject(true); // call pickup object function ('true' indicates its the right hand)
+                    heldObjectRight = interactable;// store reference of the object in 'heldOjectRight'
+                    return; //Exit the method to prevent any more code being ran
                 }
 
                 // Pick up second object (Left Hand) using 'Q' if both-hands mode is active
                 if (isPickupBothHands && heldObjectLeft == null && Input.GetKeyDown(KeyCode.Q))
                 {
                     Debug.Log("[PlayerInteraction] Attempting to pick up object in left hand...");
-                    interactable.PickUpObject(false); // Left side
-                    heldObjectLeft = interactable;
-                    return;
+                    interactable.PickUpObject(false); // call pickup object function ('false' indicates its the left hand)
+                    heldObjectLeft = interactable;// store reference of the object in 'heldOjectLeft'
+                    return;//Exit the method to prevent any more code being ran 
                 }
 
-
-
             }
-            else
+            else//If raycst doesnt detect an interactable object
             {
-                UIManager.Instance.SetCrosshairDefault();
+                UIManager.Instance.SetCrosshairDefault(); //set the Crosshair to default to indicate no interactablity optional (This one in theory shouldnt trigger but is a safety net incase an object is in interaction layer but not have that component)
             }
 
 
         }
-        else
+        else //If the raycast doesnt hit an object in the interaction layer
         {
-            UIManager.Instance.SetCrosshairDefault();
+            UIManager.Instance.SetCrosshairDefault();//set the Crosshair to default to indicate no interactablity optional
         }
 
     }
