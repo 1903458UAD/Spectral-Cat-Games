@@ -4,53 +4,52 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager Instance;
+    public static UIManager Instance; //Instance of UIManager
 
-    [Header("UI Elements")]
-    public GameObject gameOverScreen;
-    public Image crosshair;
-    public TMP_Text incomeText;
+    [Header("UI Elements")] //Headers that show up in inspector
+    public GameObject gameOverScreen; //Reference to game over ui
+    public Image crosshair; //Refeerence to Crosshair UI
+    public TMP_Text incomeText;//Reference to the income UI
 
-    private Color defaultCrosshairColor = Color.black;
-    private Color interactableCrosshairColor = Color.red;
+    private Color defaultCrosshairColor = Color.black; //Default colouyr of crosshair
+    private Color interactableCrosshairColor = Color.red;//Colour of the crosshair when looking at an interactable object
 
-    private void Awake()
+    private void Awake() // When instance is being loaded
     {
-        if (Instance == null)
+        if (Instance == null) //If no instance of the UIManager exists
         {
-            Instance = this;
+            Instance = this; //Set this instance as UIManager
         }
         else
         {
-            Destroy(gameObject);
+            Destroy(gameObject); //Destory duplicates
         }
     }
 
-    private void Start()
+    private void Start() 
     {
-        HideGameOverScreen();
-        SetCrosshairDefault();
+        HideGameOverScreen(); //Set the game over screen is hidden
+        SetCrosshairDefault(); //Set the crosshair to default
     }
 
-    // Show death screen when player dies
-    public void ShowGameOverScreen()
+    public void ShowGameOverScreen() // Show death screen when player dies
     {
-        gameOverScreen.SetActive(true);
+        gameOverScreen.SetActive(true); //Activate the game over UI (Which shows it to player)
     }
 
-    public void HideGameOverScreen()
+    public void HideGameOverScreen() //Hide Death screen, To be called when reset
     {
-        gameOverScreen.SetActive(false);
+        gameOverScreen.SetActive(false); //De-Activate the game over UI (Which hides it from the player)
     }
 
-    public void SetCrosshairInteractable()
+    public void SetCrosshairInteractable() //Set the colour of crosshair when not targeting an interactable object
     {
-        crosshair.color = interactableCrosshairColor;
+        crosshair.color = interactableCrosshairColor; //change to the crosshair colour (Initally or currently: Red)
     }
 
-    public void SetCrosshairDefault()
+    public void SetCrosshairDefault() //Set the colour of the crosshair when not targeting an interactable object
     {
-        crosshair.color = defaultCrosshairColor;
+        crosshair.color = defaultCrosshairColor; //change to the crosshair colour (Initally or currently: Black)
     }
 
     public void UpdateIncomeDisplay(float income)
