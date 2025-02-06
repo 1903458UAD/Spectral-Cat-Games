@@ -17,7 +17,7 @@ public class CustomerWindow : MonoBehaviour
             // Increment the bean count and destroy the bean
             currentCoffeeCount++;
             Destroy(coffee.gameObject);
-            Debug.Log("Bean added! Current beans: " + currentCoffeeCount);
+           
 
             // Check if enough beans are present to create coffee
             if (currentCoffeeCount >= requiredCoffee)
@@ -34,10 +34,22 @@ public class CustomerWindow : MonoBehaviour
     private void CustomerTakesCoffee()
     {
 
-        GameObject customer = GameObject.FindWithTag("Customer"); // Find the customer (assumes it has the "Customer" tag)
-        customer.GetComponent<CustomerScript>().SetIsOrderedTrue();
-        ; // Call the method to set the order as delivered
-        Debug.Log("Customer has Coffee!");
+        //GameObject customer = GameObject.FindWithTag("Customer"); // Find the customer (assumes it has the "Customer" tag)
+        //customer.GetComponent<CustomerScript>().SetIsOrderedTrue();
+        //; // Call the method to set the order as delivered
+        //Debug.Log("Customer has Coffee!");
+
+
+        GameObject customer = GameObject.FindWithTag("Customer"); // Find the customer by tag
+        if (customer != null)
+        {
+            CustomerScript customerScript = customer.GetComponent<CustomerScript>();
+            if (customerScript != null)
+            {
+                customerScript.SetIsOrderedTrue(); // Ensure this is actually setting orderDelivered = true
+                Debug.Log("Customer acknowledged order and should move!");
+            }
+        }
     }
 
 

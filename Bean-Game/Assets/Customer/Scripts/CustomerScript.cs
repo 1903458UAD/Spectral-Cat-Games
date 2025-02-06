@@ -27,6 +27,7 @@ public class CustomerScript : MonoBehaviour
     public void SetIsOrderedTrue()
     {
         orderDelivered = true;
+
     }
 
     void Start()
@@ -92,7 +93,9 @@ public class CustomerScript : MonoBehaviour
         {
             if (nextLocation == exit)
             {
-                GameManager.Instance.RemoveCustomer(gameObject); // ✅ Moved customer removal to GameManager
+
+                Destroy(gameObject); // Destroy customer //Reverted back to heathers orginal code as the game manager code currently breaks it
+                //GameManager.Instance.RemoveCustomer(gameObject); // ✅ Moved customer removal to GameManager
             }
 
             drive = false;
@@ -123,6 +126,10 @@ public class CustomerScript : MonoBehaviour
         {
             income += patienceTimer * tipFactor;
         }
+
+        nextLocation = exit; // Move customer towards exit //Reverted back to heathers orginal code as the game manager code currently breaks it
+        drive = true; // Begin driving //Reverted back to heathers orginal code as the game manager code currently breaks it
+        orderDelivered = false; //Reverted back to heathers orginal code as the game manager code currently breaks it
 
         if (GameManager.Instance != null)
         {
