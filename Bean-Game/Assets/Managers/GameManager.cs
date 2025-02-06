@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Manages core game mechanics including NPC spawning, player lives, and customer interactions.
@@ -18,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Game Stats")]
     [SerializeField] private int customersServed = 0;
-    [SerializeField] private float totalIncome = 0f;
+    [SerializeField] public float totalIncome = 0f;
     [SerializeField] private int playerLives = 3;
 
     [Header("Customer Management")]
@@ -38,6 +39,7 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
         }
+
         else
         {
             UnityEngine.Debug.LogWarning("Duplicate GameManager detected. Destroying extra instance.");
@@ -123,6 +125,11 @@ public class GameManager : MonoBehaviour
         UnityEngine.Debug.Log($"Income Updated: ${totalIncome}");
     }
 
+    public void SetIncome(float amount)
+    {
+        totalIncome = amount;
+    }
+
     public float GetIncome() => totalIncome;
 
     /// <summary>
@@ -204,5 +211,15 @@ public class GameManager : MonoBehaviour
     {
         customersServed++;
         UnityEngine.Debug.Log($"Customers Served: {customersServed}");
+    }
+
+    public void ChangeScene(int scenenum)
+    {
+        if(scenenum == 1)
+        {
+           StaticData.incomePassed = GetIncome();
+        }
+
+        SceneManager.LoadScene(scenenum);
     }
 }

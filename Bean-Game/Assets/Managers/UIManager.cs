@@ -55,7 +55,8 @@ public class UIManager : MonoBehaviour
 
     public void UpdateIncomeDisplay(float income)
     {
-        incomeText.text = string.Format("£{0}", income); ;
-        
+        incomeText.text = string.Format("£{0}", income);
+
+        Debug.Log(StaticData.incomePassed);
     }
 }

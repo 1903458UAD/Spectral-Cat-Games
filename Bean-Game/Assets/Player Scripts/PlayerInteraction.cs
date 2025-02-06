@@ -12,7 +12,7 @@ public class PlayerInteraction : MonoBehaviour
    // private InteractableObject heldObject; // Track the currently held object
     private InteractableObject heldObjectRight; // Right-hand object
     private InteractableObject heldObjectLeft;  // Left-hand object
-    public bool isPickupBothHands = false; // Enable dual wielding
+    private bool isPickupBothHands; // Enable dual wielding
 
     private KeyCode rightPickup = KeyCode.Joystick1Button5; // Pickup keycode - used for responding to controller input - set to right bumper
     private KeyCode leftPickup = KeyCode.Joystick1Button4; // Pickup keycode - set to left bumper
@@ -20,6 +20,11 @@ public class PlayerInteraction : MonoBehaviour
 
     private enum InputType { Controller, Keyboard }; // Enum - used to determine whether input is controller or keyboard - likely will move to GameManager in future!
     private InputType currentInput;
+
+    private void Start()
+    {
+        isPickupBothHands = StaticData.dualWieldUpgrade;
+    }
 
     private void Update()
     {
