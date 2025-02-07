@@ -89,17 +89,18 @@ public class InteractableObject : MonoBehaviour
 
             // Ignore collisions with the player only
             Collider objectCollider = GetComponent<Collider>();
-            Collider playerCollider = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Collider>();
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
 
 
-            if (GameObject.FindGameObjectWithTag("Player") == true)
+            if (player != null)
             {
-                playerCollider = GetComponent<Collider>();
-            }
+                Collider playerCollider = player.GetComponent<Collider>();
 
-            if (objectCollider != null && playerCollider != null)
-            {
-                Physics.IgnoreCollision(objectCollider, playerCollider, true);
+                if (objectCollider != null && playerCollider != null)
+                {
+                    Physics.IgnoreCollision(objectCollider, playerCollider, true);
+                }
+
             }
         }
         canRelease = false;
