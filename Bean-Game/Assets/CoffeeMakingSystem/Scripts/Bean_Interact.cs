@@ -35,10 +35,7 @@ public class BeanInteraction : MonoBehaviour
            // Debug.Log("Adding bean to coffee machine!"); //Log to show bean has been added to the coffeeMachine, Commented out but not deleted incase needed again
             coffeeMachine.AddBean(this); //Call the addBean Function in the CoffeeMachine Script
         }
-       // else
-       // {
-            //Debug.Log("Bean has not been added to the coffee machine!"); //Log to show bean has not been added to the coffeeMachine, Commented out but not deleted incase needed again
-       // }
+ 
     }
     
 }

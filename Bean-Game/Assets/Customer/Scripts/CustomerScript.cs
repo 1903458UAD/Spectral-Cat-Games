@@ -24,6 +24,8 @@ public class CustomerScript : MonoBehaviour
 
     private PlayerHealth playerHealth;
 
+    public int requiredBeans;
+
     public void SetIsOrderedTrue()
     {
         orderDelivered = true;
@@ -67,6 +69,9 @@ public class CustomerScript : MonoBehaviour
                 tipFactor = 0.015f;
                 break;
         }
+        requiredBeans = UnityEngine.Random.Range(1, 4);
+        Debug.Log($"Customer wants a coffee with {requiredBeans} beans.");
+
     }
 
     void Update()
@@ -112,6 +117,21 @@ public class CustomerScript : MonoBehaviour
         else
         {
             UnityEngine.Debug.Log("[CustomerScript] Customer ran out of patience!");
+            playerHealth.LoseLife();
+            nextLocation = exit;
+            drive = true;
+        }
+    }
+
+    public void ReceiveCoffee(int coffeeBeans)
+    {
+        if (coffeeBeans == requiredBeans)
+        {
+            Pay();
+        }
+        else
+        {
+            Debug.Log("Wrong coffee given! Customer Pissed.");
             playerHealth?.LoseLife();
             nextLocation = exit;
             drive = true;
@@ -155,4 +175,5 @@ public class CustomerScript : MonoBehaviour
             timerDisplay.text = null;
         }
     }
+
 }

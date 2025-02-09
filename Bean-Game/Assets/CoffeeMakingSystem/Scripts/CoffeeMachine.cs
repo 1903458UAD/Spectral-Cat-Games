@@ -5,50 +5,81 @@ using UnityEngine;
 public class CoffeeMachine : MonoBehaviour
 {
 
-    public int requiredBeans = 3; // Number of beans required to make 1 coffee-- to be adjusted later for balancing
+   // public int requiredBeans = 3; // Number of beans required to make 1 coffee-- to be adjusted later for balancing
     public float coffeeCreationTime = 5f; // Time to create coffee after enough beans
-    private int currentBeanCount = 0; // Number of beans currently in the machine
+    //private int currentBeanCount = 0; // Number of beans currently in the machine
 
-    public GameObject coffeePrefab; // Prefab of the coffee in a cup
+    public GameObject coffeeCup1Bean; // Prefab for coffee with 1 bean
+    public GameObject coffeeCup2Beans; // " with 2 beans
+    public GameObject coffeeCup3Beans; // " with 3 beans
 
-
+    private int currentBeans = 0;
 
     public void AddBean(BeanInteraction bean)
     {
-        if (bean != null)
+
+        if (currentBeans < 3)
         {
-            // Increment the bean count and destroy the bean
-            currentBeanCount++;
-            Destroy(bean.gameObject);
-            Debug.Log("Bean added! Current beans: " + currentBeanCount);
-
-        }
-    }
-
-    public bool CanActivateMachine()
-    {
-        return currentBeanCount >= requiredBeans;
-    }
-
-    public void ActivateMachine()
-    {
-        if (CanActivateMachine())
-        {
-            Debug.Log("Enough beans! Starting coffee creation...");
-            Invoke(nameof(CreateCoffee), coffeeCreationTime);
-            currentBeanCount = 0; // Reset beans for the next coffee
+            currentBeans++;
+            Debug.Log($"[CoffeeMachine] Beans added: {currentBeans}");
+            Destroy(bean.gameObject); // Destroy the bean after adding it to the machine
         }
         else
         {
-            Debug.Log("Not enough beans! Add more beans to activate.");
+            Debug.Log("Cannot add more beans! Machine is full.");
         }
+
     }
 
-    private void CreateCoffee()
+public bool CanActivateMachine()
+{
+    return currentBeans > 0;
+}
+
+public void ActivateMachine()
+{
+    if (CanActivateMachine())
     {
-        // Spawn coffee at the coffee machine's position
-        Vector3 spawnPosition = transform.position + Vector3.forward; // Slightly above the machine //* 1.5f
-        Instantiate(coffeePrefab, spawnPosition, Quaternion.identity);
-        Debug.Log("Coffee created!");
+        Debug.Log("Enough beans! Starting coffee creation...");
+        Invoke(nameof(CreateCoffee), coffeeCreationTime);
+    
+    }
+    else
+    {
+        Debug.Log("Not enough beans! Add more beans to activate.");
+    }
+}
+    public void CreateCoffee()
+    {
+        Debug.Log("[CoffeeMachine] CreateCoffee() function called!");
+        GameObject coffeeToSpawn = null;
+
+        if (currentBeans == 1)
+        {
+            coffeeToSpawn = coffeeCup1Bean;
+            coffeeToSpawn.GetComponent<CoffeeInteraction>().SetBeanCount(1); // Set 1 bean
+        }
+        else if (currentBeans == 2)
+        {
+            coffeeToSpawn = coffeeCup2Beans;
+            coffeeToSpawn.GetComponent<CoffeeInteraction>().SetBeanCount(2); // Set 2 beans
+        }
+        else if (currentBeans == 3)
+        {
+            coffeeToSpawn = coffeeCup3Beans;
+            coffeeToSpawn.GetComponent<CoffeeInteraction>().SetBeanCount(3); // Set 3 beans
+        }
+
+        if (coffeeToSpawn != null)
+        {
+            Instantiate(coffeeToSpawn, transform.position, Quaternion.identity);
+            Debug.Log($"Brewed coffee with {currentBeans} beans.");
+        }
+        else
+        {
+            Debug.LogError("[CoffeeMachine] No coffee prefab assigned or incorrect bean count!");
+        }
+
+        currentBeans = 0;
     }
 }
