@@ -7,6 +7,7 @@ public class CoffeeInteraction : MonoBehaviour
 
     private bool inContactWithCustomerWindow = false;
     private CustomerWindow customerWindow;
+    public int beanCount;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -24,6 +25,7 @@ public class CoffeeInteraction : MonoBehaviour
         {
             inContactWithCustomerWindow = false;
             customerWindow = null;
+            Debug.Log("Coffee left the window trigger area");
         }
     }
 
@@ -38,7 +40,22 @@ public class CoffeeInteraction : MonoBehaviour
         else
         {
             Debug.Log("Bean is not near the Customer Window!");
+            if (inContactWithCustomerWindow == false)
+            {
+                Debug.Log("inContactWithCustomerWindow == False");
+
+            }
+            if (customerWindow == null)
+            {
+                Debug.Log("customerWindow == null");
+            }
+
         }
+    }
+
+    public void SetBeanCount(int count)
+    {
+        beanCount = count;
     }
 }
 

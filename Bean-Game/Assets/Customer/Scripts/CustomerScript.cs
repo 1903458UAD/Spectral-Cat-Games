@@ -24,9 +24,12 @@ public class CustomerScript : MonoBehaviour
 
     private PlayerHealth playerHealth;
 
+    public int requiredBeans;
+
     public void SetIsOrderedTrue()
     {
         orderDelivered = true;
+
     }
 
     void Start()
@@ -66,6 +69,9 @@ public class CustomerScript : MonoBehaviour
                 tipFactor = 0.015f;
                 break;
         }
+        requiredBeans = UnityEngine.Random.Range(1, 4);
+        Debug.Log($"Customer wants a coffee with {requiredBeans} beans.");
+
     }
 
     void Update()
@@ -93,7 +99,9 @@ public class CustomerScript : MonoBehaviour
         {
             if (nextLocation == exit)
             {
-                GameManager.Instance.RemoveCustomer(gameObject); // ✅ Moved customer removal to GameManager
+
+                Destroy(gameObject); // Destroy customer //Reverted back to heathers orginal code as the game manager code currently breaks it
+                //GameManager.Instance.RemoveCustomer(gameObject); // ✅ Moved customer removal to GameManager
             }
 
             drive = false;
@@ -111,6 +119,21 @@ public class CustomerScript : MonoBehaviour
         else
         {
             UnityEngine.Debug.Log("[CustomerScript] Customer ran out of patience!");
+            playerHealth.LoseLife();
+            nextLocation = exit;
+            drive = true;
+        }
+    }
+
+    public void ReceiveCoffee(int coffeeBeans)
+    {
+        if (coffeeBeans == requiredBeans)
+        {
+            Pay();
+        }
+        else
+        {
+            Debug.Log("Wrong coffee given! Customer Pissed.");
             playerHealth?.LoseLife();
             nextLocation = exit;
             drive = true;
@@ -125,6 +148,10 @@ public class CustomerScript : MonoBehaviour
         {
             income += patienceTimer * tipFactor;
         }
+
+        nextLocation = exit; // Move customer towards exit //Reverted back to heathers orginal code as the game manager code currently breaks it
+        drive = true; // Begin driving //Reverted back to heathers orginal code as the game manager code currently breaks it
+        orderDelivered = false; //Reverted back to heathers orginal code as the game manager code currently breaks it
 
         if (GameManager.Instance != null)
         {
@@ -153,4 +180,5 @@ public class CustomerScript : MonoBehaviour
             timerDisplay.text = null;
         }
     }
+
 }
