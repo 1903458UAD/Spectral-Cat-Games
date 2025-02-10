@@ -28,6 +28,9 @@ public class FirstPersonMovement : MonoBehaviour
     {
         // Get the rigidbody on this.
         rigidbody = GetComponent<Rigidbody>();
+
+        speed = speed * StaticData.speedPassed;
+        runSpeed = runSpeed * StaticData.speedPassed;
     }
 
     void FixedUpdate()

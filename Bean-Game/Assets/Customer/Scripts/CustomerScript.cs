@@ -69,6 +69,10 @@ public class CustomerScript : MonoBehaviour
                 tipFactor = 0.015f;
                 break;
         }
+
+        patienceTimer = patienceTimer * StaticData.customerPatience;
+        initialTimer = initialTimer * StaticData.customerPatience;
+
         requiredBeans = UnityEngine.Random.Range(1, 4);
         Debug.Log($"Customer wants a coffee with {requiredBeans} beans.");
 
@@ -100,8 +104,8 @@ public class CustomerScript : MonoBehaviour
             if (nextLocation == exit)
             {
 
-                Destroy(gameObject); // Destroy customer //Reverted back to heathers orginal code as the game manager code currently breaks it
-                //GameManager.Instance.RemoveCustomer(gameObject); // ✅ Moved customer removal to GameManager
+               // Destroy(gameObject); // Destroy customer //Reverted back to heathers orginal code as the game manager code currently breaks it
+                GameManager.Instance.RemoveCustomer(gameObject); // ✅ Moved customer removal to GameManager
             }
 
             drive = false;

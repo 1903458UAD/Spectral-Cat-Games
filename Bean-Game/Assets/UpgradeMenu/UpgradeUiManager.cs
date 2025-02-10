@@ -23,7 +23,7 @@ public class UpgradeUiManager : MonoBehaviour
 
     public void DualWieldUpgrade()
     {
-        if (!StaticData.dualWieldUpgrade)
+        if (!StaticData.dualWieldUpgrade && StaticData.incomePassed > 1)
         {
             StaticData.incomePassed -= 1;
             StaticData.dualWieldUpgrade = true;
@@ -39,13 +39,23 @@ public class UpgradeUiManager : MonoBehaviour
 
     public void CustomerSpeedUpgrade()
     {
-        StaticData.incomePassed -= 1;
+        if (StaticData.incomePassed > 0.5)
+        {
+            StaticData.customerPatience += 0.5f;
+            StaticData.incomePassed -= 0.5f;
+        }
+
         Debug.Log("Click!");
     }
 
     public void PlayerSpeedUpgrade()
     {
-        StaticData.incomePassed -= 1;
+        if (StaticData.incomePassed > 0.5)
+        { 
+            StaticData.speedPassed += 0.5f;
+            StaticData.incomePassed -= 0.5f;
+        }
+
         Debug.Log("Click!");
     }
 }
