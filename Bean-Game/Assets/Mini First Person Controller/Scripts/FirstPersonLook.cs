@@ -10,6 +10,10 @@ public class FirstPersonLook : MonoBehaviour
     Vector2 velocity;
     Vector2 frameVelocity;
 
+    private string horizontalInputController = "Joystick X";
+    private string verticalInputController = "Joystick Y";
+    private string horizontalInputKeyboard = "Mouse X";
+    private string verticalInputKeyboard = "Mouse Y";
 
     void Reset()
     {
@@ -24,9 +28,9 @@ public class FirstPersonLook : MonoBehaviour
     }
 
     void Update()
-    {
+    { 
         // Get smooth velocity.
-        Vector2 mouseDelta = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
+        Vector2 mouseDelta = new Vector2(Input.GetAxisRaw(horizontalInputController) + Input.GetAxisRaw(horizontalInputKeyboard), Input.GetAxisRaw(verticalInputController) + Input.GetAxisRaw(verticalInputKeyboard));
         Vector2 rawFrameVelocity = Vector2.Scale(mouseDelta, Vector2.one * sensitivity);
         frameVelocity = Vector2.Lerp(frameVelocity, rawFrameVelocity, 1 / smoothing);
         velocity += frameVelocity;

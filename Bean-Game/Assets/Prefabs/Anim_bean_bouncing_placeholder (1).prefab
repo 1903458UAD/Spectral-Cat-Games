@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8979024660871187126, guid: 5d75ad9ef0a2896409a4e7fb1667c984, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d75ad9ef0a2896409a4e7fb1667c984, type: 3}
       propertyPath: m_LocalScale.x
       value: 3.3378258
@@ -60,13 +64,49 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8122754447241499598, guid: 5d75ad9ef0a2896409a4e7fb1667c984, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -7261862597456695334, guid: 5d75ad9ef0a2896409a4e7fb1667c984, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -5858551432735408114, guid: 5d75ad9ef0a2896409a4e7fb1667c984, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -4002065624742222495, guid: 5d75ad9ef0a2896409a4e7fb1667c984, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -2797864980895152918, guid: 5d75ad9ef0a2896409a4e7fb1667c984, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -1818237003096141866, guid: 5d75ad9ef0a2896409a4e7fb1667c984, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5d75ad9ef0a2896409a4e7fb1667c984, type: 3}
       propertyPath: m_Name
       value: Anim_bean_bouncing_placeholder (1)
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5d75ad9ef0a2896409a4e7fb1667c984, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5d75ad9ef0a2896409a4e7fb1667c984, type: 3}
       propertyPath: m_TagString
       value: Bean
+      objectReference: {fileID: 0}
+    - target: {fileID: 3678075426543655659, guid: 5d75ad9ef0a2896409a4e7fb1667c984, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6104358894310090994, guid: 5d75ad9ef0a2896409a4e7fb1667c984, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -101,7 +141,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &7303638760677372369
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -115,6 +155,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -236,4 +277,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1.2
   holdHeightOffset: 0
+  holdWidthOffset: 0.5
   pickupCooldown: 0.1

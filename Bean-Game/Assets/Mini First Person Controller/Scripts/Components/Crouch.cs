@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Crouch : MonoBehaviour
 {
-    public KeyCode key = KeyCode.LeftControl;
+    public KeyCode key;
 
     [Header("Slow Movement")]
     [Tooltip("Movement to slow down when crouched.")]
@@ -24,7 +24,9 @@ public class Crouch : MonoBehaviour
 
     public bool IsCrouched { get; private set; }
     public event System.Action CrouchStart, CrouchEnd;
-
+    private bool crouch;
+    private enum InputType { Controller, Keyboard };
+    private InputType currentInput;
 
     void Reset()
     {
@@ -34,9 +36,33 @@ public class Crouch : MonoBehaviour
         colliderToLower = movement.GetComponentInChildren<CapsuleCollider>();
     }
 
+    InputType DetectInput()
+    {
+        string[] joysticks = Input.GetJoystickNames();
+
+        // Check if any joystick has a valid (non-empty) name
+        foreach (string joystick in joysticks)
+        {
+            if (!string.IsNullOrEmpty(joystick))
+            {
+                return InputType.Controller;
+            }
+        }
+        return InputType.Keyboard;
+
+    }
+
+    private void Update()
+    {
+        InputType currentInput = DetectInput();
+
+        if (currentInput == InputType.Controller) { key = KeyCode.JoystickButton6; }
+        else {  key = KeyCode.LeftControl; }
+    }
+
     void LateUpdate()
     {
-        if (Input.GetKey(key))
+        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.JoystickButton6))
         {
             // Enforce a low head.
             if (headToLower)
