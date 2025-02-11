@@ -8,19 +8,16 @@ public class ButtonForCoffeeMachine : MonoBehaviour
     public CoffeeMachine coffeeMachine; // Reference to the coffee machine
     public float interactionDistance = 2.0f; // Distance required for the player to interact with the button
     private Camera playerCamera; // Reference to the player's camera for raycasting
-
-
+    private KeyCode interaction = KeyCode.Joystick1Button2; // Controller interaction keycode - set to 'Y' button
 
     private void Start()
     {
         playerCamera = Camera.main; // Get the POV camera
     }
 
-
-
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E)) // Check 'e' being pressed
+        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(interaction)) // Check 'e' or controller key being pressed
         {
             Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2)); // Fire ray from the center of the screen
             RaycastHit hit;

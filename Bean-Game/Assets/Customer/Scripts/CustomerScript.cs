@@ -69,6 +69,10 @@ public class CustomerScript : MonoBehaviour
                 tipFactor = 0.015f;
                 break;
         }
+
+        patienceTimer = patienceTimer * StaticData.customerPatience;
+        initialTimer = initialTimer * StaticData.customerPatience;
+
         requiredBeans = UnityEngine.Random.Range(1, 4);
         Debug.Log($"Customer wants a coffee with {requiredBeans} beans.");
 
@@ -80,6 +84,7 @@ public class CustomerScript : MonoBehaviour
         {
             DriveForward();
         }
+
         else if (!orderDelivered)
         {
             Wait();
@@ -99,8 +104,8 @@ public class CustomerScript : MonoBehaviour
             if (nextLocation == exit)
             {
 
-                Destroy(gameObject); // Destroy customer //Reverted back to heathers orginal code as the game manager code currently breaks it
-                //GameManager.Instance.RemoveCustomer(gameObject); // ✅ Moved customer removal to GameManager
+               // Destroy(gameObject); // Destroy customer //Reverted back to heathers orginal code as the game manager code currently breaks it
+                GameManager.Instance.RemoveCustomer(gameObject); // ✅ Moved customer removal to GameManager
             }
 
             drive = false;
@@ -114,6 +119,7 @@ public class CustomerScript : MonoBehaviour
             patienceTimer -= Time.deltaTime;
             DisplayTime();
         }
+
         else
         {
             UnityEngine.Debug.Log("[CustomerScript] Customer ran out of patience!");
@@ -156,10 +162,13 @@ public class CustomerScript : MonoBehaviour
             GameManager.Instance.UpdateIncome(income);
             GameManager.Instance.RemoveCustomer(gameObject);
         }
+
         else
         {
             UnityEngine.Debug.LogError("[CustomerScript] GameManager instance is null! Cannot update income.");
         }
+
+        drive = true;
     }
 
     void DisplayTime()

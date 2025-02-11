@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -221,5 +222,19 @@ public class GameManager : MonoBehaviour
     {
         customersServed++; // Increment customers served count
         UnityEngine.Debug.Log($"Customers Served: {customersServed}");
+    }
+
+    public void ChangeScene(int scenenum)
+    {
+        if (scenenum == 1)
+        {
+            StaticData.incomePassed = GetIncome();
+        }
+        SceneManager.LoadScene(scenenum);
+    }
+
+    public void SetIncome(float amount)
+    {
+        totalIncome = amount;
     }
 }
