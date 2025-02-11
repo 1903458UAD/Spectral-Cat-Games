@@ -1,60 +1,60 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int maxHealth = 100;
-    private int currentHealth;
+    public int maxLives = 3; // Lives the player starts with (Likely needing to adjust for balancing)
+    private int currentLives;
 
-    void Start()
+    public Image[] lifeIcons; // Assign these in the inspector
+
+
+
+    private void Start()
     {
-        currentHealth = maxHealth;
+        currentLives = maxLives; // Player starts with full lives
+
     }
 
-    public void TakeDamage(int damage)
+   
+    public void LoseLife() // Reduce player health (Called when get an order wrong)
     {
-        currentHealth -= damage;
-        UnityEngine.Debug.Log("[PlayerHealth] Player took damage: " + damage);
+   
+        Debug.Log("Player lost a life! Remaining lives: " + currentLives);
 
-        if (GameManager.Instance != null)
+        if (currentLives > 0)
         {
-            GameManager.Instance.UpdatePlayerLives(currentHealth);
+            currentLives--;
+            UpdateLifeUI();
         }
-        else
+        if (currentLives <= 0)
         {
-            UnityEngine.Debug.LogError("[PlayerHealth] GameManager instance is null! Cannot update player lives.");
-        }
-
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-    }
-
-    private void Die()
-    {
-        UnityEngine.Debug.Log("[PlayerHealth] Player has died.");
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.UpdatePlayerLives(0);
+            GameOver();
         }
     }
 
-    public void LoseLife()
-    {
-        if (currentHealth > 0)
-        {
-            currentHealth--;
-            UnityEngine.Debug.Log("[PlayerHealth] Player lost a life. Remaining: " + currentHealth);
 
-            if (GameManager.Instance != null)
+    void UpdateLifeUI()
+    {
+        for (int i = 0; i < lifeIcons.Length; i++)
+        {
+            if (i < currentLives)
             {
-                GameManager.Instance.UpdatePlayerLives(currentHealth);
+                lifeIcons[i].color = Color.white; // Placeholders - Represent lives remaining
+            }
+            else
+            {
+                lifeIcons[i].color = Color.red; // Placeholders - Represent Lives Lost
             }
         }
+    }
 
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
+    private void GameOver()
+    {
+        Debug.Log("Game Over! Player ran out of lives.");
+        UIManager.Instance.ShowGameOverScreen();
+        //Pause the Movement
+
+        //TOBE implemented: Reload/Reset System. Game Over UI etc....
     }
 }

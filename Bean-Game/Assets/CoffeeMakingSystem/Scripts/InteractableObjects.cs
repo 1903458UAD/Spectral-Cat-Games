@@ -8,6 +8,7 @@ public class InteractableObject : MonoBehaviour
 {
     public float holdDistance = 1f; // Distance in front of the player for the object to hover
     public float holdHeightOffset = 0.0f; // Offset to position the object at player hand height
+    public float holdWidthOffset = 0.5f;//Offset the width (For making duel wielding pick up)
     public float pickupCooldown = 0.1f; // Minimum time before the object can be released
     private bool canRelease = true; // Determines if we can release the object
 
@@ -46,7 +47,7 @@ public class InteractableObject : MonoBehaviour
         return isHeld;
     }
 
-    public void PickUpObject()
+    public void PickUpObject(bool isRightHand)
     {
         if (isHeld)
         {
@@ -68,9 +69,14 @@ public class InteractableObject : MonoBehaviour
         // Parent the object to the player camera
         transform.SetParent(playerCamera);
 
-        // Set a local position relative to the camera
-        transform.localPosition = new Vector3(0, holdHeightOffset, holdDistance);
-        transform.localRotation = Quaternion.identity;
+        float sideOffset = isRightHand ? 0.5f : -0.5f; // Right hand = 0.5f, Left hand = -0.5f
+
+        Vector3 offsetPosition = playerCamera.position + (playerCamera.forward * holdDistance) + (playerCamera.right * sideOffset);
+
+
+        // Set the object's position and rotation
+        transform.position = offsetPosition;
+        transform.rotation = Quaternion.identity;
 
         // Mark the object as held
         isHeld = true;
@@ -83,21 +89,24 @@ public class InteractableObject : MonoBehaviour
 
             // Ignore collisions with the player only
             Collider objectCollider = GetComponent<Collider>();
-            Collider playerCollider = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Collider>();
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
 
-            if (objectCollider != null && playerCollider != null)
+
+            if (player != null)
             {
-                Physics.IgnoreCollision(objectCollider, playerCollider, true);
+                Collider playerCollider = player.GetComponent<Collider>();
+
+                if (objectCollider != null && playerCollider != null)
+                {
+                    Physics.IgnoreCollision(objectCollider, playerCollider, true);
+                }
+
             }
-
-
-
-            //objectRigidbody.detectCollisions = false; //Breaks Coffee Machine Code
         }
         canRelease = false;
         Invoke(nameof(EnableRelease), pickupCooldown); // Set the cooldown before allowing release
 
-        Debug.Log(gameObject.name + " picked up!");
+    
     }
 
 
@@ -120,7 +129,7 @@ public class InteractableObject : MonoBehaviour
         {
             objectRigidbody.isKinematic = false;
             objectRigidbody.useGravity = true;
-            // objectRigidbody.detectCollisions = true; // Breaks coffee Machine code 
+      
 
             Collider objectCollider = GetComponent<Collider>();
             Collider playerCollider = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Collider>();
@@ -146,6 +155,7 @@ public class InteractableObject : MonoBehaviour
         canRelease = false;
         Invoke(nameof(EnableRelease), pickupCooldown);
 
-        Debug.Log(gameObject.name + " released!");
+        //Debug.Log(gameObject.name + " released!"); //Commented out log incase needed again
+
     }
 }
