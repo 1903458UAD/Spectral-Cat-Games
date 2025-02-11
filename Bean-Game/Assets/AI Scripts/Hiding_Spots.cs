@@ -2,20 +2,29 @@ using UnityEngine;
 
 public class Hiding_Spots : MonoBehaviour
 {
-    private int occupancy = 0; // Tracks if a hiding spot is used
+    [Header("Occupancy Settings")]
+    public int maxOccupancy = 1; // Maximum number of NPCs allowed in this hiding spot
+
+    private int currentOccupancy = 0; // Tracks current number of NPCs in the hiding spot
 
     public void IncrementOccupancy()
     {
-        occupancy++;
+        if (currentOccupancy < maxOccupancy)
+        {
+            currentOccupancy++;
+        }
     }
 
     public void DecrementOccupancy()
     {
-        if (occupancy > 0) occupancy--;
+        if (currentOccupancy > 0)
+        {
+            currentOccupancy--;
+        }
     }
 
     public bool IsAvailable()
     {
-        return occupancy == 0;
+        return currentOccupancy < maxOccupancy; // Returns true if there's room for more NPCs
     }
 }

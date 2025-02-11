@@ -3,38 +3,51 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-/// <summary>
-/// Handles NPC movement, hiding behavior, and reactions to player presence.
-/// </summary>
 public class NPC_AI : MonoBehaviour
 {
-    private GameObject player;
-    private Hiding_Spots currentHidingSpot;
+    private GameObject player; // Reference to the player object
+    private Hiding_Spots currentHidingSpot; // Current hiding spot selected by the NPC
+    private Hiding_Spots previousHidingSpot; // Last hiding spot to avoid reuse
 
     [Header("Movement Settings")]
-    [SerializeField] private float maxRunSpeed = 3f;
-    [SerializeField] private float maxWalkSpeed = 1.5f;
-    [SerializeField] private float rotationSpeed = 3.0f;
-    [SerializeField] private float runRange = 10f;
-    [SerializeField] private float waypointProximityThreshold = 1.5f;
-    [SerializeField] private float stayAtWaypointDuration = 10f;
+    public float maxRunSpeed = 3f; // Maximum speed while running
+    public float maxWalkSpeed = 1.5f; // Speed while walking
+    public float rotationSpeed = 3.0f; // Rotation speed when changing direction
+    public float runRange = 10f; // Range within which NPC detects the player and runs
+    public float stayAtWaypointDuration = 10f; // Time to stay at a hiding spot before moving
 
-    private float waypointArrivalTime = 0f;
-    private bool isRunningAway = false;
-    private bool isHiding = false; // Prevents NPC from running when actively hiding
-    private NavMeshAgent navMeshAgent;
+    private float waypointArrivalTime; // Time when NPC arrived at hiding spot
+    private bool isRunningAway; // Tracks if NPC is currently fleeing
+    private bool isHiding; // Tracks if NPC is currently hiding
+    private bool needsNewHidingSpot; // Flags if NPC should find a new hiding spot after running
+
+    private NavMeshAgent navMeshAgent; // Reference to NavMeshAgent component for pathfinding
+    private Rigidbody npcRigidbody; // Rigidbody for applying physics constraints
+    private Animator animator; // Animator for controlling NPC animations
+
+    private void Awake()
+    {
+        InitializeComponents(); // Initialize necessary components and references
+    }
 
     private void Start()
     {
-        if (!enabled)
-        {
-            enabled = true;
-        }
+        // Add a slight random delay to stagger movement starts
+        StartCoroutine(DelayedStart(UnityEngine.Random.Range(0f, 1f)));
+    }
 
+    private IEnumerator DelayedStart(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SelectNewHidingSpot(); // Pick an initial hiding spot after a random delay
+    }
+
+    private void InitializeComponents()
+    {
         player = GameObject.FindGameObjectWithTag("Player");
         if (player == null)
         {
-            UnityEngine.Debug.LogError("[NPC_AI] No Player found in the scene! Disabling NPC.");
+            UnityEngine.Debug.LogError("[NPC_AI] Player not found in scene. NPC will be disabled.");
             enabled = false;
             return;
         }
@@ -42,108 +55,148 @@ public class NPC_AI : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         if (navMeshAgent == null)
         {
-            UnityEngine.Debug.LogError("[NPC_AI] No NavMeshAgent component found! NPC cannot move.");
+            UnityEngine.Debug.LogError("[NPC_AI] NavMeshAgent not found. NPC cannot move.");
             enabled = false;
             return;
         }
 
-        if (GameManager.Instance == null)
+        npcRigidbody = GetComponent<Rigidbody>();
+        if (npcRigidbody == null)
         {
-            UnityEngine.Debug.LogError("[NPC_AI] GameManager.Instance is NULL! Disabling NPC.");
+            UnityEngine.Debug.LogError("[NPC_AI] Rigidbody not found. NPC physics will not behave correctly.");
             enabled = false;
             return;
         }
 
-        navMeshAgent.speed = maxWalkSpeed;
-        SelectNewHidingSpot();
+        animator = GetComponent<Animator>();
+        if (animator == null)
+        {
+            UnityEngine.Debug.LogError("[NPC_AI] Animator not found. NPC animations will not play.");
+            enabled = false;
+            return;
+        }
+
+        navMeshAgent.speed = maxWalkSpeed; // Set initial speed
+        navMeshAgent.avoidancePriority = UnityEngine.Random.Range(30, 60); // Randomize obstacle avoidance priority
+        navMeshAgent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance; // Set avoidance type
+        navMeshAgent.autoBraking = false; // Disable auto-braking to prevent corner sticking
+        navMeshAgent.autoRepath = true; // Enable automatic replanning if the path becomes invalid
     }
 
     private void Update()
     {
-        if (currentHidingSpot == null)
+        if (isHiding) return; // Skip update if NPC is hiding
+
+        AvoidPlayer();
+
+        if (needsNewHidingSpot)
         {
+            SelectNewHidingSpot();
+            needsNewHidingSpot = false;
+        }
+
+        // Ensure NPC fully enters hiding spot before considering it occupied
+        if (currentHidingSpot != null && !isHiding && Vector3.Distance(transform.position, currentHidingSpot.transform.position) < 1.0f)
+        {
+            EnterHidingSpot();
+        }
+    }
+
+    private void AvoidPlayer()
+    {
+        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+
+        if (distanceToPlayer <= runRange)
+        {
+            Vector3 directionAway = (transform.position - player.transform.position).normalized;
+            Vector3 newDestination = transform.position + directionAway * runRange;
+
+            if (NavMesh.SamplePosition(newDestination, out NavMeshHit hit, 5.0f, NavMesh.AllAreas))
+            {
+                navMeshAgent.SetDestination(hit.position);
+            }
+        }
+        else
+        {
+            if (currentHidingSpot != null && !isRunningAway)
+            {
+                navMeshAgent.SetDestination(currentHidingSpot.transform.position);
+            }
+        }
+    }
+
+    private void EnterHidingSpot()
+    {
+        if (!currentHidingSpot.IsAvailable())
+        {
+            UnityEngine.Debug.Log("[NPC_AI] Hiding spot already full upon arrival. Selecting new spot.");
             SelectNewHidingSpot();
             return;
         }
 
-        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        float distanceToHidingSpot = Vector3.Distance(transform.position, currentHidingSpot.transform.position);
-
-        // Check if NPC has reached its hiding spot
-        if (distanceToHidingSpot <= waypointProximityThreshold && !isHiding)
-        {
-            UnityEngine.Debug.Log($"[NPC_AI] {gameObject.name} has reached hiding spot: {currentHidingSpot.gameObject.name}");
-
-            navMeshAgent.isStopped = true;
-            isHiding = true;
-            waypointArrivalTime = Time.time;
-        }
-
-        // NPC remains hidden for a set duration
-        if (isHiding)
-        {
-            if (Time.time - waypointArrivalTime >= stayAtWaypointDuration)
-            {
-                isHiding = false;
-                navMeshAgent.isStopped = false;
-                currentHidingSpot.DecrementOccupancy();
-                SelectNewHidingSpot();
-            }
-            return; // Prevents further updates while hiding
-        }
-
-        // NPC reacts to player's proximity (runs away if detected)
-        if (distanceToPlayer <= runRange && !isHiding)
-        {
-            if (!isRunningAway)
-            {
-                UnityEngine.Debug.Log("[NPC_AI] Player detected! NPC is running away.");
-            }
-            isRunningAway = true;
-            RunAwayFromPlayer();
-        }
-        else if (isRunningAway && !isHiding)
-        {
-            isRunningAway = false;
-            waypointArrivalTime = Time.time;
-            navMeshAgent.speed = maxWalkSpeed;
-            navMeshAgent.SetDestination(currentHidingSpot.transform.position);
-        }
+        currentHidingSpot.IncrementOccupancy(); // Mark spot as occupied
+        navMeshAgent.isStopped = true;
+        npcRigidbody.constraints = RigidbodyConstraints.FreezeAll; // Freeze position completely
+        animator.enabled = false; // Stop animations
+        isHiding = true;
+        waypointArrivalTime = Time.time;
+        StartCoroutine(HidingCoroutine()); // Start timer for hiding
     }
 
-    /// <summary>
-    /// Moves NPC away from the player.
-    /// </summary>
-    private void RunAwayFromPlayer()
+    private IEnumerator HidingCoroutine()
     {
-        Vector3 directionAway = (transform.position - player.transform.position).normalized;
-        directionAway.y = 0;
-
-        Quaternion targetRotation = Quaternion.LookRotation(directionAway);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
-        navMeshAgent.speed = maxRunSpeed;
-        navMeshAgent.isStopped = false;
-        navMeshAgent.SetDestination(transform.position + directionAway * runRange);
-
-        UnityEngine.Debug.Log($"[NPC_AI] {gameObject.name} is running away from player.");
+        yield return new WaitForSeconds(stayAtWaypointDuration);
+        ExitHidingSpot(); // Exit hiding after duration ends
     }
 
-    /// <summary>
-    /// Selects a new hiding spot from GameManager's available locations.
-    /// </summary>
+    private void ExitHidingSpot()
+    {
+        isHiding = false;
+        npcRigidbody.constraints = RigidbodyConstraints.None; // Unfreeze movement
+        animator.enabled = true;
+        navMeshAgent.isStopped = false;
+        currentHidingSpot.DecrementOccupancy(); // Mark spot as available again
+        previousHidingSpot = currentHidingSpot;
+        SelectNewHidingSpot(); // Pick a new spot
+    }
+
     private void SelectNewHidingSpot()
     {
-        currentHidingSpot = GameManager.Instance.GetRandomHidingSpot();
+        List<Hiding_Spots> availableSpots = GameManager.Instance.GetAvailableHidingSpots();
+        List<Hiding_Spots> bestSpots = new List<Hiding_Spots>();
+        float highestScore = float.MinValue;
 
-        if (currentHidingSpot == null)
+        foreach (var spot in availableSpots)
         {
-            UnityEngine.Debug.LogError("[NPC_AI] No available hiding spots found! NPC will idle.");
-            return;
+            if (spot == previousHidingSpot || !spot.IsAvailable()) continue; // Skip the previous or over-occupied hiding spots
+
+            float distanceToPlayer = Vector3.Distance(spot.transform.position, player.transform.position);
+            bool isVisible = GameManager.Instance.IsSpotVisibleToPlayer(spot);
+
+            float randomnessFactor = UnityEngine.Random.Range(0f, 50f); // Increased randomness to diversify spot selection
+            float score = distanceToPlayer + randomnessFactor;
+            if (isVisible) score -= 50f; // Penalize spots visible to the player
+
+            if (score > highestScore)
+            {
+                highestScore = score;
+                bestSpots.Clear(); // Clear previous best spots
+                bestSpots.Add(spot); // Add new best spot
+            }
+            else if (score == highestScore)
+            {
+                bestSpots.Add(spot); // Add to list of equally scored spots
+            }
         }
 
-        UnityEngine.Debug.Log($"[NPC_AI] {gameObject.name} moving to new hiding spot: {currentHidingSpot.gameObject.name}");
-        navMeshAgent.isStopped = false;
-        navMeshAgent.SetDestination(currentHidingSpot.transform.position);
+        if (bestSpots.Count > 0)
+        {
+            currentHidingSpot = bestSpots[UnityEngine.Random.Range(0, bestSpots.Count)]; // Randomly choose from best spots
+            navMeshAgent.SetDestination(currentHidingSpot.transform.position);
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("[NPC_AI] No suitable hiding spot found.");
+        }
     }
 }
