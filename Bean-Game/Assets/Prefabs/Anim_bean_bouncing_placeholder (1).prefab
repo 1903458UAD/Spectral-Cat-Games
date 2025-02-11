@@ -101,7 +101,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &7303638760677372369
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -115,6 +115,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -158,8 +159,7 @@ MonoBehaviour:
   maxRunSpeed: 4
   maxWalkSpeed: 2
   rotationSpeed: 3
-  runRange: 10
-  waypointProximityThreshold: 0.19
+  runRange: 1.3
   stayAtWaypointDuration: 10
 --- !u!195 &7468649374900707841
 NavMeshAgent:
@@ -236,4 +236,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDistance: 1.2
   holdHeightOffset: 0
+  holdWidthOffset: 0.5
   pickupCooldown: 0.1
