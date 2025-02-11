@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour
     private void TriggerGameOver()
     {
         UnityEngine.Debug.Log("Player has lost all lives. Triggering game over.");
-        UIManager.Instance.ShowDeathScreen(); // Display game over screen
+        UIManager.Instance.ShowGameOverScreen(); // Display game over screen
     }
 
     public int GetPlayerLives() => playerLives; // Return current player lives
