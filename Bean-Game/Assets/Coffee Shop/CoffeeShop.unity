@@ -17588,12 +17588,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1035884467}
     - target: {fileID: 2677261876509627659, guid: 6515821f03911de4ba2871b11b04724d, type: 3}
+      propertyPath: beanPrefab
+      value: 
+      objectReference: {fileID: 7548525682580231634, guid: 9be309b46f7371d41ae6b68433006d31, type: 3}
+    - target: {fileID: 2677261876509627659, guid: 6515821f03911de4ba2871b11b04724d, type: 3}
       propertyPath: initialBeanCount
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2677261876509627659, guid: 6515821f03911de4ba2871b11b04724d, type: 3}
       propertyPath: spawnSpreadRadius
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
