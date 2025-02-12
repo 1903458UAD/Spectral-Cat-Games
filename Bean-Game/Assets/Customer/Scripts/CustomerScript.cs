@@ -74,7 +74,8 @@ public class CustomerScript : MonoBehaviour
         initialTimer = initialTimer * StaticData.customerPatience;
 
         requiredBeans = UnityEngine.Random.Range(1, 4);
-        Debug.Log($"Customer wants a coffee with {requiredBeans} beans.");
+       // Debug.Log($"Customer wants a coffee with {requiredBeans} beans.");
+        UIManager.Instance.UpdateCustomerOrder(requiredBeans);
 
     }
 

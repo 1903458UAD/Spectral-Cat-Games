@@ -11,6 +11,9 @@ public class UIManager : MonoBehaviour
     public Image crosshair; //Refeerence to Crosshair UI
     public TMP_Text incomeText;//Reference to the income UI
 
+    [Header("Customer Order UI")]
+    public TMP_Text customerOrderText; // New UI element to display coffee order
+
     private Color defaultCrosshairColor = Color.black; //Default colouyr of crosshair
     private Color interactableCrosshairColor = Color.red;//Colour of the crosshair when looking at an interactable object
 
@@ -30,6 +33,11 @@ public class UIManager : MonoBehaviour
     {
         HideGameOverScreen(); //Set the game over screen is hidden
         SetCrosshairDefault(); //Set the crosshair to default
+
+        if (customerOrderText == null)
+        {
+            Debug.LogError("[UIManager] Customer Order Text is not assigned in the Inspector!");
+        }
     }
 
     public void ShowGameOverScreen() // Show death screen when player dies
@@ -57,5 +65,18 @@ public class UIManager : MonoBehaviour
         incomeText.text = string.Format("£{0}", income);
 
         Debug.Log(StaticData.incomePassed);
+    }
+
+
+    public void UpdateCustomerOrder(int requiredBeans)
+    {
+        if (requiredBeans == 1) //Correct wording when using 1 "bean" instead of multiple "beans"
+        {
+            customerOrderText.text = $"Customer wants a coffee made with {requiredBeans} Bean";
+        }
+        else
+        {
+            customerOrderText.text = $"Customer wants a coffee made with {requiredBeans} Beans";
+        }
     }
 }
