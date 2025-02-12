@@ -77,7 +77,7 @@ public void ActivateMachine()
         }
         else
         {
-            Debug.LogError("[CoffeeMachine] No coffee prefab assigned or incorrect bean count!");
+           // Debug.LogError("[CoffeeMachine] No coffee prefab assigned or incorrect bean count!");
         }
 
         currentBeans = 0;

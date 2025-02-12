@@ -1275,15 +1275,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68180019915bac74dbc2adaad4ebf9ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  beanPrefab: {fileID: 4730193203656298, guid: 33155ad5ed689ea4b8d42556ee5882c7, type: 3}
+  beanPrefab: {fileID: 7548525682580231634, guid: 9be309b46f7371d41ae6b68433006d31, type: 3}
   initialBeanCount: 5
   spawnArea: {fileID: 523324807}
   spawnSpreadRadius: 10
   customersServed: 0
   totalIncome: 0
   playerLives: 3
-  customerPrefab: {fileID: 3950186670215910339, guid: 7c11bc05958162d4694726d644f24926, type: 3}
-  customerSpawnPoint: {fileID: 2100160246}
+  customerPrefab: {fileID: 3675112589741700307, guid: 5b8a64d9327f1af4c9e026969f97996a, type: 3}
+  customerSpawnPoint: {fileID: 1044710845}
+  gameScene: 0
 --- !u!114 &383641709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3682,6 +3683,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1044710845 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3438787712101831918, guid: 105089a3161d4a14a87970519dd3aa86, type: 3}
+  m_PrefabInstance: {fileID: 1455503801}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1189100711
 GameObject:
   m_ObjectHideFlags: 0
@@ -6515,11 +6521,6 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4490257326247362, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
   m_PrefabInstance: {fileID: 300352073}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &2100160246 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2844534733339245659, guid: 105089a3161d4a14a87970519dd3aa86, type: 3}
-  m_PrefabInstance: {fileID: 1455503801}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2117173857
 GameObject:
