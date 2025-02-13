@@ -11,11 +11,17 @@ scopes = {
 	"last_search.66F56946" = "git"
 	"OpenInspectorPreview.66F56946" = "0"
 	"currentGroup.66F56946" = "all"
-	"picker_window_position_offset.075BCD15" = "279;32;320;550"
+	"picker_window_position_offset.075BCD15" = "279;-153;320;550"
 	"picker_visibility_flags.075BCD15" = "264"
 	"picker_item_size.075BCD15" = "96"
 	"picker_inspector.075BCD15" = "0"
 	"picker_current_group.075BCD15" = "all"
+	"last_search.9D791F98" = "tool"
+	"OpenInspectorPreview.9D791F98" = "0"
+	"currentGroup.9D791F98" = null
+	"last_search.5A656512" = "ref=\"/PlayerHUD (CANVAS)/Income\""
+	"OpenInspectorPreview.5A656512" = "0"
+	"currentGroup.5A656512" = null
 }
 providers = {
 	log = {
@@ -66,6 +72,26 @@ providers = {
 	presets_provider = {
 		active = false
 		priority = -10
+		defaultAction = null
+	}
+	menu = {
+		active = true
+		priority = 80
+		defaultAction = null
+	}
+	settings = {
+		active = true
+		priority = 100
+		defaultAction = null
+	}
+	calculator = {
+		active = true
+		priority = 10
+		defaultAction = null
+	}
+	static_methods = {
+		active = true
+		priority = 85
 		defaultAction = null
 	}
 }

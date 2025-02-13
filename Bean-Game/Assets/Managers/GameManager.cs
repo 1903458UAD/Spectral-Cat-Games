@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Customer Management")]
     public GameObject customerPrefab; // Prefab for customer objects
-    public Transform customerSpawnPoint; // Spawn point for customers
+    public GameObject customerSpawnPoint; // Spawn point for customers
     private List<GameObject> activeCustomers; // Currently active customers
 
     [Header("Hiding Spot System")]
@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
 
     private List<GameObject> beanInstances; // List of all spawned beans
     private List<NPC_AI> npcInstances; // List of all NPC AI components
+
+    public int gameScene;
 
     private void Awake()
     {
@@ -131,7 +133,7 @@ public class GameManager : MonoBehaviour
     {
         if (activeCustomers.Count == 0)
         {
-            GameObject newCustomer = Instantiate(customerPrefab, customerSpawnPoint.position, Quaternion.identity);
+            GameObject newCustomer = Instantiate(customerPrefab, customerSpawnPoint.transform.position, Quaternion.identity);
             activeCustomers.Add(newCustomer); // Track active customer
             UnityEngine.Debug.Log("New customer spawned.");
         }

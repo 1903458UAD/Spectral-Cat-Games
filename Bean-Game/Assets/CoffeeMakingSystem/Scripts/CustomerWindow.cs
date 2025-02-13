@@ -70,7 +70,10 @@ public class CustomerWindow : MonoBehaviour
 
                 Debug.Log("Customer acknowledged order and should move!");
 
-            
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.UpdateCustomerOrder(0); // Resets the UI after the customer leaves
+            }
         }
         else
         {
