@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 916744545291848331}
   - component: {fileID: 1309290710807346584}
   - component: {fileID: 2765972014710035249}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: CoffeeMachine
   m_TagString: CoffeeMachine
   m_Icon: {fileID: 0}
@@ -123,6 +123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coffeeCreationTime: 5
+  buttonLid: {fileID: 0}
   coffeeCup1Bean: {fileID: 8928758313196748983, guid: e27856dfb5154c248a81d1661500b08f, type: 3}
   coffeeCup2Beans: {fileID: 2769136830400132460, guid: 1db7f3811b662334ea46826303326148, type: 3}
   coffeeCup3Beans: {fileID: 1742179613311282129, guid: 7b0abe2f06b4cd44e92cf595ea1f0c6c, type: 3}

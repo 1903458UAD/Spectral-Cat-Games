@@ -30,27 +30,14 @@ public class CoffeeInteraction : MonoBehaviour
     }
 
 
-    public void TryAddToCustomerWindow()
+    public bool TryAddToCustomerWindow()
     {
-        if (inContactWithCustomerWindow && customerWindow != null)
+        if (customerWindow != null)
         {
-            Debug.Log("Adding Coffee to CustomerWindow!");
-            customerWindow.GiveCoffeeToWindow(this);
+            customerWindow.GiveCoffeeToWindow(this); // Assuming this method exists in CustomerWindow to handle the coffee
+            return true; // Successfully delivered the coffee
         }
-        else
-        {
-            Debug.Log("Bean is not near the Customer Window!");
-            if (inContactWithCustomerWindow == false)
-            {
-                Debug.Log("inContactWithCustomerWindow == False");
-
-            }
-            if (customerWindow == null)
-            {
-                Debug.Log("customerWindow == null");
-            }
-
-        }
+        return false; // Failed to deliver coffee
     }
 
     public void SetBeanCount(int count)

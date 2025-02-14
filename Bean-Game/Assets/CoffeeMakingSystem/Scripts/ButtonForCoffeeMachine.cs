@@ -17,7 +17,7 @@ public class ButtonForCoffeeMachine : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(interaction)) // Check 'e' or controller key being pressed
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(interaction)) // Check 'e' or controller key being pressed
         {
             Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2)); // Fire ray from the center of the screen
             RaycastHit hit;
