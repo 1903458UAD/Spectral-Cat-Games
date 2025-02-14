@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ButtonForCoffeeMachine : MonoBehaviour
 {
-
+    [SerializeField] private GameObject buttonLid;
     public CoffeeMachine coffeeMachine; // Reference to the coffee machine
     public float interactionDistance = 2.0f; // Distance required for the player to interact with the button
     private Camera playerCamera; // Reference to the player's camera for raycasting
@@ -28,6 +28,7 @@ public class ButtonForCoffeeMachine : MonoBehaviour
                 if (hit.collider.gameObject == gameObject) // Check if it hits this button
                 {
                     Debug.Log("Button pressed");
+                    buttonLid.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
                     coffeeMachine.ActivateMachine();
                 }
             }

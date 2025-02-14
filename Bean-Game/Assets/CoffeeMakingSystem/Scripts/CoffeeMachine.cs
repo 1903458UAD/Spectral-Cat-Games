@@ -8,7 +8,8 @@ public class CoffeeMachine : MonoBehaviour
    // public int requiredBeans = 3; // Number of beans required to make 1 coffee-- to be adjusted later for balancing
     public float coffeeCreationTime = 5f; // Time to create coffee after enough beans
     //private int currentBeanCount = 0; // Number of beans currently in the machine
-
+    [SerializeField] private GameObject buttonLid;
+    private Quaternion lidOpen;
     public GameObject coffeeCup1Bean; // Prefab for coffee with 1 bean
     public GameObject coffeeCup2Beans; // " with 2 beans
     public GameObject coffeeCup3Beans; // " with 3 beans
@@ -30,6 +31,11 @@ public class CoffeeMachine : MonoBehaviour
         }
 
     }
+
+public void Start()
+{
+    lidOpen = buttonLid.transform.rotation;
+}
 
 public bool CanActivateMachine()
 {
@@ -79,7 +85,7 @@ public void ActivateMachine()
         {
            // Debug.LogError("[CoffeeMachine] No coffee prefab assigned or incorrect bean count!");
         }
-
+        buttonLid.transform.rotation = lidOpen;
         currentBeans = 0;
     }
 }

@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour
     [Header("Customer Order UI")]
     public TMP_Text customerOrderText; // New UI element to display coffee order
 
-    private Color defaultCrosshairColor = Color.black; //Default colouyr of crosshair
+    private Color defaultCrosshairColor = Color.white; //Default colouyr of crosshair
     private Color interactableCrosshairColor = Color.red;//Colour of the crosshair when looking at an interactable object
 
     private void Awake() // When instance is being loaded

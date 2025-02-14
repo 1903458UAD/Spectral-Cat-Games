@@ -16,7 +16,7 @@ public class UpgradeUiManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.M))
         {
             // Switch back to game scene
-            GameManager.Instance.ChangeScene(2);
+            GameManager.Instance.ChangeScene(0);
             Debug.Log("Scene Switch!");
         }
     }
