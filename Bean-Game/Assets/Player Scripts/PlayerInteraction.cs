@@ -23,8 +23,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void Start()
     {
-        isPickupBothHands = true; //True rn for testing, This shouldnt be pushed Sorry in advance if your reading this
-                                  //StaticData.dualWieldUpgrade;
+        isPickupBothHands = StaticData.dualWieldUpgrade; 
     }
 
     private void Update()
@@ -54,7 +53,7 @@ public class PlayerInteraction : MonoBehaviour
 
 
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(Pickup_AND_Interact))
         {
             Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
             RaycastHit hit;
@@ -67,8 +66,16 @@ public class PlayerInteraction : MonoBehaviour
                 GameObject hitObject = hit.collider.gameObject;
                 CoffeeMachine coffeeMachine = hitObject.GetComponent<CoffeeMachine>();
                 CustomerWindow customerWindow = hitObject.GetComponent<CustomerWindow>();
+                ButtonForCoffeeMachine coffeeButton = hitObject.GetComponent<ButtonForCoffeeMachine>();
 
-                if (coffeeMachine != null && Input.GetMouseButtonDown(0))
+                if (coffeeButton != null)
+                {
+                    coffeeButton.PressButton();
+                    Debug.Log("Pressed Coffee Machine Button");
+                    return;
+                }
+
+                if (coffeeMachine != null)
                 {
                     if (heldObjectRight)
                     {
@@ -86,7 +93,7 @@ public class PlayerInteraction : MonoBehaviour
 
                 }
 
-                if (customerWindow != null && Input.GetMouseButtonDown(0))
+                if (customerWindow != null)
                 {
 
                     if (heldObjectRight)
@@ -132,222 +139,9 @@ public class PlayerInteraction : MonoBehaviour
                     }
                 }
             }
-
-
-
-            //Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
-            //RaycastHit hit;
-
-
-
-            // Debug.DrawRay(ray.origin, ray.direction * interactionDistance, Color.red, 0.1f);
-
-
-
-            ////    // Check for interactable objects (beans, cups, etc.)
-            //if (Physics.Raycast(ray, out hit, interactionDistance, InteractableObjectLayer))
-            //{
-
-            //    Debug.Log("Hit object layer: " + hit.collider.gameObject.layer);
-            //    Debug.Log("Hit object: " + hit.collider.gameObject.name);
-            //    GameObject hitObject = hit.collider.gameObject;
-            //    InteractableObject interactable = hitObject.GetComponent<InteractableObject>();
-
-            //    if (interactable != null && Input.GetMouseButtonDown(0))
-            //    {
-            //        // Pick up object if hand is free
-            //        if (heldObjectRight == null)
-            //        {
-            //            interactable.PickUpObject(true);
-            //            heldObjectRight = interactable;
-            //            //return;
-            //        }
-            //        else if (heldObjectLeft == null) // Allow left-hand pickup if dual-wielding is active
-            //        {
-            //            interactable.PickUpObject(false);
-            //            heldObjectLeft = interactable;
-            //            //return;
-            //        }
-            //    }
-
-
-            //}
-
-
-            //if (Physics.Raycast(ray, out hit, interactionDistance, FunctionalObjectLayer))
-            //{
-
-            //    Debug.Log("RayCast Hit a functional Object");
-
-            //    GameObject hitObject = hit.collider.gameObject;
-            //    CoffeeMachine coffeeMachine = hitObject.GetComponent<CoffeeMachine>();
-            //    CustomerWindow customerWindow = hitObject.GetComponent<CustomerWindow>();
-
-            //    if (coffeeMachine != null && Input.GetMouseButtonDown(0))
-            //    {
-            //        if (heldObjectRight)
-            //        {
-            //            heldObjectRight.GetComponent<BeanInteraction>().TryAddToCoffeeMachine(coffeeMachine);
-            //            Debug.Log("Called tryAddToCoffeeMachine (Right hand)");
-            //            //return;
-            //        }
-            //        else if (heldObjectLeft)
-            //        {
-            //            heldObjectLeft.GetComponent<BeanInteraction>().TryAddToCoffeeMachine(coffeeMachine);
-            //            Debug.Log("Called tryAddToCoffeeMachine (Left hand)");
-            //            //return;
-
-            //        }
-
-            //    }
-
-            //    if (customerWindow != null && Input.GetMouseButtonDown(0))
-            //    {
-
-            //        if (heldObjectRight)
-            //        {
-            //            // heldObjectRight.GetComponent<BeanInteraction>().TryAddToCoffeeMachine(coffeeMachine);
-            //            heldObjectRight.GetComponent<CoffeeInteraction>().TryAddToCustomerWindow();
-            //            //return;
-            //        }
-            //        else if (!heldObjectLeft)
-            //        {
-            //            //heldObjectLeft.GetComponent<BeanInteraction>().TryAddToCoffeeMachine(coffeeMachine);
-            //            heldObjectLeft.GetComponent<CoffeeInteraction>().TryAddToCustomerWindow();
-            //            //TryAddToCustomerWindow(customerWindow);
-            //            //return;
-
-            //        }
-            //        //TryDeliverCoffeeToCustomer(customerWindow);
-            //        //return;
-            //    }
-            //}
-
         }
     }
 }
 
-    //private void TryAddBeanToMachine(CoffeeMachine coffeeMachine)
-    //{
-    //    if (heldObjectRight != null && heldObjectRight is BeanInteraction beanRight)
-    //    {
-    //        if (beanRight.TryAddToCoffeeMachine())
-    //        {
-    //            heldObjectRight = null; // Remove from hand after adding
-    //        }
-    //    }
-    //    else if (heldObjectLeft != null && heldObjectLeft is BeanInteraction beanLeft)
-    //    {
-    //        if (beanLeft.TryAddToCoffeeMachine())
-    //        {
-    //            heldObjectLeft = null; // Remove from hand after adding
-    //        }
-    //    }
-    //}
-
-    //private void TryDeliverCoffeeToCustomer(CustomerWindow customerWindow)
-    //{
-    //    if (heldObjectRight != null && heldObjectRight is CoffeeInteraction coffeeRight)
-    //    {
-    //        if (coffeeRight.TryAddToCustomerWindow(customerWindow))
-    //        {
-    //            heldObjectRight = null; // Remove from hand after delivering
-    //        }
-    //    }
-    //    else if (heldObjectLeft != null && heldObjectLeft is CoffeeInteraction coffeeLeft)
-    //    {
-    //        if (coffeeLeft.TryAddToCustomerWindow(customerWindow))
-    //        {
-    //            heldObjectLeft = null; // Remove from hand after delivering
-    //        }
-    //    }
-    //}
-
-
-
-
-
-    //    // Check if player is holding an object and presses 'E' or controller key to release it
-    //    if (heldObjectRight != null && Input.GetMouseButtonDown(0) || heldObjectRight != null && Input.GetKeyDown(rightPickup))
-    //    {
-    //        heldObjectRight.ReleaseObject();//Call function to release object being held from right hand
-    //        heldObjectRight = null; // Clear reference after release
-    //        return;
-    //    }
-
-    //    if (heldObjectLeft != null && Input.GetMouseButtonDown(1) || heldObjectLeft != null && Input.GetKeyDown(leftPickup)) // Use 'Q' or controller key to drop left-hand object
-    //    {
-    //        heldObjectLeft.ReleaseObject(); //Call function to release object being held from left hand
-    //        heldObjectLeft = null;// Clear reference after release
-    //        return;
-    //    }
-
-    //    if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(interaction))
-    //    {
-    //        if (heldObjectRight != null)//If the player is holding an object in the right hand
-    //        {
-    //            BeanInteraction bean = heldObjectRight.GetComponent<BeanInteraction>(); //Get the BeanInteraction Component (If it has one) from the object being held
-    //            CoffeeInteraction coffee = heldObjectRight.GetComponent<CoffeeInteraction>(); //Get the CoffeeInteraction Component (If it has one) from the object being held
-    //            bean?.TryAddToCoffeeMachine(); //If it has a beanInteraction Component then call the 'TryAddToCoffeeMachine' function from the bean interaction script
-    //            coffee?.TryAddToCustomerWindow();//If it has a CoffeeInteraction Component then call the 'TryAddToCustomerWindow' function from the bean interaction script
-    //        }
-
-    //        if (heldObjectLeft != null)//If the player is holding an object in the left hand
-    //        {
-    //            BeanInteraction bean = heldObjectLeft.GetComponent<BeanInteraction>();//Get the BeanInteraction Component (If it has one) from the object being held
-    //            CoffeeInteraction coffee = heldObjectLeft.GetComponent<CoffeeInteraction>();//Get the CoffeeInteraction Component (If it has one) from the object being held
-    //            bean?.TryAddToCoffeeMachine();//If it has a beanInteraction Component then call the 'TryAddToCoffeeMachine' function from the bean interaction script
-    //            coffee?.TryAddToCustomerWindow();//If it has a CoffeeInteraction Component then call the 'TryAddToCustomerWindow' function from the bean interaction script
-    //        }
-    //    }
-
-
-    //    Ray ray = new Ray(cameraTransform.position, cameraTransform.forward); //Creates a ray from the players camera traveling forward
-    //    RaycastHit hit; //store information from the object hit by the raycast
-
-    //    if (Physics.Raycast(ray, out hit, interactionDistance, InteractableObjectLayer)) //If ray hits an object within the interactable layer (Within interactable range)
-    //    {
-    //        GameObject hitObject = hit.collider.gameObject; //Store the object hit
-            
-    //        InteractableObject interactable = hitObject.GetComponent<InteractableObject>(); //Get the IneractableObject component from the object that was hit (If it has one)
-    //        BeanInteraction bean = hitObject.GetComponent<BeanInteraction>();//Get the BeanInteraction component from the object that was hit (If it has one)
-    //        CoffeeInteraction coffee = hitObject.GetComponent<CoffeeInteraction>(); //Get the CoffeeInteraction component from the object that was hit (If it has one)
-
-
-    //        if (interactable != null)// If the hit object is an interactable object
-    //        {
-
-    //            UIManager.Instance.SetCrosshairInteractable(); //Changes color of the crosshair to indicate an interactable object
-    //            //UnityEngine.Debug.Log("[PlayerInteraction] Raycast hit: " + hitObject.name); //Commented as only for bug testing, checks what the raycast hit
-
-    //             if (heldObjectRight == null && Input.GetMouseButtonDown(0) || heldObjectRight == null && Input.GetKeyDown(rightPickup)) //If the right hand is empty and E is pressed
-    //            {
-    //                interactable.PickUpObject(true); // call pickup object function ('true' indicates its the right hand)
-    //                heldObjectRight = interactable;// store reference of the object in 'heldOjectRight'
-    //                return; //Exit the method to prevent any more code being ran
-    //            }
-
-    //            // Pick up second object (Left Hand) using 'Q' if both-hands mode is active
-    //            if (isPickupBothHands && heldObjectLeft == null && Input.GetMouseButtonDown(1) || isPickupBothHands && heldObjectLeft == null && Input.GetKeyDown(leftPickup))
-    //            {
-    //                Debug.Log("[PlayerInteraction] Attempting to pick up object in left hand...");
-    //                interactable.PickUpObject(false); // call pickup object function ('false' indicates its the left hand)
-    //                heldObjectLeft = interactable;// store reference of the object in 'heldOjectLeft'
-    //                return;//Exit the method to prevent any more code being ran 
-    //            }
-
-    //        }
-    //        else//If raycst doesnt detect an interactable object
-    //        {
-    //            UIManager.Instance.SetCrosshairDefault(); //set the Crosshair to default to indicate no interactablity optional (This one in theory shouldnt trigger but is a safety net incase an object is in interaction layer but not have that component)
-    //        }
-
-
-    //    }
-    //    else //If the raycast doesnt hit an object in the interaction layer
-    //    {
-    //        UIManager.Instance.SetCrosshairDefault();//set the Crosshair to default to indicate no interactablity optional
-    //    }
-
-    //}
+ 
 
