@@ -1188,7 +1188,8 @@ MonoBehaviour:
   speed: 5
   canRun: 1
   runSpeed: 9
-  runningKey: 304
+  runningKeyboard: 304
+  runningController: 357
 --- !u!114 &6553443394283382452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1237,8 +1238,10 @@ MonoBehaviour:
   InteractableObjectLayer:
     serializedVersion: 2
     m_Bits: 512
+  FunctionalObjectLayer:
+    serializedVersion: 2
+    m_Bits: 0
   cameraTransform: {fileID: 5856840350905276064}
-  isPickupBothHands: 1
 --- !u!1 &8419384468966583043
 GameObject:
   m_ObjectHideFlags: 0
@@ -1511,6 +1514,7 @@ GameObject:
   - component: {fileID: 6986643718028487364}
   - component: {fileID: 131875644587831553}
   - component: {fileID: 8848547108968793185}
+  - component: {fileID: -5778525044596288021}
   m_Layer: 0
   m_Name: First Person Camera
   m_TagString: MainCamera
@@ -1632,3 +1636,17 @@ MonoBehaviour:
   maxZoomFOV: 15
   currentZoom: 0
   sensitivity: 1
+--- !u!114 &-5778525044596288021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9112161919131238558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nonRigidbodyVelocity: 0
+  attenuationObject: {fileID: 0}
