@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class UIManager : MonoBehaviour
 {
@@ -10,12 +11,15 @@ public class UIManager : MonoBehaviour
     public GameObject gameOverScreen; //Reference to game over ui
     public Image crosshair; //Refeerence to Crosshair UI
     public TMP_Text incomeText;//Reference to the income UI
+    public GameObject pauseMenuUI; // Reference to Pause Menu UI
 
     [Header("Customer Order UI")]
     public TMP_Text customerOrderText; // New UI element to display coffee order
 
     private Color defaultCrosshairColor = Color.white; //Default colouyr of crosshair
     private Color interactableCrosshairColor = Color.red;//Colour of the crosshair when looking at an interactable object
+
+    private bool isPaused = false; // Pause state
 
     private void Awake() // When instance is being loaded
     {
@@ -37,6 +41,11 @@ public class UIManager : MonoBehaviour
         if (customerOrderText == null)
         {
             Debug.LogError("[UIManager] Customer Order Text is not assigned in the Inspector!");
+        }
+
+        if (pauseMenuUI != null)
+        {
+            pauseMenuUI.SetActive(false); // Ensure menu is hidden at the start
         }
     }
 
@@ -79,4 +88,64 @@ public class UIManager : MonoBehaviour
             customerOrderText.text = $"Customer wants a coffee made with {requiredBeans} Beans";
         }
     }
+
+    public void TogglePause()
+    {
+        isPaused = !isPaused;
+
+        if (isPaused)
+        {
+            Time.timeScale = 0f;
+            pauseMenuUI.SetActive(true);
+
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            // Ensure UI buttons work properly
+            if (EventSystem.current != null)
+            {
+                EventSystem.current.SetSelectedGameObject(null);
+            }
+        }
+        else
+        {
+            Time.timeScale = 1f;
+            pauseMenuUI.SetActive(false);
+
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+    }
+
+    public void ResumeGame()
+    {
+        TogglePause(); // Unpause the game
+    }
+
+    public void Settings()
+    {
+        //Change to another UI menu scene for settings ----------------------------TODO----------------------------
+
+    }
+
+    public void MainMenu()
+    {
+        Time.timeScale = 1f; // Time is resumed when switching scenes
+        pauseMenuUI.SetActive(false); //Hide the Pause menu UI
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0); //Need to change 0 to whatever the mainmenu scene will be
+    }
+
+
+
+
+    public void QuitGame()
+    {
+        Debug.Log("Quit Game button clicked!");
+
+        
+        Application.Quit(); // Quits the game to desktop 
+    }
+
+
 }
