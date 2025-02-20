@@ -19,7 +19,7 @@ public class CoffeeMachine : MonoBehaviour
 
     public void AddBean(BeanInteraction bean)
     {
-        //Debug.Log($"[CoffeeMachine] Instance ID: {this.GetInstanceID()}, Beans: {currentBeans}");
+        Debug.Log($"[CoffeeMachine] Instance ID: {this.GetInstanceID()}, Beans: {currentBeans}");
 
         if (currentBeans < 3)
         {
@@ -41,7 +41,7 @@ public void Start()
 
 public bool CanActivateMachine()
 {
-       //Debug.Log($"[CoffeeMachine] Instance ID: {this.GetInstanceID()}, Beans: {currentBeans}");
+       Debug.Log($"[CoffeeMachine] Instance ID: {this.GetInstanceID()}, Beans: {currentBeans}");
 
         if (currentBeans >= 1)
         {
