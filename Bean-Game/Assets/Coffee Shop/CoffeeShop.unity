@@ -23450,6 +23450,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1370239381 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8760145720996291831, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+  m_PrefabInstance: {fileID: 974475592028541677}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1370239385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370239381}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86f3db895461cbf46a20a9af36931ed3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coffeeCreationTime: 5
+  buttonLid: {fileID: 1747132165}
+  coffeeCup1Bean: {fileID: 8928758313196748983, guid: e27856dfb5154c248a81d1661500b08f, type: 3}
+  coffeeCup2Beans: {fileID: 2769136830400132460, guid: 1db7f3811b662334ea46826303326148, type: 3}
+  coffeeCup3Beans: {fileID: 1742179613311282129, guid: 7b0abe2f06b4cd44e92cf595ea1f0c6c, type: 3}
+  spawnPoint: {fileID: 105022970}
 --- !u!1 &1371753874
 GameObject:
   m_ObjectHideFlags: 0
@@ -24217,24 +24240,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3566305242749650456, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
   m_PrefabInstance: {fileID: 974475592028541677}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1405177894
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1405177891}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86f3db895461cbf46a20a9af36931ed3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  coffeeCreationTime: 5
-  buttonLid: {fileID: 1747132165}
-  coffeeCup1Bean: {fileID: 8928758313196748983, guid: e27856dfb5154c248a81d1661500b08f, type: 3}
-  coffeeCup2Beans: {fileID: 2769136830400132460, guid: 1db7f3811b662334ea46826303326148, type: 3}
-  coffeeCup3Beans: {fileID: 1742179613311282129, guid: 7b0abe2f06b4cd44e92cf595ea1f0c6c, type: 3}
-  spawnPoint: {fileID: 105022970}
 --- !u!65 &1405177895
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -38731,12 +38736,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3566305242749650456, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1405177895}
-    - targetCorrespondingSourceObject: {fileID: 3566305242749650456, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1405177894}
     - targetCorrespondingSourceObject: {fileID: 1006535547879735014, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 444609032}
+    - targetCorrespondingSourceObject: {fileID: 8760145720996291831, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1370239385}
   m_SourcePrefab: {fileID: 100100000, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
 --- !u!114 &1012346685348592638
 MonoBehaviour:
