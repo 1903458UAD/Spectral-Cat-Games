@@ -16,6 +16,11 @@ public class UIManager : MonoBehaviour
     [Header("Customer Order UI")]
     public TMP_Text customerOrderText; // New UI element to display coffee order
 
+
+    [Header("Camera Script")]
+    public MonoBehaviour cameraScript;
+
+
     private Color defaultCrosshairColor = Color.white; //Default colouyr of crosshair
     private Color interactableCrosshairColor = Color.red;//Colour of the crosshair when looking at an interactable object
 
@@ -101,6 +106,13 @@ public class UIManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
+            // Disable camera movement
+            if (cameraScript != null)
+            {
+                cameraScript.enabled = false;
+            }
+
+
             // Ensure UI buttons work properly
             if (EventSystem.current != null)
             {
@@ -114,6 +126,13 @@ public class UIManager : MonoBehaviour
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+        
+            if (cameraScript != null)
+            {
+                cameraScript.enabled = true;// Enable camera movement
+            }
+
+
         }
     }
 

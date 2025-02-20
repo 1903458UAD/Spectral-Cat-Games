@@ -29774,6 +29774,17 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &1651408175 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 131875644587831553, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
+  m_PrefabInstance: {fileID: 816174779}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec72980442fddac4d86e75ab24b4d027, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1657661893
 GameObject:
   m_ObjectHideFlags: 0
@@ -40687,6 +40698,7 @@ MonoBehaviour:
   incomeText: {fileID: 5723778686914167142}
   pauseMenuUI: {fileID: 5263098234751099572}
   customerOrderText: {fileID: 5538269962364749958}
+  cameraScript: {fileID: 1651408175}
 --- !u!222 &8928387440730442014
 CanvasRenderer:
   m_ObjectHideFlags: 0
