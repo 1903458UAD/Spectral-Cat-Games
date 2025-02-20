@@ -1,30 +1,57 @@
+using System.Diagnostics;
 using UnityEngine;
+using Random = UnityEngine.Random;
+using Debug = UnityEngine.Debug;
 
 public class Hiding_Spots : MonoBehaviour
 {
-    [Header("Occupancy Settings")]
-    public int maxOccupancy = 1; // Maximum number of NPCs allowed in this hiding spot
+    [Header("Hiding Spot Settings")]
+    public int MaxOccupancy = 1;  // Maximum NPCs allowed in this spot
+    private int occupancy = 0;   // Current number of NPCs in this spot
 
-    private int currentOccupancy = 0; // Tracks current number of NPCs in the hiding spot
+    public int Occupancy => occupancy; // Read-only property to get current occupancy
+
+    // This function is to check if the hiding spot is still open for NPCs
+    public bool IsAvailable()
+    {
+        return occupancy < MaxOccupancy; // Spot is available if not full
+    }
 
     public void IncrementOccupancy()
     {
-        if (currentOccupancy < maxOccupancy)
+        if (occupancy < MaxOccupancy)
         {
-            currentOccupancy++;
+            occupancy++;
+        }
+        else
+        {
+            Debug.LogWarning($"[Hiding_Spots] {gameObject.name} is already at max occupency!"); 
         }
     }
 
     public void DecrementOccupancy()
     {
-        if (currentOccupancy > 0)
+        if (occupancy > 0)
         {
-            currentOccupancy--;
+            occupancy--;
+        }
+        else
+        {
+            Debug.LogWarning($"[Hiding_Spots] {gameObject.name} ocupancy is already zero!"); 
         }
     }
 
-    public bool IsAvailable()
+    public int GetOccupancy()
     {
-        return currentOccupancy < maxOccupancy; // Returns true if there's room for more NPCs
+        return Occupancy; // Redundant getter but useful if we ever need to override it
     }
+
+    
+    //Left in case we want to log all hiding spots when I break the code later...
+    //public void DebugOccupancy()
+    //{
+        //Debug.Log($"{gameObject.name} has {occupancy} NPC(s) hiding in it.");
+    //}
+    
+
 }

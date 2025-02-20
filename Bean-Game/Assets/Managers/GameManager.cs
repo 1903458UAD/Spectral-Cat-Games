@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
+using System.Linq;
+using System.Diagnostics;
 using Random = UnityEngine.Random;
 using Debug = UnityEngine.Debug;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,19 +22,18 @@ public class GameManager : MonoBehaviour
     public int initialBeanCount = 10;
 
     [Header("Game Stats")]
-    [SerializeField] private int customersServed; // Total customers served
-    [SerializeField] private float totalIncome; // Total income generated
-    [SerializeField] private int playerLives; // Player's remaining lives
-
+    [SerializeField] private int customersServed;
+    [SerializeField] private float totalIncome;
+    [SerializeField] private int playerLives;
 
     [Header("Customer Management")]
-    public GameObject customerPrefab; // Prefab for customer objects
-    public GameObject customerSpawnPoint; // Spawn point for customers
-    private List<GameObject> activeCustomers; // Currently active customers
+    public GameObject customerPrefab;
+    public GameObject customerSpawnPoint;
+    private List<GameObject> activeCustomers = new List<GameObject>();
+    public float nodeConnectionRadius = 3.0f;
 
     [Header("Income Management")]
     private float income = 0f;
-
     private GameObject player;
 
     public int gameScene;
@@ -53,16 +53,17 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         FindAllHidingSpots();
         FindAllNavNodes();
+        //FindAllBeans(); // Might reenable later if needed
     }
 
     private void Start()
     {
-        UnityEngine.Debug.Log("GameManager initialized.");
         player = GameObject.FindGameObjectWithTag("Player");
         InitializeGame();
+        FindAllNavNodes();
+        LinkAllNavNodes();
+        DebugNavNodes();
     }
-
-
 
     private void InitializeGame()
     {
@@ -73,20 +74,56 @@ public class GameManager : MonoBehaviour
         SetIncome(StaticData.incomePassed);
     }
 
-
-
-    private void FindAllHidingSpots()
+    void FindAllHidingSpots()
     {
         hidingSpots.Clear();
-        hidingSpots.AddRange(FindObjectsOfType<Hiding_Spots>());
-        UnityEngine.Debug.Log($"Total hiding spots found: {hidingSpots.Count}");
+        GameObject[] spots = GameObject.FindGameObjectsWithTag("HidingSpot");
+
+        if (spots.Length == 0)
+        {
+            //Debug.LogError("[GameManager] No hiding spots found! Maybe they are missing from the scene?");
+        }
+
+        foreach (GameObject obj in spots)
+        {
+            Hiding_Spots hidingSpotComponent = obj.GetComponent<Hiding_Spots>();
+            if (hidingSpotComponent != null)
+            {
+                hidingSpots.Add(hidingSpotComponent);
+                //Debug.Log("[GameManager] Registered hiding spot: " + obj.name);
+            }
+            else
+            {
+                //Debug.LogError("[GameManager] " + obj.name + " is tagged as 'HidingSpot' but missing Hiding_Spots component!");
+            }
+        }
+        //Debug.Log("[GameManager] Total hiding spots found: " + hidingSpots.Count);
     }
 
-    private void FindAllNavNodes()
+    void FindAllNavNodes()
     {
-        navNodes.Clear();
-        navNodes.AddRange(FindObjectsOfType<NavNode>());
-        UnityEngine.Debug.Log($"Total navigation nodes found: {navNodes.Count}");
+        navNodes = new List<NavNode>(FindObjectsOfType<NavNode>());
+        //Debug.Log("[GameManager] Found navigation nodes: " + navNodes.Count);
+    }
+
+    void LinkAllNavNodes()
+    {
+        foreach (NavNode node in navNodes)
+        {
+            node.connectedNodes.Clear();
+            foreach (NavNode otherNode in navNodes)
+            {
+                if (node != otherNode)
+                {
+                    float distance = Vector3.Distance(node.transform.position, otherNode.transform.position);
+                    if (distance <= nodeConnectionRadius)
+                    {
+                        node.connectedNodes.Add(otherNode);
+                        //Debug.Log("[GameManager] Linked " + node.name + " with " + otherNode.name);
+                    }
+                }
+            }
+        }
     }
 
     private void SpawnInitialBeans()
@@ -97,18 +134,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void FindAllBeans()
-    {
-        beans = new List<NPC_AI>(FindObjectsOfType<NPC_AI>());
-        Debug.Log($"Total beans found: {beans.Count}");
-    }
-
-
     public void SpawnBean()
     {
         if (beanPrefab == null)
         {
-            UnityEngine.Debug.LogError("[GameManager] Bean prefab not assigned!");
             return;
         }
 
@@ -123,14 +152,6 @@ public class GameManager : MonoBehaviour
                 beans.Add(beanAI);
                 RegisterBean(beanAI);
             }
-            else
-            {
-                UnityEngine.Debug.LogError("[GameManager] Spawned bean does not have NPC_AI script!");
-            }
-        }
-        else
-        {
-            UnityEngine.Debug.LogError("[GameManager] Bean attempted to spawn outside NavMesh!");
         }
     }
 
@@ -138,11 +159,10 @@ public class GameManager : MonoBehaviour
     {
         if (navNodes.Count == 0)
         {
-            UnityEngine.Debug.LogError("[GameManager] No navigation nodes found.");
             return Vector3.zero;
         }
 
-        NavNode randomNode = navNodes[UnityEngine.Random.Range(0, navNodes.Count)];
+        NavNode randomNode = navNodes[Random.Range(0, navNodes.Count)];
         return randomNode.transform.position;
     }
 
@@ -151,12 +171,7 @@ public class GameManager : MonoBehaviour
         if (activeCustomers.Count == 0)
         {
             GameObject newCustomer = Instantiate(customerPrefab, customerSpawnPoint.transform.position, Quaternion.identity);
-            activeCustomers.Add(newCustomer); // Track active customer
-            UnityEngine.Debug.Log("New customer spawned.");
-        }
-        else
-        {
-            UnityEngine.Debug.LogWarning("Customer spawn attempt failed - a customer is already active.");
+            activeCustomers.Add(newCustomer);
         }
     }
 
@@ -164,41 +179,35 @@ public class GameManager : MonoBehaviour
     {
         if (!activeCustomers.Remove(customer))
         {
-            UnityEngine.Debug.LogError("Attempted to remove a non-existent customer.");
             return;
         }
 
-        Destroy(customer); // Remove customer from the scene
-        UnityEngine.Debug.Log("Customer removed.");
+        Destroy(customer);
     }
 
     public void UpdatePlayerLives(int lives)
     {
-        playerLives = lives; // Update player lives
-        UnityEngine.Debug.Log($"Player Lives Updated: {playerLives}");
-
+        playerLives = lives;
         if (playerLives <= 0)
         {
-            TriggerGameOver(); // Trigger game over if no lives left
+            TriggerGameOver();
         }
     }
 
     private void TriggerGameOver()
     {
-        UnityEngine.Debug.Log("Player has lost all lives. Triggering game over.");
-        UIManager.Instance.ShowGameOverScreen(); // Display game over screen
+        UIManager.Instance.ShowGameOverScreen();
     }
 
-    public int GetPlayerLives() => playerLives; // Return current player lives
+    public int GetPlayerLives() => playerLives;
 
     public void UpdateIncome(float amount)
     {
-        totalIncome = Mathf.Round((totalIncome + amount) * 100f) / 100f; // Update and round total income
-        UIManager.Instance.UpdateIncomeDisplay(totalIncome); // Update UI display for income
-        UnityEngine.Debug.Log($"Income Updated: ${totalIncome}");
+        totalIncome += amount;
+        UIManager.Instance.UpdateIncomeDisplay(totalIncome);
     }
 
-    public float GetIncome() => totalIncome; // Return total income
+    public float GetIncome() => totalIncome;
 
     public void SetIncome(float amount)
     {
@@ -207,11 +216,8 @@ public class GameManager : MonoBehaviour
 
     public void CustomerServed()
     {
-        customersServed++; // Increment customers served count
-        UnityEngine.Debug.Log($"Customers Served: {customersServed}");
+        customersServed++;
     }
-
-
 
     public List<NavNode> GetNavNodes()
     {
@@ -253,29 +259,48 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(scenenum);
     }
 
-
-    public Hiding_Spots FindBestHidingSpot(Vector3 npcPosition)
+    public Hiding_Spots FindBetterHidingSpot(Vector3 npcPosition, Hiding_Spots lastHidingSpot)
     {
-        if (hidingSpots.Count == 0)
+        if (hidingSpots == null || hidingSpots.Count == 0)
+        {
+            Debug.LogError("[GameManager] No hiding spots availible!"); 
             return null;
+        }
+
+        List<Hiding_Spots> availableSpots = hidingSpots.FindAll(spot => spot.IsAvailable());
+
+        if (availableSpots.Count == 0)
+        {
+            availableSpots = new List<Hiding_Spots>(hidingSpots);
+        }
 
         Hiding_Spots bestSpot = null;
-        float maxDistance = 0f;
+        float bestScore = float.MaxValue;
 
-        foreach (var spot in hidingSpots)
+        foreach (var spot in availableSpots)
         {
             float distanceToPlayer = Vector3.Distance(spot.transform.position, GetPlayerPosition());
-            if (distanceToPlayer > maxDistance)
+            float distanceToNPC = Vector3.Distance(spot.transform.position, npcPosition);
+
+            bool isLastUsed = (spot == lastHidingSpot);
+            float reusePenalty = isLastUsed ? 100f : 0f;
+            float score = distanceToNPC - (distanceToPlayer * 0.5f) + reusePenalty;
+
+            if (!isLastUsed && score < bestScore)
             {
-                maxDistance = distanceToPlayer;
+                bestScore = score;
                 bestSpot = spot;
             }
         }
 
-        return bestSpot;
+        return bestSpot ?? hidingSpots.OrderBy(x => Random.value).FirstOrDefault();
     }
 
-
-
-
+    void DebugNavNodes()
+    {
+        foreach (NavNode node in navNodes)
+        {
+            //Debug.Log("[Debug] " + node.name + " has " + node.connectedNodes.Count + " connections.");
+        }
+    }
 }
