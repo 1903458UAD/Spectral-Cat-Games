@@ -28,7 +28,7 @@ public class SceneControl : MonoBehaviour
         {
             UIManager.Instance.TogglePause();
         }
-        
+
     }
 
 }
