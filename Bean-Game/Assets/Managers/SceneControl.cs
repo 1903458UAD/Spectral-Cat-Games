@@ -26,7 +26,7 @@ public class SceneControl : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape)) // "ESC" key
         {
-            //UIManager.Instance.TogglePause();
+            UIManager.Instance.TogglePause();
         }
 
     }
