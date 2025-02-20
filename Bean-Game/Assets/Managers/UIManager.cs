@@ -12,13 +12,30 @@ public class UIManager : MonoBehaviour
     public Image crosshair; //Refeerence to Crosshair UI
     public TMP_Text incomeText;//Reference to the income UI
     public GameObject pauseMenuUI; // Reference to Pause Menu UI
+    public GameObject settingsMenuUI;
 
     [Header("Customer Order UI")]
     public TMP_Text customerOrderText; // New UI element to display coffee order
 
+    [Header("Player Lives UI")]
+    public Image[] lifeIcons;
 
     [Header("Camera Script")]
     public MonoBehaviour cameraScript;
+
+
+    [Header("Settings Panels")]
+    public GameObject videoPanel;
+    public GameObject audioPanel;
+    public GameObject controlsPanel;
+
+
+    [Header("Video Settings")]
+    public TMP_Dropdown resolutionDropdown;
+    public Button textureLowButton, textureMediumButton, textureHighButton;
+    public Button modelLowButton, modelMediumButton, modelHighButton;
+    public Button frame30Button, frame60Button, frameUncappedButton;
+
 
 
     private Color defaultCrosshairColor = Color.white; //Default colouyr of crosshair
@@ -96,12 +113,23 @@ public class UIManager : MonoBehaviour
 
     public void TogglePause()
     {
+
+        // If the settings menu is open, go back to the pause menu instead of resuming
+        if (settingsMenuUI.activeSelf)
+        {
+            ShowPauseMenu();
+            return; // Prevent the game from unpausing
+        }
+
+
         isPaused = !isPaused;
 
         if (isPaused)
         {
             Time.timeScale = 0f;
             pauseMenuUI.SetActive(true);
+
+            HideGameplayUI();
 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -124,6 +152,8 @@ public class UIManager : MonoBehaviour
             Time.timeScale = 1f;
             pauseMenuUI.SetActive(false);
 
+            ShowGameplayUI();
+
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         
@@ -141,10 +171,54 @@ public class UIManager : MonoBehaviour
         TogglePause(); // Unpause the game
     }
 
+    public void OpenSettings()
+    {
+        pauseMenuUI.SetActive(false);
+        settingsMenuUI.SetActive(true);
+        ShowVideoSettings();
+    }
+
+    public void CloseSettings()
+    {
+        settingsMenuUI.SetActive(false);
+        pauseMenuUI.SetActive(true);
+    }
+
+    public void ShowVideoSettings()
+    {
+        videoPanel.SetActive(true);
+        audioPanel.SetActive(false);
+        controlsPanel.SetActive(false);
+    }
+
     public void Settings()
     {
-        //Change to another UI menu scene for settings ----------------------------TODO----------------------------
+        settingsMenuUI.SetActive(true); //Hide the Pause menu UI
+        pauseMenuUI.SetActive(false); //Hide the Pause menu UI
+        
 
+    }
+
+    public void UpdateLifeUI(int currentLives)
+    {
+        for (int i = 0; i < lifeIcons.Length; i++)
+        {
+            if (i < currentLives)
+            {
+                lifeIcons[i].color = Color.white; // Represents remaining lives
+            }
+            else
+            {
+                lifeIcons[i].color = Color.red; // Represents lost lives
+            }
+        }
+    }
+
+
+    public void ShowPauseMenu()
+    {
+        settingsMenuUI.SetActive(false); // Hide the settings menu
+        pauseMenuUI.SetActive(true); // Show the pause menu
     }
 
     public void MainMenu()
@@ -155,7 +229,29 @@ public class UIManager : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene(0); //Need to change 0 to whatever the mainmenu scene will be
     }
 
+    public void ShowGameplayUI()
+    {
+        if (crosshair != null) crosshair.gameObject.SetActive(true);
+        if (incomeText != null) incomeText.gameObject.SetActive(true);
+        if (customerOrderText != null) customerOrderText.gameObject.SetActive(true);
 
+        foreach (Image life in lifeIcons)
+        {
+            life.gameObject.SetActive(true);
+        }
+    }
+
+    public void HideGameplayUI()
+    {
+        if (crosshair != null) crosshair.gameObject.SetActive(false);
+        if (incomeText != null) incomeText.gameObject.SetActive(false);
+        if (customerOrderText != null) customerOrderText.gameObject.SetActive(false);
+
+        foreach (Image life in lifeIcons)
+        {
+            life.gameObject.SetActive(false);
+        }
+    }
 
 
     public void QuitGame()
