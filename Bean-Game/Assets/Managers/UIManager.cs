@@ -29,12 +29,16 @@ public class UIManager : MonoBehaviour
     public GameObject audioPanel;
     public GameObject controlsPanel;
 
+    private GameObject currentPanel;
 
     [Header("Video Settings")]
     public TMP_Dropdown resolutionDropdown;
     public Button textureLowButton, textureMediumButton, textureHighButton;
     public Button modelLowButton, modelMediumButton, modelHighButton;
     public Button frame30Button, frame60Button, frameUncappedButton;
+
+    [Header("Audio Settings")]
+    public Slider masterVolumeSlider;
 
 
 
@@ -69,6 +73,8 @@ public class UIManager : MonoBehaviour
         {
             pauseMenuUI.SetActive(false); // Ensure menu is hidden at the start
         }
+
+        masterVolumeSlider.value = PlayerPrefs.GetFloat("MasterVolume", 1f);
     }
 
     public void ShowGameOverScreen() // Show death screen when player dies
@@ -191,6 +197,20 @@ public class UIManager : MonoBehaviour
         controlsPanel.SetActive(false);
     }
 
+    public void ShowAudioSettings()
+    {
+        videoPanel.SetActive(false);
+        audioPanel.SetActive(true);
+        controlsPanel.SetActive(false);
+    }
+
+    public void ShowControlsSettings()
+    {
+        videoPanel.SetActive(false);
+        audioPanel.SetActive(false);
+        controlsPanel.SetActive(true);
+    }
+
     public void Settings()
     {
         settingsMenuUI.SetActive(true); //Hide the Pause menu UI
@@ -198,6 +218,8 @@ public class UIManager : MonoBehaviour
         
 
     }
+
+
 
     public void UpdateLifeUI(int currentLives)
     {
@@ -253,7 +275,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-
     public void QuitGame()
     {
         Debug.Log("Quit Game button clicked!");
@@ -262,5 +283,11 @@ public class UIManager : MonoBehaviour
         Application.Quit(); // Quits the game to desktop 
     }
 
+    public void UpdateMasterVolume()
+    {
+        float volume = masterVolumeSlider.value;
+        AudioListener.volume = volume; // Set the global volume
+        PlayerPrefs.SetFloat("MasterVolume", volume); // Save setting
+    }
 
 }
