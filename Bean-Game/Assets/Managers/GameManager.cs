@@ -3,32 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
+using System.Linq;
+using System.Diagnostics;
+using Random = UnityEngine.Random;
+using Debug = UnityEngine.Debug;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    [Header("NPC Spawning")]
-    public GameObject beanPrefab; // Prefab for NPC beans
-    public int initialBeanCount = 5; // Number of beans to spawn at game start
-    public Transform spawnArea; // Area where beans will spawn
-    [SerializeField] private float spawnSpreadRadius = 10f; // Radius to spread out the spawning positions
+    [Header("Scene Elements")]
+    public List<Hiding_Spots> hidingSpots = new List<Hiding_Spots>();
+    public List<NavNode> navNodes = new List<NavNode>();
+    public List<NPC_AI> beans = new List<NPC_AI>();
+
+    [Header("Bean Management")]
+    public GameObject beanPrefab;
+    public int initialBeanCount = 10;
 
     [Header("Game Stats")]
-    [SerializeField] private int customersServed; // Total customers served
-    [SerializeField] private float totalIncome; // Total income generated
-    [SerializeField] private int playerLives; // Player's remaining lives
+    [SerializeField] private int customersServed;
+    [SerializeField] private float totalIncome;
+    [SerializeField] private int playerLives;
 
     [Header("Customer Management")]
-    public GameObject customerPrefab; // Prefab for customer objects
-    public GameObject customerSpawnPoint; // Spawn point for customers
-    private List<GameObject> activeCustomers; // Currently active customers
+    public GameObject customerPrefab;
+    public GameObject customerSpawnPoint;
+    private List<GameObject> activeCustomers = new List<GameObject>();
+    public float nodeConnectionRadius = 3.0f;
 
-    [Header("Hiding Spot System")]
-    private List<Hiding_Spots> hidingSpots; // List of all hiding spots in the scene
-
-    private List<GameObject> beanInstances; // List of all spawned beans
-    private List<NPC_AI> npcInstances; // List of all NPC AI components
+    [Header("Income Management")]
+    private float income = 0f;
+    private GameObject player;
 
     public int gameScene;
 
@@ -40,32 +46,84 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            UnityEngine.Debug.LogWarning("Duplicate GameManager detected. Destroying extra instance.");
             Destroy(gameObject);
+            return;
         }
+
+        DontDestroyOnLoad(gameObject);
+        FindAllHidingSpots();
+        FindAllNavNodes();
+        //FindAllBeans(); // Might reenable later if needed
     }
 
     private void Start()
     {
-        UnityEngine.Debug.Log("GameManager initialized.");
+        player = GameObject.FindGameObjectWithTag("Player");
         InitializeGame();
+        FindAllNavNodes();
+        LinkAllNavNodes();
+        DebugNavNodes();
     }
 
     private void InitializeGame()
     {
-        hidingSpots = new List<Hiding_Spots>();
-        beanInstances = new List<GameObject>();
-        npcInstances = new List<NPC_AI>();
+        FindAllHidingSpots();
+        SpawnInitialBeans();
+        FindAllNavNodes();
         activeCustomers = new List<GameObject>();
-
-        FindAllHidingSpots(); // Locate all hiding spots in the scene
-        SpawnInitialBeans(); // Spawn initial set of NPC beans
+        SetIncome(StaticData.incomePassed);
     }
 
-    private void FindAllHidingSpots()
+    void FindAllHidingSpots()
     {
-        hidingSpots.AddRange(FindObjectsOfType<Hiding_Spots>());
-        UnityEngine.Debug.Log($"Total hiding spots found: {hidingSpots.Count}");
+        hidingSpots.Clear();
+        GameObject[] spots = GameObject.FindGameObjectsWithTag("HidingSpot");
+
+        if (spots.Length == 0)
+        {
+            //Debug.LogError("[GameManager] No hiding spots found! Maybe they are missing from the scene?");
+        }
+
+        foreach (GameObject obj in spots)
+        {
+            Hiding_Spots hidingSpotComponent = obj.GetComponent<Hiding_Spots>();
+            if (hidingSpotComponent != null)
+            {
+                hidingSpots.Add(hidingSpotComponent);
+                //Debug.Log("[GameManager] Registered hiding spot: " + obj.name);
+            }
+            else
+            {
+                //Debug.LogError("[GameManager] " + obj.name + " is tagged as 'HidingSpot' but missing Hiding_Spots component!");
+            }
+        }
+        //Debug.Log("[GameManager] Total hiding spots found: " + hidingSpots.Count);
+    }
+
+    void FindAllNavNodes()
+    {
+        navNodes = new List<NavNode>(FindObjectsOfType<NavNode>());
+        //Debug.Log("[GameManager] Found navigation nodes: " + navNodes.Count);
+    }
+
+    void LinkAllNavNodes()
+    {
+        foreach (NavNode node in navNodes)
+        {
+            node.connectedNodes.Clear();
+            foreach (NavNode otherNode in navNodes)
+            {
+                if (node != otherNode)
+                {
+                    float distance = Vector3.Distance(node.transform.position, otherNode.transform.position);
+                    if (distance <= nodeConnectionRadius)
+                    {
+                        node.connectedNodes.Add(otherNode);
+                        //Debug.Log("[GameManager] Linked " + node.name + " with " + otherNode.name);
+                    }
+                }
+            }
+        }
     }
 
     private void SpawnInitialBeans()
@@ -78,68 +136,42 @@ public class GameManager : MonoBehaviour
 
     public void SpawnBean()
     {
-        Vector3 spawnPosition = GetRandomNavMeshPosition();
-        GameObject newBean = Instantiate(beanPrefab, spawnPosition, Quaternion.identity);
-
-        if (newBean == null)
+        if (beanPrefab == null)
         {
-            UnityEngine.Debug.LogError("Failed to spawn NPC.");
             return;
         }
 
-        AddNPC(newBean); // Add NPC AI to the spawned bean
-        beanInstances.Add(newBean); // Track spawned bean
-    }
-
-    private void AddNPC(GameObject newBean)
-    {
-        NPC_AI npcAI = newBean.GetComponent<NPC_AI>();
-        if (npcAI != null)
+        Vector3 spawnPos = GetRandomNavMeshPosition();
+        if (spawnPos != Vector3.zero)
         {
-            npcAI.enabled = true; // Enable AI behavior for the NPC
-            npcInstances.Add(npcAI); // Track NPC AI instance
+            GameObject beanObj = Instantiate(beanPrefab, spawnPos, Quaternion.identity);
+            NPC_AI beanAI = beanObj.GetComponent<NPC_AI>();
+
+            if (beanAI != null)
+            {
+                beans.Add(beanAI);
+                RegisterBean(beanAI);
+            }
         }
     }
 
-    public void UpdatePlayerLives(int lives)
+    private Vector3 GetRandomNavMeshPosition()
     {
-        playerLives = lives; // Update player lives
-        UnityEngine.Debug.Log($"Player Lives Updated: {playerLives}");
-
-        if (playerLives <= 0)
+        if (navNodes.Count == 0)
         {
-            TriggerGameOver(); // Trigger game over if no lives left
+            return Vector3.zero;
         }
+
+        NavNode randomNode = navNodes[Random.Range(0, navNodes.Count)];
+        return randomNode.transform.position;
     }
-
-    private void TriggerGameOver()
-    {
-        UnityEngine.Debug.Log("Player has lost all lives. Triggering game over.");
-        UIManager.Instance.ShowGameOverScreen(); // Display game over screen
-    }
-
-    public int GetPlayerLives() => playerLives; // Return current player lives
-
-    public void UpdateIncome(float amount)
-    {
-        totalIncome = Mathf.Round((totalIncome + amount) * 100f) / 100f; // Update and round total income
-        UIManager.Instance.UpdateIncomeDisplay(totalIncome); // Update UI display for income
-        UnityEngine.Debug.Log($"Income Updated: ${totalIncome}");
-    }
-
-    public float GetIncome() => totalIncome; // Return total income
 
     public void SpawnCustomer()
     {
         if (activeCustomers.Count == 0)
         {
             GameObject newCustomer = Instantiate(customerPrefab, customerSpawnPoint.transform.position, Quaternion.identity);
-            activeCustomers.Add(newCustomer); // Track active customer
-            UnityEngine.Debug.Log("New customer spawned.");
-        }
-        else
-        {
-            UnityEngine.Debug.LogWarning("Customer spawn attempt failed - a customer is already active.");
+            activeCustomers.Add(newCustomer);
         }
     }
 
@@ -147,83 +179,75 @@ public class GameManager : MonoBehaviour
     {
         if (!activeCustomers.Remove(customer))
         {
-            UnityEngine.Debug.LogError("Attempted to remove a non-existent customer.");
             return;
         }
 
-        Destroy(customer); // Remove customer from the scene
-        UnityEngine.Debug.Log("Customer removed.");
+        Destroy(customer);
     }
 
-    public Hiding_Spots GetRandomHidingSpot()
+    public void UpdatePlayerLives(int lives)
     {
-        if (hidingSpots.Count == 0)
+        playerLives = lives;
+        if (playerLives <= 0)
         {
-            UnityEngine.Debug.LogWarning("No hiding spots available.");
-            return null;
+            TriggerGameOver();
         }
-        return hidingSpots[UnityEngine.Random.Range(0, hidingSpots.Count)]; // Return random hiding spot
     }
 
-    public List<Hiding_Spots> GetAvailableHidingSpots()
+    private void TriggerGameOver()
     {
-        List<Hiding_Spots> availableSpots = new List<Hiding_Spots>();
-        foreach (var spot in hidingSpots)
-        {
-            if (spot.IsAvailable())
-            {
-                availableSpots.Add(spot); // Add available spots to the list
-            }
-        }
-        return availableSpots; // Return list of available hiding spots
+        UIManager.Instance.ShowGameOverScreen();
     }
 
-    public bool IsSpotVisibleToPlayer(Hiding_Spots spot)
-    {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player == null)
-        {
-            UnityEngine.Debug.LogError("[GameManager] Player not found in scene.");
-            return false;
-        }
+    public int GetPlayerLives() => playerLives;
 
-        Vector3 directionToSpot = spot.transform.position - player.transform.position;
-        if (Physics.Raycast(player.transform.position, directionToSpot, out RaycastHit hit))
-        {
-            return hit.transform == spot.transform; // Check if spot is visible to the player
-        }
-        return false; // Spot is not visible
+    public void UpdateIncome(float amount)
+    {
+        totalIncome += amount;
+        UIManager.Instance.UpdateIncomeDisplay(totalIncome);
     }
 
-    private Vector3 GetRandomNavMeshPosition()
+    public float GetIncome() => totalIncome;
+
+    public void SetIncome(float amount)
     {
-        if (spawnArea == null)
-        {
-            UnityEngine.Debug.LogWarning("Spawn area not set. Using default position.");
-            return transform.position;
-        }
-
-        Vector3 randomOffset = new Vector3(
-            UnityEngine.Random.Range(-spawnSpreadRadius, spawnSpreadRadius),
-            0,
-            UnityEngine.Random.Range(-spawnSpreadRadius, spawnSpreadRadius)
-        );
-
-        Vector3 randomPosition = spawnArea.position + randomOffset;
-
-        if (NavMesh.SamplePosition(randomPosition, out NavMeshHit hit, 5.0f, NavMesh.AllAreas))
-        {
-            return hit.position;
-        }
-
-        UnityEngine.Debug.LogWarning("Failed to find valid NavMesh position. Using spawn area position.");
-        return spawnArea.position;
+        totalIncome = amount;
     }
 
     public void CustomerServed()
     {
-        customersServed++; // Increment customers served count
-        UnityEngine.Debug.Log($"Customers Served: {customersServed}");
+        customersServed++;
+    }
+
+    public List<NavNode> GetNavNodes()
+    {
+        return navNodes;
+    }
+
+    public List<Hiding_Spots> GetAvailableHidingSpots()
+    {
+        return hidingSpots;
+    }
+
+    public void RegisterBean(NPC_AI bean)
+    {
+        if (!beans.Contains(bean))
+        {
+            beans.Add(bean);
+        }
+    }
+
+    public void UnregisterBean(NPC_AI bean)
+    {
+        if (beans.Contains(bean))
+        {
+            beans.Remove(bean);
+        }
+    }
+
+    public Vector3 GetPlayerPosition()
+    {
+        return player != null ? player.transform.position : Vector3.zero;
     }
 
     public void ChangeScene(int scenenum)
@@ -236,8 +260,48 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(scenenum);
     }
 
-    public void SetIncome(float amount)
+    public Hiding_Spots FindBetterHidingSpot(Vector3 npcPosition, Hiding_Spots lastHidingSpot)
     {
-        totalIncome = amount;
+        if (hidingSpots == null || hidingSpots.Count == 0)
+        {
+            Debug.LogError("[GameManager] No hiding spots availible!"); 
+            return null;
+        }
+
+        List<Hiding_Spots> availableSpots = hidingSpots.FindAll(spot => spot.IsAvailable());
+
+        if (availableSpots.Count == 0)
+        {
+            availableSpots = new List<Hiding_Spots>(hidingSpots);
+        }
+
+        Hiding_Spots bestSpot = null;
+        float bestScore = float.MaxValue;
+
+        foreach (var spot in availableSpots)
+        {
+            float distanceToPlayer = Vector3.Distance(spot.transform.position, GetPlayerPosition());
+            float distanceToNPC = Vector3.Distance(spot.transform.position, npcPosition);
+
+            bool isLastUsed = (spot == lastHidingSpot);
+            float reusePenalty = isLastUsed ? 100f : 0f;
+            float score = distanceToNPC - (distanceToPlayer * 0.5f) + reusePenalty;
+
+            if (!isLastUsed && score < bestScore)
+            {
+                bestScore = score;
+                bestSpot = spot;
+            }
+        }
+
+        return bestSpot ?? hidingSpots.OrderBy(x => Random.value).FirstOrDefault();
+    }
+
+    void DebugNavNodes()
+    {
+        foreach (NavNode node in navNodes)
+        {
+            //Debug.Log("[Debug] " + node.name + " has " + node.connectedNodes.Count + " connections.");
+        }
     }
 }

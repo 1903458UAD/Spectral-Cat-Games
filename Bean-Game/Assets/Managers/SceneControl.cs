@@ -4,12 +4,17 @@ using UnityEngine;
 
 
 
+
 public class SceneControl : MonoBehaviour
 {
+
+    [SerializeField] private GameObject PauseMenuUI;
+
     private void Start()
     {
         GameManager.Instance.SetIncome(StaticData.incomePassed);
         UIManager.Instance.UpdateIncomeDisplay(GameManager.Instance.GetIncome());
+
     }
 
     private void Update()
@@ -18,6 +23,13 @@ public class SceneControl : MonoBehaviour
         {
             GameManager.Instance.ChangeScene(1);
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape)) // "ESC" key
+        {
+            UIManager.Instance.TogglePause();
+        }
+
     }
+
 }
 
