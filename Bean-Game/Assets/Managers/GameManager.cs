@@ -36,6 +36,9 @@ public class GameManager : MonoBehaviour
     private float income = 0f;
     private GameObject player;
 
+    private Dictionary<NPC_AI, Hiding_Spots> npcHidingAssignments = new Dictionary<NPC_AI, Hiding_Spots>();
+
+
     public int gameScene;
 
     private void Awake()
@@ -263,15 +266,17 @@ public class GameManager : MonoBehaviour
     {
         if (hidingSpots == null || hidingSpots.Count == 0)
         {
-            Debug.LogError("[GameManager] No hiding spots availible!"); 
+            Debug.LogError("[GameManager] No hiding spots available!");
             return null;
         }
 
+        // Ensure we only consider hiding spots that still have space
         List<Hiding_Spots> availableSpots = hidingSpots.FindAll(spot => spot.IsAvailable());
 
         if (availableSpots.Count == 0)
         {
-            availableSpots = new List<Hiding_Spots>(hidingSpots);
+            Debug.LogWarning("[GameManager] No available hiding spots!");
+            return null;
         }
 
         Hiding_Spots bestSpot = null;
@@ -279,12 +284,17 @@ public class GameManager : MonoBehaviour
 
         foreach (var spot in availableSpots)
         {
+            if (!spot.IsAvailable()) continue; // Skip full spots
+            if (npcHidingAssignments.ContainsValue(spot)) continue; // Ensure no double assignment
+
             float distanceToPlayer = Vector3.Distance(spot.transform.position, GetPlayerPosition());
             float distanceToNPC = Vector3.Distance(spot.transform.position, npcPosition);
 
             bool isLastUsed = (spot == lastHidingSpot);
             float reusePenalty = isLastUsed ? 100f : 0f;
-            float score = distanceToNPC - (distanceToPlayer * 0.5f) + reusePenalty;
+
+            float randomFactor = Random.Range(0f, 20f);
+            float score = distanceToNPC - (distanceToPlayer * 0.5f) + reusePenalty + randomFactor;
 
             if (!isLastUsed && score < bestScore)
             {
@@ -293,8 +303,55 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        return bestSpot ?? hidingSpots.OrderBy(x => Random.value).FirstOrDefault();
+        // Make sure to log the selection to debug clustering issues
+        if (bestSpot != null)
+        {
+            Debug.Log($"[GameManager] Assigning {bestSpot.name} to an NPC.");
+        }
+
+        return bestSpot; // Return the best spot that still has space
     }
+
+    public void RegisterNPCInSpot(NPC_AI npc, Hiding_Spots spot)
+    {
+        if (spot == null)
+        {
+            Debug.LogWarning($"[GameManager] Tried to register {npc.gameObject.name} to a null hiding spot.");
+            return; // Prevent assigning null spots
+        }
+
+        if (!npcHidingAssignments.ContainsKey(npc))
+        {
+            npcHidingAssignments[npc] = spot;
+            Debug.Log($"[GameManager] Registered {npc.gameObject.name} to {spot.name}");
+        }
+    }
+
+
+
+
+    public void UnregisterNPCFromSpot(NPC_AI npc)
+    {
+        if (npcHidingAssignments.ContainsKey(npc))
+        {
+            Hiding_Spots spot = npcHidingAssignments[npc]; // Get assigned spot
+            if (spot != null)
+            {
+                spot.DecrementOccupancy(); // ✅ Ensure the spot is freed properly
+            }
+
+            npcHidingAssignments.Remove(npc);
+            Debug.Log($"[GameManager] Unregistered {npc.gameObject.name} from {spot.name}");
+        }
+    }
+
+
+
+
+
+
+
+
 
     void DebugNavNodes()
     {
