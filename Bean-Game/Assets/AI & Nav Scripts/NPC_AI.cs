@@ -27,6 +27,12 @@ public class NPC_AI : MonoBehaviour
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        navMeshAgent.autoTraverseOffMeshLink = false; //Stop auto-adjusting movement
+        navMeshAgent.updatePosition = true;
+        navMeshAgent.updateRotation = true;
+        animator.applyRootMotion = false; //Prevents animations from adjusting position
+
+
 
         if (navMeshAgent == null || animator == null)
         {
@@ -37,13 +43,91 @@ public class NPC_AI : MonoBehaviour
 
     private void Start()
     {
+
+        //StartCoroutine(DelayedAnimatorEnable());
+        //StartCoroutine(KeepBeanGrounded());
+        
+
+
+        navMeshAgent.acceleration = 1f;  // Lower acceleration
+        navMeshAgent.speed = 1.0f;       // Reduce speed on start
+        StartCoroutine(DelayedAceleration());
+
+        //Rigidbody rb = GetComponent<Rigidbody>();
+        //if (rb != null)
+        //{
+        //    rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
+        //}
+        //StartCoroutine(AdjustYPosition());
+
+
         GameManager.Instance.RegisterBean(this);
+        int beanLayer = LayerMask.NameToLayer("Interactable");
+
+        if (beanLayer == -1)
+        {
+            Debug.LogError("Layer 'Interactable' does not exist! Please create it in the Unity Layer settings.");
+            return;
+        }
+
+        Physics.IgnoreLayerCollision(beanLayer, beanLayer, true);
+        Debug.Log($"[NPC_AI] Ignoring collision between beans on layer {beanLayer}");
+
         SelectNewHidingSpot();
     }
 
-    //private void OldHidingLogic()
+    private IEnumerator DelayedAceleration()
+    {
+        yield return new WaitForSeconds(1.0f); //Wait for physics to settle
+        navMeshAgent.acceleration = 4f;  // Lower acceleration
+        navMeshAgent.speed = 3f;
+
+    }
+
+    //IEnumerator AdjustYPosition()
     //{
-    //    Debug.Log("Old hiding logic was here but was removed due to better implementation.");
+    //    yield return new WaitForSeconds(0.5f);  // Wait for physics to settle
+
+    //    Vector3 position = transform.position;
+    //    position.y = 0.1f;  // Adjust this to the correct ground level
+    //    transform.position = position;
+
+    //    Debug.Log("[NPC_AI] Adjusted Y position to prevent jumping.");
+    //}
+
+
+    //private IEnumerator DelayedAnimatorEnable()
+    //{
+    //    animator.enabled = false;
+    //    yield return new WaitForSeconds(0.5f); //Wait for physics to settle
+    //    animator.enabled = true;
+    //}
+
+
+    //private IEnumerator KeepBeanGrounded()
+    //{
+    //    yield return new WaitForSeconds(0.55f); // Wait until after Animator reactivates
+
+    //    Vector3 startPos = transform.position;
+    //    startPos.y = GetGroundYPosition(startPos);
+    //    transform.position = startPos; // Snap to ground to counter any unwanted movement
+    //}
+
+    //private float GetGroundYPosition(Vector3 position)
+    //{
+    //    RaycastHit hit;
+    //    if (Physics.Raycast(position + Vector3.up * 1f, Vector3.down, out hit, 2f, LayerMask.GetMask("Ground")))
+    //    {
+    //        return hit.point.y; // Return the exact Y position of the ground
+    //    }
+    //    return position.y; // Default to current position if no ground found
+    //}
+
+
+
+    //private void HidingLogic()
+    //{
+    //    
     //}
 
     private void FindNewHidingSpot()
@@ -87,7 +171,7 @@ public class NPC_AI : MonoBehaviour
         lastHidingSpot = currentHidingSpot; // Save last used spot
         currentHidingSpot.IncrementOccupancy(); // Reserve the spot
 
-        // ✅ Correctly register the NPC with the GM
+        //Correctly register the NPC with the GM
         GameManager.Instance.RegisterNPCInSpot(this, currentHidingSpot);
 
         Debug.Log($"[NPC_AI] {gameObject.name} moving to {currentHidingSpot.name}");
@@ -109,21 +193,72 @@ public class NPC_AI : MonoBehaviour
         }
 
         Debug.Log($"[NPC_AI] Moving to hiding spot: {currentHidingSpot.name}");
+
+
+
+
+        float distanceToSpot = Vector3.Distance(transform.position, currentHidingSpot.transform.position);
+
+        //if (distanceToSpot < 3f) // If close, slow down to prevent overshooting
+        //{
+        //    navMeshAgent.speed = maxWalkSpeed; // Reduce to walking speed
+        //    navMeshAgent.stoppingDistance = 0.3f; // Stop closer to the center
+        //}
+        //else
+        //{
+        //    navMeshAgent.speed = maxRunSpeed; // Normal speed otherwise
+        //    navMeshAgent.stoppingDistance = 0.5f;
+        //}
+
+
+        //if (currentHidingSpot.hidingType == Hiding_Spots.HidingType.Small || currentHidingSpot.hidingType == Hiding_Spots.HidingType.Medium)
+        //{
+        //    if (distanceToSpot < 4f) // If close, slow down to prevent overshooting
+        //    {
+
+        //        navMeshAgent.speed = maxWalkSpeed * 0.8f; // Reduce speed more for these spots
+        //        navMeshAgent.stoppingDistance = 0.2f; // Stop closer to the center
+        //    }
+        //    else
+        //    {
+        //        navMeshAgent.speed = maxRunSpeed; // Normal speed otherwise
+        //        navMeshAgent.stoppingDistance = 0.5f;
+        //    }
+        //}
+        //else
+        //{
+        //    // Normal hiding spots use standard speed settings
+        //    navMeshAgent.speed = maxRunSpeed;
+        //    navMeshAgent.stoppingDistance = 0.5f;
+        //}
+
+
         navMeshAgent.SetDestination(currentHidingSpot.transform.position);
     }
 
     private void EnterHidingSpot()
     {
-        if (currentHidingSpot == null || Vector3.Distance(transform.position, currentHidingSpot.transform.position) > 1f)
+        if (currentHidingSpot == null || Vector3.Distance(transform.position, currentHidingSpot.transform.position) > 0.5f)
         {
             Debug.LogWarning($"[NPC_AI] {gameObject.name} failed to reach a valid hiding spot! Searching again...");
-            SelectNewHidingSpot(); // Try again
+            SelectNewHidingSpot();
             return;
         }
 
         isHiding = true;
         navMeshAgent.isStopped = true;
         animator.enabled = false;
+
+
+        //Delay the freeze to prevent sticky behavior
+        //Rigidbody rb = GetComponent<Rigidbody>();
+        //if (rb != null)
+        //{
+        //    rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
+        //    Debug.Log($"[NPC_AI] {gameObject.name} is frozen at hiding spot.");
+        //}
+
+        //StartCoroutine(DelayedFreezePosition());
 
         switch (currentHidingSpot.hidingType)
         {
@@ -134,22 +269,36 @@ public class NPC_AI : MonoBehaviour
 
             case Hiding_Spots.HidingType.Small:
                 Debug.Log($"[NPC_AI] {gameObject.name} is hiding in a small spot and will maintain cover.");
-                StartCoroutine(SmallHidingBehavior());
+                StartCoroutine(HidingCoroutine());
                 break;
 
             case Hiding_Spots.HidingType.Medium:
                 Debug.Log($"[NPC_AI] {gameObject.name} is hiding in a medium spot and will react slower.");
-                StartCoroutine(MediumHidingBehavior());
+                StartCoroutine(HidingCoroutine());
                 break;
         }
     }
+
+
+    //private IEnumerator DelayedFreezePosition()
+    //{
+    //    yield return new WaitForSeconds(1f);  // Wait for physics to settle
+
+    //    Rigidbody rb = GetComponent<Rigidbody>();
+    //    if (rb != null)
+    //    {
+    //        rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
+    //        Debug.Log($"[NPC_AI] {gameObject.name} Y-axis frozen after delay.");
+    //    }
+    //}
+
 
 
     private IEnumerator ExitHidingSpot()
     {
         if (currentHidingSpot != null)
         {
-            GameManager.Instance.UnregisterNPCFromSpot(this); // ✅ Correctly unregister from GM
+            GameManager.Instance.UnregisterNPCFromSpot(this);
             Debug.Log($"[NPC_AI] {gameObject.name} leaving hiding spot: {currentHidingSpot.name}");
 
             while (Vector3.Distance(transform.position, GameManager.Instance.GetPlayerPosition()) < 3.5f)
@@ -165,9 +314,19 @@ public class NPC_AI : MonoBehaviour
         isHiding = false;
         animator.enabled = true;
         navMeshAgent.isStopped = false;
+        navMeshAgent.updatePosition = true; // Restore normal movement
+        navMeshAgent.updateRotation = true;
+        navMeshAgent.velocity = Vector3.zero; // Reset velocity
+
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.constraints = RigidbodyConstraints.None;
+        }
 
         SelectNewHidingSpot();
     }
+
 
 
 
@@ -195,7 +354,7 @@ public class NPC_AI : MonoBehaviour
                 MaintainCover();
 
                 // If the player gets too close and can see the NPC, they should run
-                if (playerDistance < 2.5f && !IsSpotHidingMe())
+                if (playerDistance < 2.5f)
                 {
                     Debug.Log($"[NPC_AI] {gameObject.name} is exposed! Running!");
                     StartCoroutine(ExitHidingSpot());
@@ -341,56 +500,56 @@ public class NPC_AI : MonoBehaviour
 
 
 
-    private bool IsSpotHidingMe()
-    {
-        Vector3 playerPosition = GameManager.Instance.GetPlayerPosition();
-        Vector3 toPlayer = (playerPosition - transform.position).normalized;
+    //private bool IsSpotHidingMe()
+    //{
+    //    Vector3 playerPosition = GameManager.Instance.GetPlayerPosition();
+    //    Vector3 toPlayer = (playerPosition - transform.position).normalized;
 
-        if (Physics.Raycast(transform.position, toPlayer, out RaycastHit hit))
-        {
-            return hit.collider.CompareTag("HidingSpot"); // Still hidden if cover blocks the view
-        }
+    //    if (Physics.Raycast(transform.position, toPlayer, out RaycastHit hit))
+    //    {
+    //        return hit.collider.CompareTag("HidingSpot"); // Still hidden if cover blocks the view
+    //    }
 
-        return false; // No cover, NPC is exposed!
-    }
-
-
-    private IEnumerator SmallHidingBehavior()
-{
-    yield return new WaitForSeconds(1.0f); // Allow time to "settle" into hiding
-
-    while (isHiding)
-    {
-        MaintainCover(); // Continuously reposition to stay hidden
-
-        if (!IsSpotHidingMe()) // If exposed, they bolt
-        {
-            Debug.Log($"[NPC_AI] {gameObject.name} is exposed in a small spot! Running!");
-            StartCoroutine(ExitHidingSpot());
-            yield break;
-        }
-
-        yield return new WaitForSeconds(0.1f); // React very quickly
-    }
-}
+    //    return false; // No cover, NPC is exposed!
+    //}
 
 
-    private IEnumerator MediumHidingBehavior()
-    {
-        while (isHiding)
-        {
-            MaintainCover();
+    //private IEnumerator SmallHidingBehavior()
+    //{
+    //    yield return new WaitForSeconds(1.0f); // Allow time to "settle" into hiding
 
-            if (!IsSpotHidingMe())
-            {
-                Debug.Log($"[NPC_AI] {gameObject.name} is exposed in a medium spot! Running!");
-                StartCoroutine(ExitHidingSpot());
-                yield break;
-            }
+    //    while (isHiding)
+    //    {
+    //        MaintainCover(); // Continuously reposition to stay hidden
 
-            yield return new WaitForSeconds(0.6f); // Slower reaction time than small spots
-        }
-    }
+    //        //if (!IsSpotHidingMe()) // If exposed, they bolt
+    //        //{
+    //        //    Debug.Log($"[NPC_AI] {gameObject.name} is exposed in a small spot! Running!");
+    //        //    StartCoroutine(ExitHidingSpot());
+    //        //    yield break;
+    //        //}
+
+    //        yield return new WaitForSeconds(0.1f); // React very quickly
+    //    }
+    //}
+
+
+    //private IEnumerator MediumHidingBehavior()
+    //{
+    //    while (isHiding)
+    //    {
+    //        MaintainCover();
+
+    //        //if (!IsSpotHidingMe())
+    //        //{
+    //        //    Debug.Log($"[NPC_AI] {gameObject.name} is exposed in a medium spot! Running!");
+    //        //    StartCoroutine(ExitHidingSpot());
+    //        //    yield break;
+    //        //}
+
+    //        yield return new WaitForSeconds(0.6f); // Slower reaction time than small spots
+    //    }
+    //}
 
 
 

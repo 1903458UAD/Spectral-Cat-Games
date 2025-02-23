@@ -105,7 +105,10 @@ public class GameManager : MonoBehaviour
 
     void FindAllNavNodes()
     {
+
+
         navNodes = new List<NavNode>(FindObjectsOfType<NavNode>());
+
         //Debug.Log("[GameManager] Found navigation nodes: " + navNodes.Count);
     }
 
@@ -154,20 +157,72 @@ public class GameManager : MonoBehaviour
             {
                 beans.Add(beanAI);
                 RegisterBean(beanAI);
+                //StartCoroutine(FreezeYAxisTemporarily(beanAI)); //NEW: Freeze Y for a second
             }
         }
     }
 
+    //private IEnumerator FreezeYAxisTemporarily(NPC_AI bean)
+    //{
+    //    Rigidbody rb = bean.GetComponent<Rigidbody>();
+
+    //    if (rb != null)
+    //    {
+    //        rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation; //Freeze Y movement
+    //    }
+
+    //    yield return new WaitForSeconds(1f); // Wait a second
+
+    //    if (rb != null)
+    //    {
+    //        rb.constraints = RigidbodyConstraints.FreezeRotation; //Unfreeze Y movement after a second
+    //    }
+    //}
+
+
+
+
+
+
+    //private IEnumerator SnapBeanToNavMesh(NPC_AI bean)
+    //{
+    //    yield return new WaitForSeconds(0.1f); // Let physics settle
+
+    //    if (NavMesh.SamplePosition(bean.transform.position, out NavMeshHit hit, 2f, NavMesh.AllAreas))
+    //    {
+    //        bean.transform.position = hit.position; // Correct Y placement
+    //    }
+    //}
+
+
     private Vector3 GetRandomNavMeshPosition()
     {
-        if (navNodes.Count == 0)
+        if (navNodes == null || navNodes.Count == 0)
         {
+            Debug.LogError("[GameManager] No NavNodes found! This shouldn't happen.");
             return Vector3.zero;
         }
 
+        //if (navNodes.Count == 0)
+        //{
+        //    return Vector3.zero;
+        //}
+
         NavNode randomNode = navNodes[Random.Range(0, navNodes.Count)];
-        return randomNode.transform.position;
+        Vector3 spawnPosition = randomNode.transform.position; //
+
+        //Ensure the position is actually on the NavMesh
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(spawnPosition, out hit, 1.0f, NavMesh.AllAreas))
+        {
+            return hit.position; //Return a valid NavMesh position
+        }
+
+        Debug.LogWarning("[GameManager] Failed to find a valid NavMesh position! Using fallback.");
+        return spawnPosition; //If not valid, return original position (less ideal)
     }
+
+
 
     public void SpawnCustomer()
     {
@@ -234,9 +289,10 @@ public class GameManager : MonoBehaviour
 
     public void RegisterBean(NPC_AI bean)
     {
+
         if (!beans.Contains(bean))
         {
-            beans.Add(bean);
+            beans.Add(bean); // Adds the bean if not already registered 
         }
     }
 
@@ -337,7 +393,7 @@ public class GameManager : MonoBehaviour
             Hiding_Spots spot = npcHidingAssignments[npc]; // Get assigned spot
             if (spot != null)
             {
-                spot.DecrementOccupancy(); // ✅ Ensure the spot is freed properly
+                spot.DecrementOccupancy(); //Ensure the spot is freed properly
             }
 
             npcHidingAssignments.Remove(npc);
