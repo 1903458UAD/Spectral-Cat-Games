@@ -22,6 +22,8 @@ public class NPC_AI : MonoBehaviour
     public float rotationSpeed = 3.0f;
     public float stayAtWaypointDuration = 10f;
     private Hiding_Spots lastHidingSpot;
+    private bool isPickedUp = false; // Track if the NPC is currently held
+
 
     private void Awake()
     {
@@ -210,9 +212,22 @@ public class NPC_AI : MonoBehaviour
         Debug.Log($"[NPC_AI] Moving to hiding spot: {currentHidingSpot.name}");
 
 
-
+        if (!navMeshAgent.enabled || !navMeshAgent.isOnNavMesh)
+        {
+            Debug.LogWarning($"[NPC_AI] {gameObject.name} is not on NavMesh. Attempting to reposition...");
+            StartCoroutine(TryRepositionToNavMesh());
+            return;
+        }
 
         float distanceToSpot = Vector3.Distance(transform.position, currentHidingSpot.transform.position);
+
+        if (navMeshAgent.pathStatus != NavMeshPathStatus.PathComplete ||
+            Vector3.Distance(navMeshAgent.destination, currentHidingSpot.transform.position) > 0.5f)
+        {
+            navMeshAgent.SetDestination(currentHidingSpot.transform.position);
+        }
+
+        //float distanceToSpot = Vector3.Distance(transform.position, currentHidingSpot.transform.position);
 
         //if (distanceToSpot < 3f) // If close, slow down to prevent overshooting
         //{
@@ -248,50 +263,81 @@ public class NPC_AI : MonoBehaviour
         //}
 
 
-        navMeshAgent.SetDestination(currentHidingSpot.transform.position);
+        //navMeshAgent.SetDestination(currentHidingSpot.transform.position);
     }
 
-    private void EnterHidingSpot()
+    private IEnumerator EnterHidingSpot()
     {
         if (currentHidingSpot == null || Vector3.Distance(transform.position, currentHidingSpot.transform.position) > 0.5f)
         {
             Debug.LogWarning($"[NPC_AI] {gameObject.name} failed to reach a valid hiding spot! Searching again...");
             SelectNewHidingSpot();
-            return;
+            yield break;
         }
 
         isHiding = true;
         navMeshAgent.isStopped = true;
         animator.enabled = false;
 
-
-        //Delay the freeze to prevent sticky behavior
-        //Rigidbody rb = GetComponent<Rigidbody>();
-        //if (rb != null)
-        //{
-        //    rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
-        //    Debug.Log($"[NPC_AI] {gameObject.name} is frozen at hiding spot.");
-        //}
-
-        //StartCoroutine(DelayedFreezePosition());
-
         switch (currentHidingSpot.hidingType)
         {
             case Hiding_Spots.HidingType.Normal:
                 Debug.Log($"[NPC_AI] {gameObject.name} is now hiding in a normal spot: {currentHidingSpot.name}");
-                StartCoroutine(HidingCoroutine());
+                yield return StartCoroutine(HidingCoroutine()); 
                 break;
 
             case Hiding_Spots.HidingType.Small:
                 Debug.Log($"[NPC_AI] {gameObject.name} is hiding in a small spot and will maintain cover.");
-                StartCoroutine(HidingCoroutine());
+                yield return StartCoroutine(HidingCoroutine());
                 break;
 
             case Hiding_Spots.HidingType.Medium:
                 Debug.Log($"[NPC_AI] {gameObject.name} is hiding in a medium spot and will react slower.");
-                StartCoroutine(HidingCoroutine());
+                yield return StartCoroutine(HidingCoroutine());
                 break;
         }
+
+
+
+        //if (currentHidingSpot == null || Vector3.Distance(transform.position, currentHidingSpot.transform.position) > 0.5f)
+        //{
+        //    Debug.LogWarning($"[NPC_AI] {gameObject.name} failed to reach a valid hiding spot! Searching again...");
+        //    SelectNewHidingSpot();
+        //    return;
+        //}
+
+        //isHiding = true;
+        //navMeshAgent.isStopped = true;
+        //animator.enabled = false;
+
+
+        ////Delay the freeze to prevent sticky behavior
+        ////Rigidbody rb = GetComponent<Rigidbody>();
+        ////if (rb != null)
+        ////{
+        ////    rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
+        ////    Debug.Log($"[NPC_AI] {gameObject.name} is frozen at hiding spot.");
+        ////}
+
+        ////StartCoroutine(DelayedFreezePosition());
+
+        //switch (currentHidingSpot.hidingType)
+        //{
+        //    case Hiding_Spots.HidingType.Normal:
+        //        Debug.Log($"[NPC_AI] {gameObject.name} is now hiding in a normal spot: {currentHidingSpot.name}");
+        //        StartCoroutine(HidingCoroutine());
+        //        break;
+
+        //    case Hiding_Spots.HidingType.Small:
+        //        Debug.Log($"[NPC_AI] {gameObject.name} is hiding in a small spot and will maintain cover.");
+        //        StartCoroutine(HidingCoroutine());
+        //        break;
+
+        //    case Hiding_Spots.HidingType.Medium:
+        //        Debug.Log($"[NPC_AI] {gameObject.name} is hiding in a medium spot and will react slower.");
+        //        StartCoroutine(HidingCoroutine());
+        //        break;
+        //}
     }
 
 
@@ -357,6 +403,12 @@ public class NPC_AI : MonoBehaviour
 
     private void Update()
     {
+        //Stop all AI logic if the NPC is picked up
+        if (isPickedUp)
+        {
+            return; // Completely halt NPC behavior while being held
+        }
+
         if (!navMeshAgent.enabled || !navMeshAgent.isOnNavMesh)
         {
             Debug.LogWarning("[NPC_AI] Off NavMesh! Attempting to reposition.");
@@ -392,9 +444,10 @@ public class NPC_AI : MonoBehaviour
 
         if (currentHidingSpot != null && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance && !navMeshAgent.pathPending)
         {
-            EnterHidingSpot();
+            StartCoroutine(EnterHidingSpot());
         }
     }
+
 
 
 
@@ -455,7 +508,14 @@ public class NPC_AI : MonoBehaviour
 
     private IEnumerator RequestBetterHidingSpot()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.5f); // Wait before searching
+
+        if (!navMeshAgent.enabled || !navMeshAgent.isOnNavMesh)
+        {
+            Debug.LogWarning($"[NPC_AI] {gameObject.name} is not on NavMesh. Attempting to reposition...");
+            StartCoroutine(TryRepositionToNavMesh());
+            yield break; // Stop execution if repositioning is needed
+        }
 
         Hiding_Spots newHidingSpot = GameManager.Instance.FindBetterHidingSpot(transform.position, currentHidingSpot);
 
@@ -467,9 +527,19 @@ public class NPC_AI : MonoBehaviour
             }
 
             currentHidingSpot = newHidingSpot;
-            navMeshAgent.SetDestination(currentHidingSpot.transform.position);
+
+            if (navMeshAgent.isOnNavMesh) 
+            {
+                navMeshAgent.SetDestination(currentHidingSpot.transform.position);
+            }
+            else
+            {
+                Debug.LogWarning($"[NPC_AI] {gameObject.name} is off the NavMesh! Trying to reposition...");
+                StartCoroutine(TryRepositionToNavMesh());
+            }
         }
     }
+
 
     private NavNode GetClosestNode(List<NavNode> nodes)
     {
@@ -516,15 +586,20 @@ public class NPC_AI : MonoBehaviour
         if (navMeshAgent != null)
         {
             navMeshAgent.isStopped = true;
-            navMeshAgent.enabled = false;  // Disable completely
+            navMeshAgent.enabled = false;
         }
+
+        isPickedUp = true; // Mark NPC as picked up
     }
+
 
     public void OnDropped()
     {
+        isPickedUp = false; // Mark NPC as not being held
+
         if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 1.0f, NavMesh.AllAreas))
         {
-            transform.position = hit.position;  // Snap back to the NavMesh
+            transform.position = hit.position;
             navMeshAgent.enabled = true;
             navMeshAgent.isStopped = false;
         }
@@ -534,6 +609,7 @@ public class NPC_AI : MonoBehaviour
             StartCoroutine(TryRepositionToNavMesh());
         }
     }
+
 
 
     private IEnumerator TryRepositionToNavMesh()
@@ -547,17 +623,19 @@ public class NPC_AI : MonoBehaviour
             navMeshAgent.enabled = true;
             navMeshAgent.isStopped = false;
 
-            // Add slight random delay before finding a new hiding spot
-            yield return new WaitForSeconds(Random.Range(0.2f, 1.5f));
-
             Debug.Log($"[NPC_AI] {gameObject.name} repositioned onto NavMesh at {hit.position}");
+
+            yield return new WaitForSeconds(Random.Range(0.2f, 1.5f)); // Add slight delay before selecting hiding spot
+
             SelectNewHidingSpot();
         }
         else
         {
-            Debug.LogError("[NPC_AI] Could not find a valid NavMesh position nearby!");
+            Debug.LogError($"[NPC_AI] {gameObject.name} could not find a valid NavMesh position nearby! Disabling movement.");
+            navMeshAgent.enabled = false; // Disable the agent if no valid position is found
         }
     }
+
 
 
 
