@@ -158,7 +158,11 @@ public class NPC_AI : MonoBehaviour
             currentHidingSpot.DecrementOccupancy(); // Free up old spot
         }
 
-        // Let GM assign a spot instead of choosing independently
+        // Get available hiding spots and shuffle them
+        List<Hiding_Spots> availableSpots = GameManager.Instance.GetAvailableHidingSpots();
+        availableSpots = ShuffleList(availableSpots);
+
+        // Select a better spot based on distance, avoiding last used spot
         currentHidingSpot = GameManager.Instance.FindBetterHidingSpot(transform.position, lastHidingSpot);
 
         if (currentHidingSpot == null || !currentHidingSpot.IsAvailable())
@@ -171,12 +175,23 @@ public class NPC_AI : MonoBehaviour
         lastHidingSpot = currentHidingSpot; // Save last used spot
         currentHidingSpot.IncrementOccupancy(); // Reserve the spot
 
-        //Correctly register the NPC with the GM
         GameManager.Instance.RegisterNPCInSpot(this, currentHidingSpot);
 
         Debug.Log($"[NPC_AI] {gameObject.name} moving to {currentHidingSpot.name}");
         MoveToHidingSpot();
     }
+
+    // Shuffle a list to randomize selection
+    private List<Hiding_Spots> ShuffleList(List<Hiding_Spots> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            int randomIndex = Random.Range(i, list.Count);
+            (list[i], list[randomIndex]) = (list[randomIndex], list[i]);
+        }
+        return list;
+    }
+
 
 
 
@@ -342,6 +357,13 @@ public class NPC_AI : MonoBehaviour
 
     private void Update()
     {
+        if (!navMeshAgent.enabled || !navMeshAgent.isOnNavMesh)
+        {
+            Debug.LogWarning("[NPC_AI] Off NavMesh! Attempting to reposition.");
+            StartCoroutine(TryRepositionToNavMesh());
+            return;
+        }
+
         if (isHiding)
         {
             float playerDistance = Vector3.Distance(transform.position, GameManager.Instance.GetPlayerPosition());
@@ -350,10 +372,8 @@ public class NPC_AI : MonoBehaviour
                 (currentHidingSpot.hidingType == Hiding_Spots.HidingType.Small ||
                  currentHidingSpot.hidingType == Hiding_Spots.HidingType.Medium))
             {
-                // Continuously update NPC position to stay behind cover
                 MaintainCover();
 
-                // If the player gets too close and can see the NPC, they should run
                 if (playerDistance < 2.5f)
                 {
                     Debug.Log($"[NPC_AI] {gameObject.name} is exposed! Running!");
@@ -362,16 +382,9 @@ public class NPC_AI : MonoBehaviour
                 return;
             }
 
-            // Normal hiding spots: Freeze if the player is near
-            if (playerDistance < 3.5f)
-            {
-                return;
-            }
+            if (playerDistance < 3.5f) return;
+            if (currentHidingSpot == null) StartCoroutine(ExitHidingSpot());
 
-            if (currentHidingSpot == null)
-            {
-                StartCoroutine(ExitHidingSpot());
-            }
             return;
         }
 
@@ -382,6 +395,7 @@ public class NPC_AI : MonoBehaviour
             EnterHidingSpot();
         }
     }
+
 
 
     private void AvoidPlayer()
@@ -495,6 +509,58 @@ public class NPC_AI : MonoBehaviour
             navMeshAgent.SetDestination(hit.position);
         }
     }
+
+
+    public void OnPickedUp()
+    {
+        if (navMeshAgent != null)
+        {
+            navMeshAgent.isStopped = true;
+            navMeshAgent.enabled = false;  // Disable completely
+        }
+    }
+
+    public void OnDropped()
+    {
+        if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 1.0f, NavMesh.AllAreas))
+        {
+            transform.position = hit.position;  // Snap back to the NavMesh
+            navMeshAgent.enabled = true;
+            navMeshAgent.isStopped = false;
+        }
+        else
+        {
+            Debug.LogWarning("[NPC_AI] Dropped off NavMesh! Searching for closest valid position.");
+            StartCoroutine(TryRepositionToNavMesh());
+        }
+    }
+
+
+    private IEnumerator TryRepositionToNavMesh()
+    {
+        yield return new WaitForSeconds(0.1f); // Small delay to allow physics to settle
+
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(transform.position + Random.insideUnitSphere * 1.5f, out hit, 2.5f, NavMesh.AllAreas)) // Check within 2.5 meters
+        {
+            transform.position = hit.position;
+            navMeshAgent.enabled = true;
+            navMeshAgent.isStopped = false;
+
+            // Add slight random delay before finding a new hiding spot
+            yield return new WaitForSeconds(Random.Range(0.2f, 1.5f));
+
+            Debug.Log($"[NPC_AI] {gameObject.name} repositioned onto NavMesh at {hit.position}");
+            SelectNewHidingSpot();
+        }
+        else
+        {
+            Debug.LogError("[NPC_AI] Could not find a valid NavMesh position nearby!");
+        }
+    }
+
+
+
 
 
 
