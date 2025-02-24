@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
         FindAllHidingSpots();
         FindAllNavNodes();
         //FindAllBeans(); // Might reenable later if needed
