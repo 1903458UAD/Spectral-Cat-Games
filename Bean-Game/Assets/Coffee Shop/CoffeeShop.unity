@@ -7599,6 +7599,28 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &398538062 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3438410067727188606, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+  m_PrefabInstance: {fileID: 974475592028541677}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &398538064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 398538062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53c08c2f5e29217408d715bb3d37337c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionDistance: 2
+  FunctionalObjectLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  cameraTransform: {fileID: 1651408176}
 --- !u!1 &406381242
 GameObject:
   m_ObjectHideFlags: 0
@@ -44040,9 +44062,21 @@ PrefabInstance:
       propertyPath: coffeeMachine
       value: 
       objectReference: {fileID: 983698400}
+    - target: {fileID: 1006535547879735014, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 3438410067727188606, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: ButtonMain
+      objectReference: {fileID: 0}
     - target: {fileID: 3566305242749650456, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
       propertyPath: m_Name
       value: SM_coffee_machine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076061842675789918, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: Button
       objectReference: {fileID: 0}
     - target: {fileID: 4194503912340102306, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -44084,6 +44118,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4364688011546470158, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: Hopper
+      objectReference: {fileID: 0}
+    - target: {fileID: 5039167834328582268, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: Button
+      objectReference: {fileID: 0}
     - target: {fileID: 5064893487852866965, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.64278764
@@ -44100,10 +44142,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: -100
       objectReference: {fileID: 0}
+    - target: {fileID: 5553227616102235638, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: Hopper
+      objectReference: {fileID: 0}
     - target: {fileID: 7617765426433861528, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: d51bbc2b10fff6d488db48abd4aeed4f, type: 2}
+    - target: {fileID: 7676775257869071050, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: HopperMain
+      objectReference: {fileID: 0}
+    - target: {fileID: 8420166456152313044, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 8760145720996291831, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: Hopper
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 302228715289876122, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
     m_RemovedGameObjects: []
@@ -44112,6 +44170,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3566305242749650456, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1405177895}
+    - targetCorrespondingSourceObject: {fileID: 3438410067727188606, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 398538064}
     - targetCorrespondingSourceObject: {fileID: 1006535547879735014, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 444609032}
