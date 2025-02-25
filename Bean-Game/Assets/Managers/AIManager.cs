@@ -57,6 +57,14 @@ public class AIManager : MonoBehaviour
             if (npc.IsPickedUp()) continue;
 
             float distanceToPlayer = Vector3.Distance(npc.transform.position, GetPlayerPosition());
+           
+            // Validate NPC before modifying NavMeshAgent
+            if (npc.navMeshAgent == null || !npc.navMeshAgent.enabled || !npc.navMeshAgent.isOnNavMesh)
+            {
+                Debug.LogWarning($"[AIManager] {npc.gameObject.name} is not on a valid NavMesh. Skipping update.");
+                continue; // Skip this NPC to avoid errors
+            }
+
 
             // Ensure NPCs NEVER freeze
             if (npc.navMeshAgent.isStopped)
