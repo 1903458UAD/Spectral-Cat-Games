@@ -15,6 +15,10 @@ public class AIManager : MonoBehaviour
     private List<Hiding_Spots> hidingSpots = new List<Hiding_Spots>();
     private Dictionary<NPC_AI, Hiding_Spots> npcHidingAssignments = new Dictionary<NPC_AI, Hiding_Spots>();
 
+    private Dictionary<NPC_AI, float> hidingTimers = new Dictionary<NPC_AI, float>();
+    private float hidingDuration = 10f; // Time before NPC moves to another spot
+
+
     private List<NavNode> navNodes = new List<NavNode>();
 
     private float decisionInterval = 0.5f;  // Every NPC updates decisions every 0.5s
@@ -168,15 +172,18 @@ public class AIManager : MonoBehaviour
     {
         float distanceToPlayer = Vector3.Distance(npc.transform.position, GetPlayerPosition());
 
-        if (distanceToPlayer < npc.runRange)
+        // If NPC is too close to the player and is NOT in a hiding spot, make them run!
+        if (distanceToPlayer < npc.runRange && !npc.IsHiding())
         {
+            Debug.Log($"[AIManager] {npc.gameObject.name} is exposed! Running away...");
             AssignEscapeRoute(npc);
+            return;
         }
-        else
-        {
-            AssignNewHidingSpot(npc);
-        }
+
+        // Otherwise, assign a new hiding spot
+        AssignNewHidingSpot(npc);
     }
+
 
     private void AssignEscapeRoute(NPC_AI npc)
     {
@@ -186,6 +193,8 @@ public class AIManager : MonoBehaviour
         foreach (NavNode node in navNodes)
         {
             float distance = Vector3.Distance(node.transform.position, GetPlayerPosition());
+
+            // Find the farthest valid node from the player
             if (distance > maxDistance)
             {
                 maxDistance = distance;
@@ -195,9 +204,16 @@ public class AIManager : MonoBehaviour
 
         if (bestEscapeNode != null)
         {
+            Debug.Log($"[AIManager] {npc.gameObject.name} is running to {bestEscapeNode.name}");
             npc.MoveTo(bestEscapeNode.transform.position);
         }
+        else
+        {
+            Debug.LogWarning($"[AIManager] {npc.gameObject.name} has no valid escape route! Trying to hide instead.");
+            AssignNewHidingSpot(npc);
+        }
     }
+
 
     public void AssignNewHidingSpot(NPC_AI npc)
     {
@@ -255,14 +271,42 @@ public class AIManager : MonoBehaviour
     {
         Vector3 playerPosition = GetPlayerPosition();
         Vector3 hidingSpotPosition = npc.GetHidingSpotPosition();
+        float distanceToPlayer = Vector3.Distance(npc.transform.position, playerPosition);
+
+        // Keep moving around slightly in the hiding spot
         Vector3 toPlayer = (playerPosition - hidingSpotPosition).normalized;
-        Vector3 newHidingPos = hidingSpotPosition - (toPlayer * 1.5f);
+        Vector3 newHidingPos = hidingSpotPosition - (toPlayer * 0.35f);
 
         if (NavMesh.SamplePosition(newHidingPos, out NavMeshHit hit, 1.5f, NavMesh.AllAreas))
         {
             npc.MoveTo(hit.position);
         }
+
+        // If the player is nearby, reset timer & stay in hiding spot
+        if (distanceToPlayer < npc.runRange)
+        {
+            hidingTimers[npc] = Time.time; // Reset timer if player is close
+            return;
+        }
+
+        // Initialize hiding timer if not set, with a random delay to prevent synchronized movement
+        if (!hidingTimers.ContainsKey(npc))
+        {
+            hidingTimers[npc] = Time.time + Random.Range(5f, 10f); // Randomize first hiding duration
+        }
+
+        // Randomize how long they stay in one hiding spot before moving
+        float randomHidingDuration = hidingDuration + Random.Range(-3f, 3f); // 10s ± 3s (7s to 13s)
+
+        if (Time.time - hidingTimers[npc] >= randomHidingDuration)
+        {
+            Debug.Log($"[AIManager] {npc.gameObject.name} is moving to a new hiding spot after {randomHidingDuration} seconds.");
+            AssignNewHidingSpot(npc); // Move to a new hiding spot
+            hidingTimers[npc] = Time.time + Random.Range(5f, 10f); // Randomize next move timer
+        }
     }
+
+
 
     public Vector3 GetPlayerPosition()
     {
