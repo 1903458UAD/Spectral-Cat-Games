@@ -162,37 +162,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //private IEnumerator FreezeYAxisTemporarily(NPC_AI bean)
-    //{
-    //    Rigidbody rb = bean.GetComponent<Rigidbody>();
-
-    //    if (rb != null)
-    //    {
-    //        rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation; //Freeze Y movement
-    //    }
-
-    //    yield return new WaitForSeconds(1f); // Wait a second
-
-    //    if (rb != null)
-    //    {
-    //        rb.constraints = RigidbodyConstraints.FreezeRotation; //Unfreeze Y movement after a second
-    //    }
-    //}
-
-
-
-
-
-
-    //private IEnumerator SnapBeanToNavMesh(NPC_AI bean)
-    //{
-    //    yield return new WaitForSeconds(0.1f); // Let physics settle
-
-    //    if (NavMesh.SamplePosition(bean.transform.position, out NavMeshHit hit, 2f, NavMesh.AllAreas))
-    //    {
-    //        bean.transform.position = hit.position; // Correct Y placement
-    //    }
-    //}
+   
 
 
     private Vector3 GetRandomNavMeshPosition()
@@ -221,6 +191,8 @@ public class GameManager : MonoBehaviour
         Debug.LogWarning("[GameManager] Failed to find a valid NavMesh position! Using fallback.");
         return spawnPosition; //If not valid, return original position (less ideal)
     }
+
+
 
 
 
@@ -326,7 +298,6 @@ public class GameManager : MonoBehaviour
             return null;
         }
 
-        // Ensure we only consider hiding spots that still have space
         List<Hiding_Spots> availableSpots = hidingSpots.FindAll(spot => spot.IsAvailable());
 
         if (availableSpots.Count == 0)
@@ -335,14 +306,13 @@ public class GameManager : MonoBehaviour
             return null;
         }
 
+        Debug.Log($"[GameManager] Finding a better hiding spot for NPC at {npcPosition}");
+
         Hiding_Spots bestSpot = null;
         float bestScore = float.MaxValue;
 
         foreach (var spot in availableSpots)
         {
-            if (!spot.IsAvailable()) continue; // Skip full spots
-            if (npcHidingAssignments.ContainsValue(spot)) continue; // Ensure no double assignment
-
             float distanceToPlayer = Vector3.Distance(spot.transform.position, GetPlayerPosition());
             float distanceToNPC = Vector3.Distance(spot.transform.position, npcPosition);
 
@@ -352,6 +322,8 @@ public class GameManager : MonoBehaviour
             float randomFactor = Random.Range(0f, 20f);
             float score = distanceToNPC - (distanceToPlayer * 0.5f) + reusePenalty + randomFactor;
 
+            Debug.Log($"[GameManager] Spot {spot.name} Score: {score}");
+
             if (!isLastUsed && score < bestScore)
             {
                 bestScore = score;
@@ -359,14 +331,18 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // Make sure to log the selection to debug clustering issues
         if (bestSpot != null)
         {
-            Debug.Log($"[GameManager] Assigning {bestSpot.name} to an NPC.");
+            Debug.Log($"[GameManager] Assigned hiding spot: {bestSpot.name}");
+        }
+        else
+        {
+            Debug.LogWarning("[GameManager] No valid hiding spot found!");
         }
 
-        return bestSpot; // Return the best spot that still has space
+        return bestSpot;
     }
+
 
     public void RegisterNPCInSpot(NPC_AI npc, Hiding_Spots spot)
     {
@@ -417,3 +393,37 @@ public class GameManager : MonoBehaviour
         }
     }
 }
+
+
+
+ //private IEnumerator FreezeYAxisTemporarily(NPC_AI bean)
+    //{
+    //    Rigidbody rb = bean.GetComponent<Rigidbody>();
+
+    //    if (rb != null)
+    //    {
+    //        rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation; //Freeze Y movement
+    //    }
+
+    //    yield return new WaitForSeconds(1f); // Wait a second
+
+    //    if (rb != null)
+    //    {
+    //        rb.constraints = RigidbodyConstraints.FreezeRotation; //Unfreeze Y movement after a second
+    //    }
+    //}
+
+
+
+
+
+
+    //private IEnumerator SnapBeanToNavMesh(NPC_AI bean)
+    //{
+    //    yield return new WaitForSeconds(0.1f); // Let physics settle
+
+    //    if (NavMesh.SamplePosition(bean.transform.position, out NavMeshHit hit, 2f, NavMesh.AllAreas))
+    //    {
+    //        bean.transform.position = hit.position; // Correct Y placement
+    //    }
+    //}
