@@ -86,31 +86,7 @@ public class GameManager : MonoBehaviour
         //SetIncome(StaticData.incomePassed);
     }
 
-    //void FindAllHidingSpots()
-    //{
-    //    hidingSpots.Clear();
-    //    GameObject[] spots = GameObject.FindGameObjectsWithTag("HidingSpot");
-
-    //    if (spots.Length == 0)
-    //    {
-    //        //Debug.LogError("[GameManager] No hiding spots found! Maybe they are missing from the scene?");
-    //    }
-
-    //    foreach (GameObject obj in spots)
-    //    {
-    //        Hiding_Spots hidingSpotComponent = obj.GetComponent<Hiding_Spots>();
-    //        if (hidingSpotComponent != null)
-    //        {
-    //            hidingSpots.Add(hidingSpotComponent);
-    //            //Debug.Log("[GameManager] Registered hiding spot: " + obj.name);
-    //        }
-    //        else
-    //        {
-    //            //Debug.LogError("[GameManager] " + obj.name + " is tagged as 'HidingSpot' but missing Hiding_Spots component!");
-    //        }
-    //    }
-    //    //Debug.Log("[GameManager] Total hiding spots found: " + hidingSpots.Count);
-    //}
+    
 
     void FindAllNavNodes()
     {
@@ -130,25 +106,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("[GameManager] Found navigation nodes: " + navNodes.Count);
     }
 
-    //void LinkAllNavNodes()
-    //{
-    //    foreach (NavNode node in navNodes)
-    //    {
-    //        node.connectedNodes.Clear();
-    //        foreach (NavNode otherNode in navNodes)
-    //        {
-    //            if (node != otherNode)
-    //            {
-    //                float distance = Vector3.Distance(node.transform.position, otherNode.transform.position);
-    //                if (distance <= nodeConnectionRadius)
-    //                {
-    //                    node.connectedNodes.Add(otherNode);
-    //                    //Debug.Log("[GameManager] Linked " + node.name + " with " + otherNode.name);
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
+    
 
     private void SpawnInitialBeans()
     {
@@ -209,30 +167,7 @@ public class GameManager : MonoBehaviour
         return AIManager.Instance.GetRandomNavMeshPosition();  //AIManager now handles nav positions
 
 
-        //if (navNodes == null || navNodes.Count == 0)
-        //{
-        //    Debug.LogError("[GameManager] No NavNodes found! No Spawn.");
-        //    return Vector3.zero;
-        //}
-
-        ////if (navNodes.Count == 0)
-        ////{
-        ////    return Vector3.zero;
-        ////}
-
-        //NavNode randomNode = navNodes[Random.Range(0, navNodes.Count)];
-        //Vector3 spawnPosition = randomNode.transform.position; //
-
-        ////Ensure the position is actually on the NavMesh
-        //NavMeshHit hit;
-        //if (NavMesh.SamplePosition(spawnPosition, out hit, 1.0f, NavMesh.AllAreas))
-        //{
-        //     Debug.Log($"[GameManager] Found valid NavMesh position: {hit.position}");
-        //      return hit.position; //Return a valid NavMesh position
-        //}
-
-        //Debug.LogWarning("[GameManager] Failed to find a valid NavMesh position! Using fallback.");
-        //return spawnPosition; //If not valid, return original position (less ideal)
+        
     }
 
 
@@ -297,27 +232,7 @@ public class GameManager : MonoBehaviour
         return navNodes;
     }
 
-    //public List<Hiding_Spots> GetAvailableHidingSpots()
-    //{
-    //    return hidingSpots;
-    //}
 
-    //public void RegisterBean(NPC_AI bean)
-    //{
-
-    //    if (!beans.Contains(bean))
-    //    {
-    //        beans.Add(bean); // Adds the bean if not already registered 
-    //    }
-    //}
-
-    //public void UnregisterBean(NPC_AI bean)
-    //{
-    //    if (beans.Contains(bean))
-    //    {
-    //        beans.Remove(bean);
-    //    }
-    //}
 
     public Vector3 GetPlayerPosition()
     {
@@ -333,93 +248,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(scenenum);
     }
 
-    //public Hiding_Spots FindBetterHidingSpot(Vector3 npcPosition, Hiding_Spots lastHidingSpot)
-    //{
-    //    if (hidingSpots == null || hidingSpots.Count == 0)
-    //    {
-    //        Debug.LogError("[GameManager] No hiding spots available!");
-    //        return null;
-    //    }
-
-    //    List<Hiding_Spots> availableSpots = hidingSpots.FindAll(spot => spot.IsAvailable());
-
-    //    if (availableSpots.Count == 0)
-    //    {
-    //        Debug.LogWarning("[GameManager] No available hiding spots!");
-    //        return null;
-    //    }
-
-    //    Debug.Log($"[GameManager] Finding a better hiding spot for NPC at {npcPosition}");
-
-    //    Hiding_Spots bestSpot = null;
-    //    float bestScore = float.MaxValue;
-
-    //    foreach (var spot in availableSpots)
-    //    {
-    //        float distanceToPlayer = Vector3.Distance(spot.transform.position, GetPlayerPosition());
-    //        float distanceToNPC = Vector3.Distance(spot.transform.position, npcPosition);
-
-    //        bool isLastUsed = (spot == lastHidingSpot);
-    //        float reusePenalty = isLastUsed ? 100f : 0f;
-
-    //        float randomFactor = Random.Range(0f, 20f);
-    //        float score = distanceToNPC - (distanceToPlayer * 0.5f) + reusePenalty + randomFactor;
-
-    //        Debug.Log($"[GameManager] Spot {spot.name} Score: {score}");
-
-    //        if (!isLastUsed && score < bestScore)
-    //        {
-    //            bestScore = score;
-    //            bestSpot = spot;
-    //        }
-    //    }
-
-    //    if (bestSpot != null)
-    //    {
-    //        Debug.Log($"[GameManager] Assigned hiding spot: {bestSpot.name}");
-    //    }
-    //    else
-    //    {
-    //        Debug.LogWarning("[GameManager] No valid hiding spot found!");
-    //    }
-
-    //    return bestSpot;
-    //}
-
-
-    //public void RegisterNPCInSpot(NPC_AI npc, Hiding_Spots spot)
-    //{
-    //    if (spot == null)
-    //    {
-    //        Debug.LogWarning($"[GameManager] Tried to register {npc.gameObject.name} to a null hiding spot.");
-    //        return; // Prevent assigning null spots
-    //    }
-
-    //    if (!npcHidingAssignments.ContainsKey(npc))
-    //    {
-    //        npcHidingAssignments[npc] = spot;
-    //        Debug.Log($"[GameManager] Registered {npc.gameObject.name} to {spot.name}");
-    //    }
-    //}
-
-
-
-
-    //public void UnregisterNPCFromSpot(NPC_AI npc)
-    //{
-    //    if (npcHidingAssignments.ContainsKey(npc))
-    //    {
-    //        Hiding_Spots spot = npcHidingAssignments[npc]; // Get assigned spot
-    //        if (spot != null)
-    //        {
-    //            spot.DecrementOccupancy(); //Ensure the spot is freed properly
-    //        }
-
-    //        npcHidingAssignments.Remove(npc);
-    //        Debug.Log($"[GameManager] Unregistered {npc.gameObject.name} from {spot.name}");
-    //    }
-    //}
-
+   
 
 
 
@@ -439,34 +268,223 @@ public class GameManager : MonoBehaviour
 
 
 
- //private IEnumerator FreezeYAxisTemporarily(NPC_AI bean)
-    //{
-    //    Rigidbody rb = bean.GetComponent<Rigidbody>();
+//private IEnumerator FreezeYAxisTemporarily(NPC_AI bean)
+//{
+//    Rigidbody rb = bean.GetComponent<Rigidbody>();
 
-    //    if (rb != null)
-    //    {
-    //        rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation; //Freeze Y movement
-    //    }
+//    if (rb != null)
+//    {
+//        rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation; //Freeze Y movement
+//    }
 
-    //    yield return new WaitForSeconds(1f); // Wait a second
+//    yield return new WaitForSeconds(1f); // Wait a second
 
-    //    if (rb != null)
-    //    {
-    //        rb.constraints = RigidbodyConstraints.FreezeRotation; //Unfreeze Y movement after a second
-    //    }
-    //}
-
-
+//    if (rb != null)
+//    {
+//        rb.constraints = RigidbodyConstraints.FreezeRotation; //Unfreeze Y movement after a second
+//    }
+//}
 
 
 
 
-    //private IEnumerator SnapBeanToNavMesh(NPC_AI bean)
-    //{
-    //    yield return new WaitForSeconds(0.1f); // Let physics settle
 
-    //    if (NavMesh.SamplePosition(bean.transform.position, out NavMeshHit hit, 2f, NavMesh.AllAreas))
-    //    {
-    //        bean.transform.position = hit.position; // Correct Y placement
-    //    }
-    //}
+
+//private IEnumerator SnapBeanToNavMesh(NPC_AI bean)
+//{
+//    yield return new WaitForSeconds(0.1f); // Let physics settle
+
+//    if (NavMesh.SamplePosition(bean.transform.position, out NavMeshHit hit, 2f, NavMesh.AllAreas))
+//    {
+//        bean.transform.position = hit.position; // Correct Y placement
+//    }
+//}
+
+
+
+
+//public Hiding_Spots FindBetterHidingSpot(Vector3 npcPosition, Hiding_Spots lastHidingSpot)
+//{
+//    if (hidingSpots == null || hidingSpots.Count == 0)
+//    {
+//        Debug.LogError("[GameManager] No hiding spots available!");
+//        return null;
+//    }
+
+//    List<Hiding_Spots> availableSpots = hidingSpots.FindAll(spot => spot.IsAvailable());
+
+//    if (availableSpots.Count == 0)
+//    {
+//        Debug.LogWarning("[GameManager] No available hiding spots!");
+//        return null;
+//    }
+
+//    Debug.Log($"[GameManager] Finding a better hiding spot for NPC at {npcPosition}");
+
+//    Hiding_Spots bestSpot = null;
+//    float bestScore = float.MaxValue;
+
+//    foreach (var spot in availableSpots)
+//    {
+//        float distanceToPlayer = Vector3.Distance(spot.transform.position, GetPlayerPosition());
+//        float distanceToNPC = Vector3.Distance(spot.transform.position, npcPosition);
+
+//        bool isLastUsed = (spot == lastHidingSpot);
+//        float reusePenalty = isLastUsed ? 100f : 0f;
+
+//        float randomFactor = Random.Range(0f, 20f);
+//        float score = distanceToNPC - (distanceToPlayer * 0.5f) + reusePenalty + randomFactor;
+
+//        Debug.Log($"[GameManager] Spot {spot.name} Score: {score}");
+
+//        if (!isLastUsed && score < bestScore)
+//        {
+//            bestScore = score;
+//            bestSpot = spot;
+//        }
+//    }
+
+//    if (bestSpot != null)
+//    {
+//        Debug.Log($"[GameManager] Assigned hiding spot: {bestSpot.name}");
+//    }
+//    else
+//    {
+//        Debug.LogWarning("[GameManager] No valid hiding spot found!");
+//    }
+
+//    return bestSpot;
+//}
+
+
+//public void RegisterNPCInSpot(NPC_AI npc, Hiding_Spots spot)
+//{
+//    if (spot == null)
+//    {
+//        Debug.LogWarning($"[GameManager] Tried to register {npc.gameObject.name} to a null hiding spot.");
+//        return; // Prevent assigning null spots
+//    }
+
+//    if (!npcHidingAssignments.ContainsKey(npc))
+//    {
+//        npcHidingAssignments[npc] = spot;
+//        Debug.Log($"[GameManager] Registered {npc.gameObject.name} to {spot.name}");
+//    }
+//}
+
+
+
+
+//public void UnregisterNPCFromSpot(NPC_AI npc)
+//{
+//    if (npcHidingAssignments.ContainsKey(npc))
+//    {
+//        Hiding_Spots spot = npcHidingAssignments[npc]; // Get assigned spot
+//        if (spot != null)
+//        {
+//            spot.DecrementOccupancy(); //Ensure the spot is freed properly
+//        }
+
+//        npcHidingAssignments.Remove(npc);
+//        Debug.Log($"[GameManager] Unregistered {npc.gameObject.name} from {spot.name}");
+//    }
+//}
+
+
+
+//public List<Hiding_Spots> GetAvailableHidingSpots()
+//{
+//    return hidingSpots;
+//}
+
+//public void RegisterBean(NPC_AI bean)
+//{
+
+//    if (!beans.Contains(bean))
+//    {
+//        beans.Add(bean); // Adds the bean if not already registered 
+//    }
+//}
+
+//public void UnregisterBean(NPC_AI bean)
+//{
+//    if (beans.Contains(bean))
+//    {
+//        beans.Remove(bean);
+//    }
+//}
+
+
+//if (navNodes == null || navNodes.Count == 0)
+//{
+//    Debug.LogError("[GameManager] No NavNodes found! No Spawn.");
+//    return Vector3.zero;
+//}
+
+////if (navNodes.Count == 0)
+////{
+////    return Vector3.zero;
+////}
+
+//NavNode randomNode = navNodes[Random.Range(0, navNodes.Count)];
+//Vector3 spawnPosition = randomNode.transform.position; //
+
+////Ensure the position is actually on the NavMesh
+//NavMeshHit hit;
+//if (NavMesh.SamplePosition(spawnPosition, out hit, 1.0f, NavMesh.AllAreas))
+//{
+//     Debug.Log($"[GameManager] Found valid NavMesh position: {hit.position}");
+//      return hit.position; //Return a valid NavMesh position
+//}
+
+//Debug.LogWarning("[GameManager] Failed to find a valid NavMesh position! Using fallback.");
+//return spawnPosition; //If not valid, return original position (less ideal)
+
+
+
+//void LinkAllNavNodes()
+//{
+//    foreach (NavNode node in navNodes)
+//    {
+//        node.connectedNodes.Clear();
+//        foreach (NavNode otherNode in navNodes)
+//        {
+//            if (node != otherNode)
+//            {
+//                float distance = Vector3.Distance(node.transform.position, otherNode.transform.position);
+//                if (distance <= nodeConnectionRadius)
+//                {
+//                    node.connectedNodes.Add(otherNode);
+//                    //Debug.Log("[GameManager] Linked " + node.name + " with " + otherNode.name);
+//                }
+//            }
+//        }
+//    }
+//}
+
+
+//void FindAllHidingSpots()
+//{
+//    hidingSpots.Clear();
+//    GameObject[] spots = GameObject.FindGameObjectsWithTag("HidingSpot");
+
+//    if (spots.Length == 0)
+//    {
+//        //Debug.LogError("[GameManager] No hiding spots found! Maybe they are missing from the scene?");
+//    }
+
+//    foreach (GameObject obj in spots)
+//    {
+//        Hiding_Spots hidingSpotComponent = obj.GetComponent<Hiding_Spots>();
+//        if (hidingSpotComponent != null)
+//        {
+//            hidingSpots.Add(hidingSpotComponent);
+//            //Debug.Log("[GameManager] Registered hiding spot: " + obj.name);
+//        }
+//        else
+//        {
+//            //Debug.LogError("[GameManager] " + obj.name + " is tagged as 'HidingSpot' but missing Hiding_Spots component!");
+//        }
+//    }
+//    //Debug.Log("[GameManager] Total hiding spots found: " + hidingSpots.Count);
+//}
