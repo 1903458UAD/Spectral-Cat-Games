@@ -31,6 +31,10 @@ public class Hiding_Spots : MonoBehaviour
         }
     }
 
+    public bool IsAvailable()
+    {
+        return occupancy < MaxOccupancy;
+    }
 
 
     public void IncrementOccupancy()
@@ -46,13 +50,6 @@ public class Hiding_Spots : MonoBehaviour
         }
     }
 
-    public bool IsAvailable()
-    {
-        return occupancy < MaxOccupancy;
-    }
-
-
-    //Decrease the number of NPCs hiding here
     public void DecrementOccupancy()
     {
         if (occupancy > 0)
@@ -65,5 +62,6 @@ public class Hiding_Spots : MonoBehaviour
             Debug.LogWarning($"[Hiding_Spots] {gameObject.name} occupancy is already zero!");
         }
     }
+
 
 }

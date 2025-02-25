@@ -8,7 +8,7 @@ using Debug = UnityEngine.Debug;
 
 public class NPC_AI : MonoBehaviour
 {
-    private NavMeshAgent navMeshAgent;
+    public NavMeshAgent navMeshAgent;
     private Hiding_Spots currentHidingSpot;
     public float runRange = 10f;
     private bool isPickedUp = false;
@@ -26,6 +26,19 @@ public class NPC_AI : MonoBehaviour
             navMeshAgent.SetDestination(destination);
         }
     }
+
+    private Hiding_Spots lastHidingSpot; // Track last used spot
+
+    public void SetLastHidingSpot(Hiding_Spots spot)
+    {
+        lastHidingSpot = spot;
+    }
+
+    public Hiding_Spots GetLastHidingSpot()
+    {
+        return lastHidingSpot;
+    }
+
 
     public void SetHidingSpot(Hiding_Spots spot)
     {
