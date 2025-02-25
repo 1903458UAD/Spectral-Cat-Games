@@ -14,21 +14,25 @@ public class Hiding_Spots : MonoBehaviour
 
     public int Occupancy => occupancy; // Read-only property to get current occupancy
 
-    //Check if the hiding spot is still open for NPCs
-    public bool IsAvailable()
+    
+    public void ReserveSpot()
     {
         if (occupancy < MaxOccupancy)
         {
-            Debug.Log($"[Hiding_Spots] {gameObject.name} is available! Occupancy: {occupancy}/{MaxOccupancy}");
-            return true;
+            occupancy++;  //Reserve the spot immediately
         }
+    }
 
-        Debug.Log($"[Hiding_Spots] {gameObject.name} is FULL! Occupancy: {occupancy}/{MaxOccupancy}");
-        return false;
+    public void ReleaseSpot()
+    {
+        if (occupancy > 0)
+        {
+            occupancy--;  //Release the spot if an NPC leaves
+        }
     }
 
 
-    //Increase the number of NPCs hiding here
+
     public void IncrementOccupancy()
     {
         if (occupancy < MaxOccupancy)
@@ -41,6 +45,12 @@ public class Hiding_Spots : MonoBehaviour
             Debug.LogWarning($"[Hiding_Spots] {gameObject.name} is already at max occupancy!");
         }
     }
+
+    public bool IsAvailable()
+    {
+        return occupancy < MaxOccupancy;
+    }
+
 
     //Decrease the number of NPCs hiding here
     public void DecrementOccupancy()
