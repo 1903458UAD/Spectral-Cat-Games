@@ -72,12 +72,20 @@ public class NPC_AI : MonoBehaviour
     {
         isPickedUp = true;
 
+        if (currentHidingSpot != null)
+        {
+            currentHidingSpot.DecrementOccupancy();  //-1 from spot if the bean was hiding
+            Debug.Log($"[NPC_AI] {gameObject.name} was picked up and left hiding spot {currentHidingSpot.name}");
+            currentHidingSpot = null; // Remove reference to the hiding spot
+        }
+
         if (navMeshAgent != null)
         {
             navMeshAgent.isStopped = true;
             navMeshAgent.enabled = false; // Properly disable the agent to prevent errors
         }
     }
+
 
     public void OnDropped()
     {
@@ -108,8 +116,19 @@ public class NPC_AI : MonoBehaviour
 
     private void OnDestroy()
     {
-        AIManager.Instance.UnregisterNPC(this);
+        if (AIManager.Instance != null)
+        {
+            AIManager.Instance.UnregisterNPC(this);
+            Debug.Log($"[NPC_AI] {gameObject.name} removed from AIManager before destruction.");
+        }
+
+        if (currentHidingSpot != null)
+        {
+            currentHidingSpot.DecrementOccupancy(); 
+            Debug.Log($"[NPC_AI] {gameObject.name} was destroyed and left hiding spot {currentHidingSpot.name}");
+        }
     }
+
 }
 
 

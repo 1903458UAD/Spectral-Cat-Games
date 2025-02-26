@@ -24,6 +24,8 @@ public class AIManager : MonoBehaviour
     private float decisionInterval = 0.5f;  // Every NPC updates decisions every 0.5s
     private Dictionary<NPC_AI, float> nextDecisionTimes = new Dictionary<NPC_AI, float>();
 
+    private bool isResetting = false;
+
 
     private GameObject player;
 
@@ -52,6 +54,14 @@ public class AIManager : MonoBehaviour
 
     private void Update()
     {
+        if (npcList.Count == 4 && !isResetting)
+        {
+            Debug.LogWarning("[AIManager] All beans are destroyed! Triggering reset...");
+            StartCoroutine(ResetGameCoroutine());
+        }
+
+
+
         foreach (NPC_AI npc in npcList)
         {
             if (npc.IsPickedUp()) continue;
@@ -334,6 +344,14 @@ public class AIManager : MonoBehaviour
             return;
         }
 
+        List<Hiding_Spots> validSpots = hidingSpots.FindAll(spot => spot != null && spot.IsAvailable());
+
+        if (validSpots.Count == 0)
+        {
+            Debug.LogWarning($"[AIManager] {npc.gameObject.name} has no valid hiding spots. Skipping...");
+            return;
+        }
+
         Hiding_Spots lastSpot = npc.GetLastHidingSpot();
 
         // Release the last hiding spot before picking a new one
@@ -343,7 +361,7 @@ public class AIManager : MonoBehaviour
             Debug.Log($"[AIManager] {npc.gameObject.name} released spot {lastSpot.name}");
         }
 
-        List<Hiding_Spots> validSpots = new List<Hiding_Spots>();
+
 
         foreach (var spot in hidingSpots)
         {
@@ -551,6 +569,77 @@ public class AIManager : MonoBehaviour
             hidingTimers[npc] = Time.time + Random.Range(5f, 10f); // Reset movement cooldown
         }
     }
+
+
+    private void ResetGame()
+    {
+        Debug.Log("[AIManager] Resetting game...");
+
+        // Clear NPC List and Assignments
+        npcList.Clear();
+        npcHidingAssignments.Clear();
+        hidingTimers.Clear();
+        nextDecisionTimes.Clear();
+
+        // Reset all hiding spots
+        foreach (var spot in hidingSpots)
+        {
+            if (spot != null)
+            {
+                spot.ResetHidingSpot();
+                //spot.DecrementOccupancy(); // Ensure all spots start empty
+            }
+        }
+
+        // Spawn 6 new beans
+        StartCoroutine(RespawnBeans(6));
+    }
+
+    private IEnumerator ResetGameCoroutine()
+    {
+        isResetting = true;
+
+        ResetGame();
+
+        yield return new WaitForSeconds(5f); // Wait to prevent instant looping
+
+        isResetting = false;
+    }
+
+
+    private IEnumerator RespawnBeans(int count)
+    {
+        yield return new WaitForSeconds(1f); // Small delay before respawning
+
+        Debug.Log($"[AIManager] Spawning {count} new beans...");
+
+        for (int i = 0; i < count; i++)
+        {
+            Vector3 spawnPosition = GetRandomNavMeshPosition();
+            if (spawnPosition == Vector3.zero)
+            {
+                Debug.LogError("[AIManager] No valid spawn location found!");
+                continue;
+            }
+
+            // Use GameManager's beanPrefab instead of Resources.Load()
+            GameObject beanPrefab = GameManager.Instance.beanPrefab;
+            //if (beanPrefab == null)
+            //{
+            //    Debug.LogError("[AIManager] ERROR: GameManager's beanPrefab is NULL! Cannot spawn beans.");
+            //    return;
+            //}
+
+            GameObject newBean = Instantiate(beanPrefab, spawnPosition, Quaternion.identity);
+
+            NPC_AI newNPC = newBean.GetComponent<NPC_AI>();
+            if (newNPC != null)
+            {
+                RegisterNPC(newNPC);
+            }
+        }
+    }
+
 
 
 
