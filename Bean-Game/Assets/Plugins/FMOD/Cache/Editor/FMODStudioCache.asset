@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: Banks/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638754922961276558
+  lastModified: 638762539420000000
   FileSizes: []
   Exists: 1
 --- !u!114 &-8835242747485883243
@@ -86,14 +86,16 @@ MonoBehaviour:
   - {fileID: 2989309110241945906}
   - {fileID: -8860318759763364349}
   - {fileID: 5088361981039272395}
+  - {fileID: 5106001434441971322}
   EditorEvents:
   - {fileID: -2104539318827922677}
+  - {fileID: 6891688450448142453}
   EditorParameters: []
   MasterBanks:
   - {fileID: -8860318759763364349}
   StringsBanks:
   - {fileID: 2989309110241945906}
-  cacheTime: 638754922961286521
+  cacheTime: 638762539420000000
   cacheVersion: 131622
 --- !u!114 &2989309110241945906
 MonoBehaviour:
@@ -110,10 +112,10 @@ MonoBehaviour:
   Path: Banks/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638754922961286521
+  lastModified: 638762539420000000
   FileSizes:
   - Name: 
-    Value: 862
+    Value: 952
   Exists: 1
 --- !u!114 &5088361981039272395
 MonoBehaviour:
@@ -130,6 +132,51 @@ MonoBehaviour:
   Path: Banks/Ambiance.bank
   Name: Ambiance
   StudioPath: bank:/Ambiance
-  lastModified: 638754922961266587
+  lastModified: 638754915480000000
   FileSizes: []
   Exists: 1
+--- !u!114 &5106001434441971322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/SFX.bank
+  m_EditorClassIdentifier: 
+  Path: Banks/SFX.bank
+  Name: SFX
+  StudioPath: bank:/SFX
+  lastModified: 638762539420000000
+  FileSizes: []
+  Exists: 1
+--- !u!114 &6891688450448142453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Coffee Grinder
+  m_EditorClassIdentifier: 
+  Path: event:/Coffee Grinder
+  Guid:
+    Data1: 2045147874
+    Data2: 1158129768
+    Data3: 538279357
+    Data4: 1330596056
+  Banks:
+  - {fileID: 5106001434441971322}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
