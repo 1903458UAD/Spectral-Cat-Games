@@ -27,6 +27,12 @@ public class AIManager : MonoBehaviour
     private bool isResetting = false;
 
 
+    public int beansLow = 4;
+    public int beanRestock = 6;
+
+
+
+
     private GameObject player;
 
     private void Awake()
@@ -54,7 +60,7 @@ public class AIManager : MonoBehaviour
 
     private void Update()
     {
-        if (npcList.Count == 4 && !isResetting)
+        if (npcList.Count == beansLow && !isResetting)
         {
             Debug.LogWarning("[AIManager] All beans are destroyed! Triggering reset...");
             StartCoroutine(ResetGameCoroutine());
@@ -592,7 +598,7 @@ public class AIManager : MonoBehaviour
         }
 
         // Spawn 6 new beans
-        StartCoroutine(RespawnBeans(6));
+        StartCoroutine(RespawnBeans(beanRestock));
     }
 
     private IEnumerator ResetGameCoroutine()
