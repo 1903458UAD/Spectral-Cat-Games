@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
+using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
@@ -10,12 +12,44 @@ public class UIManager : MonoBehaviour
     public GameObject gameOverScreen; //Reference to game over ui
     public Image crosshair; //Refeerence to Crosshair UI
     public TMP_Text incomeText;//Reference to the income UI
+    public GameObject pauseMenuUI; // Reference to Pause Menu UI
+    public GameObject settingsMenuUI;
 
     [Header("Customer Order UI")]
     public TMP_Text customerOrderText; // New UI element to display coffee order
 
+    [Header("Player Lives UI")]
+    public Image[] lifeIcons;
+
+    [Header("Camera Script")]
+    public MonoBehaviour cameraScript;
+
+
+    [Header("Settings Panels")]
+    public GameObject videoPanel;
+    public GameObject audioPanel;
+    public GameObject controlsPanel;
+
+    [Header("Video Settings")]
+    public TMP_Dropdown resolutionDropdown;
+    public Button textureLowButton, textureMediumButton, textureHighButton;
+    public Button modelLowButton, modelMediumButton, modelHighButton;
+    public Button frame30Button, frame60Button, frameUncappedButton;
+
+    [Header("Audio Settings")]
+    public Slider masterVolumeSlider;
+
+    [Header("Controls Settings")]
+    public TMP_Text interactKeyText; 
+    public TMP_Text dropKeyText;
+
+    private bool currentlyRebinding = false;  // To track if we’re waiting for input
+    private string stringOfBinding = ""; // Stores which action is being changed
+
     private Color defaultCrosshairColor = Color.white; //Default colouyr of crosshair
     private Color interactableCrosshairColor = Color.red;//Colour of the crosshair when looking at an interactable object
+
+    private bool isPaused = false; // Pause state
 
     private void Awake() // When instance is being loaded
     {
@@ -34,10 +68,69 @@ public class UIManager : MonoBehaviour
         HideGameOverScreen(); //Set the game over screen is hidden
         SetCrosshairDefault(); //Set the crosshair to default
 
+        interactKeyText.text = PlayerPrefs.GetString("InteractKey", "Mouse0");
+        dropKeyText.text = PlayerPrefs.GetString("DropKey", "Mouse1");
+
         if (customerOrderText == null)
         {
             Debug.LogError("[UIManager] Customer Order Text is not assigned in the Inspector!");
         }
+
+        if (pauseMenuUI != null)
+        {
+            pauseMenuUI.SetActive(false); // Ensure menu is hidden at the start
+        }
+
+        masterVolumeSlider.value = PlayerPrefs.GetFloat("MasterVolume", 1f);
+    }
+
+    public void Rebinding(string action)
+    {
+        if (currentlyRebinding) return; // Prevent multiple rebinding actions
+
+        currentlyRebinding = true;
+        stringOfBinding = action;
+
+        if (action == "Interact")
+            interactKeyText.text = "Press any key...";
+        else if (action == "Drop")
+            dropKeyText.text = "Press any key...";
+
+        StartCoroutine(WaitForKeyPress());
+    }
+
+    private IEnumerator WaitForKeyPress()
+    {
+        while (!Input.anyKeyDown)  // Wait until a key is pressed
+            yield return null;
+
+        foreach (KeyCode key in System.Enum.GetValues(typeof(KeyCode)))
+        {
+            if (Input.GetKeyDown(key))
+            {
+                AssignNewKey(key);
+                break;
+            }
+        }
+    }
+
+    private void AssignNewKey(KeyCode newKey)
+    {
+        if (stringOfBinding == "Interact")
+        {
+            PlayerPrefs.SetString("InteractKey", newKey.ToString()); // Save new key
+            interactKeyText.text = newKey.ToString(); // Update UI
+        }
+        else if (stringOfBinding == "Drop")
+        {
+            PlayerPrefs.SetString("DropKey", newKey.ToString()); // Save new key
+            dropKeyText.text = newKey.ToString(); // Update UI
+        }
+
+        currentlyRebinding = false;
+        stringOfBinding = "";
+
+        FindObjectOfType<PlayerInteraction>().UpdateKeybindings();
     }
 
     public void ShowGameOverScreen() // Show death screen when player dies
@@ -79,4 +172,178 @@ public class UIManager : MonoBehaviour
             customerOrderText.text = $"Customer wants a coffee made with {requiredBeans} Beans";
         }
     }
+
+    public void TogglePause()
+    {
+
+        // If the settings menu is open, go back to the pause menu instead of resuming
+        if (settingsMenuUI.activeSelf)
+        {
+            ShowPauseMenu();
+            return; // Prevent the game from unpausing
+        }
+
+
+        isPaused = !isPaused;
+
+        if (isPaused)
+        {
+            Time.timeScale = 0f;
+            pauseMenuUI.SetActive(true);
+
+            HideGameplayUI();
+
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            // Disable camera movement
+            if (cameraScript != null)
+            {
+                cameraScript.enabled = false;
+            }
+
+
+            // Ensure UI buttons work properly
+            if (EventSystem.current != null)
+            {
+                EventSystem.current.SetSelectedGameObject(null);
+            }
+        }
+        else
+        {
+            Time.timeScale = 1f;
+            pauseMenuUI.SetActive(false);
+
+            ShowGameplayUI();
+
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        
+            if (cameraScript != null)
+            {
+                cameraScript.enabled = true;// Enable camera movement
+            }
+
+
+        }
+    }
+
+    public void ResumeGame()
+    {
+        TogglePause(); // Unpause the game
+    }
+
+    public void OpenSettings()
+    {
+        pauseMenuUI.SetActive(false);
+        settingsMenuUI.SetActive(true);
+        ShowVideoSettings();
+    }
+
+    public void CloseSettings()
+    {
+        settingsMenuUI.SetActive(false);
+        pauseMenuUI.SetActive(true);
+    }
+
+    public void ShowVideoSettings()
+    {
+        videoPanel.SetActive(true);
+        audioPanel.SetActive(false);
+        controlsPanel.SetActive(false);
+    }
+
+    public void ShowAudioSettings()
+    {
+        videoPanel.SetActive(false);
+        audioPanel.SetActive(true);
+        controlsPanel.SetActive(false);
+    }
+
+    public void ShowControlsSettings()
+    {
+        videoPanel.SetActive(false);
+        audioPanel.SetActive(false);
+        controlsPanel.SetActive(true);
+    }
+
+    public void Settings()
+    {
+        settingsMenuUI.SetActive(true); //Hide the Pause menu UI
+        pauseMenuUI.SetActive(false); //Hide the Pause menu UI
+        
+
+    }
+
+
+
+    public void UpdateLifeUI(int currentLives)
+    {
+        for (int i = 0; i < lifeIcons.Length; i++)
+        {
+            if (i < currentLives)
+            {
+                lifeIcons[i].color = Color.white; // Represents remaining lives
+            }
+            else
+            {
+                lifeIcons[i].color = Color.red; // Represents lost lives
+            }
+        }
+    }
+
+
+    public void ShowPauseMenu()
+    {
+        settingsMenuUI.SetActive(false); // Hide the settings menu
+        pauseMenuUI.SetActive(true); // Show the pause menu
+    }
+
+    public void MainMenu()
+    {
+        Time.timeScale = 1f; // Time is resumed when switching scenes
+        pauseMenuUI.SetActive(false); //Hide the Pause menu UI
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0); //Need to change 0 to whatever the mainmenu scene will be
+    }
+
+    public void ShowGameplayUI()
+    {
+        if (crosshair != null) crosshair.gameObject.SetActive(true);
+        if (incomeText != null) incomeText.gameObject.SetActive(true);
+        if (customerOrderText != null) customerOrderText.gameObject.SetActive(true);
+
+        foreach (Image life in lifeIcons)
+        {
+            life.gameObject.SetActive(true);
+        }
+    }
+
+    public void HideGameplayUI()
+    {
+        if (crosshair != null) crosshair.gameObject.SetActive(false);
+        if (incomeText != null) incomeText.gameObject.SetActive(false);
+        if (customerOrderText != null) customerOrderText.gameObject.SetActive(false);
+
+        foreach (Image life in lifeIcons)
+        {
+            life.gameObject.SetActive(false);
+        }
+    }
+
+    public void QuitGame()
+    {
+        Debug.Log("Quit Game button clicked!");
+
+        
+        Application.Quit(); // Quits the game to desktop 
+    }
+
+    public void UpdateMasterVolume()
+    {
+        float volume = masterVolumeSlider.value;
+        AudioListener.volume = volume; // Set the global volume
+        PlayerPrefs.SetFloat("MasterVolume", volume); // Save setting
+    }
+
 }

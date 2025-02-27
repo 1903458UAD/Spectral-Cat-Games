@@ -36,25 +36,13 @@ public class PlayerHealth : MonoBehaviour
 
     void UpdateLifeUI()
     {
-        for (int i = 0; i < lifeIcons.Length; i++)
-        {
-            if (i < currentLives)
-            {
-                lifeIcons[i].color = Color.white; // Placeholders - Represent lives remaining
-            }
-            else
-            {
-                lifeIcons[i].color = Color.red; // Placeholders - Represent Lives Lost
-            }
-        }
+        UIManager.Instance.UpdateLifeUI(currentLives);
     }
 
     private void GameOver()
     {
         Debug.Log("Game Over! Player ran out of lives.");
         UIManager.Instance.ShowGameOverScreen();
-        //Pause the Movement
 
-        //TOBE implemented: Reload/Reset System. Game Over UI etc....
     }
 }
