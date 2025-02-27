@@ -41,7 +41,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 631888951308596634}
   serializedVersion: 8
-  lengthInSec: 5
+  lengthInSec: 1
   simulationSpeed: 0.78
   stopAction: 0
   cullingMode: 0
@@ -923,7 +923,7 @@ ParticleSystem:
     rateOverDistance:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3.34
+      scalar: 0.4
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -1385,7 +1385,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 1
       scalar: 0.9999
-      minScalar: 0.9999
+      minScalar: 0
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1436,8 +1436,8 @@ ParticleSystem:
         m_RotationOrder: 4
     startFrame:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0
+      minMaxState: 3
+      scalar: 0.9999
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -1492,11 +1492,14 @@ ParticleSystem:
     tilesY: 1
     animationType: 0
     rowIndex: 0
-    cycles: 1
+    cycles: 0.5
     uvChannelMask: -1
     rowMode: 1
     sprites:
     - sprite: {fileID: 21300000, guid: 8baace934c48b1c42be94e09c214ce70, type: 3}
+    - sprite: {fileID: 21300000, guid: 1c2b40b8e9529204eac0f07526176d7b, type: 3}
+    - sprite: {fileID: 21300000, guid: ec60495e1ce7177469f257772cd6c591, type: 3}
+    - sprite: {fileID: 21300000, guid: 8527959ac0cf04745bbceff0a3905cc4, type: 3}
     flipU: 0
     flipV: 0
   VelocityModule:
@@ -4882,7 +4885,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3919569974130916673}
   serializedVersion: 8
-  lengthInSec: 5
+  lengthInSec: 1
   simulationSpeed: 0.78
   stopAction: 0
   cullingMode: 0
@@ -5764,7 +5767,7 @@ ParticleSystem:
     rateOverDistance:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3.3
+      scalar: 0.4
       minScalar: 0
       maxCurve:
         serializedVersion: 2
