@@ -245,6 +245,7 @@ public class GameManager : MonoBehaviour
         {
             StaticData.incomePassed = GetIncome();
         }
+
         SceneManager.LoadScene(scenenum);
     }
 
