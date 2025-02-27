@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
@@ -29,8 +30,6 @@ public class UIManager : MonoBehaviour
     public GameObject audioPanel;
     public GameObject controlsPanel;
 
-    private GameObject currentPanel;
-
     [Header("Video Settings")]
     public TMP_Dropdown resolutionDropdown;
     public Button textureLowButton, textureMediumButton, textureHighButton;
@@ -40,7 +39,12 @@ public class UIManager : MonoBehaviour
     [Header("Audio Settings")]
     public Slider masterVolumeSlider;
 
+    [Header("Controls Settings")]
+    public TMP_Text interactKeyText; 
+    public TMP_Text dropKeyText;
 
+    private bool currentlyRebinding = false;  // To track if we’re waiting for input
+    private string stringOfBinding = ""; // Stores which action is being changed
 
     private Color defaultCrosshairColor = Color.white; //Default colouyr of crosshair
     private Color interactableCrosshairColor = Color.red;//Colour of the crosshair when looking at an interactable object
@@ -64,6 +68,9 @@ public class UIManager : MonoBehaviour
         HideGameOverScreen(); //Set the game over screen is hidden
         SetCrosshairDefault(); //Set the crosshair to default
 
+        interactKeyText.text = PlayerPrefs.GetString("InteractKey", "Mouse0");
+        dropKeyText.text = PlayerPrefs.GetString("DropKey", "Mouse1");
+
         if (customerOrderText == null)
         {
             Debug.LogError("[UIManager] Customer Order Text is not assigned in the Inspector!");
@@ -75,6 +82,55 @@ public class UIManager : MonoBehaviour
         }
 
         masterVolumeSlider.value = PlayerPrefs.GetFloat("MasterVolume", 1f);
+    }
+
+    public void Rebinding(string action)
+    {
+        if (currentlyRebinding) return; // Prevent multiple rebinding actions
+
+        currentlyRebinding = true;
+        stringOfBinding = action;
+
+        if (action == "Interact")
+            interactKeyText.text = "Press any key...";
+        else if (action == "Drop")
+            dropKeyText.text = "Press any key...";
+
+        StartCoroutine(WaitForKeyPress());
+    }
+
+    private IEnumerator WaitForKeyPress()
+    {
+        while (!Input.anyKeyDown)  // Wait until a key is pressed
+            yield return null;
+
+        foreach (KeyCode key in System.Enum.GetValues(typeof(KeyCode)))
+        {
+            if (Input.GetKeyDown(key))
+            {
+                AssignNewKey(key);
+                break;
+            }
+        }
+    }
+
+    private void AssignNewKey(KeyCode newKey)
+    {
+        if (stringOfBinding == "Interact")
+        {
+            PlayerPrefs.SetString("InteractKey", newKey.ToString()); // Save new key
+            interactKeyText.text = newKey.ToString(); // Update UI
+        }
+        else if (stringOfBinding == "Drop")
+        {
+            PlayerPrefs.SetString("DropKey", newKey.ToString()); // Save new key
+            dropKeyText.text = newKey.ToString(); // Update UI
+        }
+
+        currentlyRebinding = false;
+        stringOfBinding = "";
+
+        FindObjectOfType<PlayerInteraction>().UpdateKeybindings();
     }
 
     public void ShowGameOverScreen() // Show death screen when player dies
