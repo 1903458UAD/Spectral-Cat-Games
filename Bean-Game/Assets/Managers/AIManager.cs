@@ -31,6 +31,29 @@ public class AIManager : MonoBehaviour
     public int beanRestock = 6;
 
 
+    //[Header("AI Behavior Settings")]
+    //public float reactionTime = 1.0f; // Adjustable delay before NPCs move back into cover
+
+    [Header("AI Behavior Settings")]
+    public float updateInterval = 0.1f; // Adjust this for difficulty
+
+
+    public float hidingDurationMin = 5f; // Value to track the min hiding time 
+
+
+
+    public float hidingDurationMax = 10f; // track the max hiding time
+
+
+    private Dictionary<NPC_AI, float> updateTimers = new Dictionary<NPC_AI, float>();
+
+    public int maxBeansToSwitch = 3; // Num beans that can switch spots at the same time
+    private List<NPC_AI> beansToSwitch = new List<NPC_AI>(); // beans chosen to switch
+
+    private Dictionary<NPC_AI, float> activeTimers = new Dictionary<NPC_AI, float>(); // Only track selected beans time
+    private HashSet<NPC_AI> recentlySwitched = new HashSet<NPC_AI>(); // Track recently moved beans
+
+
 
 
     private GameObject player;
@@ -87,6 +110,27 @@ public class AIManager : MonoBehaviour
             {
                 npc.navMeshAgent.isStopped = false;
             }
+
+            if (npc.IsPickedUp()) continue;
+
+            // Ensure the NPC has an entry in hidingTimers
+            if (!hidingTimers.ContainsKey(npc))
+            {
+                hidingTimers[npc] = Time.time;
+            }
+
+            //float distanceToPlayer = Vector3.Distance(npc.transform.position, GetPlayerPosition());
+
+            if (npc.IsHiding())
+            {
+                MaintainCover(npc);
+            }
+            else
+            {
+                EvaluateNPCState(npc);
+            }
+
+
 
             // Only run if they are NOT hiding & the player is too close
             if (distanceToPlayer < npc.runRange && !npc.IsHiding())
@@ -537,44 +581,159 @@ public class AIManager : MonoBehaviour
 
 
 
-
     private void MaintainCover(NPC_AI npc)
     {
         Vector3 playerPosition = GetPlayerPosition();
         Vector3 hidingSpotPosition = npc.GetHidingSpotPosition();
         float distanceToPlayer = Vector3.Distance(npc.transform.position, playerPosition);
 
-        // Keep moving around slightly in the hiding spot
-        Vector3 toPlayer = (playerPosition - hidingSpotPosition).normalized;
-        Vector3 newHidingPos = hidingSpotPosition - (toPlayer * 0.35f);
-
-        if (NavMesh.SamplePosition(newHidingPos, out NavMeshHit hit, 1.5f, NavMesh.AllAreas))
+        // timer check
+        if (!updateTimers.ContainsKey(npc))
         {
-            npc.MoveTo(hit.position);
+            updateTimers[npc] = Time.time + Random.Range(0f, updateInterval);
         }
-
-        //  If the player is nearby, stay in the hiding spot
-        if (distanceToPlayer < npc.runRange)
-        {
-            hidingTimers[npc] = Time.time; // Reset timer if player is close
-            return;
-        }
-
-        // Ensure the hiding timer resets after each hiding spot move
         if (!hidingTimers.ContainsKey(npc))
         {
-            hidingTimers[npc] = Time.time + Random.Range(5f, 10f);
+            hidingTimers[npc] = Time.time + Random.Range(hidingDurationMin * 0.5f, hidingDurationMax * 1.5f);      // Stagger hiding spot changes
         }
 
-        float randomHidingDuration = hidingDuration + Random.Range(-3f, 3f);
 
-        if (Time.time - hidingTimers[npc] >= randomHidingDuration)
+        if (Time.time - updateTimers[npc] < updateInterval)
         {
-            Debug.Log($"[AIManager] {npc.gameObject.name} is moving to a new hiding spot after {randomHidingDuration} seconds.");
-            AssignNewHidingSpot(npc); // Move to a new hiding spot
-            hidingTimers[npc] = Time.time + Random.Range(5f, 10f); // Reset movement cooldown
+            return; // Skip update until interval has passed
+        }
+
+        updateTimers[npc] = Time.time; // Reset update timer
+
+
+
+        //  Continuously adjust position to stay behind cover while hiding
+        Vector3 toPlayer = (playerPosition - hidingSpotPosition).normalized;
+        Vector3 idealHidingPos = hidingSpotPosition - (toPlayer * 0.35f);
+
+        if (Vector3.Distance(npc.transform.position, idealHidingPos) > 0.2f)
+        {
+            if (NavMesh.SamplePosition(idealHidingPos, out NavMeshHit hit, 1.5f, NavMesh.AllAreas))
+            {
+                npc.MoveTo(hit.position);
+            }
+        }
+
+        // Ensure movment does not mess with hiding 
+        if (distanceToPlayer < npc.runRange)
+        {
+            return; // Stay hidden if player is close
+        }
+
+        //limit number of beans that can switch
+        if (!activeTimers.ContainsKey(npc) && beansToSwitch.Count < maxBeansToSwitch)
+        {
+            // recently switched beans can't be re-picked
+            if (!recentlySwitched.Contains(npc))
+            {
+                beansToSwitch.Add(npc);
+                activeTimers[npc] = Time.time + Random.Range(hidingDurationMin, hidingDurationMax);
+            }
+        }
+
+        // track timers for selected beanss
+        if (activeTimers.ContainsKey(npc))
+        {
+            if (Time.time >= activeTimers[npc])
+            {
+                Debug.Log($"[AIManager] {npc.gameObject.name} switching to a new hiding spot.");
+                AssignNewHidingSpot(npc);
+
+                // this bean just moved
+                recentlySwitched.Add(npc);
+
+                // Remove from timers & switch list after moving
+                activeTimers.Remove(npc);
+                beansToSwitch.Remove(npc);
+
+                //Remove from recently moved list after a cooldown
+                StartCoroutine(RemoveFromRecentlySwitched(npc, Random.Range(5f, 15f))); // Adjust cooldown time
+            }
         }
     }
+
+    // remove beanss from the recently switched list after a cooldown
+    private IEnumerator RemoveFromRecentlySwitched(NPC_AI npc, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        recentlySwitched.Remove(npc);
+    }
+
+
+
+
+
+
+
+
+
+
+    //if (Time.time >= hidingTimers[npc])
+    //{
+    //    // only select number of beans move at a time
+    //    if (!beansToSwitch.Contains(npc))
+    //    {
+    //        beansToSwitch.Add(npc);
+    //    }
+
+    //    // Only allow maxBeansToSwitch beans to switch at the same time
+    //    if (beansToSwitch.Count <= maxBeansToSwitch)
+    //    {
+    //        Debug.Log($"[AIManager] {npc.gameObject.name} switching to a new hiding spot.");
+    //        AssignNewHidingSpot(npc);
+
+    //        // Reset hiding timer with a new randomized time
+    //        hidingTimers[npc] = Time.time + Random.Range(hidingDurationMin, hidingDurationMax);
+
+    //        // Remove bean from the list after switching
+    //        beansToSwitch.Remove(npc);
+    //    }
+    //}
+
+
+
+
+
+    //// switching spots each bean independent
+    ////float randomHidingDuration = Random.Range(hidingDurationMin, hidingDurationMax);
+
+    //if (Time.time >= hidingTimers[npc])
+    //{
+    //    Debug.Log($"[AIManager] {npc.gameObject.name} switching to a new hiding spot.");
+
+    //    AssignNewHidingSpot(npc);
+
+    //    // Ensure random hiding time for each NPC
+    //    hidingTimers[npc] = Time.time + Random.Range(hidingDurationMin, hidingDurationMax);
+    //}
+
+
+
+
+
+
+
+
+    //private bool IsInLineOfSight(NPC_AI npc, Vector3 playerPosition)
+    //{
+    //    Vector3 npcHeadPosition = npc.transform.position + Vector3.up * 1.5f; // Adjust height for head level
+    //    Vector3 directionToPlayer = (playerPosition - npcHeadPosition).normalized;
+
+    //    RaycastHit hit;
+    //    if (Physics.Raycast(npcHeadPosition, directionToPlayer, out hit))
+    //    {
+    //        return hit.collider.CompareTag("Player"); // NPC is exposed if the ray hits the player
+    //    }
+    //    return false;
+    //}
+
+
+
 
 
     private void ResetGame()
@@ -655,3 +814,89 @@ public class AIManager : MonoBehaviour
         return player != null ? player.transform.position : Vector3.zero;
     }
 }
+
+
+
+//private void MaintainCover(NPC_AI npc)
+//{
+//    Vector3 playerPosition = GetPlayerPosition();
+//    Vector3 hidingSpotPosition = npc.GetHidingSpotPosition();
+//    float distanceToPlayer = Vector3.Distance(npc.transform.position, playerPosition);
+
+
+
+//    // Reaction time
+//    if (!hidingTimers.ContainsKey(npc))
+//    {
+//        hidingTimers[npc] = Time.time;
+//    }
+
+
+
+//    // If the player sees the NPC, start counting the reaction time
+//    if (IsInLineOfSight(npc, playerPosition))
+//    {
+//        if (Time.time - hidingTimers[npc] >= reactionTime)
+//        {
+//            Debug.Log($"[AIManager] {npc.gameObject.name} detected! Reacting after {reactionTime} seconds.");
+
+//            // Move back into cover
+//            Vector3 toPlayer = (playerPosition - hidingSpotPosition).normalized;
+//            Vector3 newHidingPos = hidingSpotPosition - (toPlayer * 0.35f);
+
+//            if (NavMesh.SamplePosition(newHidingPos, out NavMeshHit hit, 1.5f, NavMesh.AllAreas))
+//            {
+//                npc.MoveTo(hit.position);
+//            }
+//        }
+//    }
+//    else
+//    {
+//        // Reset the timer if the NPC is not in the player's line of sight
+//        hidingTimers[npc] = Time.time;
+//    }
+
+//    //// Keep moving around slightly in the hiding spot
+//    //Vector3 toPlayer = (playerPosition - hidingSpotPosition).normalized;
+//    //Vector3 newHidingPos = hidingSpotPosition - (toPlayer * 0.35f);
+
+//    //if (NavMesh.SamplePosition(newHidingPos, out NavMeshHit hit, 1.5f, NavMesh.AllAreas))
+//    //{
+//    //    npc.MoveTo(hit.position);
+//    //}
+
+//    //  If the player is nearby, stay in the hiding spot
+//    if (distanceToPlayer < npc.runRange)
+//    {
+//        hidingTimers[npc] = Time.time; // Reset timer if player is close
+//        return;
+//    }
+
+//    // Ensure the hiding timer resets after each hiding spot move
+//    if (!hidingTimers.ContainsKey(npc))
+//    {
+//        hidingTimers[npc] = Time.time + Random.Range(5f, 10f);
+//    }
+
+//    float randomHidingDuration = hidingDuration + Random.Range(-3f, 3f);
+
+//    if (Time.time - hidingTimers[npc] >= randomHidingDuration)
+//    {
+//        Debug.Log($"[AIManager] {npc.gameObject.name} is moving to a new hiding spot after {randomHidingDuration} seconds.");
+//        AssignNewHidingSpot(npc); // Move to a new hiding spot
+//        hidingTimers[npc] = Time.time + Random.Range(5f, 10f); // Reset movement cooldown
+//    }
+//}
+
+
+//private bool IsInLineOfSight(NPC_AI npc, Vector3 playerPosition)
+//{
+//    Vector3 direction = (playerPosition - npc.transform.position).normalized;
+//    RaycastHit hit;
+
+//    if (Physics.Raycast(npc.transform.position, direction, out hit))
+//    {
+//        return hit.collider.CompareTag("Player");
+//    }
+//    return false;
+//}
