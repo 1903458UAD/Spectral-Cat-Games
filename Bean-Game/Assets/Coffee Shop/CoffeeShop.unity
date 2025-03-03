@@ -9288,6 +9288,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   beansLow: 4
   beanRestock: 6
+  updateInterval: 0.1
+  hidingDurationMin: 5.3
+  hidingDurationMax: 20
+  maxBeansToSwitch: 3
 --- !u!4 &403241486
 Transform:
   m_ObjectHideFlags: 0
@@ -20028,7 +20032,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2722500397235944566, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -32.685
+      value: -32.6
       objectReference: {fileID: 0}
     - target: {fileID: 2722500397235944566, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
       propertyPath: m_LocalPosition.y
@@ -20036,7 +20040,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2722500397235944566, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -123.361
+      value: -123.82
       objectReference: {fileID: 0}
     - target: {fileID: 2722500397235944566, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
       propertyPath: m_LocalRotation.w

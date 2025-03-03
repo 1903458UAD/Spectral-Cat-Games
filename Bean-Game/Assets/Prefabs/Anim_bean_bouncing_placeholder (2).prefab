@@ -273,8 +273,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e919348c71a67440b44f479f2dc1826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRunSpeed: 3
-  maxWalkSpeed: 1.5
+  navMeshAgent: {fileID: 6431538203433792566}
   runRange: 2
-  rotationSpeed: 3
-  stayAtWaypointDuration: 10
