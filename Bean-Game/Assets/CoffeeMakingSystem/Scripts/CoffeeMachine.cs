@@ -16,6 +16,10 @@ public class CoffeeMachine : MonoBehaviour
 
     [SerializeField] private EventReference coffeeMachineSound;
 
+    [SerializeField] private GameObject hopperSpawn;
+    [SerializeField] private GameObject hopperBeanPrefab;
+    private GameObject[] hopperBeansArray;
+
     public Transform spawnPoint;
 
     private int currentBeans = 0;
@@ -29,6 +33,7 @@ public class CoffeeMachine : MonoBehaviour
             currentBeans++;
             Debug.Log($"[CoffeeMachine] Beans added: {currentBeans}");
             Destroy(bean.gameObject); // Destroy the bean after adding it to the machine
+            GameObject hopperBean = Instantiate(hopperBeanPrefab, hopperSpawn.transform.position, Quaternion.identity);
         }
         else
         {
@@ -61,8 +66,13 @@ public void ActivateMachine()
     {
         Debug.Log("Enough beans! Starting coffee creation...");
         AudioManager.instance.PlayOneShot(coffeeMachineSound, this.transform.position);
+        hopperBeansArray = GameObject.FindGameObjectsWithTag("Respawn");
+        foreach(GameObject hopperBeans in hopperBeansArray)
+        {
+            Destroy(hopperBeans);
+        }
+
         Invoke(nameof(CreateCoffee), coffeeCreationTime);
-    
     }
     else
     {

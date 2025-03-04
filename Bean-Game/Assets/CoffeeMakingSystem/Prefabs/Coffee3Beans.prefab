@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 234307257041355329}
   - component: {fileID: 853693888125323928}
   - component: {fileID: 8397006572125225254}
-  - component: {fileID: 4053751853489203535}
   - component: {fileID: 8589532319654884819}
   - component: {fileID: 2107005160416497854}
   - component: {fileID: 8672092832203914766}
+  - component: {fileID: 8149085748343448544}
   m_Layer: 9
   m_Name: Coffee3Beans
   m_TagString: CoffeeCup
@@ -90,27 +90,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &4053751853489203535
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1742179613311282129}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &8589532319654884819
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -167,6 +146,27 @@ MonoBehaviour:
   holdHeightOffset: 0
   holdWidthOffset: 0.5
   pickupCooldown: 0.1
+--- !u!65 &8149085748343448544
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742179613311282129}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.4, y: 0.6, z: 0.4}
+  m_Center: {x: 0, y: 0.3, z: 0}
 --- !u!1001 &5981979271423653993
 PrefabInstance:
   m_ObjectHideFlags: 0
