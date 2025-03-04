@@ -63,5 +63,12 @@ public class Hiding_Spots : MonoBehaviour
         }
     }
 
+    public void ResetHidingSpot()
+    {
+        occupancy = 0;  // Clear any NPCs marked inside
+        Debug.Log($"[Hiding_Spots] {gameObject.name} reset to empty.");
+    }
+
+
 
 }
