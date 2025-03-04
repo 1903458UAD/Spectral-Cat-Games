@@ -60,7 +60,7 @@ public void ActivateMachine()
     if (CanActivateMachine() == true)
     {
         Debug.Log("Enough beans! Starting coffee creation...");
-       // AudioManager.instance.PlayOneShot(coffeeMachineSound, this.transform.position);
+        AudioManager.instance.PlayOneShot(coffeeMachineSound, this.transform.position);
         Invoke(nameof(CreateCoffee), coffeeCreationTime);
     
     }

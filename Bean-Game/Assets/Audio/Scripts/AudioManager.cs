@@ -28,7 +28,7 @@ public class AudioManager : MonoBehaviour
 
     private void InitializeAmbiance (EventReference ambianceEventReference)
     {
-        ambianceEventInstance = CreateEventInstance(ambianceEventReference);
+        ambianceEventInstance = CreateInstance(ambianceEventReference);
         ambianceEventInstance.start();
     }
 
@@ -37,7 +37,7 @@ public class AudioManager : MonoBehaviour
         RuntimeManager.PlayOneShot(sound, worldPos);
     }
 
-    public EventInstance CreateEventInstance(EventReference eventReference)
+    public EventInstance CreateInstance(EventReference eventReference)
     {
         EventInstance eventInstance = RuntimeManager.CreateInstance(eventReference);
         return eventInstance;

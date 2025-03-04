@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 using System.Collections;
+using FMODUnity;
 
 public class UIManager : MonoBehaviour
 {
@@ -51,6 +52,9 @@ public class UIManager : MonoBehaviour
 
     private bool isPaused = false; // Pause state
 
+    [SerializeField] private EventReference menuSoundA;
+    [SerializeField] private EventReference menuSoundB;
+
     private void Awake() // When instance is being loaded
     {
         if (Instance == null) //If no instance of the UIManager exists
@@ -90,7 +94,7 @@ public class UIManager : MonoBehaviour
 
         currentlyRebinding = true;
         stringOfBinding = action;
-
+        AudioManager.instance.PlayOneShot(menuSoundB, this.transform.position);
         if (action == "Interact")
             interactKeyText.text = "Press any key...";
         else if (action == "Drop")
@@ -109,6 +113,7 @@ public class UIManager : MonoBehaviour
             if (Input.GetKeyDown(key))
             {
                 AssignNewKey(key);
+                AudioManager.instance.PlayOneShot(menuSoundB, this.transform.position);
                 break;
             }
         }
@@ -231,6 +236,7 @@ public class UIManager : MonoBehaviour
     public void ResumeGame()
     {
         TogglePause(); // Unpause the game
+        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
     public void OpenSettings()
@@ -238,12 +244,14 @@ public class UIManager : MonoBehaviour
         pauseMenuUI.SetActive(false);
         settingsMenuUI.SetActive(true);
         ShowVideoSettings();
+        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
     public void CloseSettings()
     {
         settingsMenuUI.SetActive(false);
         pauseMenuUI.SetActive(true);
+        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
     public void ShowVideoSettings()
@@ -251,6 +259,7 @@ public class UIManager : MonoBehaviour
         videoPanel.SetActive(true);
         audioPanel.SetActive(false);
         controlsPanel.SetActive(false);
+        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
     public void ShowAudioSettings()
@@ -258,6 +267,7 @@ public class UIManager : MonoBehaviour
         videoPanel.SetActive(false);
         audioPanel.SetActive(true);
         controlsPanel.SetActive(false);
+        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
     public void ShowControlsSettings()
@@ -265,14 +275,15 @@ public class UIManager : MonoBehaviour
         videoPanel.SetActive(false);
         audioPanel.SetActive(false);
         controlsPanel.SetActive(true);
+        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
     public void Settings()
     {
         settingsMenuUI.SetActive(true); //Hide the Pause menu UI
         pauseMenuUI.SetActive(false); //Hide the Pause menu UI
-        
 
+        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
 
@@ -297,6 +308,7 @@ public class UIManager : MonoBehaviour
     {
         settingsMenuUI.SetActive(false); // Hide the settings menu
         pauseMenuUI.SetActive(true); // Show the pause menu
+        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
     public void MainMenu()

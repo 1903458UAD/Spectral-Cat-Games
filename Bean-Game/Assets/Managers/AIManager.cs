@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
 using Debug = UnityEngine.Debug;
+using FMOD.Studio;
 
 public class AIManager : MonoBehaviour
 {
@@ -30,6 +31,8 @@ public class AIManager : MonoBehaviour
     public int beansLow = 4;
     public int beanRestock = 6;
 
+
+    private EventInstance beanFootsteps;
 
     //[Header("AI Behavior Settings")]
     //public float reactionTime = 1.0f; // Adjustable delay before NPCs move back into cover
@@ -79,10 +82,13 @@ public class AIManager : MonoBehaviour
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        beanFootsteps = AudioManager.instance.CreateInstance(FMODEvents.instance.beanFootsteps);
     }
 
     private void Update()
     {
+
+        
         if (npcList.Count == beansLow && !isResetting)
         {
             Debug.LogWarning("[AIManager] All beans are destroyed! Triggering reset...");
@@ -94,6 +100,9 @@ public class AIManager : MonoBehaviour
         foreach (NPC_AI npc in npcList)
         {
             if (npc.IsPickedUp()) continue;
+
+            
+
 
             float distanceToPlayer = Vector3.Distance(npc.transform.position, GetPlayerPosition());
            
@@ -119,7 +128,7 @@ public class AIManager : MonoBehaviour
                 hidingTimers[npc] = Time.time;
             }
 
-            //float distanceToPlayer = Vector3.Distance(npc.transform.position, GetPlayerPosition());
+            // float distanceToPlayer = Vector3.Distance(npc.transform.position, GetPlayerPosition());
 
             if (npc.IsHiding())
             {
@@ -129,6 +138,8 @@ public class AIManager : MonoBehaviour
             {
                 EvaluateNPCState(npc);
             }
+
+
 
 
 
@@ -174,6 +185,15 @@ public class AIManager : MonoBehaviour
 
                 // Assign new random decision time to prevent synchronized movement
                 nextDecisionTimes[npc] = Time.time + Random.Range(0.5f, 2.0f);
+            }
+
+            if (npc.navMeshAgent.velocity.x >= 0.5 || npc.navMeshAgent.velocity.z >= 0.5 || npc.navMeshAgent.velocity.x <= -0.5 || npc.navMeshAgent.velocity.z <= -0.5)
+            {
+                npc.PlayBeanMoveSound(true);
+            }
+            else
+            {
+                npc.PlayBeanMoveSound(false);
             }
         }
     }

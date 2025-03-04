@@ -20071,6 +20071,26 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4056485557077329956, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
+      propertyPath: pickupSound.Path
+      value: event:/Pickup
+      objectReference: {fileID: 0}
+    - target: {fileID: 4056485557077329956, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
+      propertyPath: pickupSound.Guid.Data1
+      value: -1125768954
+      objectReference: {fileID: 0}
+    - target: {fileID: 4056485557077329956, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
+      propertyPath: pickupSound.Guid.Data2
+      value: 1332659387
+      objectReference: {fileID: 0}
+    - target: {fileID: 4056485557077329956, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
+      propertyPath: pickupSound.Guid.Data3
+      value: 1211880080
+      objectReference: {fileID: 0}
+    - target: {fileID: 4056485557077329956, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
+      propertyPath: pickupSound.Guid.Data4
+      value: 242285560
+      objectReference: {fileID: 0}
+    - target: {fileID: 4056485557077329956, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
       propertyPath: FunctionalObjectLayer.m_Bits
       value: 1024
       objectReference: {fileID: 0}
@@ -23244,6 +23264,7 @@ Transform:
   - {fileID: 1035884467}
   - {fileID: 1099514548}
   - {fileID: 403241486}
+  - {fileID: 2011267128}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &934078178
@@ -32863,6 +32884,71 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1354352153
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1354352154}
+  - component: {fileID: 1354352155}
+  m_Layer: 0
+  m_Name: FMODEvents
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1354352154
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354352153}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2011267128}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1354352155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354352153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dacf6817dd8f7ef42b3ab0f9dc1613d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <ambiance>k__BackingField:
+    Guid:
+      Data1: -374264531
+      Data2: 1208527518
+      Data3: 10930560
+      Data4: -168996446
+    Path: event:/City Amb
+  <playerFootsteps>k__BackingField:
+    Guid:
+      Data1: 1769938342
+      Data2: 1126047426
+      Data3: -1111131229
+      Data4: -710433028
+    Path: event:/Footsteps
+  <beanFootsteps>k__BackingField:
+    Guid:
+      Data1: -921170523
+      Data2: 1336475982
+      Data3: -2140589420
+      Data4: -495853894
+    Path: event:/Bean Footsteps
 --- !u!1001 &1357045331
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36584,6 +36670,26 @@ PrefabInstance:
       propertyPath: spawnPoint
       value: 
       objectReference: {fileID: 105022970}
+    - target: {fileID: 1813283467191881382, guid: 468d2099436e49c4ba58690b14516dd8, type: 3}
+      propertyPath: coffeeMachineSound.Path
+      value: event:/Coffee Grinder
+      objectReference: {fileID: 0}
+    - target: {fileID: 1813283467191881382, guid: 468d2099436e49c4ba58690b14516dd8, type: 3}
+      propertyPath: coffeeMachineSound.Guid.Data1
+      value: 2045147874
+      objectReference: {fileID: 0}
+    - target: {fileID: 1813283467191881382, guid: 468d2099436e49c4ba58690b14516dd8, type: 3}
+      propertyPath: coffeeMachineSound.Guid.Data2
+      value: 1158129768
+      objectReference: {fileID: 0}
+    - target: {fileID: 1813283467191881382, guid: 468d2099436e49c4ba58690b14516dd8, type: 3}
+      propertyPath: coffeeMachineSound.Guid.Data3
+      value: 538279357
+      objectReference: {fileID: 0}
+    - target: {fileID: 1813283467191881382, guid: 468d2099436e49c4ba58690b14516dd8, type: 3}
+      propertyPath: coffeeMachineSound.Guid.Data4
+      value: 1330596056
+      objectReference: {fileID: 0}
     - target: {fileID: 1935326062920242379, guid: 468d2099436e49c4ba58690b14516dd8, type: 3}
       propertyPath: m_Name
       value: CoffeeMachine
@@ -50795,6 +50901,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2009358530}
   m_CullTransparentMesh: 1
+--- !u!1 &2011267127
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2011267128}
+  - component: {fileID: 2011267129}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2011267128
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011267127}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.6669712, y: 3.4058867, z: 4.0072556}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1354352154}
+  m_Father: {fileID: 929162888}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2011267129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011267127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b36e5374bb2e422498118e6feb38e757, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2019906905
 GameObject:
   m_ObjectHideFlags: 0
@@ -56101,6 +56252,20 @@ MonoBehaviour:
   masterVolumeSlider: {fileID: 87278159}
   interactKeyText: {fileID: 754765282}
   dropKeyText: {fileID: 639803409}
+  menuSoundA:
+    Guid:
+      Data1: -288144633
+      Data2: 1275860432
+      Data3: 1799167110
+      Data4: -1579723418
+    Path: event:/Menu Click Main
+  menuSoundB:
+    Guid:
+      Data1: 868720095
+      Data2: 1130585274
+      Data3: -1948745568
+      Data4: 1139757207
+    Path: event:/Menu Click Second
 --- !u!222 &8928387440730442014
 CanvasRenderer:
   m_ObjectHideFlags: 0

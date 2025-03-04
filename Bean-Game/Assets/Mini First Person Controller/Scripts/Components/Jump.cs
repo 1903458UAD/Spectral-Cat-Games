@@ -15,6 +15,12 @@ public class Jump : MonoBehaviour
         // Try to get groundCheck.
         groundCheck = GetComponentInChildren<GroundCheck>();
     }
+    public
+    bool GetGroundCheck()
+    {
+        return groundCheck;
+    
+    }
 
     void Awake()
     {

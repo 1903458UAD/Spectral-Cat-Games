@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
 using Debug = UnityEngine.Debug;
+using FMOD.Studio;
+using Unity.VisualScripting;
 
 public class NPC_AI : MonoBehaviour
 {
@@ -12,6 +14,14 @@ public class NPC_AI : MonoBehaviour
     private Hiding_Spots currentHidingSpot;
     public float runRange = 10f;
     private bool isPickedUp = false;
+
+ // [SerializeField] private EventReference beanMoveSound;
+    private EventInstance beanFootsteps;
+
+    private void Start()
+    {
+        beanFootsteps = AudioManager.instance.CreateInstance(FMODEvents.instance.beanFootsteps);
+    }
 
     private void Awake()
     {
@@ -21,6 +31,20 @@ public class NPC_AI : MonoBehaviour
 
     public void MoveTo(Vector3 destination)
     {
+        //if (this.transform.position.x == this.transform.position.x)
+        //{
+        //    PLAYBACK_STATE playbackState;
+        //    beanFootsteps.getPlaybackState(out playbackState);
+        //    if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+        //    {
+        //        beanFootsteps.start();
+        //    }
+        //}
+        //else
+        //{
+        //    beanFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
+        //}
+        
         if (navMeshAgent.isOnNavMesh)
         {
             navMeshAgent.SetDestination(destination);
@@ -66,6 +90,25 @@ public class NPC_AI : MonoBehaviour
     public bool IsHiding()
     {
         return currentHidingSpot != null;
+    }
+
+
+
+    public void PlayBeanMoveSound(bool isMoving)
+    {
+        if (isMoving)
+        {
+            PLAYBACK_STATE playbackState;
+            beanFootsteps.getPlaybackState(out playbackState);
+            if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+            {
+                beanFootsteps.start();
+            }
+        }
+        else 
+        {
+            beanFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
+        }
     }
 
     public void OnPickedUp()

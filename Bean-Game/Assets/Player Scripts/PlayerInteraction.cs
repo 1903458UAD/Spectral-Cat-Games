@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using FMODUnity;
 using UnityEditor;
 using UnityEngine;
 
@@ -20,6 +21,8 @@ public class PlayerInteraction : MonoBehaviour
 
     private enum InputType { Controller, Keyboard }; // Enum - used to determine whether input is controller or keyboard - likely will move to GameManager in future!
     private InputType currentInput;
+
+    [SerializeField] private EventReference pickupSound;
 
     private void Start()
     {
@@ -134,6 +137,12 @@ public class PlayerInteraction : MonoBehaviour
 
                 if (interactable != null)
                 {
+
+                    if (heldObjectRight == null || heldObjectLeft == null)
+                    {
+                        AudioManager.instance.PlayOneShot(pickupSound, this.transform.position);
+                    }
+
                     // Pick up object if hand is free
                     if (heldObjectRight == null)
                     {
