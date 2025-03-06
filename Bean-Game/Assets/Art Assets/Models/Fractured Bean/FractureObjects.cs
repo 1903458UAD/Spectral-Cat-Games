@@ -15,8 +15,10 @@ public class FractureObjects : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-
+    { 
+            //Destroy(fractObj);
+           // originalObject.SetActive(true);
+        
     }
 
     // Update is called once per frame
@@ -26,7 +28,7 @@ public class FractureObjects : MonoBehaviour
         {
             Explode();
         }
-        if (Input.getKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             Reset();
         }
@@ -41,13 +43,14 @@ public class FractureObjects : MonoBehaviour
             if (fracturedObject != null)
             {
                 fractObj = Instantiate(fracturedObject) as GameObject;
+                fractObj.transform.position = originalObject.transform.position;
 
-                foreach (transform t in fractObj.transform)
+                foreach (Transform t in originalObject.transform)
                 {
                     var rb = t.GetComponent<Rigidbody>();
 
                     if (rb != null)
-                        rb.AddexplosionForce(random.Range(explosionMinForce, explosionMaxForce), originalObject.transform.position, explosionForceRadius);
+                        rb.AddExplosionForce(Random.Range(explosionMinForce, explosionMaxForce), originalObject.transform.position, explosionForceRadius);
 
                     StartCoroutine(Shrink(t, 2));
                 }
@@ -66,7 +69,7 @@ public class FractureObjects : MonoBehaviour
 
     IEnumerator Shrink(Transform t, float delay)
     {
-        yeild return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(delay);
 
         Vector3 newScale = t.localScale;
 
@@ -75,7 +78,7 @@ public class FractureObjects : MonoBehaviour
             newScale -= new Vector3(fracScalefactor, fracScalefactor, fracScalefactor);
 
             t.localScale = newScale;
-            yeild return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.05f);
         }
     }
 }
