@@ -36,6 +36,7 @@ public class ChangeColor : MonoBehaviour
             GameObject hitObject = hit.collider.gameObject;
             ButtonForCoffeeMachine coffeeButton = hitObject.GetComponent<ButtonForCoffeeMachine>();
             CoffeeMachine coffeeMachine = hitObject.GetComponent<CoffeeMachine>();
+            CustomerWindow customerWindow = hitObject.GetComponent<CustomerWindow>();
 
             if (coffeeButton != null)
             {
@@ -57,6 +58,16 @@ public class ChangeColor : MonoBehaviour
                 var objects = GameObject.FindGameObjectsWithTag("MachineComponent");
                 var objectCount = objects.Length;
                 foreach (var obj in objects)
+                {
+                    Renderer r = obj.GetComponent<Renderer>();
+                    r.material.SetFloat("_HighlightObject", 1);
+                }
+            }
+
+            if (customerWindow != null)
+            {
+                var objs = GameObject.FindGameObjectsWithTag("CarComp");
+                foreach (var obj in objs)
                 {
                     Renderer r = obj.GetComponent<Renderer>();
                     r.material.SetFloat("_HighlightObject", 1);
@@ -86,7 +97,14 @@ public class ChangeColor : MonoBehaviour
                     r.material.SetFloat("_HighlightObject", 0);
                 }
 
+            var objs = GameObject.FindGameObjectsWithTag("CarComp");
+            foreach (var obj in objs)
+            {
+                Renderer r = obj.GetComponent<Renderer>();
+                r.material.SetFloat("_HighlightObject", 0);
             }
+
+        }
     }
 
 
