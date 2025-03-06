@@ -26562,6 +26562,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1244081319241096695, guid: 6515821f03911de4ba2871b11b04724d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1605879939}
+    - targetCorrespondingSourceObject: {fileID: 1244081319241096695, guid: 6515821f03911de4ba2871b11b04724d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1605879941}
   m_SourcePrefab: {fileID: 100100000, guid: 6515821f03911de4ba2871b11b04724d, type: 3}
 --- !u!4 &1099514548 stripped
 Transform:
@@ -39813,6 +39816,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PauseMenuUI: {fileID: 5263098234751099572}
+--- !u!114 &1605879941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1605879938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53c08c2f5e29217408d715bb3d37337c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionDistance: 2
+  FunctionalObjectLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  cameraTransform: {fileID: 1651408176}
 --- !u!1 &1606773454 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5502413179388113329, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
@@ -41078,6 +41098,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec72980442fddac4d86e75ab24b4d027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1651408176 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5856840350905276064, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
+  m_PrefabInstance: {fileID: 816174779}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1656630092
 GameObject:
   m_ObjectHideFlags: 0
@@ -54435,9 +54460,33 @@ PrefabInstance:
       propertyPath: coffeeMachine
       value: 
       objectReference: {fileID: 983698400}
+    - target: {fileID: 766285571796924547, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: MachineComponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 995379597840635460, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: MachineComponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 1006535547879735014, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 3438410067727188606, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: ButtonMain
+      objectReference: {fileID: 0}
     - target: {fileID: 3566305242749650456, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
       propertyPath: m_Name
       value: SM_coffee_machine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3992695095465276589, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: MachineComponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076061842675789918, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: Button
       objectReference: {fileID: 0}
     - target: {fileID: 4194503912340102306, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -54479,6 +54528,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4197210691464792900, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: MachineComponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4364688011546470158, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: Hopper
+      objectReference: {fileID: 0}
     - target: {fileID: 5036530244574834241, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -54499,10 +54556,58 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: -100
       objectReference: {fileID: 0}
+    - target: {fileID: 5553227616102235638, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: Hopper
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892608477168204054, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: MachineComponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 6043695031199500480, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: MachineComponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111786108593772969, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: MachineComponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 6513641935821196272, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: MachineComponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017185943831821911, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: MachineComponent
+      objectReference: {fileID: 0}
     - target: {fileID: 7617765426433861528, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: d51bbc2b10fff6d488db48abd4aeed4f, type: 2}
+    - target: {fileID: 7676775257869071050, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: HopperMain
+      objectReference: {fileID: 0}
+    - target: {fileID: 8420166456152313044, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 8431567984849415898, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: MachineComponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 8634424011778259963, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: MachineComponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 8760145720996291831, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 9052325311878765011, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
+      propertyPath: m_TagString
+      value: MachineComponent
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 302228715289876122, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
     m_RemovedGameObjects: []
