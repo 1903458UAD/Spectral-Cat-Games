@@ -7,6 +7,7 @@ public class ChangeColor : MonoBehaviour
 {
     public float interactionDistance = 2f; //Default interaction distance for interactable objects (Might need some fine tuning for balancing)
     public LayerMask FunctionalObjectLayer;
+    public LayerMask InteractableObjectLayer;
     public Transform cameraTransform;
 
     bool highlighted = false;
@@ -43,7 +44,7 @@ public class ChangeColor : MonoBehaviour
                 gameObjects = GameObject.FindGameObjectsWithTag("Button");
                 currentObject = GameObject.FindGameObjectWithTag("ButtonMain");
                 rend = currentObject.GetComponentsInChildren<Renderer>();
-           
+
                 SetShaderParameters(gameObjects, rend, 1);
             }
 
@@ -105,6 +106,34 @@ public class ChangeColor : MonoBehaviour
             }
 
         }
+
+        if(Physics.Raycast(ray, out hit, interactionDistance, InteractableObjectLayer))
+        {
+           GameObject hitObject = hit.collider.gameObject;
+           CoffeeInteraction coffee = hitObject.GetComponent<CoffeeInteraction>();
+
+            if (coffee != null)
+            {
+                var objs = GameObject.FindGameObjectsWithTag("CupComponent");
+                foreach (var obj in objs)
+                {
+                    Renderer r = obj.GetComponent<Renderer>();
+                    r.material.SetFloat("_HighlightObject", 1);
+                }
+            }
+        }
+
+        else
+        {
+            var objs = GameObject.FindGameObjectsWithTag("CupComponent");
+            foreach (var obj in objs)
+            {
+                Renderer r = obj.GetComponent<Renderer>();
+                r.material.SetFloat("_HighlightObject", 0);
+            }
+        }
+
+
     }
 
 
