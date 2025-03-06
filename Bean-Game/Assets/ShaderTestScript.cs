@@ -13,8 +13,8 @@ public class ChangeColor : MonoBehaviour
     float highlight = 0;
     private Renderer[] rend;
     private GameObject[] gameObjects;
-
     private GameObject currentObject;
+  
 
     void Start()
     {
@@ -53,6 +53,14 @@ public class ChangeColor : MonoBehaviour
                 rend = currentObject.GetComponentsInChildren<Renderer>();
 
                 SetShaderParameters(gameObjects, rend, 1);
+
+                var objects = GameObject.FindGameObjectsWithTag("MachineComponent");
+                var objectCount = objects.Length;
+                foreach (var obj in objects)
+                {
+                    Renderer r = obj.GetComponent<Renderer>();
+                    r.material.SetFloat("_HighlightObject", 1);
+                }
             }
         }
 
@@ -70,7 +78,15 @@ public class ChangeColor : MonoBehaviour
 
             SetShaderParameters(gameObjects, rend, 0);
 
-        }
+                var objects = GameObject.FindGameObjectsWithTag("MachineComponent");
+                var objectCount = objects.Length;
+                foreach (var obj in objects)
+                {
+                    Renderer r = obj.GetComponent<Renderer>();
+                    r.material.SetFloat("_HighlightObject", 0);
+                }
+
+            }
     }
 
 
