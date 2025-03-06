@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using FMODUnity;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,16 +15,28 @@ public class PlayerInteraction : MonoBehaviour
     private InteractableObject heldObjectLeft;  // Left-hand object
     private bool isPickupBothHands; // Enable dual wielding
 
-    private KeyCode Pickup_AND_Interact = KeyCode.Joystick1Button5; // Pickup keycode - used for responding to controller input - set to right bumper
-    private KeyCode Drop = KeyCode.Joystick1Button4; // Pickup keycode - set to left bumper
+    private KeyCode Pickup_AND_Interact;// = KeyCode.Joystick1Button5; // Pickup keycode - used for responding to controller input - set to right bumper
+    private KeyCode Drop;// = KeyCode.Joystick1Button4; // Pickup keycode - set to left bumper
     //private KeyCode interaction = KeyCode.Joystick1Button2; // Interaction keycode - set to 'Y' button
 
     private enum InputType { Controller, Keyboard }; // Enum - used to determine whether input is controller or keyboard - likely will move to GameManager in future!
     private InputType currentInput;
 
+    [SerializeField] private EventReference pickupSound;
+
     private void Start()
     {
-        isPickupBothHands = StaticData.dualWieldUpgrade; 
+        isPickupBothHands = StaticData.dualWieldUpgrade;
+
+        Pickup_AND_Interact = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("InteractKey", "Mouse0")); //Player pref saves over game sessions, It is also a new concept for me, Documentation: https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerPrefs.html
+        Drop = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("DropKey", "Mouse1"));
+    }
+
+    public void UpdateKeybindings()
+    {
+        
+        Pickup_AND_Interact = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("InteractKey", "Mouse0")); 
+        Drop = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("DropKey", "Mouse1"));
     }
 
     private void Update()
@@ -36,13 +49,13 @@ public class PlayerInteraction : MonoBehaviour
         }
 
 
-        if (heldObjectLeft != null && Input.GetMouseButtonDown(1) || heldObjectLeft != null && Input.GetKeyDown(Drop)) // Use 'Q' or controller key to drop left-hand object
+        if (heldObjectLeft != null && Input.GetKeyDown(Drop)) 
         {
             heldObjectLeft.ReleaseObject(); //Call function to release object being held from left hand
             heldObjectLeft = null;// Clear reference after release
             return;
         }
-        else if (heldObjectRight != null && Input.GetMouseButtonDown(1) || heldObjectRight != null && Input.GetKeyDown(Drop))
+        else if (heldObjectRight != null && Input.GetKeyDown(Drop))
         {
             heldObjectRight.ReleaseObject(); //Call function to release object being held from left hand
             heldObjectRight = null;// Clear reference after release
@@ -53,7 +66,7 @@ public class PlayerInteraction : MonoBehaviour
 
 
 
-        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(Pickup_AND_Interact))
+        if (Input.GetKeyDown(Pickup_AND_Interact))
         {
             Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
             RaycastHit hit;
@@ -124,6 +137,12 @@ public class PlayerInteraction : MonoBehaviour
 
                 if (interactable != null)
                 {
+
+                    if (heldObjectRight == null || heldObjectLeft == null)
+                    {
+                        AudioManager.instance.PlayOneShot(pickupSound, this.transform.position);
+                    }
+
                     // Pick up object if hand is free
                     if (heldObjectRight == null)
                     {

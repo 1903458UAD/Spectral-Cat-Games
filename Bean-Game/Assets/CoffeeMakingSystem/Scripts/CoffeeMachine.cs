@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 public class CoffeeMachine : MonoBehaviour
 {
@@ -12,6 +13,12 @@ public class CoffeeMachine : MonoBehaviour
     public GameObject coffeeCup1Bean; // Prefab for coffee with 1 bean
     public GameObject coffeeCup2Beans; // " with 2 beans
     public GameObject coffeeCup3Beans; // " with 3 beans
+
+    [SerializeField] private EventReference coffeeMachineSound;
+
+    [SerializeField] private GameObject hopperSpawn;
+    [SerializeField] private GameObject hopperBeanPrefab;
+    private GameObject[] hopperBeansArray;
 
     public Transform spawnPoint;
 
@@ -26,6 +33,7 @@ public class CoffeeMachine : MonoBehaviour
             currentBeans++;
             Debug.Log($"[CoffeeMachine] Beans added: {currentBeans}");
             Destroy(bean.gameObject); // Destroy the bean after adding it to the machine
+            GameObject hopperBean = Instantiate(hopperBeanPrefab, hopperSpawn.transform.position, Quaternion.identity);
         }
         else
         {
@@ -57,8 +65,14 @@ public void ActivateMachine()
     if (CanActivateMachine() == true)
     {
         Debug.Log("Enough beans! Starting coffee creation...");
+        AudioManager.instance.PlayOneShot(coffeeMachineSound, this.transform.position);
+        hopperBeansArray = GameObject.FindGameObjectsWithTag("Respawn");
+        foreach(GameObject hopperBeans in hopperBeansArray)
+        {
+            Destroy(hopperBeans);
+        }
+
         Invoke(nameof(CreateCoffee), coffeeCreationTime);
-    
     }
     else
     {

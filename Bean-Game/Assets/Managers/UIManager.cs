@@ -2,6 +2,8 @@
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using System.Collections;
+using FMODUnity;
 
 public class UIManager : MonoBehaviour
 {
@@ -29,19 +31,29 @@ public class UIManager : MonoBehaviour
     public GameObject audioPanel;
     public GameObject controlsPanel;
 
-
     [Header("Video Settings")]
     public TMP_Dropdown resolutionDropdown;
     public Button textureLowButton, textureMediumButton, textureHighButton;
     public Button modelLowButton, modelMediumButton, modelHighButton;
     public Button frame30Button, frame60Button, frameUncappedButton;
 
+    [Header("Audio Settings")]
+    public Slider masterVolumeSlider;
 
+    [Header("Controls Settings")]
+    public TMP_Text interactKeyText; 
+    public TMP_Text dropKeyText;
+
+    private bool currentlyRebinding = false;  // To track if we’re waiting for input
+    private string stringOfBinding = ""; // Stores which action is being changed
 
     private Color defaultCrosshairColor = Color.white; //Default colouyr of crosshair
     private Color interactableCrosshairColor = Color.red;//Colour of the crosshair when looking at an interactable object
 
     private bool isPaused = false; // Pause state
+
+    [SerializeField] private EventReference menuSoundA;
+    [SerializeField] private EventReference menuSoundB;
 
     private void Awake() // When instance is being loaded
     {
@@ -60,6 +72,9 @@ public class UIManager : MonoBehaviour
         HideGameOverScreen(); //Set the game over screen is hidden
         SetCrosshairDefault(); //Set the crosshair to default
 
+        interactKeyText.text = PlayerPrefs.GetString("InteractKey", "Mouse0");
+        dropKeyText.text = PlayerPrefs.GetString("DropKey", "Mouse1");
+
         if (customerOrderText == null)
         {
             Debug.LogError("[UIManager] Customer Order Text is not assigned in the Inspector!");
@@ -69,6 +84,58 @@ public class UIManager : MonoBehaviour
         {
             pauseMenuUI.SetActive(false); // Ensure menu is hidden at the start
         }
+
+        masterVolumeSlider.value = PlayerPrefs.GetFloat("MasterVolume", 1f);
+    }
+
+    public void Rebinding(string action)
+    {
+        if (currentlyRebinding) return; // Prevent multiple rebinding actions
+
+        currentlyRebinding = true;
+        stringOfBinding = action;
+        AudioManager.instance.PlayOneShot(menuSoundB, this.transform.position);
+        if (action == "Interact")
+            interactKeyText.text = "Press any key...";
+        else if (action == "Drop")
+            dropKeyText.text = "Press any key...";
+
+        StartCoroutine(WaitForKeyPress());
+    }
+
+    private IEnumerator WaitForKeyPress()
+    {
+        while (!Input.anyKeyDown)  // Wait until a key is pressed
+            yield return null;
+
+        foreach (KeyCode key in System.Enum.GetValues(typeof(KeyCode)))
+        {
+            if (Input.GetKeyDown(key))
+            {
+                AssignNewKey(key);
+                AudioManager.instance.PlayOneShot(menuSoundB, this.transform.position);
+                break;
+            }
+        }
+    }
+
+    private void AssignNewKey(KeyCode newKey)
+    {
+        if (stringOfBinding == "Interact")
+        {
+            PlayerPrefs.SetString("InteractKey", newKey.ToString()); // Save new key
+            interactKeyText.text = newKey.ToString(); // Update UI
+        }
+        else if (stringOfBinding == "Drop")
+        {
+            PlayerPrefs.SetString("DropKey", newKey.ToString()); // Save new key
+            dropKeyText.text = newKey.ToString(); // Update UI
+        }
+
+        currentlyRebinding = false;
+        stringOfBinding = "";
+
+        FindObjectOfType<PlayerInteraction>().UpdateKeybindings();
     }
 
     public void ShowGameOverScreen() // Show death screen when player dies
@@ -169,6 +236,7 @@ public class UIManager : MonoBehaviour
     public void ResumeGame()
     {
         TogglePause(); // Unpause the game
+        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
     public void OpenSettings()
@@ -176,12 +244,14 @@ public class UIManager : MonoBehaviour
         pauseMenuUI.SetActive(false);
         settingsMenuUI.SetActive(true);
         ShowVideoSettings();
+        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
     public void CloseSettings()
     {
         settingsMenuUI.SetActive(false);
         pauseMenuUI.SetActive(true);
+        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
     public void ShowVideoSettings()
@@ -189,15 +259,34 @@ public class UIManager : MonoBehaviour
         videoPanel.SetActive(true);
         audioPanel.SetActive(false);
         controlsPanel.SetActive(false);
+        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
+    }
+
+    public void ShowAudioSettings()
+    {
+        videoPanel.SetActive(false);
+        audioPanel.SetActive(true);
+        controlsPanel.SetActive(false);
+        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
+    }
+
+    public void ShowControlsSettings()
+    {
+        videoPanel.SetActive(false);
+        audioPanel.SetActive(false);
+        controlsPanel.SetActive(true);
+        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
     public void Settings()
     {
         settingsMenuUI.SetActive(true); //Hide the Pause menu UI
         pauseMenuUI.SetActive(false); //Hide the Pause menu UI
-        
 
+        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
+
+
 
     public void UpdateLifeUI(int currentLives)
     {
@@ -219,6 +308,7 @@ public class UIManager : MonoBehaviour
     {
         settingsMenuUI.SetActive(false); // Hide the settings menu
         pauseMenuUI.SetActive(true); // Show the pause menu
+        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
     public void MainMenu()
@@ -253,7 +343,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-
     public void QuitGame()
     {
         Debug.Log("Quit Game button clicked!");
@@ -262,5 +351,11 @@ public class UIManager : MonoBehaviour
         Application.Quit(); // Quits the game to desktop 
     }
 
+    public void UpdateMasterVolume()
+    {
+        float volume = masterVolumeSlider.value;
+        AudioListener.volume = volume; // Set the global volume
+        PlayerPrefs.SetFloat("MasterVolume", volume); // Save setting
+    }
 
 }

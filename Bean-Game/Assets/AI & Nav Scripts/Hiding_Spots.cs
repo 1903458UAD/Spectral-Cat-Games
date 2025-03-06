@@ -1,31 +1,52 @@
-using System.Diagnostics;
-using UnityEngine;
+﻿using UnityEngine;
 using Random = UnityEngine.Random;
 using Debug = UnityEngine.Debug;
 
+
 public class Hiding_Spots : MonoBehaviour
 {
+    public enum HidingType { Normal, Small, Medium }
+
     [Header("Hiding Spot Settings")]
-    public int MaxOccupancy = 1;  // Maximum NPCs allowed in this spot
-    private int occupancy = 0;   // Current number of NPCs in this spot
+    public HidingType hidingType = HidingType.Normal;
+    public int MaxOccupancy;  // Maximum NPCs allowed in this spot
+    private int occupancy = 0;    // Current number of NPCs in this spot
 
     public int Occupancy => occupancy; // Read-only property to get current occupancy
 
-    // This function is to check if the hiding spot is still open for NPCs
+    
+    public void ReserveSpot()
+    {
+        if (occupancy < MaxOccupancy)
+        {
+            occupancy++;  //Reserve the spot immediately
+        }
+    }
+
+    public void ReleaseSpot()
+    {
+        if (occupancy > 0)
+        {
+            occupancy--;  //Release the spot if an NPC leaves
+        }
+    }
+
     public bool IsAvailable()
     {
-        return occupancy < MaxOccupancy; // Spot is available if not full
+        return occupancy < MaxOccupancy;
     }
+
 
     public void IncrementOccupancy()
     {
         if (occupancy < MaxOccupancy)
         {
             occupancy++;
+            Debug.Log($"[Hiding_Spots] {gameObject.name} occupancy increased: {occupancy}/{MaxOccupancy}");
         }
         else
         {
-            Debug.LogWarning($"[Hiding_Spots] {gameObject.name} is already at max occupency!"); 
+            Debug.LogWarning($"[Hiding_Spots] {gameObject.name} is already at max occupancy!");
         }
     }
 
@@ -34,24 +55,20 @@ public class Hiding_Spots : MonoBehaviour
         if (occupancy > 0)
         {
             occupancy--;
+            Debug.Log($"[Hiding_Spots] {gameObject.name} occupancy decreased: {occupancy}/{MaxOccupancy}");
         }
         else
         {
-            Debug.LogWarning($"[Hiding_Spots] {gameObject.name} ocupancy is already zero!"); 
+            Debug.LogWarning($"[Hiding_Spots] {gameObject.name} occupancy is already zero!");
         }
     }
 
-    public int GetOccupancy()
+    public void ResetHidingSpot()
     {
-        return Occupancy; // Redundant getter but useful if we ever need to override it
+        occupancy = 0;  // Clear any NPCs marked inside
+        Debug.Log($"[Hiding_Spots] {gameObject.name} reset to empty.");
     }
 
-    
-    //Left in case we want to log all hiding spots when I break the code later...
-    //public void DebugOccupancy()
-    //{
-        //Debug.Log($"{gameObject.name} has {occupancy} NPC(s) hiding in it.");
-    //}
-    
+
 
 }

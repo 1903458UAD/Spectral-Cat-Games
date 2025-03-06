@@ -1,5 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using FMOD.Studio;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
+
 
 public class FirstPersonMovement : MonoBehaviour
 {
@@ -23,7 +27,14 @@ public class FirstPersonMovement : MonoBehaviour
     private string verticalInputKeyboard = "Vertical";
     private string horizontalInputController = "Horizontal Joystick";
     private string verticalInputController = "Vertical Joystick";
-    
+
+    private EventInstance playerFootsteps;
+
+    private void Start()
+    {
+        playerFootsteps = AudioManager.instance.CreateInstance(FMODEvents.instance.playerFootsteps);
+    }
+
     void Awake()
     {
         // Get the rigidbody on this.
@@ -62,6 +73,24 @@ public class FirstPersonMovement : MonoBehaviour
         if (finalVelocity != Vector2.zero)
         {
             rigidbody.velocity = transform.rotation * new Vector3(finalVelocity.x, rigidbody.velocity.y, finalVelocity.y);
+        }
+        UpdateSound();
+    }
+    private void UpdateSound()
+    {
+
+        if ((rigidbody.velocity.x > 0.5 || rigidbody.velocity.x < -0.5 ||rigidbody.velocity.z > 0.5|| rigidbody.velocity.z < -0.5)  && gameObject.GetComponent<Jump>().GetGroundCheck() == true)
+        {
+            PLAYBACK_STATE playbackState;
+            playerFootsteps.getPlaybackState(out playbackState);
+            if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+            {
+                playerFootsteps.start();
+            }
+        }
+        else
+        {
+            playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
         }
     }
 }
