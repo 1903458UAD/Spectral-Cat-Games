@@ -17,8 +17,11 @@ Shader "Custom/InteractableObjectShader"
 
     SubShader
     {
-        Tags { "RenderType"="Opaque" "PerformanceChecks"="False" }
-        LOD 200
+        Tags {"Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent"}
+        ZWrite Off
+        Blend SrcAlpha OneMinusSrcAlpha
+        Cull back 
+        LOD 100
 
         CGPROGRAM
         #pragma surface surf Standard fullforwardshadows

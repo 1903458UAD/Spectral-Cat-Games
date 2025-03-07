@@ -128,6 +128,7 @@ public class PlayerInteraction : MonoBehaviour
                 }
 
             }
+
             else if (Physics.Raycast(ray, out hit, interactionDistance, InteractableObjectLayer))
             {
                 Debug.Log("RayCast Hit a Interactable Object");
@@ -150,7 +151,7 @@ public class PlayerInteraction : MonoBehaviour
                         heldObjectRight = interactable;
                         //return;
                     }
-                    else if (heldObjectLeft == null) // Allow left-hand pickup if dual-wielding is active
+                    else if (heldObjectLeft == null && isPickupBothHands) // Allow left-hand pickup if dual-wielding is active
                     {
                         interactable.PickUpObject(false);
                         heldObjectLeft = interactable;

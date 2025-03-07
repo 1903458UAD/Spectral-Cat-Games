@@ -7,14 +7,15 @@ public class ChangeColor : MonoBehaviour
 {
     public float interactionDistance = 2f; //Default interaction distance for interactable objects (Might need some fine tuning for balancing)
     public LayerMask FunctionalObjectLayer;
+    public LayerMask InteractableObjectLayer;
     public Transform cameraTransform;
 
     bool highlighted = false;
     float highlight = 0;
     private Renderer[] rend;
     private GameObject[] gameObjects;
-
     private GameObject currentObject;
+  
 
     void Start()
     {
@@ -36,13 +37,14 @@ public class ChangeColor : MonoBehaviour
             GameObject hitObject = hit.collider.gameObject;
             ButtonForCoffeeMachine coffeeButton = hitObject.GetComponent<ButtonForCoffeeMachine>();
             CoffeeMachine coffeeMachine = hitObject.GetComponent<CoffeeMachine>();
+            CustomerWindow customerWindow = hitObject.GetComponent<CustomerWindow>();
 
             if (coffeeButton != null)
             {
                 gameObjects = GameObject.FindGameObjectsWithTag("Button");
                 currentObject = GameObject.FindGameObjectWithTag("ButtonMain");
                 rend = currentObject.GetComponentsInChildren<Renderer>();
-           
+
                 SetShaderParameters(gameObjects, rend, 1);
             }
 
@@ -53,6 +55,24 @@ public class ChangeColor : MonoBehaviour
                 rend = currentObject.GetComponentsInChildren<Renderer>();
 
                 SetShaderParameters(gameObjects, rend, 1);
+
+                var objects = GameObject.FindGameObjectsWithTag("MachineComponent");
+                var objectCount = objects.Length;
+                foreach (var obj in objects)
+                {
+                    Renderer r = obj.GetComponent<Renderer>();
+                    r.material.SetFloat("_HighlightObject", 1);
+                }
+            }
+
+            if (customerWindow != null)
+            {
+                var objs = GameObject.FindGameObjectsWithTag("CarComp");
+                foreach (var obj in objs)
+                {
+                    Renderer r = obj.GetComponent<Renderer>();
+                    r.material.SetFloat("_HighlightObject", 1);
+                }
             }
         }
 
@@ -70,7 +90,50 @@ public class ChangeColor : MonoBehaviour
 
             SetShaderParameters(gameObjects, rend, 0);
 
+                var objects = GameObject.FindGameObjectsWithTag("MachineComponent");
+                var objectCount = objects.Length;
+                foreach (var obj in objects)
+                {
+                    Renderer r = obj.GetComponent<Renderer>();
+                    r.material.SetFloat("_HighlightObject", 0);
+                }
+
+            var objs = GameObject.FindGameObjectsWithTag("CarComp");
+            foreach (var obj in objs)
+            {
+                Renderer r = obj.GetComponent<Renderer>();
+                r.material.SetFloat("_HighlightObject", 0);
+            }
+
         }
+
+        if(Physics.Raycast(ray, out hit, interactionDistance, InteractableObjectLayer))
+        {
+           GameObject hitObject = hit.collider.gameObject;
+           CoffeeInteraction coffee = hitObject.GetComponent<CoffeeInteraction>();
+
+            if (coffee != null)
+            {
+                var objs = GameObject.FindGameObjectsWithTag("CupComponent");
+                foreach (var obj in objs)
+                {
+                    Renderer r = obj.GetComponent<Renderer>();
+                    r.material.SetFloat("_HighlightObject", 1);
+                }
+            }
+        }
+
+        else
+        {
+            var objs = GameObject.FindGameObjectsWithTag("CupComponent");
+            foreach (var obj in objs)
+            {
+                Renderer r = obj.GetComponent<Renderer>();
+                r.material.SetFloat("_HighlightObject", 0);
+            }
+        }
+
+
     }
 
 
