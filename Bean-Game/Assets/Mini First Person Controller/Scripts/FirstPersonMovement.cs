@@ -54,13 +54,13 @@ public class FirstPersonMovement : MonoBehaviour
         if (IsRunningKeyboard || IsRunningController)
         {
             IsRunning = true;
-            targetMovingSpeed = runSpeed;
+            targetMovingSpeed = runSpeed * StaticData.speedPassed;
         }
 
         else
         {
             IsRunning = false;
-            targetMovingSpeed = speed;
+            targetMovingSpeed = speed * StaticData.speedPassed;
         }
        
         // Get targetVelocity from input.

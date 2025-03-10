@@ -79,6 +79,7 @@ public class PlayerInteraction : MonoBehaviour
                 GameObject hitObject = hit.collider.gameObject;
                 CoffeeMachine coffeeMachine = hitObject.GetComponent<CoffeeMachine>();
                 CustomerWindow customerWindow = hitObject.GetComponent<CustomerWindow>();
+                Till till = hitObject.GetComponent<Till>();
                 ButtonForCoffeeMachine coffeeButton = hitObject.GetComponent<ButtonForCoffeeMachine>();
 
                 if (coffeeButton != null)
@@ -86,6 +87,12 @@ public class PlayerInteraction : MonoBehaviour
                     coffeeButton.PressButton();
                     Debug.Log("Pressed Coffee Machine Button");
                     return;
+                }
+
+                if (till != null)
+                {
+                    UIUpgradeManager.Instance.EnableUpgradeMenu();
+                    Debug.Log("Pressed Till");
                 }
 
                 if (coffeeMachine != null)
@@ -151,7 +158,7 @@ public class PlayerInteraction : MonoBehaviour
                         heldObjectRight = interactable;
                         //return;
                     }
-                    else if (heldObjectLeft == null && isPickupBothHands) // Allow left-hand pickup if dual-wielding is active
+                    else if (heldObjectLeft == null && UIUpgradeManager.Instance.dualWield) // Allow left-hand pickup if dual-wielding is active
                     {
                         interactable.PickUpObject(false);
                         heldObjectLeft = interactable;

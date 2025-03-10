@@ -70,8 +70,8 @@ public class CustomerScript : MonoBehaviour
                 break;
         }
 
-        patienceTimer = patienceTimer * StaticData.customerPatience;
-        initialTimer = initialTimer * StaticData.customerPatience;
+        patienceTimer = patienceTimer * UIUpgradeManager.Instance.customerPatience;
+        initialTimer = initialTimer * UIUpgradeManager.Instance.customerPatience;
 
         requiredBeans = UnityEngine.Random.Range(1, 4);
        // Debug.Log($"Customer wants a coffee with {requiredBeans} beans.");
