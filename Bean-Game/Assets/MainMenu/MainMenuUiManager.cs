@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -18,6 +19,8 @@ public class StartMenuUIManager : MonoBehaviour
     public Button settingsButton; // Button to open the settings menu
     public Button creditsButton; // Button to open the credits menu
     public Button quitButton; // Button to quit the game
+    public Button backButtonSettings;
+    public Button backButtonCredits;
 
 
     [Header("Settings Panels")]
@@ -38,6 +41,11 @@ public class StartMenuUIManager : MonoBehaviour
     public TMP_Text interactKeyText;
     public TMP_Text dropKeyText;
 
+
+    [Header("Sound Effects")]
+    public AudioClip buttonClickSound;
+    private AudioSource audioSource;
+
     private void Awake()
     {
         if (Instance == null)
@@ -48,20 +56,52 @@ public class StartMenuUIManager : MonoBehaviour
         {
             Destroy(gameObject); // Destroy duplicate instances
         }
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
     }
 
     private void Start()
     {
         // Set up button listeners
-        playButton.onClick.AddListener(PlayGame);
-        settingsButton.onClick.AddListener(OpenSettings);
-        creditsButton.onClick.AddListener(OpenCredits);
-        quitButton.onClick.AddListener(QuitGame);
+        if (playButton) playButton.onClick.AddListener(() => ButtonClicked(PlayGame));
+        if (settingsButton) settingsButton.onClick.AddListener(() => ButtonClicked(OpenSettings));
+        if (creditsButton) creditsButton.onClick.AddListener(() => ButtonClicked(OpenCredits));
+        if (quitButton) quitButton.onClick.AddListener(() => ButtonClicked(QuitGame));
+        backButtonSettings.onClick.AddListener(() => ButtonClicked(CloseSettings));
+        backButtonCredits.onClick.AddListener(() => ButtonClicked(CloseCredits));
+
+
+        audioSource = GetComponent<AudioSource>(); // Try getting an existing one
 
         // Initialize UI screens
         startMenuUI.SetActive(true);
         settingsMenuUI.SetActive(false);
         creditsMenuUI.SetActive(false);
+
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.clip = buttonClickSound;
+        audioSource.volume = 1f;
+
+        audioSource.spatialBlend = 0f; 
+            
+    }
+
+    private void ButtonClicked(System.Action action)
+    {
+        if (buttonClickSound != null)
+        {
+            audioSource.PlayOneShot(buttonClickSound);
+        }
+        else
+        {
+            Debug.LogError("buttonClickSound is NULL! Assign an audio clip in the Inspector.");
+        }
+
+        action.Invoke(); // Call the original function
     }
 
     public void PlayGame()
