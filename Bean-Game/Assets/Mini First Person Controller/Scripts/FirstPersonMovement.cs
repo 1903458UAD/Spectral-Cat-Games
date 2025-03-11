@@ -7,6 +7,8 @@ using Unity.VisualScripting;
 
 public class FirstPersonMovement : MonoBehaviour
 {
+    [SerializeField] private UpgradeData upgradeData;
+
     public float speed = 5;
 
     [Header("Running")]
@@ -39,9 +41,6 @@ public class FirstPersonMovement : MonoBehaviour
     {
         // Get the rigidbody on this.
         rigidbody = GetComponent<Rigidbody>();
-
-        speed = speed * StaticData.speedPassed;
-        runSpeed = runSpeed * StaticData.speedPassed;
     }
 
     void FixedUpdate()
@@ -54,13 +53,13 @@ public class FirstPersonMovement : MonoBehaviour
         if (IsRunningKeyboard || IsRunningController)
         {
             IsRunning = true;
-            targetMovingSpeed = runSpeed * StaticData.speedPassed;
+            targetMovingSpeed = runSpeed * upgradeData.internalBaseValue;
         }
 
         else
         {
             IsRunning = false;
-            targetMovingSpeed = speed * StaticData.speedPassed;
+            targetMovingSpeed = speed * upgradeData.internalBaseValue;
         }
        
         // Get targetVelocity from input.

@@ -6,6 +6,8 @@ using TMPro;
 
 public class CustomerScript : MonoBehaviour
 {
+    [SerializeField] private UpgradeData upgradeData;
+
     private GameObject player;
     public GameObject driveThrough;
     public GameObject exit;
@@ -70,8 +72,8 @@ public class CustomerScript : MonoBehaviour
                 break;
         }
 
-        patienceTimer = patienceTimer * UIUpgradeManager.Instance.customerPatience;
-        initialTimer = initialTimer * UIUpgradeManager.Instance.customerPatience;
+        patienceTimer = patienceTimer * upgradeData.internalBaseValue;
+        initialTimer = initialTimer * upgradeData.internalBaseValue;
 
         requiredBeans = UnityEngine.Random.Range(1, 4);
        // Debug.Log($"Customer wants a coffee with {requiredBeans} beans.");

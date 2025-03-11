@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
+    [SerializeField] private UpgradeData upgradeData;
+
     public float interactionDistance = 2f; //Default interaction distance for interactable objects (Might need some fine tuning for balancing)
     public LayerMask InteractableObjectLayer;
     public LayerMask FunctionalObjectLayer;
@@ -158,7 +160,7 @@ public class PlayerInteraction : MonoBehaviour
                         heldObjectRight = interactable;
                         //return;
                     }
-                    else if (heldObjectLeft == null && UIUpgradeManager.Instance.dualWield) // Allow left-hand pickup if dual-wielding is active
+                    else if (heldObjectLeft == null && upgradeData.internalUpgradeEnabled) // Allow left-hand pickup if dual-wielding is active
                     {
                         interactable.PickUpObject(false);
                         heldObjectLeft = interactable;
