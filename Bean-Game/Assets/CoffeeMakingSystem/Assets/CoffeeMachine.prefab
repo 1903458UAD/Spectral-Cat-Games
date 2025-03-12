@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8577399307399432654}
   - component: {fileID: 7105937657884415110}
   - component: {fileID: 1813283467191881382}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: CoffeeMachine
   m_TagString: CoffeeMachine
   m_Icon: {fileID: 0}
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
   m_LocalPosition: {x: 13.791, y: 1.259, z: -8.65}
-  m_LocalScale: {x: 1, y: 0.2372, z: 0.76402}
+  m_LocalScale: {x: 0.7212675, y: 0.45692998, z: 1.2522676}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -123,6 +123,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coffeeCreationTime: 5
+  buttonLid: {fileID: 0}
   coffeeCup1Bean: {fileID: 8928758313196748983, guid: e27856dfb5154c248a81d1661500b08f, type: 3}
   coffeeCup2Beans: {fileID: 2769136830400132460, guid: 1db7f3811b662334ea46826303326148, type: 3}
   coffeeCup3Beans: {fileID: 1742179613311282129, guid: 7b0abe2f06b4cd44e92cf595ea1f0c6c, type: 3}
+  coffeeMachineSound:
+    Guid:
+      Data1: 2045147874
+      Data2: 1158129768
+      Data3: 538279357
+      Data4: 1330596056
+    Path: event:/Coffee Grinder
+  hopperSpawn: {fileID: 0}
+  hopperBeanPrefab: {fileID: 2635827985430927401, guid: 6f32acc15aa7a8e4d9d9347d89122936, type: 3}
+  spawnPoint: {fileID: 0}
