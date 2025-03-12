@@ -129,7 +129,8 @@ public class InteractableObject : MonoBehaviour
         {
             objectRigidbody.isKinematic = false;
             objectRigidbody.useGravity = true;
-      
+
+
 
             Collider objectCollider = GetComponent<Collider>();
             Collider playerCollider = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Collider>();
