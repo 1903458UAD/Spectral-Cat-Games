@@ -18,11 +18,12 @@ public class CustomerScript : MonoBehaviour
     private float speed = 0.01f;
     private float patienceTimer;
     private float initialTimer;
+    private float tipTime; 
     private bool orderDelivered;
     private bool drive;
 
     private float threshold;
-    private float tipFactor;
+    private float tipFactor = 50;
 
     private PlayerHealth playerHealth;
 
@@ -56,19 +57,19 @@ public class CustomerScript : MonoBehaviour
                 threshold = 0.10f;
                 patienceTimer = 120;
                 initialTimer = 120;
-                tipFactor = 0.030f;
+                tipTime = 55;
                 break;
             case 1:
                 threshold = 0.25f;
                 patienceTimer = 90;
                 initialTimer = 90;
-                tipFactor = 0.020f;
+                tipTime = 45;
                 break;
             case 2:
                 threshold = 0.50f;
                 patienceTimer = 60;
                 initialTimer = 60;
-                tipFactor = 0.015f;
+                tipTime = 30;
                 break;
         }
 
@@ -149,11 +150,11 @@ public class CustomerScript : MonoBehaviour
 
     void Pay()
     {
-        float income = 1.0f;
+        float income = 100.0f;
 
-        if (patienceTimer > (initialTimer * threshold))
+        if (initialTimer - patienceTimer <= tipTime)
         {
-            income += patienceTimer * tipFactor;
+            income += tipFactor;
         }
 
         nextLocation = exit; // Move customer towards exit //Reverted back to heathers orginal code as the game manager code currently breaks it
