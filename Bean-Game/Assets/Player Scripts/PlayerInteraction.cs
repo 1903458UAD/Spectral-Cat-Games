@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
+    [SerializeField] private UpgradeData upgradeData;
+
     public float interactionDistance = 2f; //Default interaction distance for interactable objects (Might need some fine tuning for balancing)
     public LayerMask InteractableObjectLayer;
     public LayerMask FunctionalObjectLayer;
@@ -73,12 +75,46 @@ public class PlayerInteraction : MonoBehaviour
 
             Debug.DrawRay(ray.origin, ray.direction * interactionDistance, Color.red, 0.1f);
 
-            if (Physics.Raycast(ray, out hit, interactionDistance, FunctionalObjectLayer)) //-- Prioritise function over pick up
+
+            if (Physics.Raycast(ray, out hit, interactionDistance, InteractableObjectLayer))
+            {
+                Debug.Log("RayCast Hit a Interactable Object");
+                GameObject hitObject = hit.collider.gameObject;
+                InteractableObject interactable = hitObject.GetComponent<InteractableObject>();
+
+
+                if (interactable != null)
+                {
+
+                    if (heldObjectRight == null || heldObjectLeft == null)
+                    {
+                        AudioManager.instance.PlayOneShot(pickupSound, this.transform.position);
+                    }
+
+                    // Pick up object if hand is free
+                    if (heldObjectRight == null)
+                    {
+                        interactable.PickUpObject(true);
+                        heldObjectRight = interactable;
+                        //return;
+                    }
+                    else if (heldObjectLeft == null && upgradeData.internalUpgradeEnabled) // Allow left-hand pickup if dual-wielding is active
+                    {
+                        interactable.PickUpObject(false);
+                        heldObjectLeft = interactable;
+                        //return;
+                    }
+                }
+            }
+            
+
+            else if (Physics.Raycast(ray, out hit, interactionDistance, FunctionalObjectLayer)) //-- Prioritise function over pick up
             {
                 Debug.Log("RayCast Hit a functional Object");
                 GameObject hitObject = hit.collider.gameObject;
                 CoffeeMachine coffeeMachine = hitObject.GetComponent<CoffeeMachine>();
                 CustomerWindow customerWindow = hitObject.GetComponent<CustomerWindow>();
+                Till till = hitObject.GetComponent<Till>();
                 ButtonForCoffeeMachine coffeeButton = hitObject.GetComponent<ButtonForCoffeeMachine>();
 
                 if (coffeeButton != null)
@@ -86,6 +122,12 @@ public class PlayerInteraction : MonoBehaviour
                     coffeeButton.PressButton();
                     Debug.Log("Pressed Coffee Machine Button");
                     return;
+                }
+
+                if (till != null)
+                {
+                    UIUpgradeManager.Instance.EnableUpgradeMenu();
+                    Debug.Log("Pressed Till");
                 }
 
                 if (coffeeMachine != null)
@@ -109,56 +151,27 @@ public class PlayerInteraction : MonoBehaviour
                 if (customerWindow != null)
                 {
 
-                    if (heldObjectRight)
+                    if (heldObjectRight && heldObjectRight.GetComponent<CoffeeInteraction>())
                     {
-                       
+
                         heldObjectRight.GetComponent<CoffeeInteraction>().TryAddToCustomerWindow();
                         return;
                     }
-                    else if (!heldObjectLeft)
+                    else if (heldObjectLeft && heldObjectLeft.GetComponent<CoffeeInteraction>())
                     {
-                        
+
                         heldObjectLeft.GetComponent<CoffeeInteraction>().TryAddToCustomerWindow();
-                        
+
                         return;
 
                     }
-                   
+
                     return;
                 }
 
             }
 
-            else if (Physics.Raycast(ray, out hit, interactionDistance, InteractableObjectLayer))
-            {
-                Debug.Log("RayCast Hit a Interactable Object");
-                GameObject hitObject = hit.collider.gameObject;
-                InteractableObject interactable = hitObject.GetComponent<InteractableObject>();
-
-
-                if (interactable != null)
-                {
-
-                    if (heldObjectRight == null || heldObjectLeft == null)
-                    {
-                        AudioManager.instance.PlayOneShot(pickupSound, this.transform.position);
-                    }
-
-                    // Pick up object if hand is free
-                    if (heldObjectRight == null)
-                    {
-                        interactable.PickUpObject(true);
-                        heldObjectRight = interactable;
-                        //return;
-                    }
-                    else if (heldObjectLeft == null && isPickupBothHands) // Allow left-hand pickup if dual-wielding is active
-                    {
-                        interactable.PickUpObject(false);
-                        heldObjectLeft = interactable;
-                        //return;
-                    }
-                }
-            }
+            
         }
     }
 }

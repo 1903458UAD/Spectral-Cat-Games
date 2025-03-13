@@ -140,9 +140,9 @@ public class NPC_AI : MonoBehaviour
             Debug.Log($"[NPC_AI] {gameObject.name} repositioned to valid NavMesh position: {hit.position}");
 
             transform.position = hit.position; // Move to valid NavMesh point
-            navMeshAgent.enabled = true;
             navMeshAgent.Warp(hit.position);  // Instantly corrects position
             navMeshAgent.isStopped = false;   // Resume movement
+            navMeshAgent.enabled = true;
         }
         else
         {
