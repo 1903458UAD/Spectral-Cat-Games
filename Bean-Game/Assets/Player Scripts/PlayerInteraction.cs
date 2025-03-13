@@ -98,7 +98,7 @@ public class PlayerInteraction : MonoBehaviour
                         heldObjectRight = interactable;
                         //return;
                     }
-                    else if (heldObjectLeft == null && isPickupBothHands) // Allow left-hand pickup if dual-wielding is active
+                    else if (heldObjectLeft == null && upgradeData.internalUpgradeEnabled) // Allow left-hand pickup if dual-wielding is active
                     {
                         interactable.PickUpObject(false);
                         heldObjectLeft = interactable;
@@ -171,36 +171,7 @@ public class PlayerInteraction : MonoBehaviour
 
             }
 
-            else if (Physics.Raycast(ray, out hit, interactionDistance, InteractableObjectLayer))
-            {
-                Debug.Log("RayCast Hit a Interactable Object");
-                GameObject hitObject = hit.collider.gameObject;
-                InteractableObject interactable = hitObject.GetComponent<InteractableObject>();
-
-
-                if (interactable != null)
-                {
-
-                    if (heldObjectRight == null || heldObjectLeft == null)
-                    {
-                        AudioManager.instance.PlayOneShot(pickupSound, this.transform.position);
-                    }
-
-                    // Pick up object if hand is free
-                    if (heldObjectRight == null)
-                    {
-                        interactable.PickUpObject(true);
-                        heldObjectRight = interactable;
-                        //return;
-                    }
-                    else if (heldObjectLeft == null && upgradeData.internalUpgradeEnabled) // Allow left-hand pickup if dual-wielding is active
-                    {
-                        interactable.PickUpObject(false);
-                        heldObjectLeft = interactable;
-                        //return;
-                    }
-                }
-            }
+            
         }
     }
 }
