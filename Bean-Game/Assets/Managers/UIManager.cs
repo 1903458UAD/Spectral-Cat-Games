@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     public TMP_Text incomeText;//Reference to the income UI
     public GameObject pauseMenuUI; // Reference to Pause Menu UI
     public GameObject settingsMenuUI;
+    public GameObject upgradeMenu;
 
     [Header("Customer Order UI")]
     public TMP_Text customerOrderText; // New UI element to display coffee order
@@ -191,6 +192,8 @@ public class UIManager : MonoBehaviour
 
         isPaused = !isPaused;
 
+        if(!upgradeMenu.activeSelf)
+        {
         if (isPaused)
         {
             Time.timeScale = 0f;
@@ -228,7 +231,7 @@ public class UIManager : MonoBehaviour
             {
                 cameraScript.enabled = true;// Enable camera movement
             }
-
+        }
 
         }
     }

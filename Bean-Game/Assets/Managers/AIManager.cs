@@ -1045,7 +1045,7 @@ public class AIManager : MonoBehaviour
         Vector3 toPlayer = (playerPosition - hidingSpotPosition).normalized;
         Vector3 idealHidingPos = hidingSpotPosition - (toPlayer * 0.35f);
 
-        if (Vector3.Distance(npc.transform.position, idealHidingPos) > 0.5f)
+        if (Vector3.Distance(npc.transform.position, idealHidingPos) > 0.2f)
         {
             if (NavMesh.SamplePosition(idealHidingPos, out NavMeshHit hit, 1.5f, NavMesh.AllAreas))
             {
