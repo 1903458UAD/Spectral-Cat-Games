@@ -21,7 +21,7 @@ public class SceneControl : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.M))
         {
-            GameManager.Instance.ChangeScene(1);
+            GameManager.Instance.ChangeScene(2);
         }
 
         if (Input.GetKeyDown(KeyCode.Escape)) // "ESC" key
