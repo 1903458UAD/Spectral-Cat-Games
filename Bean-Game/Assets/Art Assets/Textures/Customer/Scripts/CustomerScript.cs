@@ -39,7 +39,7 @@ public class CustomerScript : MonoBehaviour
 
         if (playerHealth == null)
         {
-            UnityEngine.Debug.LogError("[CustomerScript] PlayerHealth component not found on Player!");
+          //  UnityEngine.Debug.LogError("[CustomerScript] PlayerHealth component not found on Player!");
         }
 
         drive = true;
