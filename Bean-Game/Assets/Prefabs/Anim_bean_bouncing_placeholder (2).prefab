@@ -26,15 +26,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d75ad9ef0a2896409a4e7fb1667c984, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -29.499815
+      value: 4.232188
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d75ad9ef0a2896409a4e7fb1667c984, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.879999
+      value: 0.804227
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d75ad9ef0a2896409a4e7fb1667c984, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -121.991684
+      value: -4.928022
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d75ad9ef0a2896409a4e7fb1667c984, type: 3}
       propertyPath: m_LocalRotation.w
@@ -193,7 +193,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 7548525682580231634}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.06
+  m_Radius: 0.02
   m_Speed: 3
   m_Acceleration: 8
   avoidancePriority: 50
@@ -202,7 +202,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 0.08
+  m_Height: 0.05
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -275,10 +275,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navMeshAgent: {fileID: 6431538203433792566}
   runRange: 2
-  beanMoveSound:
-    Guid:
-      Data1: -921170523
-      Data2: 1336475982
-      Data3: -2140589420
-      Data4: -495853894
-    Path: event:/Bean Footsteps
