@@ -20,7 +20,10 @@ public class AIManager : MonoBehaviour
     private float hidingDuration = 10f; // Time before NPC moves to another spot
 
 
-    private List<NavNode> navNodes = new List<NavNode>();
+    public NavGraph navGraph;
+    private List<NavGraph.NavNodeData> nodeDataList = new List<NavGraph.NavNodeData>();
+
+    //private List<NavNode> navNodes = new List<NavNode>();
 
     private float decisionInterval = 0.5f;  // Every NPC updates decisions every 0.5s
     private Dictionary<NPC_AI, float> nextDecisionTimes = new Dictionary<NPC_AI, float>();
@@ -73,17 +76,18 @@ public class AIManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            Debug.Log("[AIManager] Instance assigned.");
+            //Debug.Log("[AIManager] Instance assigned.");
         }
         else
         {
-            Debug.LogError("[AIManager] Duplicate instance detected! Destroying.");
+            //Debug.LogError("[AIManager] Duplicate instance detected! Destroying.");
             Destroy(gameObject);
             return;
         }
 
+        LoadNavGraphData();
         FindAllHidingSpots();
-        FindAllNavNodes();
+        //FindAllNavNodes();
     }
 
     private void Start()
@@ -98,7 +102,7 @@ public class AIManager : MonoBehaviour
         // Reset game if bean count is low.
         if (npcList.Count == beansLow && !isResetting)
         {
-            Debug.LogWarning("[AIManager] Bean count low! Triggering reset...");
+            //Debug.LogWarning("[AIManager] Bean count low! Triggering reset...");
             StartCoroutine(ResetGameCoroutine());
         }
 
@@ -110,7 +114,7 @@ public class AIManager : MonoBehaviour
             // Validate NPC: must have an active NavMeshAgent.
             if (npc.navMeshAgent == null || !npc.navMeshAgent.enabled || !npc.navMeshAgent.isOnNavMesh)
             {
-                Debug.LogWarning($"[AIManager] {npc.gameObject.name} not on valid NavMesh. Skipping.");
+               // Debug.LogWarning($"[AIManager] {npc.gameObject.name} not on valid NavMesh. Skipping.");
                 continue;
             }
 
@@ -131,7 +135,7 @@ public class AIManager : MonoBehaviour
                 MaintainCover(npc);
             }
 
-            
+
             if (!nextDecisionTimes.ContainsKey(npc))
                 nextDecisionTimes[npc] = Time.time + Random.Range(0.2f, 1.0f);
             if (Time.time >= nextDecisionTimes[npc])
@@ -145,51 +149,151 @@ public class AIManager : MonoBehaviour
     }
 
 
-
-
-
-    private List<NavNode> FindAllNavNodes()
+    private void LoadNavGraphData()
     {
-        navNodes.Clear(); // Clear existing nodes if any
-        navNodes.AddRange(FindObjectsOfType<NavNode>()); // Populate navNodes list with all NavNode objects found in the scene
-
-        if (navNodes.Count == 0)
+        if (navGraph == null)
         {
-            Debug.LogError("[AIManager] No NavNodes found in the scene! NPCs cannot move.");
+            //Debug.LogError("[AIManager] NavGraph is missing! NPCs cannot navigate.");
+            return;
         }
-        else
-        {
-            Debug.Log($"[AIManager] Found {navNodes.Count} NavNodes.");
-        }
-
-        return navNodes; // Return the list of NavNode objects
+        // Simply read the precomputed nodes from the asset.
+        nodeDataList = navGraph.nodes;
+       // Debug.Log($"[AIManager] Loaded {nodeDataList.Count} nodes from precomputed NavGraph.");
     }
+
+    // Returns the index of the given nodeData in the nodeDataList.
+    private int GetNodeIndex(NavGraph.NavNodeData nodeData)
+    {
+        for (int i = 0; i < nodeDataList.Count; i++)
+        {
+            if (Vector3.Distance(nodeDataList[i].position, nodeData.position) < 0.01f)
+                return i;
+        }
+        return -1;
+    }
+
+    // Look up a precomputed escape route 
+
+    private List<NavGraph.NavNodeData> GetPrecomputedRoute(Vector3 startPos, Vector3 targetPos)
+    {
+        // Find the node closest to start and target.
+        NavGraph.NavNodeData startNode = FindClosestNodeData(startPos);
+        NavGraph.NavNodeData targetNode = FindClosestNodeData(targetPos);
+        if (startNode == null || targetNode == null)
+            return null;
+
+        int sourceIndex = GetNodeIndex(startNode);
+        int destIndex = GetNodeIndex(targetNode);
+        if (sourceIndex < 0 || destIndex < 0)
+            return null;
+
+        // Look through your precomputed routes for one that goes directly from source to destination.
+        foreach (var route in navGraph.precomputedRoutes)
+        {
+            if (route.sourceIndex == sourceIndex && route.destinationIndex == destIndex)
+            {
+                if (route.pathIndices != null && route.pathIndices.Count > 0)
+                {
+                    List<NavGraph.NavNodeData> routeData = new List<NavGraph.NavNodeData>();
+                    // Here we take the first candidate route.
+                    List<int> chosenRoute = route.pathIndices[0];
+                    foreach (int index in chosenRoute)
+                    {
+                        routeData.Add(nodeDataList[index]);
+                    }
+                    return routeData;
+                }
+            }
+        }
+        return null;
+    }
+
+
+    //chain multiple precomputed route segments together
+    private List<NavGraph.NavNodeData> GetCombinedPrecomputedRoute(Vector3 startPos, Vector3 targetPos)
+    {
+        float tolerance = 1.0f; // Adjust this to what you consider "close enough" to the target.
+        List<NavGraph.NavNodeData> combinedRoute = new List<NavGraph.NavNodeData>();
+        Vector3 currentStart = startPos;
+        int maxIterations = 10; // To avoid potential infinite loops.
+
+        for (int i = 0; i < maxIterations; i++)
+        {
+            // Get a segment from currentStart to targetPos.
+            List<NavGraph.NavNodeData> segment = GetPrecomputedRoute(currentStart, targetPos);
+            if (segment == null || segment.Count == 0)
+            {
+                // No route found for this segment.
+                break;
+            }
+            // If we already have some nodes, remove the duplicate starting node.
+            if (combinedRoute.Count > 0)
+            {
+                if (Vector3.Distance(combinedRoute[combinedRoute.Count - 1].position, segment[0].position) < 0.01f)
+                {
+                    segment.RemoveAt(0);
+                }
+            }
+            combinedRoute.AddRange(segment);
+            // Update the current start to be the last node in our combined route.
+            currentStart = combinedRoute[combinedRoute.Count - 1].position;
+            // If this last node is close enough to the target, we’re done.
+            if (Vector3.Distance(currentStart, targetPos) <= tolerance)
+            {
+                return combinedRoute;
+            }
+        }
+        // Final check – if the last node is not within tolerance, return null.
+        if (combinedRoute.Count > 0 && Vector3.Distance(combinedRoute[combinedRoute.Count - 1].position, targetPos) <= tolerance)
+            return combinedRoute;
+        return null;
+    }
+
+
+
+
+    //private List<NavNode> FindAllNavNodes()
+    //{
+    //    navNodes.Clear(); // Clear existing nodes if any
+    //    navNodes.AddRange(FindObjectsOfType<NavNode>()); // Populate navNodes list with all NavNode objects found in the scene
+
+    //    if (navNodes.Count == 0)
+    //    {
+    //        Debug.LogError("[AIManager] No NavNodes found in the scene! NPCs cannot move.");
+    //    }
+    //    else
+    //    {
+    //        Debug.Log($"[AIManager] Found {navNodes.Count} NavNodes.");
+    //    }
+
+    //    return navNodes; // Return the list of NavNode objects
+    //}
 
 
     public Vector3 GetRandomNavMeshPosition()
     {
-        if (navNodes == null || navNodes.Count == 0)
+        if (nodeDataList == null || nodeDataList.Count == 0)
         {
-            Debug.LogError("[AIManager] No NavNodes available for spawning.");
+           // Debug.LogError("[AIManager] No nav data available for spawning.");
             return Vector3.zero;
         }
-
-        NavNode randomNode = navNodes[Random.Range(0, navNodes.Count)];
-        return randomNode.transform.position;
+        int randomIndex = Random.Range(0, nodeDataList.Count);
+        return nodeDataList[randomIndex].position;
     }
+
 
     public void RegisterNPC(NPC_AI npc)
     {
         if (npc == null)
         {
-            Debug.LogError("[AIManager] Attempted to register a NULL NPC!");
+           // Debug.LogError("[AIManager] Attempted to register a NULL NPC!");
             return;
         }
 
         if (!npcList.Contains(npc))
         {
             npcList.Add(npc);
-            Debug.Log($"[AIManager] Registered NPC: {npc.gameObject.name}");
+           // Debug.Log($"[AIManager] Registered NPC: {npc.gameObject.name}");
         }
     }
 
@@ -209,11 +313,11 @@ public class AIManager : MonoBehaviour
 
         if (hidingSpots.Count == 0)
         {
-            Debug.LogError("[AIManager] No hiding spots found in the scene! NPCs cannot hide.");
+            //Debug.LogError("[AIManager] No hiding spots found in the scene! NPCs cannot hide.");
         }
         else
         {
-            Debug.Log($"[AIManager] Found {hidingSpots.Count} Hiding Spots.");
+           // Debug.Log($"[AIManager] Found {hidingSpots.Count} Hiding Spots.");
         }
     }
 
@@ -222,7 +326,7 @@ public class AIManager : MonoBehaviour
     {
         if (hidingSpots.Count == 0)
         {
-            Debug.LogWarning("[AIManager] No hiding spots available.");
+            //Debug.LogWarning("[AIManager] No hiding spots available.");
             return Vector3.zero;
         }
 
@@ -257,7 +361,7 @@ public class AIManager : MonoBehaviour
 
         float distanceToPlayer = Vector3.Distance(npc.transform.position, GetPlayerPosition());
 
-        if(npc.state == NPC_AI.NPCState.Hiding)
+        if (npc.state == NPC_AI.NPCState.Hiding)
         {
             MaintainCover(npc);
         }
@@ -265,7 +369,7 @@ public class AIManager : MonoBehaviour
         {
             if (npc.state != NPC_AI.NPCState.Running)
             {
-                Debug.Log($"[EvaluateNPCState] {npc.gameObject.name} is too close to the player. Transitioning from Idle to Running.");
+                //Debug.Log($"[EvaluateNPCState] {npc.gameObject.name} is too close to the player. Transitioning from Idle to Running.");
                 npc.state = NPC_AI.NPCState.Running;
                 // Release any current hiding spot assignment.
                 if (npcHidingAssignments.ContainsKey(npc))
@@ -285,7 +389,7 @@ public class AIManager : MonoBehaviour
         {
             if (distanceToPlayer > npc.runRange * 2)
             {
-                Debug.Log($"[EvaluateNPCState] {npc.gameObject.name} has run far enough. Transitioning from Running to Idle.");
+               // Debug.Log($"[EvaluateNPCState] {npc.gameObject.name} has run far enough. Transitioning from Running to Idle.");
                 npc.state = NPC_AI.NPCState.Idle;
                 npc.navMeshAgent.ResetPath(); // Clear the previous escape route.
                 AssignNewHidingSpot(npc, true);
@@ -296,21 +400,21 @@ public class AIManager : MonoBehaviour
         if (npc.state == NPC_AI.NPCState.Idle)
         {
             // If a hiding spot is assigne
-            if (npc.GetHidingSpot() != null)
+            if (npc.GetHidingSpot() != null && !npc.hasHidingAssignment)
             {
                 float distanceToSpot = Vector3.Distance(npc.transform.position, npc.GetHidingSpot().transform.position);
-                
+
                 if (distanceToSpot <= npc.navMeshAgent.stoppingDistance + 0.1f)
                 {
-                    Debug.Log($"[EvaluateNPCState] {npc.gameObject.name} has reached its hiding spot. Transitioning from Idle to Hiding.");
-                    npc.OnReachedHidingSpot();  
+                    //Debug.Log($"[EvaluateNPCState] {npc.gameObject.name} has reached its hiding spot. Transitioning from Idle to Hiding.");
+                    npc.OnReachedHidingSpot();
                 }
-               
+
             }
             else
             {
                 // No hiding spot assigned: assign one.
-                Debug.Log($"[EvaluateNPCState] {npc.gameObject.name} has no hiding spot. Assigning new hiding spot.");
+                //Debug.Log($"[EvaluateNPCState] {npc.gameObject.name} has no hiding spot. Assigning new hiding spot.");
                 AssignNewHidingSpot(npc, false);
             }
         }
@@ -348,102 +452,139 @@ public class AIManager : MonoBehaviour
         npc.navMeshAgent.velocity = Vector3.zero;
         npc.navMeshAgent.isStopped = false;
 
-
         float targetDistance = npc.runRange * 3f;
-        int desiredHops = 4;
-
-
-        List<NavNode> route = FindRandomEscapeRoute(npc, desiredHops, targetDistance);
-
+        List<NavGraph.NavNodeData> route = GetPrecomputedEscapeRoute(npc, targetDistance);
         if (route != null && route.Count > 0)
         {
-            Debug.Log($"[AIManager] {npc.gameObject.name} escape route found with {route.Count} hops (randomized).");
             StartCoroutine(FollowEscapeRoute(npc, route));
         }
         else
         {
+            // Fallback: if no route is found, use a direct escape.
+            Vector3 directEscape = npc.transform.position + (npc.transform.position - GetPlayerPosition()).normalized * targetDistance;
+            npc.MoveTo(directEscape);
+        }
+    }
 
-            NavNode fallbackNode = FindFarthestNode(npc, new List<NavNode>());
-            if (fallbackNode != null && Vector3.Distance(fallbackNode.transform.position, GetPlayerPosition()) >= targetDistance)
+    private List<NavGraph.NavNodeData> GetPrecomputedEscapeRoute(NPC_AI npc, float targetDistance)
+    {
+        // Get the node nearest to the NPC's current position.
+        NavGraph.NavNodeData startNode = FindClosestNodeData(npc.transform.position);
+        if (startNode == null)
+            return null;
+        int sourceIndex = GetNodeIndex(startNode);
+        if (sourceIndex < 0)
+            return null;
+
+        // Collect candidate routes that start at this source.
+        List<NavGraph.RouteData> candidateRoutes = new List<NavGraph.RouteData>();
+        foreach (var route in navGraph.precomputedRoutes)
+        {
+            if (route.sourceIndex == sourceIndex)
             {
-                Debug.Log($"[AIManager] {npc.gameObject.name} using fallback escape route to node {fallbackNode.name}.");
-                npc.MoveTo(fallbackNode.transform.position);
-            }
-            else
-            {
-                Vector3 directEscape = npc.transform.position + (npc.transform.position - GetPlayerPosition()).normalized * targetDistance;
-                Debug.Log($"[AIManager] {npc.gameObject.name} using direct escape route.");
-                npc.MoveTo(directEscape);
+                if (route.pathIndices != null && route.pathIndices.Count > 0)
+                {
+                    // For each route candidate, take the first candidate route.
+                    List<int> candidate = route.pathIndices[0];
+                    int lastIndex = candidate[candidate.Count - 1];
+                    Vector3 finalPos = navGraph.nodes[lastIndex].position;
+                    // Only consider routes that end sufficiently far from the player.
+                    if (Vector3.Distance(finalPos, GetPlayerPosition()) >= targetDistance)
+                        candidateRoutes.Add(route);
+                }
             }
         }
+        if (candidateRoutes.Count == 0)
+            return null;
+
+        // Sort candidate routes by hop count (using the first candidate route).
+        candidateRoutes.Sort((a, b) => a.pathIndices[0].Count.CompareTo(b.pathIndices[0].Count));
+        NavGraph.RouteData bestRoute = candidateRoutes[0];
+        List<int> chosenRoute = bestRoute.pathIndices[0];
+
+        List<NavGraph.NavNodeData> routeData = new List<NavGraph.NavNodeData>();
+        foreach (int index in chosenRoute)
+        {
+            routeData.Add(nodeDataList[index]);
+        }
+        return routeData;
     }
 
 
 
-    private List<NavNode> FindRandomEscapeRoute(NPC_AI npc, int hopCount, float targetDistance)
+
+    private List<NavGraph.NavNodeData> FindRandomEscapeRoute(NPC_AI npc, int hopCount, float targetDistance)
     {
-        NavNode startNode = FindClosestNavNode(npc.transform.position);
+        NavGraph.NavNodeData startNode = FindClosestNodeData(npc.transform.position);
         if (startNode == null)
         {
-            Debug.LogWarning($"[FindRandomEscapeRoute] {npc.gameObject.name} has no starting NavNode!");
+            //Debug.LogWarning($"[FindRandomEscapeRoute] {npc.gameObject.name} has no starting node data!");
             return null;
         }
 
-        List<NavNode> route = new List<NavNode> { startNode };
+        List<NavGraph.NavNodeData> route = new List<NavGraph.NavNodeData> { startNode };
         Vector3 playerPos = GetPlayerPosition();
-
 
         for (int i = 0; i < hopCount; i++)
         {
-            NavNode currentNode = route[route.Count - 1];
-  
-            List<NavNode> candidates = new List<NavNode>();
-            foreach (NavNode node in currentNode.connectedNodes)
+            NavGraph.NavNodeData currentNode = route[route.Count - 1];
+            List<NavGraph.NavNodeData> candidates = new List<NavGraph.NavNodeData>();
+
+            // Iterate over the stored connected node indices.
+            foreach (int connectedIndex in currentNode.connectedNodeIndices)
             {
-                if (!route.Contains(node) && Vector3.Distance(node.transform.position, playerPos) >= npc.runRange)
+                // Validate index
+                if (connectedIndex < 0 || connectedIndex >= nodeDataList.Count)
+                    continue;
+                NavGraph.NavNodeData candidate = nodeDataList[connectedIndex];
+                if (!route.Contains(candidate) && Vector3.Distance(candidate.position, playerPos) >= npc.runRange)
                 {
-                    candidates.Add(node);
+                    candidates.Add(candidate);
                 }
             }
-
             if (candidates.Count == 0)
-            {
-     
                 break;
-            }
-         
-            NavNode chosen = candidates[Random.Range(0, candidates.Count)];
+
+            NavGraph.NavNodeData chosen = candidates[Random.Range(0, candidates.Count)];
             route.Add(chosen);
         }
 
-    
-        if (Vector3.Distance(route[route.Count - 1].transform.position, playerPos) >= targetDistance)
-        {
+        if (Vector3.Distance(route[route.Count - 1].position, playerPos) >= targetDistance)
             return route;
-        }
         else
         {
-            Debug.LogWarning($"[FindRandomEscapeRoute] Final node is too close to the player.");
+           // Debug.LogWarning("[FindRandomEscapeRoute] Final node is too close to the player.");
             return null;
         }
     }
 
-    private IEnumerator FollowEscapeRoute(NPC_AI npc, List<NavNode> route)
+
+
+    private IEnumerator FollowEscapeRoute(NPC_AI npc, List<NavGraph.NavNodeData> route)
     {
-        foreach (NavNode node in route)
+        foreach (var nodeData in route)
         {
             if (!npc.navMeshAgent.isOnNavMesh)
                 yield break;
 
-            npc.MoveTo(node.transform.position);
+            npc.MoveTo(nodeData.position);
+            int maxIterations = 300; // for example, 300 iterations (adjust based on your frame rate)
+            int iterations = 0;
+
             while (npc.navMeshAgent.isOnNavMesh &&
-                   (npc.navMeshAgent.pathPending || npc.navMeshAgent.remainingDistance > npc.navMeshAgent.stoppingDistance + 0.1f))
+                   (npc.navMeshAgent.pathPending ||
+                    npc.navMeshAgent.remainingDistance > npc.navMeshAgent.stoppingDistance + 0.1f))
             {
+                iterations++;
+                if (iterations > maxIterations)
+                {
+                    Debug.LogWarning($"[AIManager] {npc.gameObject.name} exceeded maximum iterations waiting for destination {nodeData.position}. Exiting loop.");
+                    break;
+                }
                 yield return null;
             }
         }
         npc.state = NPC_AI.NPCState.Idle;
-        Debug.Log($"[AIManager] {npc.gameObject.name} has completed its escape route.");
         AssignNewHidingSpot(npc, true);
     }
 
@@ -452,74 +593,68 @@ public class AIManager : MonoBehaviour
 
 
 
-    private List<NavNode> FindEscapeRoute(NPC_AI npc, float targetDistance)
-    {
-        NavNode startNode = FindClosestNavNode(npc.transform.position);
-        if (startNode == null)
-        {
-            Debug.LogWarning($"[AIManager] {npc.gameObject.name} has no starting NavNode!");
-            return null;
-        }
-
-        Queue<List<NavNode>> routesQueue = new Queue<List<NavNode>>();
-        routesQueue.Enqueue(new List<NavNode> { startNode });
-        Vector3 playerPos = GetPlayerPosition();
-
-        while (routesQueue.Count > 0)
-        {
-            List<NavNode> currentRoute = routesQueue.Dequeue();
-            NavNode currentNode = currentRoute[currentRoute.Count - 1];
 
 
-            if (Vector3.Distance(currentNode.transform.position, playerPos) >= targetDistance)
-            {
-                return currentRoute;
-            }
+    //private List<NavNode> FindEscapeRoute(NPC_AI npc, float targetDistance)
+    //{
+    //    NavGraph.NavNodeData startNode = FindClosestNodeData(npc.transform.position);
+    //    if (startNode == null)
+    //    {
+    //        Debug.LogWarning($"[AIManager] {npc.gameObject.name} has no starting NavNode!");
+    //        return null;
+    //    }
 
-            foreach (NavNode connected in currentNode.connectedNodes)
-            {
-                // Avoid cycles.
-                if (currentRoute.Contains(connected))
-                    continue;
+    //    Queue<List<NavNode>> routesQueue = new Queue<List<NavNode>>();
+    //    routesQueue.Enqueue(new List<NavNode> { startNode });
+    //    Vector3 playerPos = GetPlayerPosition();
 
-                if (Vector3.Distance(connected.transform.position, playerPos) < npc.runRange)
-                    continue;
+    //    while (routesQueue.Count > 0)
+    //    {
+    //        List<NavNode> currentRoute = routesQueue.Dequeue();
+    //        NavNode currentNode = currentRoute[currentRoute.Count - 1];
 
-                List<NavNode> newRoute = new List<NavNode>(currentRoute) { connected };
-                routesQueue.Enqueue(newRoute);
-            }
-        }
+    //        if (Vector3.Distance(currentNode.transform.position, playerPos) >= targetDistance)
+    //            return currentRoute;
 
-        // No valid route found.
-        return null;
-    }
+    //        foreach (NavNode connected in currentNode.connectedNodes)
+    //        {
+    //            if (currentRoute.Contains(connected))
+    //                continue;
+    //            if (Vector3.Distance(connected.transform.position, playerPos) < npc.runRange)
+    //                continue;
+
+    //            List<NavNode> newRoute = new List<NavNode>(currentRoute) { connected };
+    //            routesQueue.Enqueue(newRoute);
+    //        }
+    //    }
+
+    //    return null;
+    //}
 
 
 
-    private NavNode FindFarthestNode(NPC_AI npc, List<NavNode> recentNodes)
-    {
-        NavNode farthestNode = null;
-        float maxDistance = 0f;
+    //private NavNode FindFarthestNode(NPC_AI npc, List<NavNode> recentNodes)
+    //{
+    //    NavNode farthestNode = null;
+    //    float maxDistance = 0f;
+    //    Vector3 playerPos = GetPlayerPosition();
 
-        // Loop through all NavNodes, but avoid using the last 4 nodes
-        foreach (NavNode node in FindAllNavNodes()) // Find all available nodes
-        {
-            // Skip the last 4 nodes
-            if (recentNodes.Contains(node)) continue;
+    //    // Iterate over the precomputed navNodes list
+    //    foreach (NavNode node in navNodes)
+    //    {
+    //        if (recentNodes.Contains(node))
+    //            continue;
 
-            // Calculate distance to player
-            float distanceToPlayer = Vector3.Distance(node.transform.position, GetPlayerPosition());
+    //        float distanceToPlayer = Vector3.Distance(node.transform.position, playerPos);
+    //        if (distanceToPlayer > maxDistance)
+    //        {
+    //            maxDistance = distanceToPlayer;
+    //            farthestNode = node;
+    //        }
+    //    }
 
-            // Choose the farthest node from the player
-            if (distanceToPlayer > maxDistance)
-            {
-                maxDistance = distanceToPlayer;
-                farthestNode = node;
-            }
-        }
-
-        return farthestNode;
-    }
+    //    return farthestNode;
+    //}
 
 
 
@@ -545,105 +680,74 @@ public class AIManager : MonoBehaviour
     public void AssignNewHidingSpot(NPC_AI npc, bool run)
     {
         if (npc == null)
-        {
-            Debug.LogError("[AIManager] Tried to assign a hiding spot to a NULL NPC.");
             return;
-        }
 
         if (npc.state == NPC_AI.NPCState.Running)
-        {
-            Debug.LogWarning($"[AIManager] Tried assigning hiding spot to {npc.gameObject.name} while RUNNING. Assignment aborted.");
             return;
-        }
 
         ReleaseCurrentHidingSpot(npc);
-
         npc.state = NPC_AI.NPCState.Idle;
 
         if (hidingSpots == null || hidingSpots.Count == 0)
-        {
-            Debug.LogError("[AIManager] No hiding spots available!");
             return;
-        }
 
-        // Build an initial list of valid hiding spots.
+        // Build a list of valid hiding spots (same as before).
         List<Hiding_Spots> validSpots = new List<Hiding_Spots>();
-
         foreach (var spot in hidingSpots)
         {
-            if (spot == null || !spot.IsAvailable()) continue;
-            if (IsSpotOverCapacity(spot)) continue;
-            // Ensure the hiding spot itself is not too close to the player.
+            if (spot == null || !spot.IsAvailable())
+                continue;
+            if (IsSpotOverCapacity(spot))
+                continue;
             if (Vector3.Distance(spot.transform.position, GetPlayerPosition()) < npc.runRange)
                 continue;
-
-
             if (run == true)
             {
                 if (Vector3.Distance(spot.transform.position, npc.transform.position) < npc.runRange)
-                {
                     validSpots.Add(spot);
-                }
                 else
-                {
                     continue;
-                }
                 continue;
             }
-
-
-
             validSpots.Add(spot);
-            
         }
 
-        // Remove the last used spot so the NPC doesn't immediately return there.
         Hiding_Spots lastSpot = npc.GetLastHidingSpot();
         if (lastSpot != null)
             validSpots.Remove(lastSpot);
 
-        // Prepare a list of candidate spots that have a safe node route.
+        // Use precomputed routes to choose a candidate spot.
         List<Hiding_Spots> candidateSpots = new List<Hiding_Spots>();
-        Dictionary<Hiding_Spots, List<NavNode>> spotRoutes = new Dictionary<Hiding_Spots, List<NavNode>>();
-        float safeThreshold = npc.runRange; // Nodes must be at least this far from the player.
+        Dictionary<Hiding_Spots, List<NavGraph.NavNodeData>> spotRoutesData = new Dictionary<Hiding_Spots, List<NavGraph.NavNodeData>>();
+        float safeThreshold = npc.runRange;
 
         foreach (var spot in validSpots)
         {
-            // Find the closest node to the hiding spot.
-            NavNode targetNode = FindClosestNavNode(spot.transform.position);
-            // Find the NPC's current closest node.
-            NavNode startNode = FindClosestNavNode(npc.transform.position);
-            if (startNode == null || targetNode == null)
-                continue;
-
-            List<NavNode> safeRoute = FindSafeRoute(npc, startNode, targetNode, safeThreshold);
-            // Additionally check that the final leg from the target node to the hiding spot is not blocked.
-            if (safeRoute != null && !IsPathThroughPlayer(targetNode.transform.position, spot.transform.position))
+            // Get a precomputed route between the NPC and the hiding spot.
+            List<NavGraph.NavNodeData> safeRoute = GetPrecomputedRoute(npc.transform.position, spot.transform.position);
+            if (safeRoute != null && safeRoute.Count > 0)
             {
+                // Optionally, you can add additional checks (e.g. ensuring the final leg isn't blocked).
                 candidateSpots.Add(spot);
-                spotRoutes[spot] = safeRoute;
+                spotRoutesData[spot] = safeRoute;
             }
         }
 
         if (candidateSpots.Count > 0)
         {
-            // Choose one candidate hiding spot (you might prefer the one with the shortest route).
             Hiding_Spots chosenSpot = candidateSpots[Random.Range(0, candidateSpots.Count)];
-            List<NavNode> chosenRoute = spotRoutes[chosenSpot];
+            List<NavGraph.NavNodeData> chosenRoute = spotRoutesData[chosenSpot];
 
-            // Update NPC tracking.
             npc.SetLastHidingSpot(chosenSpot);
             npcHidingAssignments[npc] = chosenSpot;
             chosenSpot.IncrementOccupancy();
             npc.SetHidingSpot(chosenSpot);
 
-            Debug.Log($"[AIManager] {npc.gameObject.name} assigned to hiding spot {chosenSpot.name} with a safe node route ({chosenRoute.Count} hops).");
-            StartCoroutine(FollowHidingRoute(npc, chosenRoute, chosenSpot));
+            StartCoroutine(FollowEscapeRoute(npc, chosenRoute));
             StartCoroutine(ResolveHidingSpotConflict(npc, chosenSpot));
         }
         else
         {
-            // Fallback: if no candidate safe route is found, try a direct move—but delay before reattempting to break the cycle.
             if (validSpots.Count > 0)
             {
                 Hiding_Spots chosenSpot = validSpots[Random.Range(0, validSpots.Count)];
@@ -651,114 +755,134 @@ public class AIManager : MonoBehaviour
                 npcHidingAssignments[npc] = chosenSpot;
                 chosenSpot.IncrementOccupancy();
                 npc.SetHidingSpot(chosenSpot);
-                Debug.LogWarning($"[AIManager] {npc.gameObject.name} has no safe node route to any hiding spot. Moving directly to {chosenSpot.name} and delaying reattempt.");
                 npc.MoveTo(chosenSpot.transform.position);
                 StartCoroutine(ResolveHidingSpotConflict(npc, chosenSpot));
-                // Delay reassigning if the chosen spot is still blocked.
-                StartCoroutine(DelayedReassign(npc, 1.0f));
-            }
-            else
-            {
-                Debug.LogWarning($"[AIManager] {npc.gameObject.name} has no valid hiding spots available.");
+                //StartCoroutine(DelayedReassign(npc, 1.0f));
             }
         }
     }
 
-    private IEnumerator DelayedReassign(NPC_AI npc, float delay)
+
+
+    ////////////////////////////////////private IEnumerator DelayedReassign(NPC_AI npc, float delay)
+    ////////////////////////////////////{
+    ////////////////////////////////////    yield return new WaitForSeconds(delay);   Fuck this peice of shit, seriously fucking die!!!!!!
+    ////////////////////////////////////    // Only reassign if the NPC still isn't safely hidden.
+    ////////////////////////////////////    if (npc.state != NPC_AI.NPCState.Hiding)
+    ////////////////////////////////////        AssignNewHidingSpot(npc, false);
+    ////////////////////////////////////}
+
+    //private IEnumerator FollowHidingRoute(NPC_AI npc, List<NavNode> route, Hiding_Spots targetSpot)
+    //{
+    //    foreach (NavNode node in route)
+    //    {
+    //        if (!npc.navMeshAgent.isOnNavMesh)
+    //            yield break;
+
+    //        npc.MoveTo(node.transform.position);
+    //        while (npc.navMeshAgent.isOnNavMesh &&
+    //               (npc.navMeshAgent.pathPending ||
+    //                npc.navMeshAgent.remainingDistance > npc.navMeshAgent.stoppingDistance + 0.1f))
+    //        {
+    //            yield return null;
+    //        }
+    //    }
+
+    //    // Move from the last node to the hiding spot.
+    //    npc.MoveTo(targetSpot.transform.position);
+    //    while (npc.navMeshAgent.isOnNavMesh &&
+    //           (npc.navMeshAgent.pathPending ||
+    //            npc.navMeshAgent.remainingDistance > npc.navMeshAgent.stoppingDistance + 0.1f))
+    //    {
+    //        yield return null;
+    //    }
+
+    //    // Final check: if the direct path is blocked, reassign.
+    //    if (IsPathThroughPlayer(npc.transform.position, targetSpot.transform.position))
+    //    {
+    //        Debug.LogWarning($"[AIManager] {npc.gameObject.name} reached {targetSpot.name} but the path is blocked. Reassigning after delay.");
+    //        yield return new WaitForSeconds(0.5f);
+    //        AssignNewHidingSpot(npc, true);
+    //    }
+    //    else
+    //    {
+    //        //npc.state = NPC_AI.NPCState.Hiding;
+    //        Debug.Log($"[AIManager] {npc.gameObject.name} reached hiding spot {targetSpot.name} via a safe node route.");
+    //    }
+    //}
+
+    private List<NavGraph.NavNodeData> FindSafeRouteData(NPC_AI npc, NavGraph.NavNodeData start, NavGraph.NavNodeData target, float safeDistance)
     {
-        yield return new WaitForSeconds(delay);
-        // Only reassign if the NPC still isn't safely hidden.
-        if (npc.state != NPC_AI.NPCState.Hiding)
-            AssignNewHidingSpot(npc, false);
-    }
-
-    private IEnumerator FollowHidingRoute(NPC_AI npc, List<NavNode> route, Hiding_Spots targetSpot)
-    {
-        foreach (NavNode node in route)
-        {
-            if (!npc.navMeshAgent.isOnNavMesh)
-                yield break;
-
-            npc.MoveTo(node.transform.position);
-            while (npc.navMeshAgent.isOnNavMesh &&
-                   (npc.navMeshAgent.pathPending ||
-                    npc.navMeshAgent.remainingDistance > npc.navMeshAgent.stoppingDistance + 0.1f))
-            {
-                yield return null;
-            }
-        }
-
-        // Move from the last node to the hiding spot.
-        npc.MoveTo(targetSpot.transform.position);
-        while (npc.navMeshAgent.isOnNavMesh &&
-               (npc.navMeshAgent.pathPending ||
-                npc.navMeshAgent.remainingDistance > npc.navMeshAgent.stoppingDistance + 0.1f))
-        {
-            yield return null;
-        }
-
-        // Final check: if the direct path is blocked, reassign.
-        if (IsPathThroughPlayer(npc.transform.position, targetSpot.transform.position))
-        {
-            Debug.LogWarning($"[AIManager] {npc.gameObject.name} reached {targetSpot.name} but the path is blocked. Reassigning after delay.");
-            yield return new WaitForSeconds(0.5f);
-            AssignNewHidingSpot(npc, true);
-        }
-        else
-        {
-            //npc.state = NPC_AI.NPCState.Hiding;
-            Debug.Log($"[AIManager] {npc.gameObject.name} reached hiding spot {targetSpot.name} via a safe node route.");
-        }
-    }
-
-
-
-
-
-    private List<NavNode> FindSafeRoute(NPC_AI npc, NavNode start, NavNode target, float safeDistance)
-    {
-        // Use BFS to find a route from 'start' to 'target'
-        Queue<List<NavNode>> routesQueue = new Queue<List<NavNode>>();
-        routesQueue.Enqueue(new List<NavNode> { start });
+        Queue<List<NavGraph.NavNodeData>> routesQueue = new Queue<List<NavGraph.NavNodeData>>();
+        routesQueue.Enqueue(new List<NavGraph.NavNodeData> { start });
         Vector3 playerPos = GetPlayerPosition();
 
         while (routesQueue.Count > 0)
         {
-            List<NavNode> currentRoute = routesQueue.Dequeue();
-            NavNode currentNode = currentRoute[currentRoute.Count - 1];
+            List<NavGraph.NavNodeData> currentRoute = routesQueue.Dequeue();
+            NavGraph.NavNodeData currentNode = currentRoute[currentRoute.Count - 1];
 
-            // If we've reached the target node, check the final leg:
             if (currentNode == target)
             {
-
-                if (!IsPathThroughPlayer(currentNode.transform.position, target.transform.position))
+                if (!IsPathThroughPlayer(currentNode.position, target.position))
                     return currentRoute;
             }
 
-            // Expand the search.
-            foreach (NavNode neighbor in currentNode.connectedNodes)
+            foreach (int neighborIndex in currentNode.connectedNodeIndices)
             {
-                // Avoid cycles.
+                if (neighborIndex < 0 || neighborIndex >= nodeDataList.Count)
+                    continue;
+                NavGraph.NavNodeData neighbor = nodeDataList[neighborIndex];
                 if (currentRoute.Contains(neighbor))
                     continue;
-
-          
-                if (neighbor != target && Vector3.Distance(neighbor.transform.position, playerPos) < safeDistance)
+                if (neighbor != target && Vector3.Distance(neighbor.position, playerPos) < safeDistance)
                     continue;
-
-                List<NavNode> newRoute = new List<NavNode>(currentRoute) { neighbor };
+                List<NavGraph.NavNodeData> newRoute = new List<NavGraph.NavNodeData>(currentRoute) { neighbor };
                 routesQueue.Enqueue(newRoute);
             }
         }
-        // No safe route found.
         return null;
     }
 
 
 
+    //private List<NavNode> FindSafeRoute(NPC_AI npc, NavNode start, NavNode target, float safeDistance)
+    //{
+    //    Queue<List<NavNode>> routesQueue = new Queue<List<NavNode>>();
+    //    routesQueue.Enqueue(new List<NavNode> { start });
+    //    Vector3 playerPos = GetPlayerPosition();
+
+    //    while (routesQueue.Count > 0)
+    //    {
+    //        List<NavNode> currentRoute = routesQueue.Dequeue();
+    //        NavNode currentNode = currentRoute[currentRoute.Count - 1];
+
+    //        if (currentNode == target)
+    //        {
+    //            if (!IsPathThroughPlayer(currentNode.transform.position, target.transform.position))
+    //                return currentRoute;
+    //        }
+
+    //        foreach (NavNode neighbor in currentNode.connectedNodes)
+    //        {
+    //            if (currentRoute.Contains(neighbor))
+    //                continue;
+    //            if (neighbor != target && Vector3.Distance(neighbor.transform.position, playerPos) < safeDistance)
+    //                continue;
+
+    //            List<NavNode> newRoute = new List<NavNode>(currentRoute) { neighbor };
+    //            routesQueue.Enqueue(newRoute);
+    //        }
+    //    }
+    //    return null;
+    //}
 
 
-    
+
+
+
+
+
     private float DistanceFromPointToLineSegment(Vector3 point, Vector3 start, Vector3 end)
     {
         Vector3 segment = end - start;
@@ -782,23 +906,23 @@ public class AIManager : MonoBehaviour
 
 
 
-    private NavNode FindClosestNavNode(Vector3 position)
+    private NavGraph.NavNodeData FindClosestNodeData(Vector3 position)
     {
-        NavNode closestNode = null;
+        NavGraph.NavNodeData closest = null;
         float minDistance = float.MaxValue;
-
-        foreach (NavNode node in navNodes)
+        foreach (var node in nodeDataList)
         {
-            float distance = Vector3.Distance(position, node.transform.position);
-            if (distance < minDistance)
+            float d = Vector3.Distance(position, node.position);
+            if (d < minDistance)
             {
-                minDistance = distance;
-                closestNode = node;
+                minDistance = d;
+                closest = node;
             }
         }
-
-        return closestNode;
+        return closest;
     }
+
+
 
 
 
@@ -807,11 +931,11 @@ public class AIManager : MonoBehaviour
 
     private IEnumerator ResolveHidingSpotConflict(NPC_AI npc, Hiding_Spots chosenSpot)
     {
-        yield return new WaitForSeconds(0.02f); 
+        yield return new WaitForSeconds(0.02f);
 
         List<NPC_AI> competingNPCs = new List<NPC_AI>();
 
-     
+
         foreach (var assignment in npcHidingAssignments)
         {
             if (assignment.Value == chosenSpot)
@@ -823,7 +947,7 @@ public class AIManager : MonoBehaviour
         // If no NPCs remain in the competition, cancel the process
         if (competingNPCs.Count == 0)
         {
-            Debug.LogWarning($"[AIManager] Conflict resolution aborted! No NPCs remaining for spot {chosenSpot.name}.");
+           // Debug.LogWarning($"[AIManager] Conflict resolution aborted! No NPCs remaining for spot {chosenSpot.name}.");
             chosenSpot.DecrementOccupancy(); // Release reservation if unused
             yield break;
         }
@@ -833,7 +957,7 @@ public class AIManager : MonoBehaviour
         {
             NPC_AI winner = competingNPCs[0];
             npcHidingAssignments[winner] = chosenSpot;
-            Debug.Log($"[AIManager] {winner.gameObject.name} confirmed hiding spot {chosenSpot.name}.");
+           // Debug.Log($"[AIManager] {winner.gameObject.name} confirmed hiding spot {chosenSpot.name}.");
             yield break;
         }
 
@@ -846,7 +970,7 @@ public class AIManager : MonoBehaviour
         // Ensure that there is at least one NPC in the sorted list
         if (competingNPCs.Count == 0)
         {
-            Debug.LogWarning($"[AIManager] No NPCs left to assign after sorting! Aborting resolution.");
+           // Debug.LogWarning($"[AIManager] No NPCs left to assign after sorting! Aborting resolution.");
             chosenSpot.DecrementOccupancy(); // Release reservation if no one wins
             yield break;
         }
@@ -854,7 +978,7 @@ public class AIManager : MonoBehaviour
         // The closest NPC gets the spot
         NPC_AI winnerNPC = competingNPCs[0];
         npcHidingAssignments[winnerNPC] = chosenSpot;
-        Debug.Log($"[AIManager] {winnerNPC.gameObject.name} won priority for hiding spot {chosenSpot.name}.");
+        //Debug.Log($"[AIManager] {winnerNPC.gameObject.name} won priority for hiding spot {chosenSpot.name}.");
 
         // All other NPCs must find a new hiding spot
         for (int i = 1; i < competingNPCs.Count; i++)
@@ -881,7 +1005,7 @@ public class AIManager : MonoBehaviour
         }
 
         // Print debug info for troubleshooting
-        Debug.Log($"[AIManager] Checking capacity for {spot.name}: Occupancy = {spot.Occupancy}, Incoming = {incomingNPCs}, Max = {spot.MaxOccupancy}");
+        //Debug.Log($"[AIManager] Checking capacity for {spot.name}: Occupancy = {spot.Occupancy}, Incoming = {incomingNPCs}, Max = {spot.MaxOccupancy}");
 
         // If the number of NPCs currently at the spot + incoming NPCs is >= max, it's full
         return (spot.Occupancy + incomingNPCs) >= spot.MaxOccupancy;
@@ -921,7 +1045,7 @@ public class AIManager : MonoBehaviour
         Vector3 toPlayer = (playerPosition - hidingSpotPosition).normalized;
         Vector3 idealHidingPos = hidingSpotPosition - (toPlayer * 0.35f);
 
-        if (Vector3.Distance(npc.transform.position, idealHidingPos) > 0.2f)
+        if (Vector3.Distance(npc.transform.position, idealHidingPos) > 0.5f)
         {
             if (NavMesh.SamplePosition(idealHidingPos, out NavMeshHit hit, 1.5f, NavMesh.AllAreas))
             {
@@ -949,7 +1073,7 @@ public class AIManager : MonoBehaviour
         {
             if (Time.time >= activeTimers[npc])
             {
-                Debug.Log($"[AIManager] {npc.gameObject.name} switching to a new hiding spot.");
+               // Debug.Log($"[AIManager] {npc.gameObject.name} switching to a new hiding spot.");
                 //npc.setHiding(false);
                 AssignNewHidingSpot(npc, false);
 
@@ -986,7 +1110,7 @@ public class AIManager : MonoBehaviour
 
     private void ResetGame()
     {
-        Debug.Log("[AIManager] Resetting game...");
+        //Debug.Log("[AIManager] Resetting game...");
 
         // Clear NPC List and Assignments
         npcList.Clear();
@@ -1027,14 +1151,14 @@ public class AIManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f); // Small delay before respawning
 
-        Debug.Log($"[AIManager] Spawning {count} new beans...");
+        //Debug.Log($"[AIManager] Spawning {count} new beans...");
 
         for (int i = 0; i < count; i++)
         {
             Vector3 spawnPosition = GetRandomNavMeshPosition();
             if (spawnPosition == Vector3.zero)
             {
-                Debug.LogError("[AIManager] No valid spawn location found!");
+               // Debug.LogError("[AIManager] No valid spawn location found!");
                 continue;
             }
 
@@ -1065,4 +1189,3 @@ public class AIManager : MonoBehaviour
         return player != null ? player.transform.position : Vector3.zero;
     }
 }
-

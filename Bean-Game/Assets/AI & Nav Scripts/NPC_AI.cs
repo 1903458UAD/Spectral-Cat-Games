@@ -34,6 +34,7 @@ public class NPC_AI : MonoBehaviour
 
     public bool initialHidingAssigned = false;
 
+    public bool hasHidingAssignment = false;
 
 
     public enum NPCState { Idle, Hiding, Running }
@@ -123,13 +124,13 @@ public class NPC_AI : MonoBehaviour
         if (currentHidingSpot != null)
         {
             state = NPCState.Hiding;
-            Debug.Log($"[NPC_AI] {gameObject.name} reached hiding spot {currentHidingSpot.name} and is now hidden.");
+            //Debug.Log($"[NPC_AI] {gameObject.name} reached hiding spot {currentHidingSpot.name} and is now hidden.");
             // Reset or pause the hiding timer once the bean is truly hidden.
             AIManager.Instance.ResetHidingTimerForNPC(this);
         }
         else
         {
-            Debug.Log($"[NPC_AI] {gameObject.name} did not have a valid hiding spot on arrival! Reassigning...");
+           // Debug.Log($"[NPC_AI] {gameObject.name} did not have a valid hiding spot on arrival! Reassigning...");
             state = NPCState.Idle;
             AIManager.Instance.AssignNewHidingSpot(this, false);
         }
@@ -218,7 +219,7 @@ public class NPC_AI : MonoBehaviour
         // Try to find a valid position on the NavMesh
         if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 2.0f, NavMesh.AllAreas))
         {
-            Debug.Log($"[NPC_AI] {gameObject.name} repositioned to valid NavMesh position: {hit.position}");
+           Debug.Log($"[NPC_AI] {gameObject.name} repositioned to valid NavMesh position: {hit.position}");
 
             transform.position = hit.position; // Move to valid NavMesh point
             navMeshAgent.Warp(hit.position);  // Instantly corrects position
@@ -243,13 +244,13 @@ public class NPC_AI : MonoBehaviour
         if (AIManager.Instance != null)
         {
             AIManager.Instance.UnregisterNPC(this);
-            Debug.Log($"[NPC_AI] {gameObject.name} removed from AIManager before destruction.");
+            //Debug.Log($"[NPC_AI] {gameObject.name} removed from AIManager before destruction.");
         }
 
         if (currentHidingSpot != null)
         {
             currentHidingSpot.DecrementOccupancy(); 
-            Debug.Log($"[NPC_AI] {gameObject.name} was destroyed and left hiding spot {currentHidingSpot.name}");
+            //Debug.Log($"[NPC_AI] {gameObject.name} was destroyed and left hiding spot {currentHidingSpot.name}");
         }
     }
 
