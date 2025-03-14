@@ -21,7 +21,7 @@ public class NavGraphGenerator : EditorWindow
         // Populate node data.
         foreach (NavNode node in allNodes)
         {
-            node.PrintDiagnostics();  // (Optional) Print diagnostics for debugging.
+            //node.PrintDiagnostics();  //  Print diagnostics for debugging.
 
             NavGraph.NavNodeData nodeData = new NavGraph.NavNodeData
             {

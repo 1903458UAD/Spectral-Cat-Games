@@ -143,42 +143,6 @@ public class NPC_AI : MonoBehaviour
     }
 
 
-    //public void SetRunning(bool value)
-    //{
-    //    isRunning = value;
-    //    RunTest = value;
-
-    //    if (isRunning)
-    //    {
-    //        setHiding(false);
-    //        if (currentHidingSpot != null)
-    //        {
-    //            currentHidingSpot.DecrementOccupancy();
-    //            currentHidingSpot = null;
-    //        }
-    //        navMeshAgent.ResetPath();
-    //        navMeshAgent.isStopped = false;
-    //    }
-    //}
-
-    //public bool getRunning()
-    //{
-    //    return isRunning;
-    //}
-
-
-
-    //public void setHiding(bool hiding)
-    //{
-
-    //    isHidden = hiding;
-    //    hidTest = hiding;
-    //}
-
-    //public bool isHiding()
-    //{
-    //    return isHidden;
-    //}
 
 
 
