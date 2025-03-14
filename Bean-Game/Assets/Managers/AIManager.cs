@@ -142,7 +142,7 @@ public class AIManager : MonoBehaviour
                 nextDecisionTimes[npc] = Time.time + Random.Range(0.5f, 2.0f);
 
             if (Mathf.Abs(npc.navMeshAgent.velocity.x) >= 0.5f || Mathf.Abs(npc.navMeshAgent.velocity.z) >= 0.5f)
-                npc.PlayBeanMoveSound(true);
+            npc.PlayBeanMoveSound(true);
             else
                 npc.PlayBeanMoveSound(false);
         }

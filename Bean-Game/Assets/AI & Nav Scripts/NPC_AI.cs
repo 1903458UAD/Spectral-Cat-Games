@@ -48,6 +48,7 @@ public class NPC_AI : MonoBehaviour
     private void Start()
     {
         beanFootsteps = AudioManager.instance.CreateInstance(FMODEvents.instance.beanFootsteps);
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(beanFootsteps, transform, this);
     }
 
     private void Awake()
