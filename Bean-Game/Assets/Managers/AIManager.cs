@@ -99,6 +99,9 @@ public class AIManager : MonoBehaviour
 
     private void Update()
     {
+        
+
+
         // Reset game if bean count is low.
         if (npcList.Count == beansLow && !isResetting)
         {
@@ -106,9 +109,17 @@ public class AIManager : MonoBehaviour
             StartCoroutine(ResetGameCoroutine());
         }
 
+
+
         // Process each NPC in the list.
         foreach (NPC_AI npc in npcList)
         {
+            if(npc==null)
+            {
+                continue;
+            }
+
+
             if (npc.IsPickedUp())
             {
                 continue;
@@ -423,7 +434,11 @@ public class AIManager : MonoBehaviour
 
     public void ResetHidingTimerForNPC(NPC_AI npc)
     {
-
+        if (npc == null)
+        {
+            // Debug.LogError("[AIManager] Attempted to register a NULL NPC!");
+            return;
+        }
         if (hidingTimers.ContainsKey(npc))
         {
             hidingTimers[npc] = Time.time;
@@ -504,6 +519,11 @@ public class AIManager : MonoBehaviour
 
     private List<NavGraph.NavNodeData> GetPrecomputedEscapeRoute(NPC_AI npc, float targetDistance)
     {
+        if (npc == null)
+        {
+            // Debug.LogError("[AIManager] Attempted to register a NULL NPC!");
+            return null;
+        }
         // Get the node nearest to the NPC's current position.
         NavGraph.NavNodeData startNode = FindClosestNodeData(npc.transform.position);
         if (startNode == null)
@@ -551,8 +571,16 @@ public class AIManager : MonoBehaviour
 
     private IEnumerator FollowEscapeRoute(NPC_AI npc, List<NavGraph.NavNodeData> route)
     {
+        if (npc == null)
+        {
+            // Debug.LogError("[AIManager] Attempted to register a NULL NPC!");
+            yield break;
+        }
+
         foreach (var nodeData in route)
         {
+
+
             if (!npc.navMeshAgent.isOnNavMesh)
                 yield break;
 
@@ -586,6 +614,14 @@ public class AIManager : MonoBehaviour
 
     public void ReleaseCurrentHidingSpot(NPC_AI npc)
     {
+        if (npc == null)
+        {
+            // Debug.LogError("[AIManager] Attempted to register a NULL NPC!");
+            return;
+        }
+
+
+
         if (npc.GetHidingSpot() != null && npcHidingAssignments.ContainsKey(npc))
         {
             Hiding_Spots currentSpot = npc.GetHidingSpot();
@@ -696,6 +732,13 @@ public class AIManager : MonoBehaviour
 
     private List<NavGraph.NavNodeData> FindSafeRouteData(NPC_AI npc, NavGraph.NavNodeData start, NavGraph.NavNodeData target, float safeDistance)
     {
+        if (npc == null)
+        {
+            // Debug.LogError("[AIManager] Attempted to register a NULL NPC!");
+            return null;
+        }
+
+
         Queue<List<NavGraph.NavNodeData>> routesQueue = new Queue<List<NavGraph.NavNodeData>>();
         routesQueue.Enqueue(new List<NavGraph.NavNodeData> { start });
         Vector3 playerPos = GetPlayerPosition();
@@ -782,6 +825,12 @@ public class AIManager : MonoBehaviour
 
     private IEnumerator ResolveHidingSpotConflict(NPC_AI npc, Hiding_Spots chosenSpot)
     {
+        if (npc == null)
+        {
+            // Debug.LogError("[AIManager] Attempted to register a NULL NPC!");
+            yield break;
+        }
+
         yield return new WaitForSeconds(0.02f);
 
         List<NPC_AI> competingNPCs = new List<NPC_AI>();
@@ -868,6 +917,14 @@ public class AIManager : MonoBehaviour
 
     public void MaintainCover(NPC_AI npc)
     {
+        if (npc == null)
+        {
+            // Debug.LogError("[AIManager] Attempted to register a NULL NPC!");
+            return;
+        }
+
+
+
         Vector3 playerPosition = GetPlayerPosition();
         Vector3 hidingSpotPosition = npc.GetHidingSpotPosition();
         float distanceToPlayer = Vector3.Distance(npc.transform.position, playerPosition);
