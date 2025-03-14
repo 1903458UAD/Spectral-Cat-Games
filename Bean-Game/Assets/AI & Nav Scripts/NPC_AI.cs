@@ -29,12 +29,17 @@ public class NPC_AI : MonoBehaviour
     private bool isHidden = false;
     public bool hidTest = false;
 
+    public float distanceToSpot = 0;
 
     public bool hasEscapedOnce = false;
 
     public bool initialHidingAssigned = false;
 
-    public bool hasHidingAssignment = false;
+    //public bool hasHidingAssignment = false;
+
+    public bool hasReachedRouteEnd = false;
+
+
 
 
     public enum NPCState { Idle, Hiding, Running }
@@ -60,7 +65,8 @@ public class NPC_AI : MonoBehaviour
     {
         if (isPickedUp) return;
 
-       
+        distanceToSpot = Vector3.Distance(transform.position, GetHidingSpotPosition());
+
     }
 
 
