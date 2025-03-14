@@ -6,6 +6,7 @@ using UnityEngine.AI;
 using Random = UnityEngine.Random;
 using Debug = UnityEngine.Debug;
 using FMOD.Studio;
+using System.Linq;
 
 public class AIManager : MonoBehaviour
 {
@@ -190,6 +191,12 @@ public class AIManager : MonoBehaviour
     // Returns the index of the given nodeData in the nodeDataList.
     private int GetNodeIndex(NavGraph.NavNodeData nodeData)
     {
+        if(nodeData == null)
+        {
+            return -1;
+        }
+
+
         for (int i = 0; i < nodeDataList.Count; i++)
         {
             if (Vector3.Distance(nodeDataList[i].position, nodeData.position) < 0.01f)
@@ -238,6 +245,10 @@ public class AIManager : MonoBehaviour
     //chain multiple precomputed route segments together
     private List<NavGraph.NavNodeData> GetCombinedPrecomputedRoute(Vector3 startPos, Vector3 targetPos)
     {
+
+        if (startPos == null || targetPos == null)
+            return null;
+
         float tolerance = 1.0f; // Adjust this to what you consider "close enough" to the target.
         List<NavGraph.NavNodeData> combinedRoute = new List<NavGraph.NavNodeData>();
         Vector3 currentStart = startPos;
@@ -362,6 +373,9 @@ public class AIManager : MonoBehaviour
         // Validate that the NPC and its NavMeshAgent are active.
         if (npc == null || !npc.navMeshAgent.enabled || !npc.navMeshAgent.isOnNavMesh)
             return;
+
+        
+
 
         float distanceToPlayer = Vector3.Distance(npc.transform.position, GetPlayerPosition());
 
@@ -577,6 +591,12 @@ public class AIManager : MonoBehaviour
             yield break;
         }
 
+        if(route == null)
+        {
+            yield return null;
+        }
+            
+
         foreach (var nodeData in route)
         {
 
@@ -635,10 +655,16 @@ public class AIManager : MonoBehaviour
 
     public void AssignNewHidingSpot(NPC_AI npc, bool run)
     {
+
+
         if (npc == null)
             return;
 
+
         if (npc.state == NPC_AI.NPCState.Running)
+            return;
+
+        if (run == null)
             return;
 
         ReleaseCurrentHidingSpot(npc);
@@ -712,7 +738,7 @@ public class AIManager : MonoBehaviour
                 chosenSpot.IncrementOccupancy();
                 npc.SetHidingSpot(chosenSpot);
                 npc.MoveTo(chosenSpot.transform.position);
-                StartCoroutine(ResolveHidingSpotConflict(npc, chosenSpot));
+               StartCoroutine(ResolveHidingSpotConflict(npc, chosenSpot));
                 //StartCoroutine(DelayedReassign(npc, 1.0f));
             }
         }
@@ -825,7 +851,7 @@ public class AIManager : MonoBehaviour
 
     private IEnumerator ResolveHidingSpotConflict(NPC_AI npc, Hiding_Spots chosenSpot)
     {
-        if (npc == null)
+        if (npc == null || chosenSpot == null)
         {
             // Debug.LogError("[AIManager] Attempted to register a NULL NPC!");
             yield break;
@@ -838,11 +864,16 @@ public class AIManager : MonoBehaviour
 
         foreach (var assignment in npcHidingAssignments)
         {
+            if (assignment.Key == null)
+                continue;
+
             if (assignment.Value == chosenSpot)
             {
                 competingNPCs.Add(assignment.Key);
             }
         }
+
+        competingNPCs = competingNPCs.Where(npc => npc != null).ToList();
 
         // If no NPCs remain in the competition, cancel the process
         if (competingNPCs.Count == 0)
@@ -893,6 +924,8 @@ public class AIManager : MonoBehaviour
 
     private bool IsSpotOverCapacity(Hiding_Spots spot)
     {
+        if (spot == null) return true;
+
         int incomingNPCs = 0;
 
         // Count how many NPCs are currently heading to this spot

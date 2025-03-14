@@ -191,10 +191,7 @@ public class NPC_AI : MonoBehaviour
 
     public void OnPickedUp()
     {
-        if (navMeshAgent == null)
-        {
-            return;
-        }
+
         isPickedUp = true;
 
         if (currentHidingSpot != null)
@@ -246,10 +243,10 @@ public class NPC_AI : MonoBehaviour
     private void OnDestroy()
     {
 
-        if (AIManager.Instance != null)
+        //if (AIManager.Instance != null)
         {
             AIManager.Instance.UnregisterNPC(this);
-            //Debug.Log($"[NPC_AI] {gameObject.name} removed from AIManager before destruction.");
+            Debug.Log($"[NPC_AI] {gameObject.name} removed from AIManager before destruction.");
         }
 
         if (currentHidingSpot != null)
