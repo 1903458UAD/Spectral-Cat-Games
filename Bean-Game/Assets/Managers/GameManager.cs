@@ -31,10 +31,13 @@ public class GameManager : MonoBehaviour
     public GameObject customerSpawnPoint;
     private List<GameObject> activeCustomers = new List<GameObject>();
     public float nodeConnectionRadius = 3.0f;
+    [SerializeField] private int orderQuota;
+    public int servedCustomers;
 
     [Header("Income Management")]
     private float income = 0f;
     private GameObject player;
+
 
     //private Dictionary<NPC_AI, Hiding_Spots> npcHidingAssignments = new Dictionary<NPC_AI, Hiding_Spots>();
 
@@ -68,6 +71,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("[GameManager] Spawning initial beans...");
         //FindAllNavNodes();
         SpawnInitialBeans();  // Ensure this is called
+        GameManager.Instance.SetIncome(StaticData.incomePassed);
+        orderQuota = Random.Range(StaticData.lowerQuotaLimit, StaticData.higherQuotaLimit);
         //player = GameObject.FindGameObjectWithTag("Player");
         //InitializeGame();
         //FindAllNavNodes();
@@ -79,6 +84,7 @@ public class GameManager : MonoBehaviour
     {
         activeCustomers = new List<GameObject>();
         SetIncome(StaticData.incomePassed);
+        orderQuota = Random.Range(StaticData.lowerQuotaLimit, StaticData.higherQuotaLimit);
         //FindAllHidingSpots();
         //SpawnInitialBeans();
         //FindAllNavNodes();
@@ -170,7 +176,21 @@ public class GameManager : MonoBehaviour
         
     }
 
+    public void CheckOrderQuota()
+    {
+        if(orderQuota == servedCustomers)
+        {
+            StaticData.incomePassed = totalIncome;
+            StaticData.lowerQuotaLimit += 2;
+            StaticData.higherQuotaLimit += 2;
+            UIManager.Instance.ShowDayEndScreen();
+        }
+    }
 
+    public void IncreaseServedAmount()
+    {
+        servedCustomers++;
+    }
 
 
 
