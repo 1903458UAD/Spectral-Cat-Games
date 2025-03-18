@@ -14,6 +14,8 @@ public class ChangeColor : MonoBehaviour
     private Renderer[] rend;
     private GameObject[] gameObjects;
     private GameObject currentObject;
+
+    public string hitObjectName;
   
 
     void Start()
@@ -108,17 +110,32 @@ public class ChangeColor : MonoBehaviour
 
         if(Physics.Raycast(ray, out hit, interactionDistance, InteractableObjectLayer))
         {
+           Debug.Log("RayCast Hit an Interactable object");
            GameObject hitObject = hit.collider.gameObject;
-           CoffeeInteraction coffee = hitObject.GetComponent<CoffeeInteraction>();
+           InteractableObject coffee = hitObject.GetComponent<InteractableObject>();
+           hitObjectName = hitObject.name;
 
             if (coffee != null)
             {
-                var objs = GameObject.FindGameObjectsWithTag("CupComponent");
-                foreach (var obj in objs)
+              //  hitObjectName = hit.collider.gameObject.name;
+                //Debug.Log(hitObjectName);
+                //GameObject foundObject = GameObject.Find(hitObjectName);
+                Renderer[] children = coffee.GetComponentsInChildren<Renderer>();
+                //Renderer r = foundObject.GetComponent<Renderer>();
+               // r.material.SetFloat("_HighlightObject", 1);
+
+                for(int i = 0; i < children.Length; i++)
                 {
-                    Renderer r = obj.GetComponent<Renderer>();
-                    r.material.SetFloat("_HighlightObject", 1);
+                    children[i].material.SetFloat("_HighlightObject", 1);
                 }
+
+                //Destroy(foundObject);
+                //var objs = GameObject.FindGameObjectsWithTag("CupComponent");
+                //foreach (var obj in objs)
+                //{
+                //    Renderer r = obj.GetComponent<Renderer>();
+                //    r.material.SetFloat("_HighlightObject", 1);
+                //}
             }
         }
 
