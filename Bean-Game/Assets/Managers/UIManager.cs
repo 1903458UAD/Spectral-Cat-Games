@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     public GameObject pauseMenuUI; // Reference to Pause Menu UI
     public GameObject settingsMenuUI;
     public GameObject upgradeMenu;
+    public GameObject CreditsMenuUI;
 
     [Header("Customer Order UI")]
     public TMP_Text customerOrderText; // New UI element to display coffee order
@@ -25,6 +26,10 @@ public class UIManager : MonoBehaviour
 
     [Header("Camera Script")]
     public MonoBehaviour cameraScript;
+
+    [Header("Camera Script")]
+    public Button Credits;
+    public Button CreditsBackButton;
 
 
     [Header("Settings Panels")]
@@ -189,6 +194,11 @@ public class UIManager : MonoBehaviour
             return; // Prevent the game from unpausing
         }
 
+        if (CreditsMenuUI.activeSelf)
+        {
+            ShowPauseMenu();
+            return; // Prevent the game from unpausing
+        }
 
         isPaused = !isPaused;
 
@@ -257,6 +267,21 @@ public class UIManager : MonoBehaviour
         AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
+    public void OpenCredits()
+    {
+        pauseMenuUI.SetActive(false);
+        CreditsMenuUI.SetActive(true);
+        ShowVideoSettings();
+        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
+    }
+
+    public void CloseCredits()
+    {
+        CreditsMenuUI.SetActive(false);
+        pauseMenuUI.SetActive(true);
+        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
+    }
+
     public void ShowVideoSettings()
     {
         videoPanel.SetActive(true);
@@ -310,6 +335,7 @@ public class UIManager : MonoBehaviour
     public void ShowPauseMenu()
     {
         settingsMenuUI.SetActive(false); // Hide the settings menu
+        CreditsMenuUI.SetActive(false); // Hide the credits menu
         pauseMenuUI.SetActive(true); // Show the pause menu
         AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
