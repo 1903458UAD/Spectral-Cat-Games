@@ -18,6 +18,9 @@ public class UIManager : MonoBehaviour
     public GameObject upgradeMenu;
     public GameObject CreditsMenuUI;
 
+    public Toggle developerCheatsToggle;
+    private DeveloperCheats developerCheats;
+
     [Header("Customer Order UI")]
     public TMP_Text customerOrderText; // New UI element to display coffee order
 
@@ -81,6 +84,20 @@ public class UIManager : MonoBehaviour
         interactKeyText.text = PlayerPrefs.GetString("InteractKey", "Mouse0");
         dropKeyText.text = PlayerPrefs.GetString("DropKey", "Mouse1");
 
+        developerCheats = FindObjectOfType<DeveloperCheats>();
+
+        if (developerCheats == null)
+        {
+            Debug.LogError("DeveloperCheats script not found in the scene!");
+            return;
+        }
+
+
+        // Initialize toggle state based on current cheatsEnabled value
+        developerCheatsToggle.isOn = developerCheats.cheatsEnabled;
+
+        // Add listener to toggle button
+        developerCheatsToggle.onValueChanged.AddListener(ToggleDeveloperCheats);
         if (customerOrderText == null)
         {
             Debug.LogError("[UIManager] Customer Order Text is not assigned in the Inspector!");
@@ -92,6 +109,12 @@ public class UIManager : MonoBehaviour
         }
 
         masterVolumeSlider.value = PlayerPrefs.GetFloat("MasterVolume", 1f);
+    }
+
+    private void ToggleDeveloperCheats(bool isEnabled)
+    {
+        
+        developerCheats.cheatsEnabled = isEnabled;
     }
 
     public void Rebinding(string action)
