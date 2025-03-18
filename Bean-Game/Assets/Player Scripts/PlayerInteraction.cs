@@ -12,7 +12,6 @@ public class PlayerInteraction : MonoBehaviour
     public LayerMask InteractableObjectLayer;
     public LayerMask FunctionalObjectLayer;
     public Transform cameraTransform;
-    public GameObject lightContainer;
 
     private InteractableObject heldObjectRight; // Right-hand object
     private InteractableObject heldObjectLeft;  // Left-hand object
@@ -33,7 +32,6 @@ public class PlayerInteraction : MonoBehaviour
 
         Pickup_AND_Interact = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("InteractKey", "Mouse0")); //Player pref saves over game sessions, It is also a new concept for me, Documentation: https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerPrefs.html
         Drop = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("DropKey", "Mouse1"));
-        lightContainer = GameObject.Find("LightsContainer");
     }
 
     public void UpdateKeybindings()
@@ -43,24 +41,8 @@ public class PlayerInteraction : MonoBehaviour
         Drop = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("DropKey", "Mouse1"));
     }
 
-    public void toggleLights()
-    {
-        if(lightContainer.activeSelf)
-        {
-            lightContainer.SetActive(false);
-        }
-        else
-        {
-            lightContainer.SetActive(true);
-        }
-    }
-
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            toggleLights();
-        }
 
         if (cameraTransform == null)
         {
@@ -134,6 +116,13 @@ public class PlayerInteraction : MonoBehaviour
                 CustomerWindow customerWindow = hitObject.GetComponent<CustomerWindow>();
                 Till till = hitObject.GetComponent<Till>();
                 ButtonForCoffeeMachine coffeeButton = hitObject.GetComponent<ButtonForCoffeeMachine>();
+                PowerCutScript powercut = hitObject.GetComponent<PowerCutScript>();
+
+                if (powercut != null)
+                {
+                    powercut.fixPower();
+                    return;
+                }
 
                 if (coffeeButton != null)
                 {
@@ -181,7 +170,6 @@ public class PlayerInteraction : MonoBehaviour
                         heldObjectLeft.GetComponent<CoffeeInteraction>().TryAddToCustomerWindow();
 
                         return;
-
                     }
 
                     return;
