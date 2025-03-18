@@ -23,6 +23,7 @@ public class PowerCutScript : MonoBehaviour
     {
         lights = GameObject.Find("LightsContainer");
         playerTorch = GameObject.Find("Torch");
+        playerTorch.SetActive(false);
         Invoke("tripPower", initialDelay);
     }
 
@@ -50,7 +51,7 @@ public class PowerCutScript : MonoBehaviour
         till.enabled= true;
     }
 
-    private void tripPower()
+    public void tripPower()
     {
         lightsOff();
 

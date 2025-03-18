@@ -12444,6 +12444,26 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 8.258801, y: 0.1234802, z: 0.5886805}
   m_Center: {x: 0, y: 0.47351855, z: 0}
+--- !u!1 &484067378 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8024094138167117876, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
+  m_PrefabInstance: {fileID: 816174779}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &484067387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484067378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36db96febe470344abedaca6c927bdfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cheatsEnabled: 1
+  CustomerWindow: {fileID: 1208108570}
+  PowerCutScript: {fileID: 155743454}
 --- !u!1 &495378604
 GameObject:
   m_ObjectHideFlags: 0
@@ -20743,6 +20763,9 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 958940034}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8024094138167117876, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 484067387}
     - targetCorrespondingSourceObject: {fileID: 9112161919131238558, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1651408177}
@@ -30170,6 +30193,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 780076441}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1208108570 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -7604978281333481324, guid: 78a9af1f297cd0e49b204f794d1430fe, type: 3}
+  m_PrefabInstance: {fileID: 761383708}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99b709c665ecc3c458a71bda3e132b58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &1219487578
 Mesh:
   m_ObjectHideFlags: 0
