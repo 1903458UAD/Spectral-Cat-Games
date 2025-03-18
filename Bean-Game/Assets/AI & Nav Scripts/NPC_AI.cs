@@ -29,12 +29,17 @@ public class NPC_AI : MonoBehaviour
     private bool isHidden = false;
     public bool hidTest = false;
 
+    public float distanceToSpot = 0;
 
     public bool hasEscapedOnce = false;
 
     public bool initialHidingAssigned = false;
 
-    public bool hasHidingAssignment = false;
+    //public bool hasHidingAssignment = false;
+
+    public bool hasReachedRouteEnd = false;
+
+
 
 
     public enum NPCState { Idle, Hiding, Running }
@@ -61,7 +66,13 @@ public class NPC_AI : MonoBehaviour
     {
         if (isPickedUp) return;
 
-       
+        if (navMeshAgent == null)
+        {
+            return;
+        }
+
+        distanceToSpot = Vector3.Distance(transform.position, GetHidingSpotPosition());
+
     }
 
 
@@ -69,6 +80,10 @@ public class NPC_AI : MonoBehaviour
 
     public void MoveTo(Vector3 destination)
     {
+        if (navMeshAgent == null)
+        {
+            return;
+        }
         //if (this.transform.position.x == this.transform.position.x)
         //{
         //    PLAYBACK_STATE playbackState;
@@ -82,7 +97,7 @@ public class NPC_AI : MonoBehaviour
         //{
         //    beanFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
         //}
-        
+
         if (navMeshAgent.isOnNavMesh)
         {
             navMeshAgent.SetDestination(destination);
@@ -93,35 +108,48 @@ public class NPC_AI : MonoBehaviour
 
     public void SetLastHidingSpot(Hiding_Spots spot)
     {
+
         lastHidingSpot = spot;
         lastHSpot = spot;
     }
 
     public Hiding_Spots GetLastHidingSpot()
     {
+
         return lastHidingSpot;
     }
 
     public Hiding_Spots GetHidingSpot()
     {
+
         return currentHidingSpot;
     }
 
 
     public void SetHidingSpot(Hiding_Spots spot)
     {
+        if (navMeshAgent == null)
+        {
+            return;
+        }
         currentHidingSpot = spot;
         currentHSpot = spot;
     }
 
     public Vector3 GetHidingSpotPosition()
     {
+
         return currentHidingSpot != null ? currentHidingSpot.transform.position : transform.position;
     }
 
 
     public void OnReachedHidingSpot()
     {
+        if (navMeshAgent == null)
+        {
+            return;
+        }
+
         if (currentHidingSpot != null)
         {
             state = NPCState.Hiding;
@@ -138,47 +166,15 @@ public class NPC_AI : MonoBehaviour
     }
 
 
-    //public void SetRunning(bool value)
-    //{
-    //    isRunning = value;
-    //    RunTest = value;
-
-    //    if (isRunning)
-    //    {
-    //        setHiding(false);
-    //        if (currentHidingSpot != null)
-    //        {
-    //            currentHidingSpot.DecrementOccupancy();
-    //            currentHidingSpot = null;
-    //        }
-    //        navMeshAgent.ResetPath();
-    //        navMeshAgent.isStopped = false;
-    //    }
-    //}
-
-    //public bool getRunning()
-    //{
-    //    return isRunning;
-    //}
-
-
-
-    //public void setHiding(bool hiding)
-    //{
-
-    //    isHidden = hiding;
-    //    hidTest = hiding;
-    //}
-
-    //public bool isHiding()
-    //{
-    //    return isHidden;
-    //}
 
 
 
     public void PlayBeanMoveSound(bool isMoving)
     {
+        if (navMeshAgent == null)
+        {
+            return;
+        }
         if (isMoving)
         {
             PLAYBACK_STATE playbackState;
@@ -196,6 +192,7 @@ public class NPC_AI : MonoBehaviour
 
     public void OnPickedUp()
     {
+
         isPickedUp = true;
 
         if (currentHidingSpot != null)
@@ -216,7 +213,10 @@ public class NPC_AI : MonoBehaviour
     public void OnDropped()
     {
         isPickedUp = false;
-
+        if (navMeshAgent == null)
+        {
+            return;
+        }
         // Try to find a valid position on the NavMesh
         if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 2.0f, NavMesh.AllAreas))
         {
@@ -237,15 +237,17 @@ public class NPC_AI : MonoBehaviour
 
     public bool IsPickedUp()
     {
+
         return isPickedUp;
     }
 
     private void OnDestroy()
     {
-        if (AIManager.Instance != null)
+
+        //if (AIManager.Instance != null)
         {
             AIManager.Instance.UnregisterNPC(this);
-            //Debug.Log($"[NPC_AI] {gameObject.name} removed from AIManager before destruction.");
+            Debug.Log($"[NPC_AI] {gameObject.name} removed from AIManager before destruction.");
         }
 
         if (currentHidingSpot != null)

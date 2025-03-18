@@ -19,6 +19,11 @@ public class CoffeeMachine : MonoBehaviour
     [SerializeField] private GameObject hopperSpawn;
     [SerializeField] private GameObject hopperBeanPrefab;
     private GameObject[] hopperBeansArray;
+    private AudioSource audioSource;
+    public AudioClip[] clips;
+    [Range(0.01f, 1f)]
+    public float volume;
+    private int audioIndex;
 
     public Transform spawnPoint;
 
@@ -45,6 +50,8 @@ public class CoffeeMachine : MonoBehaviour
 public void Start()
 {
     lidOpen = buttonLid.transform.rotation;
+    audioSource = GetComponent<AudioSource>();
+    clips = Resources.LoadAll<AudioClip>("Grinding");
 }
 
 public bool CanActivateMachine()
@@ -60,6 +67,13 @@ public bool CanActivateMachine()
         return false;
 }
 
+private AudioClip playRandom()
+{
+    audioIndex = Random.Range(0,clips.Length);
+
+    return clips[audioIndex];
+}
+
 public void ActivateMachine()
 {
     if (CanActivateMachine() == true)
@@ -67,6 +81,7 @@ public void ActivateMachine()
         Debug.Log("Enough beans! Starting coffee creation...");
         AudioManager.instance.PlayOneShot(coffeeMachineSound, this.transform.position);
         hopperBeansArray = GameObject.FindGameObjectsWithTag("Respawn");
+        audioSource.PlayOneShot(playRandom(), volume);
         foreach(GameObject hopperBeans in hopperBeansArray)
         {
             Destroy(hopperBeans);

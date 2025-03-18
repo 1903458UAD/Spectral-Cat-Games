@@ -148,7 +148,7 @@ public class CustomerScript : MonoBehaviour
         }
     }
 
-    void Pay()
+    public void Pay()
     {
         float income = 100.0f;
 

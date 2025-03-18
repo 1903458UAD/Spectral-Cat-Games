@@ -60,7 +60,7 @@ public class CustomerWindow : MonoBehaviour
         }
     }
 
-    private void CustomerTakesCoffee()
+    public void CustomerTakesCoffee()
     {
 
 
