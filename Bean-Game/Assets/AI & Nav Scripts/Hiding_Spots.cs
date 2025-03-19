@@ -5,7 +5,7 @@ using Debug = UnityEngine.Debug;
 
 public class Hiding_Spots : MonoBehaviour
 {
-    public enum HidingType { Normal, Small, Medium }
+    public enum HidingType { Normal, Small, Medium, Trap }
 
     [Header("Hiding Spot Settings")]
     public HidingType hidingType = HidingType.Normal;
@@ -54,6 +54,7 @@ public class Hiding_Spots : MonoBehaviour
         }
     }
 
+
     public void DecrementOccupancy()
     {
         if (occupancy > 0)
@@ -65,6 +66,18 @@ public class Hiding_Spots : MonoBehaviour
         else
         {
             Debug.LogWarning($"[Hiding_Spots] {gameObject.name} occupancy is already zero!");
+        }
+    }
+
+    public bool IsTrap()
+    {
+        if(hidingType == HidingType.Trap)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 

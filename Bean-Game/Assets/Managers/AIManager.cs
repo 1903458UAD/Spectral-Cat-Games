@@ -956,7 +956,7 @@ public class AIManager : MonoBehaviour
             return;
         }
 
-
+        Hiding_Spots type = npc.GetHidingSpot();
 
         Vector3 playerPosition = GetPlayerPosition();
         Vector3 hidingSpotPosition = npc.GetHidingSpotPosition();
@@ -967,10 +967,19 @@ public class AIManager : MonoBehaviour
         {
             updateTimers[npc] = Time.time + Random.Range(0f, updateInterval);
         }
-        if (!hidingTimers.ContainsKey(npc))
-        {
-            hidingTimers[npc] = Time.time + Random.Range(hidingDurationMin * 0.5f, hidingDurationMax * 1.5f);      // Stagger hiding spot changes
-        }
+        
+        //if (!hidingTimers.ContainsKey(npc))
+        //{
+        //    if (type.IsTrap())
+        //    {
+        //        hidingTimers[npc] = Time.time + 10;   
+        //    }
+        //    else
+        //    {
+        //        hidingTimers[npc] = Time.time + Random.Range(hidingDurationMin * 0.5f, hidingDurationMax * 1.5f);      // Stagger hiding spot changes
+        //    }
+
+        //}
 
 
         if (Time.time - updateTimers[npc] < updateInterval)
@@ -1002,16 +1011,28 @@ public class AIManager : MonoBehaviour
             return; // Stay hidden if player is close
         }
 
-        //limit number of beans that can switch
-        if (!activeTimers.ContainsKey(npc) && beansToSwitch.Count < maxBeansToSwitch && !recentlySwitched.Contains(npc))
+        if (!activeTimers.ContainsKey(npc) && type.IsTrap())
         {
+            beansToSwitch.Add(npc);
+             activeTimers[npc] = Time.time + 10;
+        }
+
+        //limit number of beans that can switch
+        if (!activeTimers.ContainsKey(npc) && beansToSwitch.Count < maxBeansToSwitch && !recentlySwitched.Contains(npc) && !type.IsTrap())
+        {         
             beansToSwitch.Add(npc);
             activeTimers[npc] = Time.time + Random.Range(hidingDurationMin, hidingDurationMax);
         }
 
+
+
+        
+
         // track timers for selected beanss
         if (activeTimers.ContainsKey(npc))
         {
+       
+
             if (Time.time >= activeTimers[npc])
             {
                // Debug.Log($"[AIManager] {npc.gameObject.name} switching to a new hiding spot.");
