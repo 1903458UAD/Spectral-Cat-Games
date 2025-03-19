@@ -71,11 +71,7 @@ public class NPC_AI : MonoBehaviour
         }
 
         distanceToSpot = Vector3.Distance(transform.position, GetHidingSpotPosition());
-
     }
-
-
-
 
     public void MoveTo(Vector3 destination)
     {
@@ -103,8 +99,6 @@ public class NPC_AI : MonoBehaviour
         }
     }
 
-    
-
     public void SetLastHidingSpot(Hiding_Spots spot)
     {
 
@@ -124,7 +118,6 @@ public class NPC_AI : MonoBehaviour
         return currentHidingSpot;
     }
 
-
     public void SetHidingSpot(Hiding_Spots spot)
     {
         if (navMeshAgent == null)
@@ -140,7 +133,6 @@ public class NPC_AI : MonoBehaviour
 
         return currentHidingSpot != null ? currentHidingSpot.transform.position : transform.position;
     }
-
 
     public void OnReachedHidingSpot()
     {
@@ -163,10 +155,6 @@ public class NPC_AI : MonoBehaviour
             AIManager.Instance.AssignNewHidingSpot(this, false);
         }
     }
-
-
-
-
 
     public void PlayBeanMoveSound(bool isMoving)
     {
@@ -191,7 +179,6 @@ public class NPC_AI : MonoBehaviour
 
     public void OnPickedUp()
     {
-
         isPickedUp = true;
 
         if (currentHidingSpot != null)
@@ -207,7 +194,6 @@ public class NPC_AI : MonoBehaviour
             navMeshAgent.enabled = false; // Properly disable the agent to prevent errors
         }
     }
-
 
     public void OnDropped()
     {
@@ -233,16 +219,13 @@ public class NPC_AI : MonoBehaviour
         }
     }
 
-
     public bool IsPickedUp()
     {
-
         return isPickedUp;
     }
 
     private void OnDestroy()
     {
-
         //if (AIManager.Instance != null)
         {
             AIManager.Instance.UnregisterNPC(this);
@@ -255,7 +238,6 @@ public class NPC_AI : MonoBehaviour
             //Debug.Log($"[NPC_AI] {gameObject.name} was destroyed and left hiding spot {currentHidingSpot.name}");
         }
     }
-
 }
 
 
