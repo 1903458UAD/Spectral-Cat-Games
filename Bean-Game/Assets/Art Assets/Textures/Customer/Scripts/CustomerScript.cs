@@ -164,6 +164,8 @@ public class CustomerScript : MonoBehaviour
         if (GameManager.Instance != null)
         {
             GameManager.Instance.UpdateIncome(income);
+            GameManager.Instance.IncreaseServedAmount();
+            GameManager.Instance.CheckOrderQuota();
             GameManager.Instance.RemoveCustomer(gameObject);
         }
 
