@@ -40,7 +40,16 @@ public class NPC_AI : MonoBehaviour
     public bool hasReachedRouteEnd = false;
 
 
+    public AnimatorStateInfo stateInfo;
 
+    public Animator animator;
+
+    public AnimationClip loopingClip;
+    public AnimationClip nonLoopingClip;
+
+
+    public string looping = "Take 001";
+    public string nonLooping = "Take 002";
 
     public enum NPCState { Idle, Hiding, Running }
     public NPCState state = NPCState.Idle;
@@ -53,6 +62,7 @@ public class NPC_AI : MonoBehaviour
     private void Start()
     {
         beanFootsteps = AudioManager.instance.CreateInstance(FMODEvents.instance.beanFootsteps);
+        animator = GetComponent<Animator>();
     }
 
     private void Awake()
@@ -63,7 +73,11 @@ public class NPC_AI : MonoBehaviour
 
     private void Update()
     {
-        if (isPickedUp) return;
+        if (isPickedUp)
+        {
+            beanFootsteps.stop(STOP_MODE.IMMEDIATE);
+            return;
+        }
 
         if (navMeshAgent == null)
         {
@@ -71,6 +85,8 @@ public class NPC_AI : MonoBehaviour
         }
 
         distanceToSpot = Vector3.Distance(transform.position, GetHidingSpotPosition());
+
+        stateInfo = animator.GetCurrentAnimatorStateInfo(0);
     }
 
     public void MoveTo(Vector3 destination)
@@ -173,7 +189,7 @@ public class NPC_AI : MonoBehaviour
         }
         else 
         {
-            beanFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
+            beanFootsteps.stop(STOP_MODE.IMMEDIATE);
         }
     }
 
@@ -181,11 +197,13 @@ public class NPC_AI : MonoBehaviour
     {
         isPickedUp = true;
 
+        animator.enabled = false;
+
         if (currentHidingSpot != null)
         {
             currentHidingSpot.DecrementOccupancy();  //-1 from spot if the bean was hiding
             Debug.Log($"[NPC_AI] {gameObject.name} was picked up and left hiding spot {currentHidingSpot.name}");
-            currentHidingSpot = null; // Remove reference to the hiding spot
+            SetHidingSpot(null); // Remove reference to the hiding spot
         }
 
         if (navMeshAgent != null)
@@ -198,6 +216,9 @@ public class NPC_AI : MonoBehaviour
     public void OnDropped()
     {
         isPickedUp = false;
+
+
+
         if (navMeshAgent == null)
         {
             return;
@@ -211,12 +232,15 @@ public class NPC_AI : MonoBehaviour
             navMeshAgent.Warp(hit.position);  // Instantly corrects position
             navMeshAgent.isStopped = false;   // Resume movement
             navMeshAgent.enabled = true;
+            animator.enabled = true;
         }
         else
         {
-            Debug.LogError($"[NPC_AI] {gameObject.name} could not find a valid NavMesh position nearby! Disabling movement.");
-            navMeshAgent.enabled = false; // Prevent errors if no valid NavMesh position
+            //Debug.LogError($"[NPC_AI] {gameObject.name} could not find a valid NavMesh position nearby! Disabling movement.");
+            //navMeshAgent.enabled = false; // Prevent errors if no valid NavMesh position
         }
+
+        state = NPCState.Idle;
     }
 
     public bool IsPickedUp()

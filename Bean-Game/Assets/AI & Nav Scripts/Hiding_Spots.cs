@@ -11,7 +11,7 @@ public class Hiding_Spots : MonoBehaviour
     public HidingType hidingType = HidingType.Normal;
     public int MaxOccupancy;  // Maximum NPCs allowed in this spot
     private int occupancy = 0;    // Current number of NPCs in this spot
-    public int occ = 0;
+    public int currentOccupancy = 0;
 
     public int Occupancy => occupancy; // Read-only property to get current occupancy
 
@@ -21,7 +21,7 @@ public class Hiding_Spots : MonoBehaviour
         if (occupancy < MaxOccupancy)
         {
             occupancy++;  //Reserve the spot immediately
-            occ = occupancy;
+            currentOccupancy = occupancy;
         }
     }
 
@@ -30,7 +30,7 @@ public class Hiding_Spots : MonoBehaviour
         if (occupancy > 0)
         {
             occupancy--;  //Release the spot if an NPC leaves
-            occ = occupancy;
+            currentOccupancy = occupancy;
         }
     }
 
@@ -45,7 +45,7 @@ public class Hiding_Spots : MonoBehaviour
         if (occupancy < MaxOccupancy)
         {
             occupancy++;
-            occ = occupancy;
+            currentOccupancy = occupancy;
             Debug.Log($"[Hiding_Spots] {gameObject.name} occupancy increased: {occupancy}/{MaxOccupancy}");
         }
         else
@@ -60,12 +60,12 @@ public class Hiding_Spots : MonoBehaviour
         if (occupancy > 0)
         {
             occupancy--;
-            occ = occupancy;
+            currentOccupancy = occupancy;
             Debug.Log($"[Hiding_Spots] {gameObject.name} occupancy decreased: {occupancy}/{MaxOccupancy}");
         }
         else
         {
-            Debug.LogWarning($"[Hiding_Spots] {gameObject.name} occupancy is already zero!");
+            Debug.LogWarning($"[Hiding_Spots] {gameObject.name} occupancy is already zero!");      
         }
     }
 
@@ -81,10 +81,17 @@ public class Hiding_Spots : MonoBehaviour
         }
     }
 
+    public void SetOccupancy(int count)
+    {
+        occupancy = count;
+        currentOccupancy = occupancy;
+        Debug.Log($"[Hiding_Spots] {gameObject.name} occupancy set to: {occupancy}/{MaxOccupancy}");
+    }
+
     public void ResetHidingSpot()
     {
         occupancy = 0;  // Clear any NPCs marked inside
-        occ = occupancy;
+        currentOccupancy = occupancy;
         Debug.Log($"[Hiding_Spots] {gameObject.name} reset to empty.");
     }
 
