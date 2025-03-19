@@ -181,8 +181,6 @@ public class NPC_AI : MonoBehaviour
     {
         isPickedUp = true;
 
-        animator.enabled = false;
-
         if (currentHidingSpot != null)
         {
             currentHidingSpot.DecrementOccupancy();  //-1 from spot if the bean was hiding
@@ -213,7 +211,6 @@ public class NPC_AI : MonoBehaviour
             navMeshAgent.Warp(hit.position);  // Instantly corrects position
             navMeshAgent.isStopped = false;   // Resume movement
             navMeshAgent.enabled = true;
-            animator.enabled = true;
         }
         else
         {
