@@ -123,7 +123,6 @@ public class AIManager : MonoBehaviour
 
             if (npc.IsPickedUp())
             {
-                
                 continue;
             }
 
@@ -384,7 +383,6 @@ public class AIManager : MonoBehaviour
         if (npc.state == NPC_AI.NPCState.Hiding)
         {
             MaintainCover(npc);
-            npc.PlayBeanMoveSound(false);
         }
 
         if (distanceToPlayer < npc.runRange)
@@ -950,7 +948,6 @@ public class AIManager : MonoBehaviour
 
 
 
-
     public void MaintainCover(NPC_AI npc)
     {
         if (npc == null)
@@ -958,21 +955,6 @@ public class AIManager : MonoBehaviour
             // Debug.LogError("[AIManager] Attempted to register a NULL NPC!");
             return;
         }
-
-
-        if (npc.animator != null)
-        {
-            //npc.stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            float normalizedTime = npc.stateInfo.normalizedTime % 1f;
-
-
-
-            npc.animator.Play(npc.nonLooping, 0, normalizedTime);
-
-
-
-        }
-
 
         Hiding_Spots type = npc.GetHidingSpot();
 
@@ -985,6 +967,19 @@ public class AIManager : MonoBehaviour
         {
             updateTimers[npc] = Time.time + Random.Range(0f, updateInterval);
         }
+        
+        //if (!hidingTimers.ContainsKey(npc))
+        //{
+        //    if (type.IsTrap())
+        //    {
+        //        hidingTimers[npc] = Time.time + 10;   
+        //    }
+        //    else
+        //    {
+        //        hidingTimers[npc] = Time.time + Random.Range(hidingDurationMin * 0.5f, hidingDurationMax * 1.5f);      // Stagger hiding spot changes
+        //    }
+
+        //}
 
 
         if (Time.time - updateTimers[npc] < updateInterval)
@@ -1019,36 +1014,30 @@ public class AIManager : MonoBehaviour
         if (!activeTimers.ContainsKey(npc) && type.IsTrap())
         {
             beansToSwitch.Add(npc);
-            activeTimers[npc] = Time.time + 10;
+             activeTimers[npc] = Time.time + 10;
         }
 
         //limit number of beans that can switch
         if (!activeTimers.ContainsKey(npc) && beansToSwitch.Count < maxBeansToSwitch && !recentlySwitched.Contains(npc) && !type.IsTrap())
-        {
+        {         
             beansToSwitch.Add(npc);
             activeTimers[npc] = Time.time + Random.Range(hidingDurationMin, hidingDurationMax);
         }
 
 
 
-
+        
 
         // track timers for selected beanss
         if (activeTimers.ContainsKey(npc))
         {
-
+       
 
             if (Time.time >= activeTimers[npc])
             {
-                // Debug.Log($"[AIManager] {npc.gameObject.name} switching to a new hiding spot.");
+               // Debug.Log($"[AIManager] {npc.gameObject.name} switching to a new hiding spot.");
                 //npc.setHiding(false);
                 AssignNewHidingSpot(npc, false);
-
-
-
-                npc.animator.Play(npc.looping);
-
-
 
                 // this bean just moved
                 recentlySwitched.Add(npc);
@@ -1162,5 +1151,3 @@ public class AIManager : MonoBehaviour
         return player != null ? player.transform.position : Vector3.zero;
     }
 }
-
-

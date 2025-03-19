@@ -63,8 +63,7 @@ public class InteractableObject : MonoBehaviour
             navMeshAgent.enabled = false;
 
         if (aiScript != null)
-            aiScript.OnPickedUp();
-            //aiScript.enabled = false;
+            aiScript.enabled = false;
 
 
         // Parent the object to the player camera
@@ -128,7 +127,7 @@ public class InteractableObject : MonoBehaviour
         // Re-enable Rigidbody physics
         if (objectRigidbody != null)
         {
-            objectRigidbody.isKinematic = true;
+            objectRigidbody.isKinematic = false;
             objectRigidbody.useGravity = true;
 
 
@@ -152,8 +151,7 @@ public class InteractableObject : MonoBehaviour
             navMeshAgent.enabled = true;
 
         if (aiScript != null)
-            aiScript.OnDropped();
-            //aiScript.enabled = true;
+            aiScript.enabled = true;
 
         canRelease = false;
         Invoke(nameof(EnableRelease), pickupCooldown);
