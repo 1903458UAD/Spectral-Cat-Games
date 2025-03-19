@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4749889642884749939}
   - component: {fileID: 756072933853280917}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: NegativeZ
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Activated: 1
   m_Width: 0.75
   m_CostModifier: 10
-  m_Bidirectional: 0
+  m_Bidirectional: 1
   m_AutoUpdatePosition: 1
   m_Area: 0
 --- !u!1 &5243485217333283254
@@ -65,7 +65,7 @@ GameObject:
   m_Component:
   - component: {fileID: 928980251701466010}
   - component: {fileID: 2196757673027845430}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: NegativeX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Activated: 1
   m_Width: 0.75
   m_CostModifier: 10
-  m_Bidirectional: 0
+  m_Bidirectional: 1
   m_AutoUpdatePosition: 1
   m_Area: 0
 --- !u!1 &7643009171488270701
@@ -120,7 +120,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9119692254142105766}
   - component: {fileID: 1447724701928033564}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PositiveZ
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Activated: 1
   m_Width: 0.75
   m_CostModifier: 10
-  m_Bidirectional: 0
+  m_Bidirectional: 1
   m_AutoUpdatePosition: 1
   m_Area: 0
 --- !u!1 &8011290501556664476
@@ -175,7 +175,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4769296877637694208}
   - component: {fileID: 2410808667495024915}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PositiveX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -217,7 +217,7 @@ MonoBehaviour:
   m_Activated: 1
   m_Width: 0.75
   m_CostModifier: 10
-  m_Bidirectional: 0
+  m_Bidirectional: 1
   m_AutoUpdatePosition: 1
   m_Area: 0
 --- !u!1 &8856500680923911721
@@ -229,7 +229,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3659072809297656437}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: NavMeshLinks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -310,6 +310,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 1a7f20b1830240f4c9aa04e16a4ec108, type: 3}
       propertyPath: m_Name
       value: Static_TableSquare
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1a7f20b1830240f4c9aa04e16a4ec108, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
