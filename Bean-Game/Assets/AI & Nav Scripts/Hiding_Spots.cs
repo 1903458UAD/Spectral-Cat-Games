@@ -65,7 +65,7 @@ public class Hiding_Spots : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"[Hiding_Spots] {gameObject.name} occupancy is already zero!");
+            Debug.LogWarning($"[Hiding_Spots] {gameObject.name} occupancy is already zero!");      
         }
     }
 
