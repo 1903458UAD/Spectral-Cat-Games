@@ -51,6 +51,8 @@ public class NPC_AI : MonoBehaviour
     public string looping = "Take 001";
     public string nonLooping = "Take 002";
 
+    public bool playedOnce = false;
+
     public enum NPCState { Idle, Hiding, Running }
     public NPCState state = NPCState.Idle;
 
@@ -75,7 +77,10 @@ public class NPC_AI : MonoBehaviour
     {
         if (isPickedUp)
         {
+
             beanFootsteps.stop(STOP_MODE.IMMEDIATE);
+            
+           
             return;
         }
 
@@ -237,7 +242,7 @@ public class NPC_AI : MonoBehaviour
         else
         {
             //Debug.LogError($"[NPC_AI] {gameObject.name} could not find a valid NavMesh position nearby! Disabling movement.");
-            //navMeshAgent.enabled = false; // Prevent errors if no valid NavMesh position
+            navMeshAgent.enabled = false; // Prevent errors if no valid NavMesh position
         }
 
         state = NPCState.Idle;

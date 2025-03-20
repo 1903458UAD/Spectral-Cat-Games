@@ -724,7 +724,7 @@ public class AIManager : MonoBehaviour
 
             npc.SetLastHidingSpot(chosenSpot);
             npcHidingAssignments[npc] = chosenSpot;
-            chosenSpot.IncrementOccupancy();
+            //chosenSpot.IncrementOccupancy();
             npc.SetHidingSpot(chosenSpot);
 
             StartCoroutine(FollowEscapeRoute(npc, chosenRoute));
@@ -737,7 +737,7 @@ public class AIManager : MonoBehaviour
                 Hiding_Spots chosenSpot = validSpots[Random.Range(0, validSpots.Count)];
                 npc.SetLastHidingSpot(chosenSpot);
                 npcHidingAssignments[npc] = chosenSpot;
-                chosenSpot.IncrementOccupancy();
+                //chosenSpot.IncrementOccupancy();
                 npc.SetHidingSpot(chosenSpot);
                 npc.MoveTo(chosenSpot.transform.position);
                StartCoroutine(ResolveHidingSpotConflict(npc, chosenSpot));
@@ -864,10 +864,14 @@ public class AIManager : MonoBehaviour
         List<NPC_AI> competingNPCs = new List<NPC_AI>();
 
 
+
         foreach (var assignment in npcHidingAssignments)
         {
             if (assignment.Key == null)
+            {
                 continue;
+            }
+
 
             if (assignment.Value == chosenSpot)
             {
@@ -877,47 +881,43 @@ public class AIManager : MonoBehaviour
 
         competingNPCs = competingNPCs.Where(npc => npc != null).ToList();
 
-        // If no NPCs remain in the competition, cancel the process
-        if (competingNPCs.Count == 0)
+
+
+            competingNPCs.Sort((a, b) =>
+           Vector3.Distance(a.transform.position, chosenSpot.transform.position)
+           .CompareTo(Vector3.Distance(b.transform.position, chosenSpot.transform.position)));
+        
+
+        foreach (var challenger in competingNPCs.ToList())
         {
-           // Debug.LogWarning($"[AIManager] Conflict resolution aborted! No NPCs remaining for spot {chosenSpot.name}.");
-            chosenSpot.DecrementOccupancy(); // Release reservation if unused
-            yield break;
+            if (chosenSpot.currentOccupancy < chosenSpot.MaxOccupancy)
+            {
+
+                if (challenger == null)
+                {
+                    continue;
+                }
+
+                npcHidingAssignments[challenger] = chosenSpot;
+                chosenSpot.IncrementOccupancy();
+                competingNPCs.Remove(challenger);
+                
+            }
+            else
+            {
+                continue;
+            }
         }
 
-        // If only one NPC wants the spot, they keep it
-        if (competingNPCs.Count == 1)
+        foreach (var challenger in competingNPCs.ToList())
         {
-            NPC_AI winner = competingNPCs[0];
-            npcHidingAssignments[winner] = chosenSpot;
-           // Debug.Log($"[AIManager] {winner.gameObject.name} confirmed hiding spot {chosenSpot.name}.");
-            yield break;
-        }
 
-        // Sort NPCs by distance (closest NPC gets the spot)
-        competingNPCs.Sort((a, b) =>
-            Vector3.Distance(a.transform.position, chosenSpot.transform.position)
-            .CompareTo(Vector3.Distance(b.transform.position, chosenSpot.transform.position))
-        );
 
-        // Ensure that there is at least one NPC in the sorted list
-        if (competingNPCs.Count == 0)
-        {
-           // Debug.LogWarning($"[AIManager] No NPCs left to assign after sorting! Aborting resolution.");
-            chosenSpot.DecrementOccupancy(); // Release reservation if no one wins
-            yield break;
-        }
-
-        // The closest NPC gets the spot
-        NPC_AI winnerNPC = competingNPCs[0];
-        npcHidingAssignments[winnerNPC] = chosenSpot;
-        //Debug.Log($"[AIManager] {winnerNPC.gameObject.name} won priority for hiding spot {chosenSpot.name}.");
-
-        // All other NPCs must find a new hiding spot
-        for (int i = 1; i < competingNPCs.Count; i++)
-        {
-            chosenSpot.DecrementOccupancy(); // Remove the reservation for losers
-            AssignNewHidingSpot(competingNPCs[i], false);
+            if (challenger == null)
+            {
+                continue;
+            }
+            AssignNewHidingSpot(challenger, false);
         }
     }
 
@@ -960,17 +960,14 @@ public class AIManager : MonoBehaviour
         }
 
 
-        if (npc.animator != null)
+        if (npc.animator != null&& npc.playedOnce == false)
         {
             //npc.stateInfo = animator.GetCurrentAnimatorStateInfo(0);
             float normalizedTime = npc.stateInfo.normalizedTime % 1f;
 
-
-
             npc.animator.Play(npc.nonLooping, 0, normalizedTime);
 
-
-
+            npc.playedOnce = true;
         }
 
 
@@ -1044,7 +1041,7 @@ public class AIManager : MonoBehaviour
                 //npc.setHiding(false);
                 AssignNewHidingSpot(npc, false);
 
-
+                npc.playedOnce = false;
 
                 npc.animator.Play(npc.looping);
 
