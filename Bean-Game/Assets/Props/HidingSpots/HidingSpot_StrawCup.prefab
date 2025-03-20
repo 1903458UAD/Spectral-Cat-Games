@@ -50,7 +50,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3017555951193530717, guid: 9620bf0e64801544ca4355fa1b89ca9c, type: 3}
       propertyPath: m_Name
-      value: SM_strawcup Variant
+      value: HidingSpot_StrawCup
+      objectReference: {fileID: 0}
+    - target: {fileID: 8385739782826335181, guid: 9620bf0e64801544ca4355fa1b89ca9c, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -79,3 +83,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hidingType: 0
   MaxOccupancy: 1
+  currentOccupancy: 0

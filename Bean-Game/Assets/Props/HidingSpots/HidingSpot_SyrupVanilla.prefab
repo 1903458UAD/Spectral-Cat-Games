@@ -50,7 +50,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1964311371097454242, guid: f6c2838fbb8204244840e694af1ee3d3, type: 3}
       propertyPath: m_Name
-      value: SM_syrup_bottle (2) Variant
+      value: HidingSpot_SyrupVanilla
+      objectReference: {fileID: 0}
+    - target: {fileID: 4940928975563820455, guid: f6c2838fbb8204244840e694af1ee3d3, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -79,3 +83,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hidingType: 0
   MaxOccupancy: 1
+  currentOccupancy: 0

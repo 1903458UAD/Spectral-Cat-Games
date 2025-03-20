@@ -8,9 +8,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3888697835614462470, guid: 618b8b9815dff714bb3bb38bcd29f004, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8597522107488056295, guid: 618b8b9815dff714bb3bb38bcd29f004, type: 3}
       propertyPath: m_Name
-      value: SM_syrup_bottle (3) Variant
+      value: HidingSpot_SyrupPeanutButter
       objectReference: {fileID: 0}
     - target: {fileID: 8942838665283168605, guid: 618b8b9815dff714bb3bb38bcd29f004, type: 3}
       propertyPath: m_LocalPosition.x
@@ -79,3 +83,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hidingType: 0
   MaxOccupancy: 1
+  currentOccupancy: 0

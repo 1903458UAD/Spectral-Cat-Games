@@ -48,9 +48,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6391835158272378658, guid: 4d9b5c8b73e051f4bb9a9bb7b4ac45b6, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6680994245082911223, guid: 4d9b5c8b73e051f4bb9a9bb7b4ac45b6, type: 3}
       propertyPath: m_Name
-      value: SM_glass Variant
+      value: HidingSpot_Glass
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -79,3 +83,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hidingType: 0
   MaxOccupancy: 1
+  currentOccupancy: 0

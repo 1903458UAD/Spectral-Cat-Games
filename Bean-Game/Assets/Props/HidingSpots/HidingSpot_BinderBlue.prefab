@@ -8,9 +8,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6580793245949321659, guid: 25beb24773c20a4438943599cff30ac2, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7120985253345113913, guid: 25beb24773c20a4438943599cff30ac2, type: 3}
       propertyPath: m_Name
-      value: SM_filebinderFIXED Variant
+      value: HidingSpot_BinderBlue
       objectReference: {fileID: 0}
     - target: {fileID: 7609116307025194371, guid: 25beb24773c20a4438943599cff30ac2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -79,4 +83,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hidingType: 0
   MaxOccupancy: 1
-  occ: 0
+  currentOccupancy: 0

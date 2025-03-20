@@ -8,9 +8,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1654722592354340954, guid: 411e82474f73fd548a2f571c12c80db7, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2612696674331052703, guid: 411e82474f73fd548a2f571c12c80db7, type: 3}
       propertyPath: m_Name
-      value: SM_takeaway_coffee_cup Variant
+      value: HidingSpot_TakeawayCup
       objectReference: {fileID: 0}
     - target: {fileID: 3389514405718298661, guid: 411e82474f73fd548a2f571c12c80db7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -79,3 +83,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hidingType: 0
   MaxOccupancy: 1
+  currentOccupancy: 0

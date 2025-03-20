@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4777695401687287739, guid: da62d5ec7b4b6e149b882179f894bd44, type: 3}
       propertyPath: m_Name
-      value: SM_filebinderFIXED (1) Variant
+      value: HidingSpot_BInderRed
       objectReference: {fileID: 0}
     - target: {fileID: 5261919650490801409, guid: da62d5ec7b4b6e149b882179f894bd44, type: 3}
       propertyPath: m_LocalPosition.x
@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7726528243428124179, guid: da62d5ec7b4b6e149b882179f894bd44, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -79,4 +83,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hidingType: 0
   MaxOccupancy: 1
-  occ: 0
+  currentOccupancy: 0
