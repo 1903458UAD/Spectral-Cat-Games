@@ -25,9 +25,7 @@ public class InteractableObject : MonoBehaviour
     {
 
         // Find the camera dynamically
-        playerCamera = Camera.main.transform;
-  
-
+        playerCamera = GameObject.Find("First Person Camera").transform;
 
         // Initialize references
         objectRigidbody = GetComponent<Rigidbody>();
@@ -63,7 +61,8 @@ public class InteractableObject : MonoBehaviour
             navMeshAgent.enabled = false;
 
         if (aiScript != null)
-            aiScript.enabled = false;
+            aiScript.OnPickedUp();
+            //aiScript.enabled = false;
 
 
         // Parent the object to the player camera
@@ -127,7 +126,7 @@ public class InteractableObject : MonoBehaviour
         // Re-enable Rigidbody physics
         if (objectRigidbody != null)
         {
-            objectRigidbody.isKinematic = false;
+            objectRigidbody.isKinematic = true;
             objectRigidbody.useGravity = true;
 
 
@@ -151,7 +150,8 @@ public class InteractableObject : MonoBehaviour
             navMeshAgent.enabled = true;
 
         if (aiScript != null)
-            aiScript.enabled = true;
+            aiScript.OnDropped();
+            //aiScript.enabled = true;
 
         canRelease = false;
         Invoke(nameof(EnableRelease), pickupCooldown);

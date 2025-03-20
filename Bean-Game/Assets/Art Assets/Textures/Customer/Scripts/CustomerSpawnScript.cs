@@ -5,10 +5,13 @@ using UnityEngine;
 public class CustomerSpawnScript : MonoBehaviour
 {
     public GameObject customerPrefab; // Customer prefab
+    public Camera playerCam;
 
-    // Update is called once per frame
     void Update()
     {
-        GameManager.Instance.SpawnCustomer();
+        if(playerCam.enabled == true)
+        {
+            GameManager.Instance.SpawnCustomer();
+        }
     }
 }

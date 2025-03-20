@@ -46,6 +46,9 @@ public class StartMenuUIManager : MonoBehaviour
     public AudioClip buttonClickSound;
     private AudioSource audioSource;
 
+    [Header("Upgrade Data")]
+    [SerializeField] private UpgradeData[] upgrades;
+
     private void Awake()
     {
         if (Instance == null)
@@ -106,6 +109,16 @@ public class StartMenuUIManager : MonoBehaviour
 
     public void PlayGame()
     {
+        // Reset upgrades when starting new game
+        foreach (UpgradeData upgrade in upgrades)
+        {
+            upgrade.ResetUpgrade();
+            Debug.Log(upgrade.upgradeEnabled);
+
+        }
+
+        Debug.Log("Upgrades reset for new game!");
+
         UnityEngine.SceneManagement.SceneManager.LoadScene(1); // Replace with your actual game scene name
     }
 

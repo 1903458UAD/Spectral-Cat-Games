@@ -78,7 +78,7 @@ public class FirstPersonMovement : MonoBehaviour
     private void UpdateSound()
     {
 
-        if ((rigidbody.velocity.x > 0.5 || rigidbody.velocity.x < -0.5 ||rigidbody.velocity.z > 0.5|| rigidbody.velocity.z < -0.5)  && gameObject.GetComponent<Jump>().GetGroundCheck() == true)
+        if (rigidbody.velocity.x > 0.5 || rigidbody.velocity.x < -0.5 ||rigidbody.velocity.z > 0.5|| rigidbody.velocity.z < -0.5)
         {
             PLAYBACK_STATE playbackState;
             playerFootsteps.getPlaybackState(out playbackState);

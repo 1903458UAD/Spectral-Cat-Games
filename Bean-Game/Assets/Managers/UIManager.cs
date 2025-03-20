@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine.EventSystems;
 using System.Collections;
 using FMODUnity;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class UIManager : MonoBehaviour
 
     public Toggle developerCheatsToggle;
     private DeveloperCheats developerCheats;
+    public GameObject endOfDayScreen;
 
     [Header("Customer Order UI")]
     public TMP_Text customerOrderText; // New UI element to display coffee order
@@ -53,6 +55,9 @@ public class UIManager : MonoBehaviour
     public TMP_Text interactKeyText; 
     public TMP_Text dropKeyText;
 
+    [Header("End of Day Screen")]
+    public Button progressButton; 
+
     private bool currentlyRebinding = false;  // To track if we’re waiting for input
     private string stringOfBinding = ""; // Stores which action is being changed
 
@@ -80,6 +85,7 @@ public class UIManager : MonoBehaviour
     {
         HideGameOverScreen(); //Set the game over screen is hidden
         SetCrosshairDefault(); //Set the crosshair to default
+        HideDayEndScreen();
 
         interactKeyText.text = PlayerPrefs.GetString("InteractKey", "Mouse0");
         dropKeyText.text = PlayerPrefs.GetString("DropKey", "Mouse1");
@@ -175,6 +181,31 @@ public class UIManager : MonoBehaviour
     public void HideGameOverScreen() //Hide Death screen, To be called when reset
     {
         gameOverScreen.SetActive(false); //De-Activate the game over UI (Which hides it from the player)
+    }
+
+    public void ShowDayEndScreen() //Hide Death screen, To be called when reset
+    {
+        endOfDayScreen.SetActive(true); //De-Activate the game over UI (Which hides it from the player)
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        cameraScript.enabled = false;
+    }
+
+    public void HideDayEndScreen() //Hide Death screen, To be called when reset
+    {
+        endOfDayScreen.SetActive(false); //De-Activate the game over UI (Which hides it from the player)
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        cameraScript.enabled = true;
+    }
+
+    public void NextDayButton()
+    {
+        string sceneName = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(sceneName);
+       
+        GameManager.Instance.SetIncome(StaticData.incomePassed);
+
     }
 
     public void SetCrosshairInteractable() //Set the colour of crosshair when not targeting an interactable object
