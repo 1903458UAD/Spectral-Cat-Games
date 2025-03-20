@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 185a8e26d523bf14ca99f9c673565eb3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.0730212
+      value: -3.776663
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 185a8e26d523bf14ca99f9c673565eb3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.03093
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 185a8e26d523bf14ca99f9c673565eb3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.5555011
+      value: -2.7856727
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 185a8e26d523bf14ca99f9c673565eb3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: -7759185970682338521, guid: 185a8e26d523bf14ca99f9c673565eb3, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f024d408d0ee9ea4d8f4aeaa8adde897, type: 2}
     - target: {fileID: -6930296673090974833, guid: 185a8e26d523bf14ca99f9c673565eb3, type: 3}
       propertyPath: m_Layer
       value: 9
@@ -99,7 +103,7 @@ PrefabInstance:
     - target: {fileID: -294369257914641595, guid: 185a8e26d523bf14ca99f9c673565eb3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 83bd920a88bfeed4699e41e8758c6f38, type: 2}
+      objectReference: {fileID: 2100000, guid: 3eace82de9cec1640ae28021c1bc4b09, type: 2}
     - target: {fileID: 919132149155446097, guid: 185a8e26d523bf14ca99f9c673565eb3, type: 3}
       propertyPath: m_Name
       value: ANIM_bean_walking_TEMPORARY
@@ -328,6 +332,7 @@ MonoBehaviour:
   nonLoopingClip: {fileID: 0}
   looping: Take 001
   nonLooping: Take 002
+  playedOnce: 0
   state: 0
 --- !u!114 &147706845232554040
 MonoBehaviour:
