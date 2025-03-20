@@ -54,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 9de51669ed6adb2478cb2497d6727812, type: 2}
     - target: {fileID: 919132149155446097, guid: 6418253531112524cb56921d3dcfaae4, type: 3}
       propertyPath: m_Name
-      value: SM_syrup_bottle (2)
+      value: Prop_SyrupVanilla
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6418253531112524cb56921d3dcfaae4, type: 3}
       propertyPath: m_Layer
@@ -135,7 +135,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
