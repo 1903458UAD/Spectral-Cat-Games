@@ -2053,7 +2053,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: b79138158d6096843a298bcbfef04581, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
     - target: {fileID: 919132149155446097, guid: b79138158d6096843a298bcbfef04581, type: 3}
       propertyPath: m_Name
       value: SM_couch
@@ -8795,7 +8795,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hidingType: 0
   MaxOccupancy: 1
-  occ: 0
+  currentOccupancy: 0
 --- !u!4 &1156294903 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2924163431236531530, guid: f788642730013104896667efe0ff44f3, type: 3}
@@ -9405,7 +9405,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: b79138158d6096843a298bcbfef04581, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
     - target: {fileID: 919132149155446097, guid: b79138158d6096843a298bcbfef04581, type: 3}
       propertyPath: m_Name
       value: SM_couch (2)
@@ -9627,7 +9627,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: b79138158d6096843a298bcbfef04581, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
     - target: {fileID: 919132149155446097, guid: b79138158d6096843a298bcbfef04581, type: 3}
       propertyPath: m_Name
       value: SM_couch (3)
@@ -16519,7 +16519,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: b79138158d6096843a298bcbfef04581, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
     - target: {fileID: 919132149155446097, guid: b79138158d6096843a298bcbfef04581, type: 3}
       propertyPath: m_Name
       value: SM_couch (1)
@@ -17165,6 +17165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10306f27da65d474db6ae76435fd9ae3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  upgradeData: {fileID: 0}
   interactionDistance: 2
   InteractableObjectLayer:
     serializedVersion: 2
