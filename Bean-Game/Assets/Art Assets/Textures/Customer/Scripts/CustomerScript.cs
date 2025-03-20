@@ -39,6 +39,7 @@ public class CustomerScript : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         playerHealth = player?.GetComponent<PlayerHealth>();
+        timerDisplay.text = null;
 
         if (playerHealth == null)
         {
@@ -79,7 +80,6 @@ public class CustomerScript : MonoBehaviour
         requiredBeans = UnityEngine.Random.Range(1, 4);
        // Debug.Log($"Customer wants a coffee with {requiredBeans} beans.");
         UIManager.Instance.UpdateCustomerOrder(requiredBeans);
-
     }
 
     void Update()
@@ -179,7 +179,7 @@ public class CustomerScript : MonoBehaviour
 
     void DisplayTime()
     {
-        if (patienceTimer > 0)
+        if (patienceTimer > 1)
         {
             float minutes = Mathf.FloorToInt(patienceTimer / 60);
             float seconds = Mathf.FloorToInt(patienceTimer % 60);

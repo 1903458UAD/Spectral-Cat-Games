@@ -25,9 +25,7 @@ public class InteractableObject : MonoBehaviour
     {
 
         // Find the camera dynamically
-        playerCamera = Camera.main.transform;
-  
-
+        playerCamera = GameObject.Find("First Person Camera").transform;
 
         // Initialize references
         objectRigidbody = GetComponent<Rigidbody>();

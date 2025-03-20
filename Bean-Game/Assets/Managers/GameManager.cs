@@ -92,8 +92,6 @@ public class GameManager : MonoBehaviour
         //SetIncome(StaticData.incomePassed);
     }
 
-    
-
     void FindAllNavNodes()
     {
         navNodes.Clear();
@@ -111,8 +109,6 @@ public class GameManager : MonoBehaviour
 
         //Debug.Log("[GameManager] Found navigation nodes: " + navNodes.Count);
     }
-
-    
 
     private void SpawnInitialBeans()
     {
@@ -162,18 +158,9 @@ public class GameManager : MonoBehaviour
         //StartCoroutine(FreezeYAxisTemporarily(beanAI)); //NEW: Freeze Y for a second
     }
 
-   
-
-   
-
-
     private Vector3 GetRandomNavMeshPosition()
     {
-
         return AIManager.Instance.GetRandomNavMeshPosition();  //AIManager now handles nav positions
-
-
-        
     }
 
     public void CheckOrderQuota()
@@ -191,8 +178,6 @@ public class GameManager : MonoBehaviour
     {
         servedCustomers++;
     }
-
-
 
     public void SpawnCustomer()
     {
@@ -252,8 +237,6 @@ public class GameManager : MonoBehaviour
         return navNodes;
     }
 
-
-
     public Vector3 GetPlayerPosition()
     {
         return player != null ? player.transform.position : Vector3.zero;
@@ -268,15 +251,6 @@ public class GameManager : MonoBehaviour
 
         SceneManager.LoadScene(scenenum);
     }
-
-   
-
-
-
-
-
-
-
 
     void DebugNavNodes()
     {
