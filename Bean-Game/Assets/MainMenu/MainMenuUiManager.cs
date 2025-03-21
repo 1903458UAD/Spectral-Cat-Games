@@ -11,40 +11,43 @@ public class StartMenuUIManager : MonoBehaviour
 
     [Header("UI Elements")]
     public GameObject startMenuUI; // Reference to Start Menu UI
-    public GameObject settingsMenuUI; // Reference to Settings Menu UI
-    public GameObject creditsMenuUI; // Reference to Credits Menu UI
+    //public GameObject settingsMenuUI; // Reference to Settings Menu UI
+    //public GameObject creditsMenuUI; // Reference to Credits Menu UI
 
     [Header("Buttons")]
     public Button playButton; // Button to play the game
-    public Button settingsButton; // Button to open the settings menu
-    public Button creditsButton; // Button to open the credits menu
+    //public Button settingsButton; // Button to open the settings menu
+    //public Button creditsButton; // Button to open the credits menu
     public Button quitButton; // Button to quit the game
-    public Button backButtonSettings;
-    public Button backButtonCredits;
+    //public Button backButtonSettings;
+    //public Button backButtonCredits;
 
 
-    [Header("Settings Panels")]
-    public GameObject videoPanel;
-    public GameObject audioPanel;
-    public GameObject controlsPanel;
+    //[Header("Settings Panels")]
+    //public GameObject videoPanel;
+    //public GameObject audioPanel;
+    //public GameObject controlsPanel;
 
-    [Header("Video Settings")]
-    public TMP_Dropdown resolutionDropdown;
-    public Button textureLowButton, textureMediumButton, textureHighButton;
-    public Button modelLowButton, modelMediumButton, modelHighButton;
-    public Button frame30Button, frame60Button, frameUncappedButton;
+    //[Header("Video Settings")]
+    //public TMP_Dropdown resolutionDropdown;
+    //public Button textureLowButton, textureMediumButton, textureHighButton;
+    //public Button modelLowButton, modelMediumButton, modelHighButton;
+    //public Button frame30Button, frame60Button, frameUncappedButton;
 
-    [Header("Audio Settings")]
-    public Slider masterVolumeSlider;
+    //[Header("Audio Settings")]
+    //public Slider masterVolumeSlider;
 
-    [Header("Controls Settings")]
-    public TMP_Text interactKeyText;
-    public TMP_Text dropKeyText;
+    //[Header("Controls Settings")]
+    //public TMP_Text interactKeyText;
+    //public TMP_Text dropKeyText;
 
 
     [Header("Sound Effects")]
     public AudioClip buttonClickSound;
     private AudioSource audioSource;
+
+    [Header("Upgrade Data")]
+    [SerializeField] private UpgradeData[] upgrades;
 
     private void Awake()
     {
@@ -68,19 +71,19 @@ public class StartMenuUIManager : MonoBehaviour
     {
         // Set up button listeners
         if (playButton) playButton.onClick.AddListener(() => ButtonClicked(PlayGame));
-        if (settingsButton) settingsButton.onClick.AddListener(() => ButtonClicked(OpenSettings));
-        if (creditsButton) creditsButton.onClick.AddListener(() => ButtonClicked(OpenCredits));
+        //if (settingsButton) settingsButton.onClick.AddListener(() => ButtonClicked(OpenSettings));
+        //if (creditsButton) creditsButton.onClick.AddListener(() => ButtonClicked(OpenCredits));
         if (quitButton) quitButton.onClick.AddListener(() => ButtonClicked(QuitGame));
-        backButtonSettings.onClick.AddListener(() => ButtonClicked(CloseSettings));
-        backButtonCredits.onClick.AddListener(() => ButtonClicked(CloseCredits));
+        //backButtonSettings.onClick.AddListener(() => ButtonClicked(CloseSettings));
+        //backButtonCredits.onClick.AddListener(() => ButtonClicked(CloseCredits));
 
 
         audioSource = GetComponent<AudioSource>(); // Try getting an existing one
 
         // Initialize UI screens
         startMenuUI.SetActive(true);
-        settingsMenuUI.SetActive(false);
-        creditsMenuUI.SetActive(false);
+        //settingsMenuUI.SetActive(false);
+        //creditsMenuUI.SetActive(false);
 
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.clip = buttonClickSound;
@@ -106,60 +109,70 @@ public class StartMenuUIManager : MonoBehaviour
 
     public void PlayGame()
     {
+        // Reset upgrades when starting new game
+        foreach (UpgradeData upgrade in upgrades)
+        {
+            upgrade.ResetUpgrade();
+            Debug.Log(upgrade.upgradeEnabled);
+
+        }
+
+        Debug.Log("Upgrades reset for new game!");
+
         UnityEngine.SceneManagement.SceneManager.LoadScene(1); // Replace with your actual game scene name
     }
 
-    public void CloseSettings()
-    {
-        settingsMenuUI.SetActive(false);
-        startMenuUI.SetActive(true);
-        //AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position); //Might be needed later
-    }
+    //public void CloseSettings()
+    //{
+    //    settingsMenuUI.SetActive(false);
+    //    startMenuUI.SetActive(true);
+    //    //AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position); //Might be needed later
+    //}
 
-    public void OpenSettings()
-    {
-        startMenuUI.SetActive(false);
-        settingsMenuUI.SetActive(true);
-    }
-
-
-
-    public void OpenCredits()
-    {
-        startMenuUI.SetActive(false);
-        creditsMenuUI.SetActive(true); // Display credits menu
-    }
-
-    public void CloseCredits()
-    {
-        creditsMenuUI.SetActive(false);
-        startMenuUI.SetActive(true);
-    }
+    //public void OpenSettings()
+    //{
+    //    startMenuUI.SetActive(false);
+    //    settingsMenuUI.SetActive(true);
+    //}
 
 
-    public void ShowVideoSettings()
-    {
-        videoPanel.SetActive(true);
-        audioPanel.SetActive(false);
-        controlsPanel.SetActive(false);
+
+    //public void OpenCredits()
+    //{
+    //    startMenuUI.SetActive(false);
+    //    creditsMenuUI.SetActive(true); // Display credits menu
+    //}
+
+    //public void CloseCredits()
+    //{
+    //    creditsMenuUI.SetActive(false);
+    //    startMenuUI.SetActive(true);
+    //}
+
+
+    //public void ShowVideoSettings()
+    //{
+    //    videoPanel.SetActive(true);
+    //    audioPanel.SetActive(false);
+    //    controlsPanel.SetActive(false);
        
-    }
+    //}
 
-    public void ShowAudioSettings()
-    {
-        videoPanel.SetActive(false);
-        audioPanel.SetActive(true);
-        controlsPanel.SetActive(false);
+    //public void ShowAudioSettings()
+    //{
+    //    videoPanel.SetActive(false);
+    //    audioPanel.SetActive(true);
+    //    controlsPanel.SetActive(false);
        
-    }
+    //}
 
-    public void ShowControlsSettings()
-    {
-        videoPanel.SetActive(false);
-        audioPanel.SetActive(false);
-        controlsPanel.SetActive(true);
+    //public void ShowControlsSettings()
+    //{
+    //    videoPanel.SetActive(false);
+    //    audioPanel.SetActive(false);
+    //    controlsPanel.SetActive(true);
         
-    }
+    //}
 
 
     public void QuitGame()

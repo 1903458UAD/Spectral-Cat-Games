@@ -24,6 +24,10 @@ public class PowerCutScript : MonoBehaviour
         lights = GameObject.Find("LightsContainer");
         playerTorch = GameObject.Find("Torch");
         playerTorch.SetActive(false);
+    }
+
+    public void InitialShutOff()
+    {
         Invoke("tripPower", initialDelay);
     }
 

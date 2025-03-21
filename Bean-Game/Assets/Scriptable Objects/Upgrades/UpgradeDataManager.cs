@@ -6,7 +6,7 @@ public class UpgradeDataManager : MonoBehaviour
 {
     [SerializeField] private UpgradeData[] upgrades;
 
-    void Start()
+    public void ResetUpgrades()
     {
         foreach (UpgradeData upgrade in upgrades)
         {

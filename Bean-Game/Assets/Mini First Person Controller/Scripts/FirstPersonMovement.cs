@@ -82,7 +82,7 @@ public class FirstPersonMovement : MonoBehaviour
     private void UpdateSound()
     {
 
-        if ((rigidbody.velocity.x > 0.5 || rigidbody.velocity.x < -0.5 ||rigidbody.velocity.z > 0.5|| rigidbody.velocity.z < -0.5)  && gameObject.GetComponent<Jump>().GetGroundCheck() == true)
+        if (rigidbody.velocity.x > 0.5 || rigidbody.velocity.x < -0.5 ||rigidbody.velocity.z > 0.5|| rigidbody.velocity.z < -0.5)
         {
             AudioManager.instance.SetAmbianceParameter(parameterName, parameterValue);
             PLAYBACK_STATE playbackState;

@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: Banks/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638775807140000000
+  lastModified: 638770260690009729
   FileSizes: []
   Exists: 1
 --- !u!114 &-8835242747485883243
@@ -63,7 +63,7 @@ MonoBehaviour:
   Banks:
   - {fileID: 5106001434441971322}
   IsStream: 0
-  Is3D: 1
+  Is3D: 0
   IsOneShot: 0
   Parameters: []
   MinDistance: 1
@@ -83,20 +83,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Bell
   Guid:
-    Data1: 1158030782
-    Data2: 1304226964
-    Data3: 756180362
-    Data4: 946650741
+    Data1: 2041918584
+    Data2: 1078962991
+    Data3: -515590977
+    Data4: 1305371571
   Banks:
   - {fileID: 5106001434441971322}
   IsStream: 0
-  Is3D: 1
-  IsOneShot: 0
-  Parameters:
-  - {fileID: -3131325869666577001}
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 7921
+  Length: 0
 --- !u!114 &-6762944501750166592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,30 +141,6 @@ MonoBehaviour:
     data1: 3012043719
     data2: 2189990410
   Type: 1
-  IsGlobal: 0
-  Labels: []
-  Exists: 1
---- !u!114 &-3131325869666577001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/Bell/Bell Replay
-  m_EditorClassIdentifier: 
-  Name: Bell Replay
-  StudioPath: 
-  Min: 0
-  Max: 1
-  Default: 0
-  ID:
-    data1: 3660391274
-    data2: 2212267445
-  Type: 0
   IsGlobal: 0
   Labels: []
   Exists: 1
@@ -225,83 +200,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 73840
---- !u!114 &-1460301753499453948
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Music.bank
-  m_EditorClassIdentifier: 
-  Path: Banks/Music.bank
-  Name: Music
-  StudioPath: bank:/Music
-  lastModified: 638775836500000000
-  FileSizes: []
-  Exists: 1
---- !u!114 &-1354869985709806326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Bean Foot2
-  m_EditorClassIdentifier: 
-  Path: event:/Bean Foot2
-  Guid:
-    Data1: -1397876102
-    Data2: 1341297855
-    Data3: -1464484420
-    Data4: 1923056194
-  Banks:
-  - {fileID: 5106001434441971322}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 1248
---- !u!114 &-478264670561908400
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/GP_Music
-  m_EditorClassIdentifier: 
-  Path: event:/GP_Music
-  Guid:
-    Data1: 1052737884
-    Data2: 1144710350
-    Data3: 204856494
-    Data4: 226731993
-  Banks:
-  - {fileID: -1460301753499453948}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 0
-  Parameters:
-  - {fileID: 8089961087367317528}
-  - {fileID: 7271284999290774236}
-  - {fileID: 2143187529476610065}
-  - {fileID: 6765857010257194318}
-  - {fileID: 8069317024568251431}
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 29141
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -319,7 +217,6 @@ MonoBehaviour:
   - {fileID: -8860318759763364349}
   - {fileID: 5088361981039272395}
   - {fileID: 5106001434441971322}
-  - {fileID: -1460301753499453948}
   EditorEvents:
   - {fileID: -2104539318827922677}
   - {fileID: 6891688450448142453}
@@ -330,15 +227,12 @@ MonoBehaviour:
   - {fileID: -2930904815202580674}
   - {fileID: 6870340270147929486}
   - {fileID: 1689071308117810092}
-  - {fileID: -478264670561908400}
-  - {fileID: -1354869985709806326}
-  - {fileID: 6648763045692522766}
   EditorParameters: []
   MasterBanks:
   - {fileID: -8860318759763364349}
   StringsBanks:
   - {fileID: 2989309110241945906}
-  cacheTime: 638775836500000000
+  cacheTime: 638779106327045959
   cacheVersion: 131622
 --- !u!114 &1689071308117810092
 MonoBehaviour:
@@ -367,30 +261,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &2143187529476610065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/GP_Music/Activate Bass
-  m_EditorClassIdentifier: 
-  Name: Activate Bass
-  StudioPath: 
-  Min: 0
-  Max: 1
-  Default: 0
-  ID:
-    data1: 1457672098
-    data2: 1279906029
-  Type: 0
-  IsGlobal: 0
-  Labels: []
-  Exists: 1
 --- !u!114 &2989309110241945906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -406,10 +276,10 @@ MonoBehaviour:
   Path: Banks/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638775807140000000
+  lastModified: 638779106326958865
   FileSizes:
   - Name: 
-    Value: 1810
+    Value: 1360
   Exists: 1
 --- !u!114 &5088361981039272395
 MonoBehaviour:
@@ -426,7 +296,7 @@ MonoBehaviour:
   Path: Banks/Ambiance.bank
   Name: Ambiance
   StudioPath: bank:/Ambiance
-  lastModified: 638762552640000000
+  lastModified: 638770260690009729
   FileSizes: []
   Exists: 1
 --- !u!114 &5106001434441971322
@@ -444,7 +314,7 @@ MonoBehaviour:
   Path: Banks/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638775807140000000
+  lastModified: 638779106327045959
   FileSizes: []
   Exists: 1
 --- !u!114 &6023005030007293499
@@ -469,63 +339,12 @@ MonoBehaviour:
   - {fileID: 5106001434441971322}
   IsStream: 0
   Is3D: 0
-  IsOneShot: 0
+  IsOneShot: 1
   Parameters:
   - {fileID: -5888792099587559962}
   MinDistance: 1
   MaxDistance: 20
-  Length: 3250
---- !u!114 &6648763045692522766
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Coffee Grind Spat
-  m_EditorClassIdentifier: 
-  Path: event:/Coffee Grind Spat
-  Guid:
-    Data1: -1267857579
-    Data2: 1175785663
-    Data3: -1760465259
-    Data4: -824362650
-  Banks:
-  - {fileID: 5106001434441971322}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
   Length: 0
---- !u!114 &6765857010257194318
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/GP_Music/LoopASection
-  m_EditorClassIdentifier: 
-  Name: LoopASection
-  StudioPath: 
-  Min: 0
-  Max: 3
-  Default: 0
-  ID:
-    data1: 2773857879
-    data2: 3087746581
-  Type: 0
-  IsGlobal: 0
-  Labels: []
-  Exists: 1
 --- !u!114 &6870340270147929486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -573,37 +392,13 @@ MonoBehaviour:
     Data4: 1330596056
   Banks:
   - {fileID: 5106001434441971322}
-  IsStream: 0
+  IsStream: 1
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &7271284999290774236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/GP_Music/LoopBSection
-  m_EditorClassIdentifier: 
-  Name: LoopBSection
-  StudioPath: 
-  Min: 0
-  Max: 3
-  Default: 0
-  ID:
-    data1: 4172008605
-    data2: 2607737757
-  Type: 0
-  IsGlobal: 0
-  Labels: []
-  Exists: 1
 --- !u!114 &8014877048122765747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -631,51 +426,3 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &8069317024568251431
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/GP_Music/Activate CMel
-  m_EditorClassIdentifier: 
-  Name: Activate CMel
-  StudioPath: 
-  Min: 0
-  Max: 1
-  Default: 0
-  ID:
-    data1: 3253896331
-    data2: 1205529246
-  Type: 0
-  IsGlobal: 0
-  Labels: []
-  Exists: 1
---- !u!114 &8089961087367317528
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/GP_Music/Activate Beat
-  m_EditorClassIdentifier: 
-  Name: Activate Beat
-  StudioPath: 
-  Min: 0
-  Max: 1
-  Default: 0
-  ID:
-    data1: 1044310924
-    data2: 1589406515
-  Type: 0
-  IsGlobal: 0
-  Labels: []
-  Exists: 1

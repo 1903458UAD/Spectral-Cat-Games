@@ -4,10 +4,16 @@ using TMPro;
 using UnityEngine.EventSystems;
 using System.Collections;
 using FMODUnity;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance; //Instance of UIManager
+
+    public GameObject mainMenuUI; // Reference to the Main Menu UI
+    public Button playButton; // Reference to the Play Button
+    public Button quitButton; // Reference to the quit Button
+    public IntroScript introScript;
 
     [Header("UI Elements")] //Headers that show up in inspector
     public GameObject gameOverScreen; //Reference to game over ui
@@ -16,6 +22,11 @@ public class UIManager : MonoBehaviour
     public GameObject pauseMenuUI; // Reference to Pause Menu UI
     public GameObject settingsMenuUI;
     public GameObject upgradeMenu;
+    public GameObject CreditsMenuUI;
+
+    public Toggle developerCheatsToggle;
+    private DeveloperCheats developerCheats;
+    public GameObject endOfDayScreen;
 
     [Header("Customer Order UI")]
     public TMP_Text customerOrderText; // New UI element to display coffee order
@@ -26,24 +37,17 @@ public class UIManager : MonoBehaviour
     [Header("Camera Script")]
     public MonoBehaviour cameraScript;
 
+    [Header("Camera Script")]
+    public Button Credits;
+    public Button CreditsBackButton;
 
-    [Header("Settings Panels")]
-    public GameObject videoPanel;
-    public GameObject audioPanel;
-    public GameObject controlsPanel;
-
-    [Header("Video Settings")]
-    public TMP_Dropdown resolutionDropdown;
-    public Button textureLowButton, textureMediumButton, textureHighButton;
-    public Button modelLowButton, modelMediumButton, modelHighButton;
-    public Button frame30Button, frame60Button, frameUncappedButton;
-
-    [Header("Audio Settings")]
-    public Slider masterVolumeSlider;
 
     [Header("Controls Settings")]
     public TMP_Text interactKeyText; 
     public TMP_Text dropKeyText;
+
+    [Header("End of Day Screen")]
+    public Button progressButton; 
 
     private bool currentlyRebinding = false;  // To track if we’re waiting for input
     private string stringOfBinding = ""; // Stores which action is being changed
@@ -68,14 +72,55 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (mainMenuUI.activeSelf || pauseMenuUI.activeSelf || settingsMenuUI.activeSelf || CreditsMenuUI.activeSelf)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
+
     private void Start() 
     {
         HideGameOverScreen(); //Set the game over screen is hidden
         SetCrosshairDefault(); //Set the crosshair to default
+        HideDayEndScreen();
 
         interactKeyText.text = PlayerPrefs.GetString("InteractKey", "Mouse0");
         dropKeyText.text = PlayerPrefs.GetString("DropKey", "Mouse1");
 
+        developerCheats = FindObjectOfType<DeveloperCheats>();
+
+        // Show main menu at the start
+        mainMenuUI.SetActive(true);
+
+        // Find the IntroScript in the scene
+        introScript = FindObjectOfType<IntroScript>();
+
+        if (introScript == null)
+        {
+            Debug.LogError("IntroScript not found in the scene!");
+        }
+
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        // Assign the Play button function
+        playButton.onClick.AddListener(StartGame);
+        if (developerCheats == null)
+        {
+            Debug.LogError("DeveloperCheats script not found in the scene!");
+            return;
+        }
+
+
+        // Initialize toggle state based on current cheatsEnabled value
+        developerCheatsToggle.isOn = developerCheats.cheatsEnabled;
+
+        // Add listener to toggle button
+        developerCheatsToggle.onValueChanged.AddListener(ToggleDeveloperCheats);
         if (customerOrderText == null)
         {
             Debug.LogError("[UIManager] Customer Order Text is not assigned in the Inspector!");
@@ -83,10 +128,32 @@ public class UIManager : MonoBehaviour
 
         if (pauseMenuUI != null)
         {
-            pauseMenuUI.SetActive(false); // Ensure menu is hidden at the start
-        }
+            pauseMenuUI.SetActive(false); 
+        } 
+    }
 
-        masterVolumeSlider.value = PlayerPrefs.GetFloat("MasterVolume", 1f);
+    public void StartGame()
+    {
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        if (introScript != null)
+        {
+
+
+            mainMenuUI.SetActive(false); // Hide the main menu
+            introScript.PlayIntro(); // Start the cutscene
+        }
+        else
+        {
+            Debug.LogError("Introscript is null");
+        }
+    }
+
+    private void ToggleDeveloperCheats(bool isEnabled)
+    {
+        developerCheats.cheatsEnabled = isEnabled;
     }
 
     public void Rebinding(string action)
@@ -149,6 +216,30 @@ public class UIManager : MonoBehaviour
         gameOverScreen.SetActive(false); //De-Activate the game over UI (Which hides it from the player)
     }
 
+    public void ShowDayEndScreen() //Hide Death screen, To be called when reset
+    {
+        endOfDayScreen.SetActive(true); //De-Activate the game over UI (Which hides it from the player)
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        cameraScript.enabled = false;
+    }
+
+    public void HideDayEndScreen() //Hide Death screen, To be called when reset
+    {
+        endOfDayScreen.SetActive(false); //De-Activate the game over UI (Which hides it from the player)
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        cameraScript.enabled = true;
+    }
+
+    public void NextDayButton()
+    {
+        string sceneName = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(sceneName);
+       
+        GameManager.Instance.SetIncome(StaticData.incomePassed);
+    }
+
     public void SetCrosshairInteractable() //Set the colour of crosshair when not targeting an interactable object
     {
         crosshair.color = interactableCrosshairColor; //change to the crosshair colour (Initally or currently: Red)
@@ -161,11 +252,10 @@ public class UIManager : MonoBehaviour
 
     public void UpdateIncomeDisplay(float income)
     {
-        incomeText.text = string.Format("£{0}", income);
+        incomeText.text = string.Format("{0}", income);
 
         Debug.Log(StaticData.incomePassed);
     }
-
 
     public void UpdateCustomerOrder(int requiredBeans)
     {
@@ -189,6 +279,11 @@ public class UIManager : MonoBehaviour
             return; // Prevent the game from unpausing
         }
 
+        if (CreditsMenuUI.activeSelf)
+        {
+            ShowPauseMenu();
+            return; // Prevent the game from unpausing
+        }
 
         isPaused = !isPaused;
 
@@ -246,7 +341,6 @@ public class UIManager : MonoBehaviour
     {
         pauseMenuUI.SetActive(false);
         settingsMenuUI.SetActive(true);
-        ShowVideoSettings();
         AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
@@ -257,27 +351,17 @@ public class UIManager : MonoBehaviour
         AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
-    public void ShowVideoSettings()
+    public void OpenCredits()
     {
-        videoPanel.SetActive(true);
-        audioPanel.SetActive(false);
-        controlsPanel.SetActive(false);
+        pauseMenuUI.SetActive(false);
+        CreditsMenuUI.SetActive(true);
         AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
-    public void ShowAudioSettings()
+    public void CloseCredits()
     {
-        videoPanel.SetActive(false);
-        audioPanel.SetActive(true);
-        controlsPanel.SetActive(false);
-        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
-    }
-
-    public void ShowControlsSettings()
-    {
-        videoPanel.SetActive(false);
-        audioPanel.SetActive(false);
-        controlsPanel.SetActive(true);
+        CreditsMenuUI.SetActive(false);
+        pauseMenuUI.SetActive(true);
         AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
@@ -288,8 +372,6 @@ public class UIManager : MonoBehaviour
 
         AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
-
-
 
     public void UpdateLifeUI(int currentLives)
     {
@@ -306,20 +388,20 @@ public class UIManager : MonoBehaviour
         }
     }
 
-
     public void ShowPauseMenu()
     {
         settingsMenuUI.SetActive(false); // Hide the settings menu
+        CreditsMenuUI.SetActive(false); // Hide the credits menu
         pauseMenuUI.SetActive(true); // Show the pause menu
         AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
     public void MainMenu()
     {
-        Time.timeScale = 1f; // Time is resumed when switching scenes
-        pauseMenuUI.SetActive(false); //Hide the Pause menu UI
+        //Time.timeScale = 1f; // Time is resumed when switching scenes
+        //pauseMenuUI.SetActive(false); //Hide the Pause menu UI
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene(0); //Need to change 0 to whatever the mainmenu scene will be
+        //UnityEngine.SceneManagement.SceneManager.LoadScene(0); //Need to change 0 to whatever the mainmenu scene will be
     }
 
     public void ShowGameplayUI()
@@ -353,12 +435,4 @@ public class UIManager : MonoBehaviour
         
         Application.Quit(); // Quits the game to desktop 
     }
-
-    public void UpdateMasterVolume()
-    {
-        float volume = masterVolumeSlider.value;
-        AudioListener.volume = volume; // Set the global volume
-        PlayerPrefs.SetFloat("MasterVolume", volume); // Save setting
-    }
-
 }
