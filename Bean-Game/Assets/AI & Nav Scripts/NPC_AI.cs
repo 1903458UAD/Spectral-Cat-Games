@@ -59,7 +59,7 @@ public class NPC_AI : MonoBehaviour
 
 
     // [SerializeField] private EventReference beanMoveSound;
-    private EventInstance beanFootsteps;
+    public EventInstance beanFootsteps;
 
     private void Start()
     {
@@ -79,7 +79,7 @@ public class NPC_AI : MonoBehaviour
         if (isPickedUp)
         {
 
-            beanFootsteps.stop(STOP_MODE.IMMEDIATE);
+           
             
            
             return;

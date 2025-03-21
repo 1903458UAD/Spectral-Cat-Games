@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FMOD.Studio;
 using UnityEngine;
 using UnityEngine.AI;
+using FMOD.Studio;
 
 [RequireComponent(typeof(Rigidbody))]
 public class InteractableObject : MonoBehaviour
@@ -53,6 +54,10 @@ public class InteractableObject : MonoBehaviour
             return; // Prevent picking up the object again
         }
 
+         if (aiScript != null)
+            aiScript.OnPickedUp();
+
+        //aiScript.beanFootsteps.stop(STOP_MODE.IMMEDIATE);
         // Store the original parent for restoration on release
         originalParent = transform.parent;
 
@@ -60,8 +65,7 @@ public class InteractableObject : MonoBehaviour
         if (navMeshAgent != null)
             navMeshAgent.enabled = false;
 
-        if (aiScript != null)
-            aiScript.OnPickedUp();
+       
             //aiScript.enabled = false;
 
 

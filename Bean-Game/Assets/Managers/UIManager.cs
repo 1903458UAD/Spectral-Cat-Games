@@ -153,9 +153,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void ToggleDeveloperCheats(bool isEnabled)
+    public void ToggleDeveloperCheats(bool isEnabled)
     {
         developerCheats.cheatsEnabled = isEnabled;
+        Debug.Log($"[UIManager] Developer Cheats state updated: {developerCheats.cheatsEnabled}");
+
     }
 
     public void Rebinding(string action)
@@ -273,6 +275,12 @@ public class UIManager : MonoBehaviour
 
     public void TogglePause()
     {
+
+        if (mainMenuUI.activeSelf)
+        {
+           
+            return;
+        }
 
         // If the settings menu is open, go back to the pause menu instead of resuming
         if (settingsMenuUI.activeSelf)

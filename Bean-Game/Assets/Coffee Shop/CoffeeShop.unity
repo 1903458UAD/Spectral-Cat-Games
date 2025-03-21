@@ -4222,7 +4222,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1853050684}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: CloseCredits
         m_Mode: 1
@@ -7593,7 +7593,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_chairstriped (2)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5300237400374750567, guid: 3ac81e76f3c4dd44a9c45b7e84591622, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -11135,7 +11136,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1853050684}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: ToggleDeveloperCheats
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   m_IsOn: 1
 --- !u!224 &1005298555
 RectTransform:
@@ -11500,6 +11513,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 624489554}
     m_Modifications:
+    - target: {fileID: 998162421308679121, guid: 83ba14043168ba344b603443b1b8d476, type: 3}
+      propertyPath: m_Mass
+      value: 100000
+      objectReference: {fileID: 0}
     - target: {fileID: 4669681560428103250, guid: 83ba14043168ba344b603443b1b8d476, type: 3}
       propertyPath: m_LocalPosition.x
       value: 22.420076
@@ -17182,7 +17199,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -100}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1637254178
@@ -17229,7 +17246,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1853050684}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: OpenCredits
         m_Mode: 1
@@ -27940,7 +27957,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 437877996079691795, guid: c329068809f49224cac66596156c921e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -200
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: 615046924533557434, guid: c329068809f49224cac66596156c921e, type: 3}
       propertyPath: m_IsActive
@@ -27960,6 +27977,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1426318748865013004, guid: c329068809f49224cac66596156c921e, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1522427611147008618, guid: c329068809f49224cac66596156c921e, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2054298285059681900, guid: c329068809f49224cac66596156c921e, type: 3}
