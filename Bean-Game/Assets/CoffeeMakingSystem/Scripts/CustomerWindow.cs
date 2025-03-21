@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 public class CustomerWindow : MonoBehaviour
 {
@@ -8,7 +9,8 @@ public class CustomerWindow : MonoBehaviour
     private int currentCoffeeCount = 0; // Number of Coffees currently in the Window
     public CustomerScript customerScript; // Reference to the customer script
 
-
+    [SerializeField] private EventReference correctOrderFX;
+    [SerializeField] private EventReference wrongOrderFX;
 
     public void GiveCoffeeToWindow(CoffeeInteraction coffee)
     {
@@ -33,11 +35,13 @@ public class CustomerWindow : MonoBehaviour
                     if (coffee.beanCount == customerScript.requiredBeans)
                     {
                         CustomerTakesCoffee();
+                        AudioManager.instance.PlayOneShot(correctOrderFX, this.transform.position);
                         Debug.Log("Coffee Given to window: Correct order");
                     }
                     else
                     {
                         Debug.Log("Coffee Given to window: Incorrect order");
+                        AudioManager.instance.PlayOneShot(wrongOrderFX, this.transform.position);
                         LoseLifeForWrongOrder();
                     }
 

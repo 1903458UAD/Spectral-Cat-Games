@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using FMODUnity;
 
 public class UIUpgradeManager : MonoBehaviour
 {
@@ -19,6 +20,10 @@ public class UIUpgradeManager : MonoBehaviour
     public MonoBehaviour cameraScript;
 
     private Upgrade selectedUpgrade;
+
+    [SerializeField] private EventReference upgradePurchaseFX;
+    [SerializeField] private EventReference upgradeFailedFX;
+    [SerializeField] private EventReference upgradeSelectFX;
 
     private void Awake() 
     {
@@ -44,6 +49,7 @@ public class UIUpgradeManager : MonoBehaviour
     {
         selectedUpgrade = upgrade;
         UpdateDisplay();
+        AudioManager.instance.PlayOneShot(upgradeSelectFX, this.transform.position);
     }
 
     private void UpdateDisplay()
@@ -104,6 +110,11 @@ public class UIUpgradeManager : MonoBehaviour
             {
                income = selectedUpgrade.ApplyUpgrade(income);
                incomeText.text = string.Format("£{0}", income);
+               AudioManager.instance.PlayOneShot(upgradePurchaseFX, this.transform.position);
+            }
+            else
+            {
+               AudioManager.instance.PlayOneShot(upgradeFailedFX, this.transform.position);
             }
         }
     }

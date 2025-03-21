@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 public class PowerCutScript : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class PowerCutScript : MonoBehaviour
     public bool lightsOnly;
 
     #endregion
+    [SerializeField] private EventReference powerCutsOff;
+    [SerializeField] private EventReference powerTurnsOn;
 
     private void Start()
     {
@@ -35,6 +38,7 @@ public class PowerCutScript : MonoBehaviour
     {
         machineButton.enabled = false;
         till.enabled = false;
+        AudioManager.instance.PlayOneShot(powerCutsOff, this.transform.position);
     }
 
     private void lightsOff()
@@ -53,6 +57,7 @@ public class PowerCutScript : MonoBehaviour
     {
         machineButton.enabled = true;
         till.enabled= true;
+        AudioManager.instance.PlayOneShot(powerTurnsOn, this.transform.position);
     }
 
     public void tripPower()

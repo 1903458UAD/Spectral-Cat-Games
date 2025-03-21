@@ -15,6 +15,7 @@ public class CoffeeMachine : MonoBehaviour
     public GameObject coffeeCup3Beans; // " with 3 beans
 
     [SerializeField] private EventReference coffeeMachineSound;
+    [SerializeField] private EventReference buttonSound;
 
     [SerializeField] private GameObject hopperSpawn;
     [SerializeField] private GameObject hopperBeanPrefab;
@@ -79,6 +80,7 @@ public void ActivateMachine()
     if (CanActivateMachine() == true)
     {
         Debug.Log("Enough beans! Starting coffee creation...");
+        AudioManager.instance.PlayOneShot(buttonSound, this.transform.position);
         AudioManager.instance.PlayOneShot(coffeeMachineSound, this.transform.position);
         hopperBeansArray = GameObject.FindGameObjectsWithTag("Respawn");
         audioSource.PlayOneShot(playRandom(), volume);
