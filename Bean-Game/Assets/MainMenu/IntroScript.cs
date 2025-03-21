@@ -54,5 +54,7 @@ public class IntroScript : MonoBehaviour
         anim.enabled = false;
         menuCamera.enabled = false;
         playerCamera.enabled = true;
+
+        UIManager.Instance.ShowGameplayUI();
     }
 }

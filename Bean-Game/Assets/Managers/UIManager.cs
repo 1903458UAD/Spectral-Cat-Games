@@ -10,6 +10,11 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance; //Instance of UIManager
 
+    public GameObject mainMenuUI; // Reference to the Main Menu UI
+    public Button playButton; // Reference to the Play Button
+    public Button quitButton; // Reference to the quit Button
+    public IntroScript introScript;
+
     [Header("UI Elements")] //Headers that show up in inspector
     public GameObject gameOverScreen; //Reference to game over ui
     public Image crosshair; //Refeerence to Crosshair UI
@@ -36,20 +41,6 @@ public class UIManager : MonoBehaviour
     public Button Credits;
     public Button CreditsBackButton;
 
-
-    [Header("Settings Panels")]
-    public GameObject videoPanel;
-    public GameObject audioPanel;
-    public GameObject controlsPanel;
-
-    [Header("Video Settings")]
-    public TMP_Dropdown resolutionDropdown;
-    public Button textureLowButton, textureMediumButton, textureHighButton;
-    public Button modelLowButton, modelMediumButton, modelHighButton;
-    public Button frame30Button, frame60Button, frameUncappedButton;
-
-    [Header("Audio Settings")]
-    public Slider masterVolumeSlider;
 
     [Header("Controls Settings")]
     public TMP_Text interactKeyText; 
@@ -81,6 +72,16 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (mainMenuUI.activeSelf || pauseMenuUI.activeSelf || settingsMenuUI.activeSelf || CreditsMenuUI.activeSelf)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+ 
+    }
+
     private void Start() 
     {
         HideGameOverScreen(); //Set the game over screen is hidden
@@ -92,6 +93,23 @@ public class UIManager : MonoBehaviour
 
         developerCheats = FindObjectOfType<DeveloperCheats>();
 
+        // Show main menu at the start
+        mainMenuUI.SetActive(true);
+
+        // Find the IntroScript in the scene
+        introScript = FindObjectOfType<IntroScript>();
+
+        if (introScript == null)
+        {
+            Debug.LogError("IntroScript not found in the scene!");
+        }
+
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        // Assign the Play button function
+        playButton.onClick.AddListener(StartGame);
         if (developerCheats == null)
         {
             Debug.LogError("DeveloperCheats script not found in the scene!");
@@ -111,10 +129,29 @@ public class UIManager : MonoBehaviour
 
         if (pauseMenuUI != null)
         {
-            pauseMenuUI.SetActive(false); // Ensure menu is hidden at the start
+            pauseMenuUI.SetActive(false); 
         }
 
-        masterVolumeSlider.value = PlayerPrefs.GetFloat("MasterVolume", 1f);
+       
+    }
+
+    public void StartGame()
+    {
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        if (introScript != null)
+        {
+
+
+            mainMenuUI.SetActive(false); // Hide the main menu
+            introScript.PlayIntro(); // Start the cutscene
+        }
+        else
+        {
+            Debug.LogError("Introscript is null");
+        }
     }
 
     private void ToggleDeveloperCheats(bool isEnabled)
@@ -310,7 +347,6 @@ public class UIManager : MonoBehaviour
     {
         pauseMenuUI.SetActive(false);
         settingsMenuUI.SetActive(true);
-        ShowVideoSettings();
         AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
@@ -325,7 +361,6 @@ public class UIManager : MonoBehaviour
     {
         pauseMenuUI.SetActive(false);
         CreditsMenuUI.SetActive(true);
-        ShowVideoSettings();
         AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
@@ -333,30 +368,6 @@ public class UIManager : MonoBehaviour
     {
         CreditsMenuUI.SetActive(false);
         pauseMenuUI.SetActive(true);
-        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
-    }
-
-    public void ShowVideoSettings()
-    {
-        videoPanel.SetActive(true);
-        audioPanel.SetActive(false);
-        controlsPanel.SetActive(false);
-        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
-    }
-
-    public void ShowAudioSettings()
-    {
-        videoPanel.SetActive(false);
-        audioPanel.SetActive(true);
-        controlsPanel.SetActive(false);
-        AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
-    }
-
-    public void ShowControlsSettings()
-    {
-        videoPanel.SetActive(false);
-        audioPanel.SetActive(false);
-        controlsPanel.SetActive(true);
         AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
@@ -396,10 +407,10 @@ public class UIManager : MonoBehaviour
 
     public void MainMenu()
     {
-        Time.timeScale = 1f; // Time is resumed when switching scenes
-        pauseMenuUI.SetActive(false); //Hide the Pause menu UI
+        //Time.timeScale = 1f; // Time is resumed when switching scenes
+        //pauseMenuUI.SetActive(false); //Hide the Pause menu UI
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene(0); //Need to change 0 to whatever the mainmenu scene will be
+        //UnityEngine.SceneManagement.SceneManager.LoadScene(0); //Need to change 0 to whatever the mainmenu scene will be
     }
 
     public void ShowGameplayUI()
@@ -434,11 +445,5 @@ public class UIManager : MonoBehaviour
         Application.Quit(); // Quits the game to desktop 
     }
 
-    public void UpdateMasterVolume()
-    {
-        float volume = masterVolumeSlider.value;
-        AudioListener.volume = volume; // Set the global volume
-        PlayerPrefs.SetFloat("MasterVolume", volume); // Save setting
-    }
 
 }
