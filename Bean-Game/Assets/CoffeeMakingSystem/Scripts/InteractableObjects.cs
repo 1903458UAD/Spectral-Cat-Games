@@ -126,9 +126,14 @@ public class InteractableObject : MonoBehaviour
         // Re-enable Rigidbody physics
         if (objectRigidbody != null)
         {
-            objectRigidbody.isKinematic = true;
-            objectRigidbody.useGravity = true;
+            if(gameObject.tag == "Bean")
+            {
+                objectRigidbody.isKinematic = true;
+                objectRigidbody.useGravity = true;
+            }
 
+            objectRigidbody.isKinematic = false;
+            objectRigidbody.useGravity = true;
 
 
             Collider objectCollider = GetComponent<Collider>();

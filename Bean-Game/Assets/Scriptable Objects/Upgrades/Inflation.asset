@@ -10,18 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43cc78156c55170449f4a6ce73befc9c, type: 3}
-  m_Name: DualWield
+  m_Name: Inflation
   m_EditorClassIdentifier: 
-  upgradeName: Easy mode
-  technicalName: Dual Wield
-  upgradeDescription: Wait you have to pay to use your left hand? You can use both
-    hands to pickup items.
-  cost: 1000
-  baseValue: 0
-  increaseValue: 0
+  upgradeName: Inflation
+  technicalName: Increase Cost
+  upgradeDescription: We're bumping up the price of the coffee, why? Becuase we can!
+  cost: 2000
+  baseValue: 1
+  increaseValue: 0.1
   tier: 0
-  maxTier: 1
+  maxTier: 5
   upgradeEnabled: 1
-  internalBaseValue: 0
-  internalBaseTier: 1
+  internalBaseValue: 1
+  internalBaseTier: 0
   internalUpgradeEnabled: 1
