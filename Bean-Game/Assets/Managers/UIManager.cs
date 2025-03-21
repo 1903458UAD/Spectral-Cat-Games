@@ -79,7 +79,6 @@ public class UIManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
- 
     }
 
     private void Start() 
@@ -130,9 +129,7 @@ public class UIManager : MonoBehaviour
         if (pauseMenuUI != null)
         {
             pauseMenuUI.SetActive(false); 
-        }
-
-       
+        } 
     }
 
     public void StartGame()
@@ -156,7 +153,6 @@ public class UIManager : MonoBehaviour
 
     public void ToggleDeveloperCheats(bool isEnabled)
     {
-        
         developerCheats.cheatsEnabled = isEnabled;
         Debug.Log($"[UIManager] Developer Cheats state updated: {developerCheats.cheatsEnabled}");
 
@@ -244,7 +240,6 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene(sceneName);
        
         GameManager.Instance.SetIncome(StaticData.incomePassed);
-
     }
 
     public void SetCrosshairInteractable() //Set the colour of crosshair when not targeting an interactable object
@@ -259,11 +254,10 @@ public class UIManager : MonoBehaviour
 
     public void UpdateIncomeDisplay(float income)
     {
-        incomeText.text = string.Format("£{0}", income);
+        incomeText.text = string.Format("{0}", income);
 
         Debug.Log(StaticData.incomePassed);
     }
-
 
     public void UpdateCustomerOrder(int requiredBeans)
     {
@@ -381,8 +375,6 @@ public class UIManager : MonoBehaviour
         AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
-
-
     public void UpdateLifeUI(int currentLives)
     {
         for (int i = 0; i < lifeIcons.Length; i++)
@@ -397,7 +389,6 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-
 
     public void ShowPauseMenu()
     {
@@ -446,6 +437,4 @@ public class UIManager : MonoBehaviour
         
         Application.Quit(); // Quits the game to desktop 
     }
-
-
 }
