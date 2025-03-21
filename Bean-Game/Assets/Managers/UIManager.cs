@@ -274,6 +274,12 @@ public class UIManager : MonoBehaviour
     public void TogglePause()
     {
 
+        if (mainMenuUI.activeSelf)
+        {
+           
+            return;
+        }
+
         // If the settings menu is open, go back to the pause menu instead of resuming
         if (settingsMenuUI.activeSelf)
         {
