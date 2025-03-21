@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2584898550361632752, guid: f788642730013104896667efe0ff44f3, type: 3}
       propertyPath: m_Name
-      value: SM_coffee_mug Variant
+      value: HidingSpot_CoffeeMug
       objectReference: {fileID: 0}
     - target: {fileID: 2924163431236531530, guid: f788642730013104896667efe0ff44f3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4950136782040992603, guid: f788642730013104896667efe0ff44f3, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -79,3 +83,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hidingType: 0
   MaxOccupancy: 1
+  currentOccupancy: 0

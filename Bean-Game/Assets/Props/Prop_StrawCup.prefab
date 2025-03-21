@@ -54,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1bb6325ae530e3445af7a0b8b74cb3d4, type: 2}
     - target: {fileID: 919132149155446097, guid: ff1386adce5335b4290e1fa8443c147a, type: 3}
       propertyPath: m_Name
-      value: SM_strawcup
+      value: Prop_StrawCup
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ff1386adce5335b4290e1fa8443c147a, type: 3}
       propertyPath: m_Layer
@@ -123,7 +123,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0

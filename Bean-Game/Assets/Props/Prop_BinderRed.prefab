@@ -54,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: d8020dfdeb5045e49b4bb08bcffd49ad, type: 2}
     - target: {fileID: 919132149155446097, guid: 21234a20e28129b498cc9d079f4c4a7d, type: 3}
       propertyPath: m_Name
-      value: SM_filebinderFIXED (1)
+      value: Prop_BinderRed
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 21234a20e28129b498cc9d079f4c4a7d, type: 3}
       propertyPath: m_Layer
@@ -102,7 +102,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0

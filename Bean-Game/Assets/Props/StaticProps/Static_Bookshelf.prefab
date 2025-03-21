@@ -51,7 +51,7 @@ MonoBehaviour:
   m_EndTransform: {fileID: 8448611928866416268}
   m_Activated: 1
   m_Width: 2
-  m_CostModifier: 1
+  m_CostModifier: 10
   m_Bidirectional: 1
   m_AutoUpdatePosition: 1
   m_Area: 0
@@ -106,7 +106,7 @@ MonoBehaviour:
   m_EndTransform: {fileID: 9190775487192943332}
   m_Activated: 1
   m_Width: 2
-  m_CostModifier: 1
+  m_CostModifier: 10
   m_Bidirectional: 1
   m_AutoUpdatePosition: 1
   m_Area: 0
@@ -161,7 +161,7 @@ MonoBehaviour:
   m_EndTransform: {fileID: 717326674847898914}
   m_Activated: 1
   m_Width: 2
-  m_CostModifier: 1
+  m_CostModifier: 10
   m_Bidirectional: 1
   m_AutoUpdatePosition: 1
   m_Area: 0
@@ -216,62 +216,7 @@ MonoBehaviour:
   m_EndTransform: {fileID: 5564432584256339018}
   m_Activated: 1
   m_Width: 2
-  m_CostModifier: 1
-  m_Bidirectional: 1
-  m_AutoUpdatePosition: 1
-  m_Area: 0
---- !u!1 &8678320024590886799
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4651576852529098546}
-  - component: {fileID: 1204392480887622482}
-  m_Layer: 0
-  m_Name: Top
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4651576852529098546
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8678320024590886799}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1607725189547485960}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1204392480887622482
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8678320024590886799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6eeb5dc026fdf4b488bc7ae0138ab719, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AgentTypeID: 0
-  m_StartPoint: {x: 1, y: -1.35, z: 0}
-  m_EndPoint: {x: 0.10000038, y: 1.35, z: 0}
-  m_StartTransform: {fileID: 4651576852529098546}
-  m_EndTransform: {fileID: 4651576852529098546}
-  m_Activated: 1
-  m_Width: 2
-  m_CostModifier: 1
+  m_CostModifier: 10
   m_Bidirectional: 1
   m_AutoUpdatePosition: 1
   m_Area: 0
@@ -304,7 +249,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4651576852529098546}
   - {fileID: 9190775487192943332}
   - {fileID: 5564432584256339018}
   - {fileID: 8448611928866416268}

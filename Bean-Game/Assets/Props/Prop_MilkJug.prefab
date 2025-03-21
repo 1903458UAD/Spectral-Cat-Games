@@ -54,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: bbf27db22a1c40a49bb607ba9c526803, type: 2}
     - target: {fileID: 919132149155446097, guid: 47d56279f0e17c74083c76719857dfa2, type: 3}
       propertyPath: m_Name
-      value: SM_milkjugFIXED
+      value: Prop_MilkJug
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 47d56279f0e17c74083c76719857dfa2, type: 3}
       propertyPath: m_Layer
@@ -102,7 +102,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0

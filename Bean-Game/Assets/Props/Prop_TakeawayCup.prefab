@@ -58,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1732047cfced971499ec99c26850ee40, type: 2}
     - target: {fileID: 919132149155446097, guid: 4900599b4e301734ca06d1804d9997bb, type: 3}
       propertyPath: m_Name
-      value: SM_takeaway_coffee_cup
+      value: Prop_TakeawayCup
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4900599b4e301734ca06d1804d9997bb, type: 3}
       propertyPath: m_Layer
@@ -135,7 +135,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
