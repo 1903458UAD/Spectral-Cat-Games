@@ -194,7 +194,7 @@ public class NPC_AI : MonoBehaviour
         }
         else 
         {
-
+            beanFootsteps.stop(STOP_MODE.IMMEDIATE);
         }
     }
 

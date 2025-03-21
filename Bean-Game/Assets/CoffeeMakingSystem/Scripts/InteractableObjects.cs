@@ -51,10 +51,10 @@ public class InteractableObject : MonoBehaviour
             return; // Prevent picking up the object again
         }
 
-        if (aiScript != null)
+         if (aiScript != null)
             aiScript.OnPickedUp();
 
-        aiScript.beanFootsteps.stop(STOP_MODE.IMMEDIATE);
+        //aiScript.beanFootsteps.stop(STOP_MODE.IMMEDIATE);
         // Store the original parent for restoration on release
         originalParent = transform.parent;
 
