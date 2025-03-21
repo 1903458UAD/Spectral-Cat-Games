@@ -36,8 +36,6 @@ public class InteractableObject : MonoBehaviour
         {
             Debug.LogError("No Rigidbody found on the interactable object!");
         }
-
-
     }
 
     public bool GetIsHeld()
@@ -83,7 +81,7 @@ public class InteractableObject : MonoBehaviour
         // Disable Rigidbody physics while holding
         if (objectRigidbody != null)
         {
-            objectRigidbody.isKinematic = true;
+            objectRigidbody.isKinematic = true; //This the troublemaker right here!
             objectRigidbody.useGravity = false;
 
             // Ignore collisions with the player only
@@ -104,15 +102,13 @@ public class InteractableObject : MonoBehaviour
         }
         canRelease = false;
         Invoke(nameof(EnableRelease), pickupCooldown); // Set the cooldown before allowing release
-
-    
     }
-
 
     private void EnableRelease()
     {
         canRelease = true;
     }
+
     public void ReleaseObject()
     {
         if (!isHeld || !canRelease) // Ensure release is allowed
@@ -126,15 +122,12 @@ public class InteractableObject : MonoBehaviour
         // Re-enable Rigidbody physics
         if (objectRigidbody != null)
         {
-            if(gameObject.tag == "Bean")
+            if(!gameObject.CompareTag("Bean"))
             {
-                objectRigidbody.isKinematic = true;
-                objectRigidbody.useGravity = true;
+                objectRigidbody.isKinematic = false;
             }
 
-            objectRigidbody.isKinematic = false;
             objectRigidbody.useGravity = true;
-
 
             Collider objectCollider = GetComponent<Collider>();
             Collider playerCollider = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Collider>();
@@ -143,13 +136,11 @@ public class InteractableObject : MonoBehaviour
             {
                 Physics.IgnoreCollision(objectCollider, playerCollider, false);
             }
-
         }
 
         // Unparent from the camera
         transform.SetParent(null, true); // Ensure the object is fully detached
      
-
         // Re-enable AI and NavMeshAgent
         if (navMeshAgent != null)
             navMeshAgent.enabled = true;
