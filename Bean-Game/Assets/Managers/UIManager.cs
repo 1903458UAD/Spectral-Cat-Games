@@ -154,10 +154,12 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void ToggleDeveloperCheats(bool isEnabled)
+    public void ToggleDeveloperCheats(bool isEnabled)
     {
         
         developerCheats.cheatsEnabled = isEnabled;
+        Debug.Log($"[UIManager] Developer Cheats state updated: {developerCheats.cheatsEnabled}");
+
     }
 
     public void Rebinding(string action)
