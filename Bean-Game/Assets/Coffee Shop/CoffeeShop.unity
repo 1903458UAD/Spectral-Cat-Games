@@ -21048,6 +21048,14 @@ PrefabInstance:
       propertyPath: upgradeData
       value: 
       objectReference: {fileID: 11400000, guid: 5affdde0e0dbb0e41984e9702e45e538, type: 2}
+    - target: {fileID: 4056485557077329956, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
+      propertyPath: parameterName
+      value: Activate Beat
+      objectReference: {fileID: 0}
+    - target: {fileID: 4056485557077329956, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
+      propertyPath: parameterValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7173418576952000797, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
       propertyPath: m_Height
       value: 1.8
@@ -21064,6 +21072,14 @@ PrefabInstance:
       propertyPath: upgradeData
       value: 
       objectReference: {fileID: 11400000, guid: 6832acb0dc7d6c542a967bd20ae735a3, type: 2}
+    - target: {fileID: 8048286646647513308, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
+      propertyPath: parameterName
+      value: Activate Bass
+      objectReference: {fileID: 0}
+    - target: {fileID: 8048286646647513308, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
+      propertyPath: parameterValue
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -60203,8 +60219,28 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: d8e658523a443f64198bd173b2920db0, type: 2}
     - target: {fileID: 3916805565797559528, guid: 5ffb7c3603600cc4490e9c9f8a500e16, type: 3}
+      propertyPath: <musicFMOD>k__BackingField.Path
+      value: event:/Order Complete
+      objectReference: {fileID: 0}
+    - target: {fileID: 3916805565797559528, guid: 5ffb7c3603600cc4490e9c9f8a500e16, type: 3}
       propertyPath: <beanFootsteps>k__BackingField.Path
       value: event:/Bean Foot2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3916805565797559528, guid: 5ffb7c3603600cc4490e9c9f8a500e16, type: 3}
+      propertyPath: <musicFMOD>k__BackingField.Guid.Data1
+      value: 2129054765
+      objectReference: {fileID: 0}
+    - target: {fileID: 3916805565797559528, guid: 5ffb7c3603600cc4490e9c9f8a500e16, type: 3}
+      propertyPath: <musicFMOD>k__BackingField.Guid.Data2
+      value: 1202285709
+      objectReference: {fileID: 0}
+    - target: {fileID: 3916805565797559528, guid: 5ffb7c3603600cc4490e9c9f8a500e16, type: 3}
+      propertyPath: <musicFMOD>k__BackingField.Guid.Data3
+      value: 528114825
+      objectReference: {fileID: 0}
+    - target: {fileID: 3916805565797559528, guid: 5ffb7c3603600cc4490e9c9f8a500e16, type: 3}
+      propertyPath: <musicFMOD>k__BackingField.Guid.Data4
+      value: -1482604311
       objectReference: {fileID: 0}
     - target: {fileID: 3916805565797559528, guid: 5ffb7c3603600cc4490e9c9f8a500e16, type: 3}
       propertyPath: <beanFootsteps>k__BackingField.Guid.Data1

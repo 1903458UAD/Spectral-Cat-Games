@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using FMOD.Studio;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -20,6 +21,8 @@ public class InteractableObject : MonoBehaviour
     private NavMeshAgent navMeshAgent; // Reference to the NavMeshAgent
     private NPC_AI aiScript; // Reference to the NPC_AI script
     private Transform originalParent; // Original parent to restore on release
+
+    private EventInstance beanFootsteps;
 
     private void Start()
     {
@@ -53,7 +56,6 @@ public class InteractableObject : MonoBehaviour
         {
             return; // Prevent picking up the object again
         }
-           
 
         // Store the original parent for restoration on release
         originalParent = transform.parent;

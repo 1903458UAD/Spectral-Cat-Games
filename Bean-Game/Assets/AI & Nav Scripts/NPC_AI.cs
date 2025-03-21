@@ -64,6 +64,7 @@ public class NPC_AI : MonoBehaviour
 
     private void Update()
     {
+
         if (isPickedUp) return;
 
         if (navMeshAgent == null)
@@ -72,7 +73,6 @@ public class NPC_AI : MonoBehaviour
         }
 
         distanceToSpot = Vector3.Distance(transform.position, GetHidingSpotPosition());
-
     }
 
 
