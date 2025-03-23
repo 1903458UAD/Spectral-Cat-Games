@@ -80,7 +80,7 @@ public class PlayerInteraction : MonoBehaviour
 
        
 
-        }
+        
 
         if (heldObjectLeft == null && heldObjectRight == null)
         {
