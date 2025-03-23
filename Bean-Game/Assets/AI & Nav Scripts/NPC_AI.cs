@@ -67,6 +67,7 @@ public class NPC_AI : MonoBehaviour
     private void Start()
     {
         beanFootsteps = AudioManager.instance.CreateInstance(FMODEvents.instance.beanFootsteps);
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(beanFootsteps, transform, this);
         animator = GetComponent<Animator>();
 
     }
@@ -196,7 +197,9 @@ public class NPC_AI : MonoBehaviour
             beanFootsteps.getPlaybackState(out playbackState);
             if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
             {
+                //beanFootsteps.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.GetComponent<Rigidbody>().velocity));
                 beanFootsteps.start();
+                Debug.Log("Starting Bean Move");
             }
         }
         else 
@@ -275,6 +278,3 @@ public class NPC_AI : MonoBehaviour
         }
     }
 }
-
-
-

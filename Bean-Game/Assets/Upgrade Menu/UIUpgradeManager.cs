@@ -4,6 +4,7 @@ using System.Diagnostics;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using FMODUnity;
 
 public class UIUpgradeManager : MonoBehaviour
 {
@@ -22,6 +23,10 @@ public class UIUpgradeManager : MonoBehaviour
     private Upgrade selectedUpgrade;
 
     [SerializeField] public UpgradeData[] upgrades;
+    [SerializeField] private EventReference upgradePurchaseFX;
+    [SerializeField] private EventReference upgradeFailedFX;
+    [SerializeField] private EventReference upgradeSelectFX;
+
     private void Awake() 
     {
         if (Instance == null) 
@@ -56,13 +61,14 @@ public class UIUpgradeManager : MonoBehaviour
     {
         selectedUpgrade = upgrade;
         UpdateDisplay();
+        AudioManager.instance.PlayOneShot(upgradeSelectFX, this.transform.position);
     }
 
     private void UpdateDisplay()
     {
         upgradeNameText.text = selectedUpgrade.GetUpgradeName();
         upgradeDescriptionText.text = selectedUpgrade.GetUpgradeDescription();
-        upgradeCostText.text = string.Format("£{0}", selectedUpgrade.GetCost());
+        upgradeCostText.text = string.Format("ï¿½{0}", selectedUpgrade.GetCost());
     }
 
 
@@ -80,7 +86,7 @@ public class UIUpgradeManager : MonoBehaviour
 
             Time.timeScale = 0f;
             UIManager.Instance.HideGameplayUI();
-            incomeText.text = string.Format("£{0}", GameManager.Instance.GetIncome());
+            incomeText.text = string.Format("ï¿½{0}", GameManager.Instance.GetIncome());
             upgradeMenu.SetActive(true);
 
             income = GameManager.Instance.GetIncome();
@@ -115,7 +121,12 @@ public class UIUpgradeManager : MonoBehaviour
             if (selectedUpgrade.GetCost() <= income)
             {
                income = selectedUpgrade.ApplyUpgrade(income);
-               incomeText.text = string.Format("£{0}", income);
+               incomeText.text = string.Format("ï¿½{0}", income);
+               AudioManager.instance.PlayOneShot(upgradePurchaseFX, this.transform.position);
+            }
+            else
+            {
+               AudioManager.instance.PlayOneShot(upgradeFailedFX, this.transform.position);
             }
         }
     }

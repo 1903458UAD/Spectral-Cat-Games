@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using FMOD.Studio;
 using FMODUnity;
 using UnityEditor;
 using UnityEngine;
@@ -28,6 +29,9 @@ public class PlayerInteraction : MonoBehaviour
 
     [SerializeField] private EventReference pickupSound;
 
+    [SerializeField] private string parameterName;
+    [SerializeField] private float parameterValue;
+
     private void Start()
     {
         isPickupBothHands = StaticData.dualWieldUpgrade;
@@ -47,12 +51,16 @@ public class PlayerInteraction : MonoBehaviour
     private void Update()
     {
 
+        if (UIManager.Instance.IsGamePaused())
+        {
+            return; //To fix bug where player can interact when paused
+        }
+
         if (cameraTransform == null)
         {
             Debug.LogError("[PlayerInteraction] cameraTransform is not assigned!");
             return;
         }
-
 
         if (heldObjectLeft != null && Input.GetKeyDown(Drop)) 
         {
@@ -72,6 +80,12 @@ public class PlayerInteraction : MonoBehaviour
 
        
 
+        }
+
+        if (heldObjectLeft == null && heldObjectRight == null)
+        {
+            AudioManager.instance.SetAmbianceParameter("Activate Beat", 0);
+        }
 
         if (Input.GetKeyDown(Pickup_AND_Interact))
         {
@@ -98,10 +112,6 @@ public class PlayerInteraction : MonoBehaviour
                 if (interactable != null)
                 {
 
-                    if (heldObjectRight == null || heldObjectLeft == null)
-                    {
-                        AudioManager.instance.PlayOneShot(pickupSound, this.transform.position);
-                    }
 
                     // Pick up object if hand is free
                     if (heldObjectRight == null)
@@ -115,6 +125,12 @@ public class PlayerInteraction : MonoBehaviour
                         interactable.PickUpObject(false);
                         heldObjectLeft = interactable;
                         //return;
+                    }
+
+                    if (heldObjectRight != null || heldObjectLeft != null)
+                    {
+                        AudioManager.instance.PlayOneShot(pickupSound, this.transform.position);
+                        AudioManager.instance.SetAmbianceParameter(parameterName, parameterValue);
                     }
                 }
             }

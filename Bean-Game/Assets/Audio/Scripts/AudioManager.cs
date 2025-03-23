@@ -24,6 +24,7 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         InitializeAmbiance(FMODEvents.instance.ambiance);
+        InitializeAmbiance(FMODEvents.instance.musicFMOD);
     }
 
     private void InitializeAmbiance (EventReference ambianceEventReference)
@@ -41,5 +42,10 @@ public class AudioManager : MonoBehaviour
     {
         EventInstance eventInstance = RuntimeManager.CreateInstance(eventReference);
         return eventInstance;
+    }
+
+    public void SetAmbianceParameter(string parameterName, float parameterValue)
+    {
+        ambianceEventInstance.setParameterByName(parameterName, parameterValue);
     }
 }

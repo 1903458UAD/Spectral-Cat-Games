@@ -3,6 +3,7 @@ using UnityEngine;
 using FMOD.Studio;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
+using UnityEngine.WSA;
 
 
 public class FirstPersonMovement : MonoBehaviour
@@ -31,6 +32,9 @@ public class FirstPersonMovement : MonoBehaviour
     private string verticalInputController = "Vertical Joystick";
 
     private EventInstance playerFootsteps;
+
+    [SerializeField] private string parameterName;
+    [SerializeField] private float parameterValue;
 
     private void Start()
     {
@@ -80,6 +84,7 @@ public class FirstPersonMovement : MonoBehaviour
 
         if (rigidbody.velocity.x > 0.5 || rigidbody.velocity.x < -0.5 ||rigidbody.velocity.z > 0.5|| rigidbody.velocity.z < -0.5)
         {
+            AudioManager.instance.SetAmbianceParameter(parameterName, parameterValue);
             PLAYBACK_STATE playbackState;
             playerFootsteps.getPlaybackState(out playbackState);
             if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
@@ -90,6 +95,7 @@ public class FirstPersonMovement : MonoBehaviour
         else
         {
             playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
+            AudioManager.instance.SetAmbianceParameter("Activate Bass", 0);
         }
     }
 }

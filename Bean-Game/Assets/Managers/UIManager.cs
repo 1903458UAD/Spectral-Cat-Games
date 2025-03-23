@@ -59,6 +59,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private EventReference menuSoundA;
     [SerializeField] private EventReference menuSoundB;
+    [SerializeField] private EventReference startFX;
+    [SerializeField] private EventReference exitFX;
 
     private void Awake() // When instance is being loaded
     {
@@ -134,7 +136,7 @@ public class UIManager : MonoBehaviour
 
     public void StartGame()
     {
-
+        AudioManager.instance.PlayOneShot(startFX, this.transform.position);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
@@ -339,6 +341,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public bool IsGamePaused()
+    {
+        return isPaused;
+    }
+
     public void ResumeGame()
     {
         TogglePause(); // Unpause the game
@@ -439,8 +446,7 @@ public class UIManager : MonoBehaviour
     public void QuitGame()
     {
         Debug.Log("Quit Game button clicked!");
-
-        
+        AudioManager.instance.PlayOneShot(exitFX, this.transform.position);
         Application.Quit(); // Quits the game to desktop 
     }
 }
