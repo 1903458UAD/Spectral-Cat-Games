@@ -100,7 +100,7 @@ public class UpgradeUiManager : MonoBehaviour
     {
         if (StaticData.incomePassed > 0.5)
         {
-            StaticData.trapPurchased = true;
+            StaticData.trapPurchased += 1.0f;
             StaticData.incomePassed -= 0.5f;
         }
 
@@ -111,7 +111,7 @@ public class UpgradeUiManager : MonoBehaviour
     {
         if (StaticData.incomePassed > 0.5)
         {
-            StaticData.cagePurchased = true;
+            StaticData.cagePurchased += 1;
             StaticData.incomePassed -= 0.5f;
         }
 

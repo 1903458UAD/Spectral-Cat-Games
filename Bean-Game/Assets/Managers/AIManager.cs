@@ -673,7 +673,9 @@ public class AIManager : MonoBehaviour
         npc.state = NPC_AI.NPCState.Idle;
 
         if (hidingSpots == null || hidingSpots.Count == 0)
+        {
             return;
+        }
 
         // Build a list of valid hiding spots (same as before).
         List<Hiding_Spots> validSpots = new List<Hiding_Spots>();
@@ -693,6 +695,13 @@ public class AIManager : MonoBehaviour
                     continue;
                 continue;
             }
+
+            if(spot.hidingType == Hiding_Spots.HidingType.Cage)
+            {
+                continue;
+            }
+
+
             validSpots.Add(spot);
         }
 
@@ -997,12 +1006,19 @@ public class AIManager : MonoBehaviour
         Vector3 toPlayer = (playerPosition - hidingSpotPosition).normalized;
         Vector3 idealHidingPos = hidingSpotPosition - (toPlayer * 0.35f);
 
-        if (Vector3.Distance(npc.transform.position, idealHidingPos) > 0.2f)
+
+
+
+        if (Vector3.Distance(npc.transform.position, idealHidingPos) > 0.2f&&!type.IsCage())
         {
             if (NavMesh.SamplePosition(idealHidingPos, out NavMeshHit hit, 1.5f, NavMesh.AllAreas))
             {
                 npc.MoveTo(hit.position);
             }
+        }
+        else if(type.IsCage())
+        {
+            npc.MoveTo(type.transform.position);
         }
 
         //npc.setHiding(true);
@@ -1019,8 +1035,14 @@ public class AIManager : MonoBehaviour
             activeTimers[npc] = Time.time + 10;
         }
 
+        if (!activeTimers.ContainsKey(npc) && type.IsCage())
+        {
+            //beansToSwitch.Add(npc);
+           // activeTimers[npc] = Time.time + 10;
+        }
+
         //limit number of beans that can switch
-        if (!activeTimers.ContainsKey(npc) && beansToSwitch.Count < maxBeansToSwitch && !recentlySwitched.Contains(npc) && !type.IsTrap())
+        if (!activeTimers.ContainsKey(npc) && beansToSwitch.Count < maxBeansToSwitch && !recentlySwitched.Contains(npc) && !type.IsTrap()&&!type.IsCage())
         {
             beansToSwitch.Add(npc);
             activeTimers[npc] = Time.time + Random.Range(hidingDurationMin, hidingDurationMax);

@@ -13,9 +13,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [Header("Scene Elements")]
-    //public List<Hiding_Spots> hidingSpots = new List<Hiding_Spots>();
+
     public List<NavNode> navNodes = new List<NavNode>();
-    //public List<NPC_AI> beans = new List<NPC_AI>();
+
 
     [Header("Bean Management")]
     public GameObject beanPrefab;
@@ -56,10 +56,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        //DontDestroyOnLoad(gameObject);
-        // FindAllHidingSpots();
-        // FindAllNavNodes();
-        //FindAllBeans(); // Might reenable later if needed
+
 
         player = GameObject.FindGameObjectWithTag("Player");
     }
@@ -69,15 +66,11 @@ public class GameManager : MonoBehaviour
 
         InitializeGame();
         Debug.Log("[GameManager] Spawning initial beans...");
-        //FindAllNavNodes();
+
         SpawnInitialBeans();  // Ensure this is called
         GameManager.Instance.SetIncome(StaticData.incomePassed);
         orderQuota = Random.Range(StaticData.lowerQuotaLimit, StaticData.higherQuotaLimit);
-        //player = GameObject.FindGameObjectWithTag("Player");
-        //InitializeGame();
-        //FindAllNavNodes();
-        //LinkAllNavNodes();
-        //DebugNavNodes();
+
     }
 
     private void InitializeGame()
@@ -85,11 +78,7 @@ public class GameManager : MonoBehaviour
         activeCustomers = new List<GameObject>();
         SetIncome(StaticData.incomePassed);
         orderQuota = Random.Range(StaticData.lowerQuotaLimit, StaticData.higherQuotaLimit);
-        //FindAllHidingSpots();
-        //SpawnInitialBeans();
-        //FindAllNavNodes();
-        //activeCustomers = new List<GameObject>();
-        //SetIncome(StaticData.incomePassed);
+
     }
 
     void FindAllNavNodes()
@@ -107,7 +96,6 @@ public class GameManager : MonoBehaviour
             Debug.Log($"[GameManager] Found {navNodes.Count} NavNodes.");
         }
 
-        //Debug.Log("[GameManager] Found navigation nodes: " + navNodes.Count);
     }
 
     private void SpawnInitialBeans()
@@ -150,12 +138,7 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"[GameManager] Spawned bean at {spawnPos}");
         AIManager.Instance.RegisterNPC(beanAI);
-        // Ensure this is working  // AIManager now manages NPCs
 
-        //beans.Add(beanAI);
-
-        //RegisterBean(beanAI);                                        
-        //StartCoroutine(FreezeYAxisTemporarily(beanAI)); //NEW: Freeze Y for a second
     }
 
     private Vector3 GetRandomNavMeshPosition()
