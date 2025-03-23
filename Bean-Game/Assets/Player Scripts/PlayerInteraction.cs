@@ -48,6 +48,11 @@ public class PlayerInteraction : MonoBehaviour
     private void Update()
     {
 
+        if (UIManager.Instance.IsGamePaused())
+        {
+            return; //To fix bug where player can interact when paused
+        }
+
         if (cameraTransform == null)
         {
             Debug.LogError("[PlayerInteraction] cameraTransform is not assigned!");
