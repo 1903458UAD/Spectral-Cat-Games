@@ -12,7 +12,6 @@ public class NPC_AI : MonoBehaviour
 {
     public NavMeshAgent navMeshAgent;
     private Hiding_Spots currentHidingSpot;
-
     public float runRange = 2f;
     private bool isPickedUp = false;
 
@@ -68,7 +67,6 @@ public class NPC_AI : MonoBehaviour
     {
         beanFootsteps = AudioManager.instance.CreateInstance(FMODEvents.instance.beanFootsteps);
         animator = GetComponent<Animator>();
-
     }
 
     private void Awake()

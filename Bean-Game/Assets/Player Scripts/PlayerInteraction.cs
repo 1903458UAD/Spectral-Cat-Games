@@ -1,10 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using FMODUnity;
 using UnityEditor;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -70,8 +68,6 @@ public class PlayerInteraction : MonoBehaviour
 
 
 
-       
-
 
         if (Input.GetKeyDown(Pickup_AND_Interact))
         {
@@ -80,20 +76,13 @@ public class PlayerInteraction : MonoBehaviour
 
             Debug.DrawRay(ray.origin, ray.direction * interactionDistance, Color.red, 0.1f);
 
-            RaycastHit[] hits = Physics.RaycastAll(ray, interactionDistance, ~0); // ~0 = "all layers"
-            foreach (var h in hits)
-            {
-                Debug.Log($"RaycastAll hit: {h.collider.name}, layer = {LayerMask.LayerToName(h.collider.gameObject.layer)}");
-            }
 
             if (Physics.Raycast(ray, out hit, interactionDistance, InteractableObjectLayer))
             {
                 Debug.Log("RayCast Hit a Interactable Object");
                 GameObject hitObject = hit.collider.gameObject;
                 InteractableObject interactable = hitObject.GetComponent<InteractableObject>();
-                
-                
-               
+
 
                 if (interactable != null)
                 {
@@ -122,18 +111,13 @@ public class PlayerInteraction : MonoBehaviour
 
             else if (Physics.Raycast(ray, out hit, interactionDistance, FunctionalObjectLayer)) //-- Prioritise function over pick up
             {
-
-                Debug.Log($"RayCast Hit a functional Object: {hit.collider.name}, layer = {LayerMask.LayerToName(hit.collider.gameObject.layer)}");
-
                 Debug.Log("RayCast Hit a functional Object");
                 GameObject hitObject = hit.collider.gameObject;
                 CoffeeMachine coffeeMachine = hitObject.GetComponent<CoffeeMachine>();
-                
                 CustomerWindow customerWindow = hitObject.GetComponent<CustomerWindow>();
                 Till till = hitObject.GetComponent<Till>();
                 ButtonForCoffeeMachine coffeeButton = hitObject.GetComponent<ButtonForCoffeeMachine>();
                 PowerCutScript powercut = hitObject.GetComponent<PowerCutScript>();
-                Hiding_Spots cage = hitObject.GetComponent<Hiding_Spots>();
 
                 if (powercut != null)
                 {
@@ -171,28 +155,6 @@ public class PlayerInteraction : MonoBehaviour
                     }
 
                 }
-                
-                
-                if (cage != null)
-                {
-                    if (heldObjectRight)
-                    {
-                        heldObjectRight.GetComponent<BeanInteraction>().TryAddToCage(cage);
-                        heldObjectRight = null;
-                        Debug.Log("Called cage (Right hand)");
-                        return;
-                    }
-                    else if (heldObjectLeft)
-                    {
-                        heldObjectLeft.GetComponent<BeanInteraction>().TryAddToCage(cage);
-                        heldObjectLeft = null;
-                        Debug.Log("Called cage (Left hand)");
-                        return;
-
-                    }
-
-                }
-
 
                 if (customerWindow != null)
                 {
@@ -214,10 +176,6 @@ public class PlayerInteraction : MonoBehaviour
                     return;
                 }
 
-            }
-            else
-            {
-                Debug.Log("No hit on FunctionalObjectLayer!");
             }
 
             
