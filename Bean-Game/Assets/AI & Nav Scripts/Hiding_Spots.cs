@@ -5,7 +5,7 @@ using Debug = UnityEngine.Debug;
 
 public class Hiding_Spots : MonoBehaviour
 {
-    public enum HidingType { Normal, Small, Medium, Trap }
+    public enum HidingType { Normal, Small, Medium, Trap , Cage}
 
     [Header("Hiding Spot Settings")]
     public HidingType hidingType = HidingType.Normal;
@@ -79,6 +79,62 @@ public class Hiding_Spots : MonoBehaviour
         {
             return false;
         }
+    }
+
+    public bool IsCage()
+    {
+        if (hidingType == HidingType.Cage)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+    public void AddBean(BeanInteraction bean)
+    {
+       
+        if (occupancy < 3)
+        {
+          
+            bean.gameObject.transform.position = this.transform.position;
+            InteractableObject interactable = bean.GetComponent<InteractableObject>();
+
+
+
+            NPC_AI beanNPC = bean.GetComponent<NPC_AI>();
+
+
+            if (interactable != null)
+            {
+                //fully drop the bean.
+                
+            }
+
+
+            if (beanNPC != null)
+            {
+                // Clear the picked-up state.
+                interactable.ReleaseObject();
+
+                // Set the bean's hiding spot to this cage.
+                beanNPC.SetHidingSpot(this);
+            }
+
+            beanNPC.state = NPC_AI.NPCState.Hiding;
+
+            IncrementOccupancy();
+
+
+        }
+        else
+        {
+            Debug.Log("Cannot add more beans! Cage is full.");
+        }
+
     }
 
     public void SetOccupancy(int count)

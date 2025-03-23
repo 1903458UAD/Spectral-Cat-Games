@@ -12,6 +12,7 @@ public class NPC_AI : MonoBehaviour
 {
     public NavMeshAgent navMeshAgent;
     private Hiding_Spots currentHidingSpot;
+
     public float runRange = 2f;
     private bool isPickedUp = false;
 
@@ -56,6 +57,8 @@ public class NPC_AI : MonoBehaviour
     public enum NPCState { Idle, Hiding, Running }
     public NPCState state = NPCState.Idle;
 
+    public bool inflated = false;
+
 
 
     // [SerializeField] private EventReference beanMoveSound;
@@ -66,6 +69,7 @@ public class NPC_AI : MonoBehaviour
         beanFootsteps = AudioManager.instance.CreateInstance(FMODEvents.instance.beanFootsteps);
         FMODUnity.RuntimeManager.AttachInstanceToGameObject(beanFootsteps, transform, this);
         animator = GetComponent<Animator>();
+
     }
 
     private void Awake()
@@ -77,11 +81,7 @@ public class NPC_AI : MonoBehaviour
     private void Update()
     {
         if (isPickedUp)
-        {
-
-           
-            
-           
+        { 
             return;
         }
 
@@ -89,6 +89,13 @@ public class NPC_AI : MonoBehaviour
         {
             return;
         }
+
+        if(StaticData.inflateBean == true && inflated == false)
+        {
+            transform.localScale *= 1.1f;
+            inflated = true;
+        }
+
 
         distanceToSpot = Vector3.Distance(transform.position, GetHidingSpotPosition());
 
