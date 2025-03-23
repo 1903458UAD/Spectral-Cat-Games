@@ -110,12 +110,12 @@ public class StartMenuUIManager : MonoBehaviour
     public void PlayGame()
     {
         // Reset upgrades when starting new game
-        //foreach (UpgradeData upgrade in upgrades)
-        //{
-        //    upgrade.ResetUpgrade();
-        //    Debug.Log(upgrade.upgradeEnabled);
+        foreach (UpgradeData upgrade in upgrades)
+        {
+            upgrade.ResetUpgrade();
+            Debug.Log(upgrade.upgradeEnabled);
 
-        //}
+        }
 
         Debug.Log("Upgrades reset for new game!");
 

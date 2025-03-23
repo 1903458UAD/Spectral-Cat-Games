@@ -12,10 +12,10 @@ public class InteractableObject : MonoBehaviour
     public float holdHeightOffset = 0.0f; // Offset to position the object at player hand height
     public float holdWidthOffset = 0.5f;//Offset the width (For making duel wielding pick up)
     public float pickupCooldown = 0.1f; // Minimum time before the object can be released
-    public bool canRelease = true; // Determines if we can release the object
+    private bool canRelease = true; // Determines if we can release the object
 
 
-    public bool isHeld = false; // Is the object being held?
+    private bool isHeld = false; // Is the object being held?
     private Rigidbody objectRigidbody; // Rigidbody of the object
     private Transform playerCamera; // Reference to the player's camera
 
@@ -106,7 +106,7 @@ public class InteractableObject : MonoBehaviour
 
             }
         }
-        canRelease = true;
+        canRelease = false;
         Invoke(nameof(EnableRelease), pickupCooldown); // Set the cooldown before allowing release
     }
 
