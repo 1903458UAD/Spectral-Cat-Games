@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
+using FMOD.Studio;
 using FMODUnity;
 using UnityEditor;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -28,10 +27,12 @@ public class PlayerInteraction : MonoBehaviour
 
     [SerializeField] private EventReference pickupSound;
 
+    [SerializeField] private string parameterName;
+    [SerializeField] private float parameterValue;
+
     private void Start()
     {
         isPickupBothHands = StaticData.dualWieldUpgrade;
-        interactionDistance = StaticData.longArm;
 
         Pickup_AND_Interact = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("InteractKey", "Mouse0")); //Player pref saves over game sessions, It is also a new concept for me, Documentation: https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerPrefs.html
         Drop = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("DropKey", "Mouse1"));
@@ -53,7 +54,6 @@ public class PlayerInteraction : MonoBehaviour
             return;
         }
 
-
         if (heldObjectLeft != null && Input.GetKeyDown(Drop)) 
         {
             heldObjectLeft.ReleaseObject(); //Call function to release object being held from left hand
@@ -65,13 +65,12 @@ public class PlayerInteraction : MonoBehaviour
             heldObjectRight.ReleaseObject(); //Call function to release object being held from left hand
             heldObjectRight = null;// Clear reference after release
             return;
-
         }
 
-
-
-       
-
+        if (heldObjectLeft == null && heldObjectRight == null)
+        {
+            AudioManager.instance.SetAmbianceParameter("Activate Beat", 0);
+        }
 
         if (Input.GetKeyDown(Pickup_AND_Interact))
         {
@@ -80,28 +79,17 @@ public class PlayerInteraction : MonoBehaviour
 
             Debug.DrawRay(ray.origin, ray.direction * interactionDistance, Color.red, 0.1f);
 
-            RaycastHit[] hits = Physics.RaycastAll(ray, interactionDistance, ~0); // ~0 = "all layers"
-            foreach (var h in hits)
-            {
-                Debug.Log($"RaycastAll hit: {h.collider.name}, layer = {LayerMask.LayerToName(h.collider.gameObject.layer)}");
-            }
 
             if (Physics.Raycast(ray, out hit, interactionDistance, InteractableObjectLayer))
             {
                 Debug.Log("RayCast Hit a Interactable Object");
                 GameObject hitObject = hit.collider.gameObject;
                 InteractableObject interactable = hitObject.GetComponent<InteractableObject>();
-                
-                
-               
+
 
                 if (interactable != null)
                 {
 
-                    if (heldObjectRight == null || heldObjectLeft == null)
-                    {
-                        AudioManager.instance.PlayOneShot(pickupSound, this.transform.position);
-                    }
 
                     // Pick up object if hand is free
                     if (heldObjectRight == null)
@@ -116,24 +104,25 @@ public class PlayerInteraction : MonoBehaviour
                         heldObjectLeft = interactable;
                         //return;
                     }
+
+                    if (heldObjectRight != null || heldObjectLeft != null)
+                    {
+                        AudioManager.instance.PlayOneShot(pickupSound, this.transform.position);
+                        AudioManager.instance.SetAmbianceParameter(parameterName, parameterValue);
+                    }
                 }
             }
             
 
             else if (Physics.Raycast(ray, out hit, interactionDistance, FunctionalObjectLayer)) //-- Prioritise function over pick up
             {
-
-                Debug.Log($"RayCast Hit a functional Object: {hit.collider.name}, layer = {LayerMask.LayerToName(hit.collider.gameObject.layer)}");
-
                 Debug.Log("RayCast Hit a functional Object");
                 GameObject hitObject = hit.collider.gameObject;
                 CoffeeMachine coffeeMachine = hitObject.GetComponent<CoffeeMachine>();
-                
                 CustomerWindow customerWindow = hitObject.GetComponent<CustomerWindow>();
                 Till till = hitObject.GetComponent<Till>();
                 ButtonForCoffeeMachine coffeeButton = hitObject.GetComponent<ButtonForCoffeeMachine>();
                 PowerCutScript powercut = hitObject.GetComponent<PowerCutScript>();
-                Hiding_Spots cage = hitObject.GetComponent<Hiding_Spots>();
 
                 if (powercut != null)
                 {
@@ -171,28 +160,6 @@ public class PlayerInteraction : MonoBehaviour
                     }
 
                 }
-                
-                
-                if (cage != null)
-                {
-                    if (heldObjectRight)
-                    {
-                        heldObjectRight.GetComponent<BeanInteraction>().TryAddToCage(cage);
-                        heldObjectRight = null;
-                        Debug.Log("Called cage (Right hand)");
-                        return;
-                    }
-                    else if (heldObjectLeft)
-                    {
-                        heldObjectLeft.GetComponent<BeanInteraction>().TryAddToCage(cage);
-                        heldObjectLeft = null;
-                        Debug.Log("Called cage (Left hand)");
-                        return;
-
-                    }
-
-                }
-
 
                 if (customerWindow != null)
                 {
@@ -214,10 +181,6 @@ public class PlayerInteraction : MonoBehaviour
                     return;
                 }
 
-            }
-            else
-            {
-                Debug.Log("No hit on FunctionalObjectLayer!");
             }
 
             
