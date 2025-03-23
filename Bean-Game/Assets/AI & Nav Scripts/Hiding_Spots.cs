@@ -15,7 +15,7 @@ public class Hiding_Spots : MonoBehaviour
 
     public int Occupancy => occupancy; // Read-only property to get current occupancy
 
-    
+   
     public void ReserveSpot()
     {
         if (occupancy < MaxOccupancy)
