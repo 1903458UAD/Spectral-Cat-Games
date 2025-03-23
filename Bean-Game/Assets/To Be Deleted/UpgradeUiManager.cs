@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SocialPlatforms;
+using System.Diagnostics;
+using Debug = UnityEngine.Debug;
 
 public class UpgradeUiManager : MonoBehaviour
 {
@@ -53,6 +55,74 @@ public class UpgradeUiManager : MonoBehaviour
         if (StaticData.incomePassed > 0.5)
         { 
             StaticData.speedPassed += 0.5f;
+            StaticData.incomePassed -= 0.5f;
+        }
+
+        Debug.Log("Click!");
+    }
+
+    public void TipUp()
+    {
+        if (StaticData.incomePassed > 0.5)
+        {
+            StaticData.tipAmount += 0.5f;
+            StaticData.incomePassed -= 0.5f;
+        }
+
+        Debug.Log("Click!");
+    }
+
+    public void longerArms()
+    {
+        if (StaticData.incomePassed > 0.5)
+        {
+            StaticData.longArm += 0.5f;
+            StaticData.incomePassed -= 0.5f;
+        }
+
+        Debug.Log("Click!");
+    }
+
+    public void BeanSpotted()
+    {
+        if (StaticData.incomePassed > 0.5)
+        {
+            StaticData.alert = true;
+            StaticData.alertSize *= 0.1f; 
+            StaticData.incomePassed -= 0.5f;
+        }
+
+        Debug.Log("Click!");
+    }
+
+
+    public void TrapPurchased()
+    {
+        if (StaticData.incomePassed > 0.5)
+        {
+            StaticData.trapPurchased = true;
+            StaticData.incomePassed -= 0.5f;
+        }
+
+        Debug.Log("Click!");
+    }
+
+    public void cagePurchased()
+    {
+        if (StaticData.incomePassed > 0.5)
+        {
+            StaticData.cagePurchased = true;
+            StaticData.incomePassed -= 0.5f;
+        }
+
+        Debug.Log("Click!");
+    }
+
+    public void InflateBean()
+    {
+        if (StaticData.incomePassed > 0.5)
+        {
+            StaticData.inflateBean = true;
             StaticData.incomePassed -= 0.5f;
         }
 

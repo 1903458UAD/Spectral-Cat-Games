@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -20,6 +21,7 @@ public class UIUpgradeManager : MonoBehaviour
 
     private Upgrade selectedUpgrade;
 
+    [SerializeField] public UpgradeData[] upgrades;
     private void Awake() 
     {
         if (Instance == null) 
@@ -36,7 +38,17 @@ public class UIUpgradeManager : MonoBehaviour
     {
         if (upgradeMenu != null)
         {
-            upgradeMenu.SetActive(false); 
+
+
+            upgradeMenu.SetActive(false);
+
+
+            foreach (UpgradeData upgrade in upgrades)
+            {
+                upgrade.ResetUpgrade();
+                //Debug.Log(upgrade.upgradeEnabled);
+
+            }
         }
     }
 

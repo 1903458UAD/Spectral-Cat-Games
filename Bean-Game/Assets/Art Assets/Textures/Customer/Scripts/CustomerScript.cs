@@ -23,7 +23,7 @@ public class CustomerScript : MonoBehaviour
     private bool drive;
 
     private float threshold;
-    private float tipFactor = 50;
+    private float tipFactor = StaticData.tipAmount;
 
     private PlayerHealth playerHealth;
 
@@ -154,6 +154,8 @@ public class CustomerScript : MonoBehaviour
 
         if (initialTimer - patienceTimer <= tipTime)
         {
+            tipFactor = StaticData.tipAmount;
+
             income += tipFactor;
         }
 

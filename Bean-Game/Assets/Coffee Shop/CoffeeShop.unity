@@ -8632,6 +8632,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 1.4259
       objectReference: {fileID: 0}
+    - target: {fileID: 7173239563117731739, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
+      propertyPath: jump
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7173418576952000797, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
       propertyPath: m_Height
       value: 1.8
@@ -8647,7 +8651,7 @@ PrefabInstance:
     - target: {fileID: 8048286646647513308, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
       propertyPath: upgradeData
       value: 
-      objectReference: {fileID: 11400000, guid: 6832acb0dc7d6c542a967bd20ae735a3, type: 2}
+      objectReference: {fileID: 11400000, guid: a9a46982ab2035d469756031c68dfd14, type: 2}
     - target: {fileID: 8428564656408741079, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -11380,7 +11384,13 @@ MonoBehaviour:
   upgrades:
   - {fileID: 11400000, guid: 63fab11f55843194583087004f541565, type: 2}
   - {fileID: 11400000, guid: 5affdde0e0dbb0e41984e9702e45e538, type: 2}
+  - {fileID: 11400000, guid: a9a46982ab2035d469756031c68dfd14, type: 2}
+  - {fileID: 11400000, guid: 710bfb30d2bd1b641a2a09ab3b855b7b, type: 2}
+  - {fileID: 11400000, guid: 1950012f4918e514680a3e95258d8cd2, type: 2}
   - {fileID: 11400000, guid: 6832acb0dc7d6c542a967bd20ae735a3, type: 2}
+  - {fileID: 11400000, guid: fae89d385ab6ce84da345601dd5f06f0, type: 2}
+  - {fileID: 11400000, guid: 986d7d7e98f0c6044afba1f27f7af019, type: 2}
+  - {fileID: 11400000, guid: e8631f8d59c2c754ca6ce2e15226d616, type: 2}
 --- !u!1 &1074375569 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -42972264841949181, guid: 00dda704c19dc7742992a75d8be4cdb9, type: 3}
@@ -14677,7 +14687,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22ab61b0dbbd0064fb4e01f49f15d108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upgradeData: {fileID: 11400000, guid: 6832acb0dc7d6c542a967bd20ae735a3, type: 2}
+  upgradeData: {fileID: 11400000, guid: a9a46982ab2035d469756031c68dfd14, type: 2}
 --- !u!114 &1402230535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14719,7 +14729,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22ab61b0dbbd0064fb4e01f49f15d108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upgradeData: {fileID: 11400000, guid: 6832acb0dc7d6c542a967bd20ae735a3, type: 2}
+  upgradeData: {fileID: 11400000, guid: a9a46982ab2035d469756031c68dfd14, type: 2}
 --- !u!114 &1402230537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17964,6 +17974,11 @@ MonoBehaviour:
   upgradeDescriptionText: {fileID: 1328239812}
   upgradeCostText: {fileID: 567717928}
   cameraScript: {fileID: 1651408175}
+  upgrades:
+  - {fileID: 11400000, guid: 5affdde0e0dbb0e41984e9702e45e538, type: 2}
+  - {fileID: 11400000, guid: 63fab11f55843194583087004f541565, type: 2}
+  - {fileID: 11400000, guid: a9a46982ab2035d469756031c68dfd14, type: 2}
+  - {fileID: 11400000, guid: 710bfb30d2bd1b641a2a09ab3b855b7b, type: 2}
 --- !u!4 &1701829780
 Transform:
   m_ObjectHideFlags: 0
