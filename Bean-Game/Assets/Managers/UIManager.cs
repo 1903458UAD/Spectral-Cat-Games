@@ -341,6 +341,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public bool IsGamePaused()
+    {
+        return isPaused;
+    }
+
     public void ResumeGame()
     {
         TogglePause(); // Unpause the game

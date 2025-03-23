@@ -29,17 +29,29 @@ public class CoffeeMachine : MonoBehaviour
     public Transform spawnPoint;
 
     private int currentBeans = 0;
+    private bool isCoffeeMaking = false;
+
 
     public void AddBean(BeanInteraction bean)
     {
-        Debug.Log($"[CoffeeMachine] Instance ID: {this.GetInstanceID()}, Beans: {currentBeans}");
+        //Debug.Log($"[CoffeeMachine] Instance ID: {this.GetInstanceID()}, Beans: {currentBeans}");
+
+        if (isCoffeeMaking)
+        {
+            return; // Needed to fix bug with placing bean while machine active
+        }
 
         if (currentBeans < 3)
         {
             currentBeans++;
             Debug.Log($"[CoffeeMachine] Beans added: {currentBeans}");
             Destroy(bean.gameObject); // Destroy the bean after adding it to the machine
-            GameObject hopperBean = Instantiate(hopperBeanPrefab, hopperSpawn.transform.position, Quaternion.identity);
+
+            if (!isCoffeeMaking)
+            {
+                Instantiate(hopperBeanPrefab, hopperSpawn.transform.position, Quaternion.identity);
+            }
+            //GameObject hopperBean = Instantiate(hopperBeanPrefab, hopperSpawn.transform.position, Quaternion.identity);
         }
         else
         {
@@ -59,7 +71,7 @@ public bool CanActivateMachine()
 {
        Debug.Log($"[CoffeeMachine] Instance ID: {this.GetInstanceID()}, Beans: {currentBeans}");
 
-        if (currentBeans >= 1)
+        if (currentBeans >= 1 && !isCoffeeMaking)
         {
             
             return true;
@@ -77,13 +89,23 @@ private AudioClip playRandom()
 
 public void ActivateMachine()
 {
-    if (CanActivateMachine() == true)
+
+
+        if (isCoffeeMaking)
+        {
+           
+            return; //Needed to fix bug with placing bean while machine active
+        }
+        if (CanActivateMachine() == true)
     {
+        isCoffeeMaking = true;
         Debug.Log("Enough beans! Starting coffee creation...");
         AudioManager.instance.PlayOneShot(buttonSound, this.transform.position);
         AudioManager.instance.PlayOneShot(coffeeMachineSound, this.transform.position);
         hopperBeansArray = GameObject.FindGameObjectsWithTag("Respawn");
         audioSource.PlayOneShot(playRandom(), volume);
+
+
         foreach(GameObject hopperBeans in hopperBeansArray)
         {
             Destroy(hopperBeans);
@@ -131,6 +153,6 @@ public void ActivateMachine()
            // Debug.LogError("[CoffeeMachine] No coffee prefab assigned or incorrect bean count!");
         }
         buttonLid.transform.rotation = lidOpen;
-        
+        isCoffeeMaking = false;
     }
 }
