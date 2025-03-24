@@ -101,6 +101,7 @@ public class UpgradeUiManager : MonoBehaviour
         if (StaticData.incomePassed > 0.5)
         {
             StaticData.trapPurchased += 1.0f;
+            StaticData.trapCheck = true;
             StaticData.incomePassed -= 0.5f;
         }
 

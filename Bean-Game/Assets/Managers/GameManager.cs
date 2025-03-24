@@ -10,6 +10,9 @@ using Debug = UnityEngine.Debug;
 
 public class GameManager : MonoBehaviour
 {
+
+    public GameObject trapHidingSpotPrefab;
+
     public static GameManager Instance { get; private set; }
 
     [Header("Scene Elements")]
@@ -37,6 +40,8 @@ public class GameManager : MonoBehaviour
     [Header("Income Management")]
     private float income = 0f;
     private GameObject player;
+
+    private List<Hiding_Spots> hidingSpots = new List<Hiding_Spots>();
 
 
     //private Dictionary<NPC_AI, Hiding_Spots> npcHidingAssignments = new Dictionary<NPC_AI, Hiding_Spots>();
@@ -72,6 +77,18 @@ public class GameManager : MonoBehaviour
         orderQuota = Random.Range(StaticData.lowerQuotaLimit, StaticData.higherQuotaLimit);
 
     }
+
+    private void Update()
+    {
+        if(StaticData.trapCheck == true)
+        {
+            SpawnTrapHidingSpot();
+
+
+            StaticData.trapCheck = false;
+        }
+    }
+
 
     private void InitializeGame()
     {
@@ -234,6 +251,46 @@ public class GameManager : MonoBehaviour
 
         SceneManager.LoadScene(scenenum);
     }
+
+    private void SpawnTrapHidingSpot()
+    {
+        Vector3 playerPos = GetPlayerPosition();
+
+        Vector3 spawnPos = GetNavMeshPositionNear(playerPos);
+
+        GameObject trapGO = Instantiate(trapHidingSpotPrefab, spawnPos, Quaternion.identity);
+
+        Hiding_Spots trapSpot = trapGO.GetComponent<Hiding_Spots>();
+
+        if (trapSpot != null)
+        {
+            trapSpot.hidingType = Hiding_Spots.HidingType.Trap;
+
+            hidingSpots.Add(trapSpot);
+            Debug.Log($"[GameManager] Trap hiding spot spawned at {spawnPos}");
+
+        }
+    }
+
+    private Vector3 GetNavMeshPositionNear(Vector3 origin)
+    {
+        UnityEngine.AI.NavMeshHit hit;
+        
+
+        Vector3 randomDirection = Random.insideUnitSphere * 3f;
+        randomDirection += origin;
+        
+        
+        if (UnityEngine.AI.NavMesh.SamplePosition(randomDirection, out hit, 3f, UnityEngine.AI.NavMesh.AllAreas))
+        {
+            return hit.position;
+        }
+        
+
+        return origin;
+    }
+
+
 
     void DebugNavNodes()
     {
