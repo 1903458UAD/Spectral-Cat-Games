@@ -2295,7 +2295,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1689197352627076126, guid: 00dda704c19dc7742992a75d8be4cdb9, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -1689197352627076126, guid: 00dda704c19dc7742992a75d8be4cdb9, type: 3}
       propertyPath: m_IsActive
@@ -2639,7 +2639,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 450162a571c46894f82e247937e390ee, type: 2}
     - target: {fileID: 8374631829976021591, guid: 00dda704c19dc7742992a75d8be4cdb9, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8374631829976021591, guid: 00dda704c19dc7742992a75d8be4cdb9, type: 3}
       propertyPath: m_IsActive
@@ -8501,6 +8501,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 690716060}
     m_Modifications:
+    - target: {fileID: 1819884031208584964, guid: f2313b9fe74214748bbd73c8ada30063, type: 3}
+      propertyPath: m_Width
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713477290570924539, guid: f2313b9fe74214748bbd73c8ada30063, type: 3}
+      propertyPath: m_Width
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2745682642595347223, guid: f2313b9fe74214748bbd73c8ada30063, type: 3}
       propertyPath: m_Name
       value: Static_Bookshelf
@@ -8548,6 +8556,14 @@ PrefabInstance:
     - target: {fileID: 3265478600616944045, guid: f2313b9fe74214748bbd73c8ada30063, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8494353753806280960, guid: f2313b9fe74214748bbd73c8ada30063, type: 3}
+      propertyPath: m_Width
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8692458862301654965, guid: f2313b9fe74214748bbd73c8ada30063, type: 3}
+      propertyPath: m_Width
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8841,6 +8857,14 @@ PrefabInstance:
     - target: {fileID: 8024094138167117876, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
       propertyPath: m_Name
       value: First Person Controller
+      objectReference: {fileID: 0}
+    - target: {fileID: 8048286646647513308, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
+      propertyPath: speed
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8048286646647513308, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
+      propertyPath: canRun
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8048286646647513308, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
       propertyPath: upgradeData
