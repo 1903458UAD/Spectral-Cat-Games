@@ -21,6 +21,7 @@ public class DeveloperCheats : MonoBehaviour
 	//Object references
 	[SerializeField] private GameObject lights;
 	private GameObject customer;
+	[SerializeField] private GameObject cheatSheet;
 
 	#endregion
 
@@ -29,6 +30,8 @@ public class DeveloperCheats : MonoBehaviour
 		addCashKey = KeyCode.Alpha9;
 		fillOrderKey = KeyCode.Alpha8;
 		togglePowerKey = KeyCode.Alpha7;
+		cheatSheet.SetActive(false);
+		cheatsEnabled = false;
 	}
 
 	private void addCash()
@@ -59,6 +62,8 @@ public class DeveloperCheats : MonoBehaviour
 	{
 		if(cheatsEnabled)
 		{
+			cheatSheet.SetActive(true);
+
 			if (Input.GetKeyDown(addCashKey))
 			{
 				addCash();
@@ -73,6 +78,10 @@ public class DeveloperCheats : MonoBehaviour
 			{
 				togglePower();
 			}
+		}
+		else 
+		{
+			cheatSheet.SetActive(false);
 		}
 	}
 }

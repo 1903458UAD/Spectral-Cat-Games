@@ -105,7 +105,6 @@ public class UIManager : MonoBehaviour
             Debug.LogError("IntroScript not found in the scene!");
         }
 
-
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
@@ -123,6 +122,8 @@ public class UIManager : MonoBehaviour
 
         // Add listener to toggle button
         developerCheatsToggle.onValueChanged.AddListener(ToggleDeveloperCheats);
+        
+
         if (customerOrderText == null)
         {
             Debug.LogError("[UIManager] Customer Order Text is not assigned in the Inspector!");
@@ -142,8 +143,6 @@ public class UIManager : MonoBehaviour
 
         if (introScript != null)
         {
-
-
             mainMenuUI.SetActive(false); // Hide the main menu
             introScript.PlayIntro(); // Start the cutscene
         }
@@ -157,7 +156,6 @@ public class UIManager : MonoBehaviour
     {
         developerCheats.cheatsEnabled = isEnabled;
         Debug.Log($"[UIManager] Developer Cheats state updated: {developerCheats.cheatsEnabled}");
-
     }
 
     public void Rebinding(string action)
