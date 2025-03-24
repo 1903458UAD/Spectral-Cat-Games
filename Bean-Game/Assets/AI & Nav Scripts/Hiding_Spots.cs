@@ -69,6 +69,8 @@ public class Hiding_Spots : MonoBehaviour
         }
     }
 
+
+
     public bool IsTrap()
     {
         if(hidingType == HidingType.Trap)

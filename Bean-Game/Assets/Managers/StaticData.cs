@@ -20,7 +20,7 @@ public class StaticData : MonoBehaviour
 
     public static bool dualWieldUpgrade = false;
     public static bool alert = false;
-    
+    public static bool trapCheck = false;
 
     public static bool inflateBean = false;
 }
