@@ -11,6 +11,7 @@ public class CustomerWindow : MonoBehaviour
 
     [SerializeField] private EventReference correctOrderFX;
     [SerializeField] private EventReference wrongOrderFX;
+    [SerializeField] private EventReference moneyGetFX;
 
     public void GiveCoffeeToWindow(CoffeeInteraction coffee)
     {
@@ -36,6 +37,7 @@ public class CustomerWindow : MonoBehaviour
                     {
                         CustomerTakesCoffee();
                         AudioManager.instance.PlayOneShot(correctOrderFX, this.transform.position);
+                        AudioManager.instance.PlayOneShot(moneyGetFX, this.transform.position);
                         Debug.Log("Coffee Given to window: Correct order");
                     }
                     else

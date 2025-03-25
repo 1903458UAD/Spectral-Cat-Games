@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using FMODUnity;
 
 public class CustomerScript : MonoBehaviour
 {
@@ -28,6 +29,8 @@ public class CustomerScript : MonoBehaviour
     private PlayerHealth playerHealth;
 
     public int requiredBeans;
+
+    [SerializeField] private EventReference driveUpFX;
 
     public void SetIsOrderedTrue()
     {
@@ -80,6 +83,7 @@ public class CustomerScript : MonoBehaviour
         requiredBeans = UnityEngine.Random.Range(1, 4);
        // Debug.Log($"Customer wants a coffee with {requiredBeans} beans.");
         UIManager.Instance.UpdateCustomerOrder(requiredBeans);
+        AudioManager.instance.PlayOneShot(driveUpFX, this.transform.position);
     }
 
     void Update()
@@ -177,6 +181,8 @@ public class CustomerScript : MonoBehaviour
         }
 
         drive = true;
+        AudioManager.instance.PlayOneShot(driveUpFX, this.transform.position);
+
     }
 
     void DisplayTime()

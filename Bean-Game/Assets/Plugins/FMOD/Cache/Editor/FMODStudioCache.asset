@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: Banks/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638781762320000000
+  lastModified: 638785041940000000
   FileSizes: []
   Exists: 1
 --- !u!114 &-8835242747485883243
@@ -306,7 +306,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 0
+  Length: 2380
 --- !u!114 &-4947290428873047856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -592,12 +592,13 @@ MonoBehaviour:
   - {fileID: 7624261728247412960}
   - {fileID: -2217590469546616363}
   - {fileID: -5876213391622187580}
+  - {fileID: 9170405256370410817}
   EditorParameters: []
   MasterBanks:
   - {fileID: -8860318759763364349}
   StringsBanks:
   - {fileID: 2989309110241945906}
-  cacheTime: 638784187060000000
+  cacheTime: 638785046060000000
   cacheVersion: 131622
 --- !u!114 &555584066494134003
 MonoBehaviour:
@@ -695,10 +696,10 @@ MonoBehaviour:
   Path: Banks/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638781762320000000
+  lastModified: 638785041940000000
   FileSizes:
   - Name: 
-    Value: 2660
+    Value: 2700
   Exists: 1
 --- !u!114 &3033862013831128854
 MonoBehaviour:
@@ -758,7 +759,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 0
+  Length: 3500
 --- !u!114 &3313930488370565777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -870,7 +871,7 @@ MonoBehaviour:
   Path: Banks/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638784187060000000
+  lastModified: 638785046060000000
   FileSizes: []
   Exists: 1
 --- !u!114 &5938261025919519424
@@ -1174,6 +1175,33 @@ MonoBehaviour:
     Data2: 1101946837
     Data3: -828187986
     Data4: -873500025
+  Banks:
+  - {fileID: 5106001434441971322}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &9170405256370410817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Car Arrive
+  m_EditorClassIdentifier: 
+  Path: event:/Car Arrive
+  Guid:
+    Data1: -459172524
+    Data2: 1249498791
+    Data3: -153883488
+    Data4: 1628201255
   Banks:
   - {fileID: 5106001434441971322}
   IsStream: 0
