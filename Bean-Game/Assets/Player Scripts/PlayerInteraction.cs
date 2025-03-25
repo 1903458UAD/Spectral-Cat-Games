@@ -16,8 +16,8 @@ public class PlayerInteraction : MonoBehaviour
     public LayerMask FunctionalObjectLayer;
     public Transform cameraTransform;
 
-    private InteractableObject heldObjectRight; // Right-hand object
-    private InteractableObject heldObjectLeft;  // Left-hand object
+    public InteractableObject heldObjectRight; // Right-hand object
+    public InteractableObject heldObjectLeft;  // Left-hand object
     private bool isPickupBothHands; // Enable dual wielding
 
     private KeyCode Pickup_AND_Interact;// = KeyCode.Joystick1Button5; // Pickup keycode - used for responding to controller input - set to right bumper
@@ -150,6 +150,42 @@ public class PlayerInteraction : MonoBehaviour
                 ButtonForCoffeeMachine coffeeButton = hitObject.GetComponent<ButtonForCoffeeMachine>();
                 PowerCutScript powercut = hitObject.GetComponent<PowerCutScript>();
                 Hiding_Spots cage = hitObject.GetComponent<Hiding_Spots>();
+
+                CoffeeInteraction coffee = null;
+                   
+                if (heldObjectRight != null)
+                {
+                    coffee = heldObjectRight.GetComponent<CoffeeInteraction>();
+                }
+
+                if (coffee == null && heldObjectLeft != null)
+                {
+                    coffee = heldObjectLeft?.GetComponent<CoffeeInteraction>();
+                }
+
+                if (coffee != null)
+                {
+                    if (hitObject.CompareTag("SyrupPeanutButter"))
+                    {
+                        coffee.AddSyrup("Peanut Butter");
+                        return;
+                    }
+                    else if (hitObject.CompareTag("SyrupVanilla"))
+                    {
+                        coffee.AddSyrup("Vanilla");
+                        return;
+                    }
+                    else if (hitObject.CompareTag("SyrupIcedTea"))
+                    {
+                        coffee.AddSyrup("Iced Tea");
+                        return;
+                    }
+                    else if (hitObject.CompareTag("SyrupCaramel"))
+                    {
+                        coffee.AddSyrup("Caramel");
+                        return;
+                    }
+                }
 
                 if (powercut != null)
                 {
