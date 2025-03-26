@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using FMODUnity;
 
 public class CustomerScript : MonoBehaviour
 {
@@ -30,6 +31,8 @@ public class CustomerScript : MonoBehaviour
     public int requiredBeans;
     public string requiredSyrup;
 
+    [SerializeField] private EventReference driveUpFX;
+
     public void SetIsOrderedTrue()
     {
         orderDelivered = true;
@@ -50,6 +53,7 @@ public class CustomerScript : MonoBehaviour
         drive = true;
         orderDelivered = false;
         nextLocation = driveThrough;
+        AudioManager.instance.PlayOneShot(driveUpFX, this.transform.position);
 
         int rand = UnityEngine.Random.Range(0, 3);
 
@@ -183,6 +187,7 @@ public class CustomerScript : MonoBehaviour
         }
 
         drive = true;
+        AudioManager.instance.PlayOneShot(driveUpFX, this.transform.position);
     }
 
     void DisplayTime()
