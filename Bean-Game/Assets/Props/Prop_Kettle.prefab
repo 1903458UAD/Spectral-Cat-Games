@@ -54,10 +54,41 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: b6fe5b23237aed54ca502948b93e299c, type: 2}
     - target: {fileID: 919132149155446097, guid: 0a5c4f058cd7abd4cacf10e3f800e3a1, type: 3}
       propertyPath: m_Name
-      value: SM_kettle
+      value: Prop_Kettle
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0a5c4f058cd7abd4cacf10e3f800e3a1, type: 3}
+      propertyPath: m_TagString
+      value: Mug
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0a5c4f058cd7abd4cacf10e3f800e3a1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -7085195705474133078}
   m_SourcePrefab: {fileID: 100100000, guid: 0a5c4f058cd7abd4cacf10e3f800e3a1, type: 3}
+--- !u!1 &8011816295852376221 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0a5c4f058cd7abd4cacf10e3f800e3a1, type: 3}
+  m_PrefabInstance: {fileID: 7200932174554119628}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-7085195705474133078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8011816295852376221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81cf38de5c50f064099a140019c3b8f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallFX:
+    Guid:
+      Data1: 1966458976
+      Data2: 1221463900
+      Data3: 100962988
+      Data4: -75686875
+    Path: event:/Mug Fall

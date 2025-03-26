@@ -5,11 +5,12 @@ using FMODUnity;
 
 public class DroppedAssetScript : MonoBehaviour
 {
-    [SerializeField] private EventReference bookFallFX;
+    [SerializeField] private EventReference fallFX;
+    /*[SerializeField] private EventReference bookFallFX;
     [SerializeField] private EventReference mugFallFX;
     [SerializeField] private EventReference chairFallFX;
     [SerializeField] private EventReference cupFallFX;
-    [SerializeField] private EventReference bottleFallFX;
+    [SerializeField] private EventReference bottleFallFX;*/
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +26,12 @@ public class DroppedAssetScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (gameObject.CompareTag("Book"))
+        if (collision.relativeVelocity.magnitude > 1)
+        {
+            AudioManager.instance.PlayOneShot(fallFX, this.transform.position);
+        }
+
+        /*if (gameObject.CompareTag("Book"))
         {
             if (collision.relativeVelocity.magnitude > 1)
             {
@@ -63,6 +69,6 @@ public class DroppedAssetScript : MonoBehaviour
             {
                 AudioManager.instance.PlayOneShot(bottleFallFX, this.transform.position);
             }
-        }
+        }*/
     }
 }
