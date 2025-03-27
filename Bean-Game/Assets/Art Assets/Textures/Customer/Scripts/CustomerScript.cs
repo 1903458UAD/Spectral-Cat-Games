@@ -39,6 +39,7 @@ public class CustomerScript : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+
         playerHealth = player?.GetComponent<PlayerHealth>();
         timerDisplay.text = null;
 
@@ -59,24 +60,26 @@ public class CustomerScript : MonoBehaviour
                 threshold = 0.10f;
                 patienceTimer = 120;
                 initialTimer = 120;
-                tipTime = 55;
+                tipTime = 50;
                 break;
             case 1:
                 threshold = 0.25f;
                 patienceTimer = 90;
                 initialTimer = 90;
-                tipTime = 45;
+                tipTime = 40;
                 break;
             case 2:
                 threshold = 0.50f;
                 patienceTimer = 60;
                 initialTimer = 60;
-                tipTime = 30;
+                tipTime = 20;
                 break;
         }
 
         patienceTimer = patienceTimer * upgradeData.internalBaseValue;
         initialTimer = initialTimer * upgradeData.internalBaseValue;
+
+        UIManager.Instance.GetStartTime(initialTimer);
 
         requiredBeans = UnityEngine.Random.Range(1, 4);
 
@@ -97,11 +100,13 @@ public class CustomerScript : MonoBehaviour
 
         else if (!orderDelivered)
         {
+            UIManager.Instance.ShowPatienceBar();
             Wait();
         }
         else
         {
             Pay();
+            UIManager.Instance.HidePatienceBar();
         }
     }
 
@@ -127,6 +132,21 @@ public class CustomerScript : MonoBehaviour
         if (patienceTimer > 0)
         {
             patienceTimer -= Time.deltaTime;
+
+
+                UIManager.Instance.GetCurrentTime(patienceTimer);
+
+                if (initialTimer - patienceTimer > tipTime)
+                { 
+                    UIManager.Instance.setMoodlet("bored");
+                }
+
+                if (patienceTimer < initialTimer * 0.30)
+                {
+                    UIManager.Instance.setMoodlet("angry");
+                }
+            
+
             DisplayTime();
         }
 

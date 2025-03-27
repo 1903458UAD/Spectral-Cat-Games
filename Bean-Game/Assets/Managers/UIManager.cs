@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using FMODUnity;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class UIManager : MonoBehaviour
 {
@@ -62,6 +63,20 @@ public class UIManager : MonoBehaviour
     [SerializeField] private EventReference startFX;
     [SerializeField] private EventReference exitFX;
 
+    [Header("Customer Patience Bar")]
+    public Slider slider;
+
+    public Sprite happy;
+    public Sprite bored;
+    public Sprite angry;
+
+    public GameObject customerMoodlet;
+    public GameObject customerPatienceBar;
+    SpriteRenderer sprite;
+
+    public GameObject IncomeIcon;
+
+
     private void Awake() // When instance is being loaded
     {
         if (Instance == null) //If no instance of the UIManager exists
@@ -88,11 +103,15 @@ public class UIManager : MonoBehaviour
         HideGameOverScreen(); //Set the game over screen is hidden
         SetCrosshairDefault(); //Set the crosshair to default
         HideDayEndScreen();
+        HidePatienceBar();
 
         interactKeyText.text = PlayerPrefs.GetString("InteractKey", "Mouse0");
         dropKeyText.text = PlayerPrefs.GetString("DropKey", "Mouse1");
+        sprite = customerMoodlet.GetComponent<SpriteRenderer>();
 
         developerCheats = FindObjectOfType<DeveloperCheats>();
+
+        IncomeIcon.SetActive(false);
 
         // Show main menu at the start
         mainMenuUI.SetActive(true);
@@ -140,6 +159,7 @@ public class UIManager : MonoBehaviour
         AudioManager.instance.PlayOneShot(startFX, this.transform.position);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        IncomeIcon.SetActive(true);
 
         if (introScript != null)
         {
@@ -447,4 +467,50 @@ public class UIManager : MonoBehaviour
         AudioManager.instance.PlayOneShot(exitFX, this.transform.position);
         Application.Quit(); // Quits the game to desktop 
     }
+
+    public void GetStartTime(float startTime)
+    {
+        slider.maxValue = startTime;
+        slider.value = startTime;
+
+        customerMoodlet.GetComponent<Image>().sprite = happy;
+    }
+
+    public void GetCurrentTime(float currentTime)
+    {
+        slider.value = currentTime;
+    }
+
+    public void setMoodlet(string mood)
+    {
+        switch (mood)
+        {
+            case "happy":
+                customerMoodlet.GetComponent<Image>().sprite = happy;
+                break;
+
+            case "bored":
+                customerMoodlet.GetComponent<Image>().sprite = bored;
+                break;
+
+            case "angry":
+                customerMoodlet.GetComponent<Image>().sprite = angry;
+                break;
+
+            default:
+                customerMoodlet.GetComponent<Image>().sprite = happy;
+                break;
+        }
+    }
+
+    public void ShowPatienceBar()
+    {
+        customerPatienceBar.gameObject.SetActive(true);
+    }
+
+    public void HidePatienceBar()
+    {
+        customerPatienceBar.gameObject.SetActive(false);
+    }
 }
+
