@@ -199,7 +199,7 @@ public class NPC_AI : MonoBehaviour
             {
                 //beanFootsteps.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.GetComponent<Rigidbody>().velocity));
                 beanFootsteps.start();
-                Debug.Log("Starting Bean Move");
+                //Debug.Log("Starting Bean Move");
             }
         }
         else 
@@ -217,7 +217,7 @@ public class NPC_AI : MonoBehaviour
         if (currentHidingSpot != null)
         {
             currentHidingSpot.DecrementOccupancy();  //-1 from spot if the bean was hiding
-            Debug.Log($"[NPC_AI] {gameObject.name} was picked up and left hiding spot {currentHidingSpot.name}");
+            //Debug.Log($"[NPC_AI] {gameObject.name} was picked up and left hiding spot {currentHidingSpot.name}");
             SetHidingSpot(null); // Remove reference to the hiding spot
         }
 
@@ -241,7 +241,7 @@ public class NPC_AI : MonoBehaviour
         // Try to find a valid position on the NavMesh
         if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 2.0f, NavMesh.AllAreas))
         {
-           Debug.Log($"[NPC_AI] {gameObject.name} repositioned to valid NavMesh position: {hit.position}");
+           //Debug.Log($"[NPC_AI] {gameObject.name} repositioned to valid NavMesh position: {hit.position}");
 
             transform.position = hit.position; // Move to valid NavMesh point
             navMeshAgent.Warp(hit.position);  // Instantly corrects position
@@ -294,7 +294,7 @@ public class NPC_AI : MonoBehaviour
         //if (AIManager.Instance != null)
         {
             AIManager.Instance.UnregisterNPC(this);
-            Debug.Log($"[NPC_AI] {gameObject.name} removed from AIManager before destruction.");
+            //Debug.Log($"[NPC_AI] {gameObject.name} removed from AIManager before destruction.");
         }
 
         if (currentHidingSpot != null)

@@ -8,6 +8,7 @@ public class CoffeeInteraction : MonoBehaviour
     private bool inContactWithCustomerWindow = false;
     private CustomerWindow customerWindow;
     public int beanCount;
+    public string syrup = "None";
 
     private void OnTriggerEnter(Collider other)
     {
@@ -43,6 +44,18 @@ public class CoffeeInteraction : MonoBehaviour
     public void SetBeanCount(int count)
     {
         beanCount = count;
+    }
+
+
+   
+
+    public void AddSyrup(string syrupType)
+    {
+        if (syrup == "None") 
+        {
+            syrup = syrupType;
+            Debug.Log($"Added {syrupType} syrup to coffee.");
+        }
     }
 }
 

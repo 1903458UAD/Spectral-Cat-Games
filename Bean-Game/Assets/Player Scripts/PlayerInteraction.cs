@@ -16,8 +16,8 @@ public class PlayerInteraction : MonoBehaviour
     public LayerMask FunctionalObjectLayer;
     public Transform cameraTransform;
 
-    private InteractableObject heldObjectRight; // Right-hand object
-    private InteractableObject heldObjectLeft;  // Left-hand object
+    public InteractableObject heldObjectRight; // Right-hand object
+    public InteractableObject heldObjectLeft;  // Left-hand object
     private bool isPickupBothHands; // Enable dual wielding
 
     private KeyCode Pickup_AND_Interact;// = KeyCode.Joystick1Button5; // Pickup keycode - used for responding to controller input - set to right bumper
@@ -58,7 +58,7 @@ public class PlayerInteraction : MonoBehaviour
 
         if (cameraTransform == null)
         {
-            Debug.LogError("[PlayerInteraction] cameraTransform is not assigned!");
+           // Debug.LogError("[PlayerInteraction] cameraTransform is not assigned!");
             return;
         }
 
@@ -97,12 +97,12 @@ public class PlayerInteraction : MonoBehaviour
             RaycastHit[] hits = Physics.RaycastAll(ray, interactionDistance, ~0); // ~0 = "all layers"
             foreach (var h in hits)
             {
-                Debug.Log($"RaycastAll hit: {h.collider.name}, layer = {LayerMask.LayerToName(h.collider.gameObject.layer)}");
+                //Debug.Log($"RaycastAll hit: {h.collider.name}, layer = {LayerMask.LayerToName(h.collider.gameObject.layer)}");
             }
 
             if (Physics.Raycast(ray, out hit, interactionDistance, InteractableObjectLayer))
             {
-                Debug.Log("RayCast Hit a Interactable Object");
+                //Debug.Log("RayCast Hit a Interactable Object");
                 GameObject hitObject = hit.collider.gameObject;
                 InteractableObject interactable = hitObject.GetComponent<InteractableObject>();
                 
@@ -139,9 +139,9 @@ public class PlayerInteraction : MonoBehaviour
             else if (Physics.Raycast(ray, out hit, interactionDistance, FunctionalObjectLayer)) //-- Prioritise function over pick up
             {
 
-                Debug.Log($"RayCast Hit a functional Object: {hit.collider.name}, layer = {LayerMask.LayerToName(hit.collider.gameObject.layer)}");
+                //Debug.Log($"RayCast Hit a functional Object: {hit.collider.name}, layer = {LayerMask.LayerToName(hit.collider.gameObject.layer)}");
 
-                Debug.Log("RayCast Hit a functional Object");
+                
                 GameObject hitObject = hit.collider.gameObject;
                 CoffeeMachine coffeeMachine = hitObject.GetComponent<CoffeeMachine>();
                 
@@ -150,6 +150,49 @@ public class PlayerInteraction : MonoBehaviour
                 ButtonForCoffeeMachine coffeeButton = hitObject.GetComponent<ButtonForCoffeeMachine>();
                 PowerCutScript powercut = hitObject.GetComponent<PowerCutScript>();
                 Hiding_Spots cage = hitObject.GetComponent<Hiding_Spots>();
+
+                CoffeeInteraction coffee = null;
+                   
+                if (heldObjectRight != null)
+                {
+                    coffee = heldObjectRight.GetComponent<CoffeeInteraction>();
+                }
+
+                if (coffee == null && heldObjectLeft != null)
+                {
+                    coffee = heldObjectLeft?.GetComponent<CoffeeInteraction>();
+                }
+
+                SyrupBottle syrupBottle = hitObject.GetComponent<SyrupBottle>();
+
+                if (syrupBottle != null)
+                {
+
+                   
+
+                    if (hitObject.CompareTag("SyrupPeanutButter"))
+                    {
+                        syrupBottle.TryAddSyrup(this);
+                        return;
+                    }
+                    else if (hitObject.CompareTag("SyrupVanilla"))
+                    {
+                        syrupBottle.TryAddSyrup(this);
+                        return;
+                    }
+                    else if (hitObject.CompareTag("SyrupIcedTea"))
+                    {
+                        syrupBottle.TryAddSyrup(this);
+                        return;
+                    }
+                    else if (hitObject.CompareTag("SyrupCaramel"))
+                    {
+                        syrupBottle.TryAddSyrup(this);
+                        return;
+                    }
+
+          
+                }
 
                 if (powercut != null)
                 {
@@ -160,14 +203,14 @@ public class PlayerInteraction : MonoBehaviour
                 if (coffeeButton != null)
                 {
                     coffeeButton.PressButton();
-                    Debug.Log("Pressed Coffee Machine Button");
+                   // Debug.Log("Pressed Coffee Machine Button");
                     return;
                 }
 
                 if (till != null)
                 {
                     UIUpgradeManager.Instance.EnableUpgradeMenu();
-                    Debug.Log("Pressed Till");
+                    //Debug.Log("Pressed Till");
                 }
 
                 if (coffeeMachine != null)
@@ -175,13 +218,13 @@ public class PlayerInteraction : MonoBehaviour
                     if (heldObjectRight)
                     {
                         heldObjectRight.GetComponent<BeanInteraction>().TryAddToCoffeeMachine(coffeeMachine);
-                        Debug.Log("Called tryAddToCoffeeMachine (Right hand)");
+                        //Debug.Log("Called tryAddToCoffeeMachine (Right hand)");
                         return;
                     }
                     else if (heldObjectLeft)
                     {
                         heldObjectLeft.GetComponent<BeanInteraction>().TryAddToCoffeeMachine(coffeeMachine);
-                        Debug.Log("Called tryAddToCoffeeMachine (Left hand)");
+                       // Debug.Log("Called tryAddToCoffeeMachine (Left hand)");
                         return;
 
                     }
@@ -195,14 +238,14 @@ public class PlayerInteraction : MonoBehaviour
                     {
                         heldObjectRight.GetComponent<BeanInteraction>().TryAddToCage(cage);
                         heldObjectRight = null;
-                        Debug.Log("Called cage (Right hand)");
+                       // Debug.Log("Called cage (Right hand)");
                         return;
                     }
                     else if (heldObjectLeft)
                     {
                         heldObjectLeft.GetComponent<BeanInteraction>().TryAddToCage(cage);
                         heldObjectLeft = null;
-                        Debug.Log("Called cage (Left hand)");
+                        //Debug.Log("Called cage (Left hand)");
                         return;
 
                     }
@@ -233,7 +276,7 @@ public class PlayerInteraction : MonoBehaviour
             }
             else
             {
-                Debug.Log("No hit on FunctionalObjectLayer!");
+              //  Debug.Log("No hit on FunctionalObjectLayer!");
             }
 
             
