@@ -28,6 +28,7 @@ public class CustomerScript : MonoBehaviour
     private PlayerHealth playerHealth;
 
     public int requiredBeans;
+    public string requiredSyrup;
 
     public void SetIsOrderedTrue()
     {
@@ -78,8 +79,13 @@ public class CustomerScript : MonoBehaviour
         initialTimer = initialTimer * upgradeData.internalBaseValue;
 
         requiredBeans = UnityEngine.Random.Range(1, 4);
-       // Debug.Log($"Customer wants a coffee with {requiredBeans} beans.");
-        UIManager.Instance.UpdateCustomerOrder(requiredBeans);
+
+        // Debug.Log($"Customer wants a coffee with {requiredBeans} beans.");
+
+
+        string[] syrups = { "Peanut Butter", "Vanilla", "Iced Tea", "Caramel", "None" };
+        requiredSyrup = syrups[UnityEngine.Random.Range(0, syrups.Length)];
+        UIManager.Instance.UpdateCustomerOrder(requiredBeans, requiredSyrup);
     }
 
     void Update()

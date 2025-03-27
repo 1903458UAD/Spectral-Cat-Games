@@ -30,7 +30,7 @@ public class CustomerWindow : MonoBehaviour
             if (customerScript != null)
             {
                 // Check if enough beans are present to create coffee
-                if (currentCoffeeCount >= requiredCoffee)
+                if (currentCoffeeCount >= requiredCoffee && coffee.syrup == customerScript.requiredSyrup)
                 {
                     if (coffee.beanCount == customerScript.requiredBeans)
                     {
@@ -76,7 +76,8 @@ public class CustomerWindow : MonoBehaviour
 
             if (UIManager.Instance != null)
             {
-                UIManager.Instance.UpdateCustomerOrder(0); // Resets the UI after the customer leaves
+                string requiredSyrup = customerScript.requiredSyrup;
+                UIManager.Instance.UpdateCustomerOrder(0, requiredSyrup); // Resets the UI after the customer leaves
             }
         }
         else
