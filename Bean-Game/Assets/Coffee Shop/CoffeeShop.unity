@@ -3287,6 +3287,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9076302520875963772, guid: db8cfd1fb2c3a5d419a6e6fd7032b50e, type: 3}
   m_PrefabInstance: {fileID: 610742041}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &178577861 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8334036217041120479, guid: 618b8b9815dff714bb3bb38bcd29f004, type: 3}
+  m_PrefabInstance: {fileID: 1104414571}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &186008692 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3265478600616944045, guid: f2313b9fe74214748bbd73c8ada30063, type: 3}
@@ -4140,6 +4145,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 158c81510f6eccf4bb26d357d1019565, type: 3}
+--- !u!4 &248173656 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8234454407344181502, guid: db8cfd1fb2c3a5d419a6e6fd7032b50e, type: 3}
+  m_PrefabInstance: {fileID: 610742041}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &249357798 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6495402025705378866, guid: 6f31bcc8bdd5fb0479eb388ce879613b, type: 3}
@@ -7253,7 +7263,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4790e6d965e7b0439be0b80d90a16e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syrupType: 
+  syrupType: Vanilla
+  lidTransform: {fileID: 822253982}
+  pressDepth: 0.4
+  pressDuration: 0.1
 --- !u!4 &600572958 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5261919650490801409, guid: da62d5ec7b4b6e149b882179f894bd44, type: 3}
@@ -7269,6 +7282,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5623697283245104884, guid: db8cfd1fb2c3a5d419a6e6fd7032b50e, type: 3}
       propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5623697283245104884, guid: db8cfd1fb2c3a5d419a6e6fd7032b50e, type: 3}
+      propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7967873340238473239, guid: db8cfd1fb2c3a5d419a6e6fd7032b50e, type: 3}
@@ -7289,7 +7306,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9076302520875963772, guid: db8cfd1fb2c3a5d419a6e6fd7032b50e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.09215696
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9076302520875963772, guid: db8cfd1fb2c3a5d419a6e6fd7032b50e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 9076302520875963772, guid: db8cfd1fb2c3a5d419a6e6fd7032b50e, type: 3}
       propertyPath: m_LocalScale.z
@@ -7334,6 +7355,10 @@ PrefabInstance:
     - target: {fileID: 9076302520875963772, guid: db8cfd1fb2c3a5d419a6e6fd7032b50e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9076302520875963772, guid: db8cfd1fb2c3a5d419a6e6fd7032b50e, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9025137417745771734, guid: db8cfd1fb2c3a5d419a6e6fd7032b50e, type: 3}
@@ -9809,6 +9834,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0c04ccf49c4b9b04c8da13742f2f4d37, type: 3}
+--- !u!4 &822253982 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2286240702878411162, guid: f6c2838fbb8204244840e694af1ee3d3, type: 3}
+  m_PrefabInstance: {fileID: 1650783880}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &826173327
 GameObject:
   m_ObjectHideFlags: 0
@@ -10916,7 +10946,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4790e6d965e7b0439be0b80d90a16e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syrupType: 
+  syrupType: Peanut Butter
+  lidTransform: {fileID: 178577861}
+  pressDepth: 0.4
+  pressDuration: 0.1
 --- !u!1 &903234121 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3886080740541041228, guid: 00dda704c19dc7742992a75d8be4cdb9, type: 3}
@@ -12365,6 +12398,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7609116307025194371, guid: 25beb24773c20a4438943599cff30ac2, type: 3}
   m_PrefabInstance: {fileID: 1255360969}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1059704654 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1969030604613879236, guid: b83afbf3ec202484c9d5b993c7574783, type: 3}
+  m_PrefabInstance: {fileID: 1550348410}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1063076630 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5101431926341433362, guid: 81beee1e9008f6a46840ea32967be195, type: 3}
@@ -12519,13 +12557,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1549203376}
     m_Modifications:
+    - target: {fileID: 3739053521332631308, guid: 618b8b9815dff714bb3bb38bcd29f004, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5399743150827397555, guid: 618b8b9815dff714bb3bb38bcd29f004, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5757213914089186005, guid: 618b8b9815dff714bb3bb38bcd29f004, type: 3}
       propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5757213914089186005, guid: 618b8b9815dff714bb3bb38bcd29f004, type: 3}
+      propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8033660844009559094, guid: 618b8b9815dff714bb3bb38bcd29f004, type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8334036217041120479, guid: 618b8b9815dff714bb3bb38bcd29f004, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8597522107488056295, guid: 618b8b9815dff714bb3bb38bcd29f004, type: 3}
       propertyPath: m_Name
@@ -12541,7 +12595,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8942838665283168605, guid: 618b8b9815dff714bb3bb38bcd29f004, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.09215696
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8942838665283168605, guid: 618b8b9815dff714bb3bb38bcd29f004, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 8942838665283168605, guid: 618b8b9815dff714bb3bb38bcd29f004, type: 3}
       propertyPath: m_LocalScale.z
@@ -12587,6 +12645,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8942838665283168605, guid: 618b8b9815dff714bb3bb38bcd29f004, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 212940856609355829, guid: 618b8b9815dff714bb3bb38bcd29f004, type: 3}
     - {fileID: 3888697835614462470, guid: 618b8b9815dff714bb3bb38bcd29f004, type: 3}
@@ -12614,7 +12676,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4790e6d965e7b0439be0b80d90a16e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syrupType: 
+  syrupType: Iced Tea
+  lidTransform: {fileID: 1059704654}
+  pressDepth: 0.4
+  pressDuration: 0.1
 --- !u!1 &1119584485 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8638984060766476240, guid: 9fd46ecea07fd774287c136b3dd95e08, type: 3}
@@ -17359,6 +17424,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1504289468374253638, guid: b83afbf3ec202484c9d5b993c7574783, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1504289468374253638, guid: b83afbf3ec202484c9d5b993c7574783, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1504289468374253638, guid: b83afbf3ec202484c9d5b993c7574783, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -17398,6 +17471,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1504289468374253638, guid: b83afbf3ec202484c9d5b993c7574783, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2282093427921214204, guid: b83afbf3ec202484c9d5b993c7574783, type: 3}
       propertyPath: m_Name
       value: SM_syrup_bottle (1)
@@ -17412,6 +17489,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2818880232510131150, guid: b83afbf3ec202484c9d5b993c7574783, type: 3}
       propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2818880232510131150, guid: b83afbf3ec202484c9d5b993c7574783, type: 3}
+      propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
@@ -18329,6 +18410,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1155580554363956248, guid: f6c2838fbb8204244840e694af1ee3d3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1155580554363956248, guid: f6c2838fbb8204244840e694af1ee3d3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1155580554363956248, guid: f6c2838fbb8204244840e694af1ee3d3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -18368,6 +18457,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1155580554363956248, guid: f6c2838fbb8204244840e694af1ee3d3, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1964311371097454242, guid: f6c2838fbb8204244840e694af1ee3d3, type: 3}
       propertyPath: m_Name
       value: SM_syrup_bottle (2)
@@ -18382,6 +18475,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2591700139023951760, guid: f6c2838fbb8204244840e694af1ee3d3, type: 3}
       propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2591700139023951760, guid: f6c2838fbb8204244840e694af1ee3d3, type: 3}
+      propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
@@ -28732,7 +28829,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4790e6d965e7b0439be0b80d90a16e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syrupType: 
+  syrupType: Caramel
+  lidTransform: {fileID: 248173656}
+  pressDepth: 0.4
+  pressDuration: 0.1
 --- !u!1001 &2145008422
 PrefabInstance:
   m_ObjectHideFlags: 0

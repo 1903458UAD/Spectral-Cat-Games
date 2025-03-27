@@ -58,7 +58,7 @@ public class PlayerInteraction : MonoBehaviour
 
         if (cameraTransform == null)
         {
-            Debug.LogError("[PlayerInteraction] cameraTransform is not assigned!");
+           // Debug.LogError("[PlayerInteraction] cameraTransform is not assigned!");
             return;
         }
 
@@ -97,12 +97,12 @@ public class PlayerInteraction : MonoBehaviour
             RaycastHit[] hits = Physics.RaycastAll(ray, interactionDistance, ~0); // ~0 = "all layers"
             foreach (var h in hits)
             {
-                Debug.Log($"RaycastAll hit: {h.collider.name}, layer = {LayerMask.LayerToName(h.collider.gameObject.layer)}");
+                //Debug.Log($"RaycastAll hit: {h.collider.name}, layer = {LayerMask.LayerToName(h.collider.gameObject.layer)}");
             }
 
             if (Physics.Raycast(ray, out hit, interactionDistance, InteractableObjectLayer))
             {
-                Debug.Log("RayCast Hit a Interactable Object");
+                //Debug.Log("RayCast Hit a Interactable Object");
                 GameObject hitObject = hit.collider.gameObject;
                 InteractableObject interactable = hitObject.GetComponent<InteractableObject>();
                 
@@ -139,9 +139,9 @@ public class PlayerInteraction : MonoBehaviour
             else if (Physics.Raycast(ray, out hit, interactionDistance, FunctionalObjectLayer)) //-- Prioritise function over pick up
             {
 
-                Debug.Log($"RayCast Hit a functional Object: {hit.collider.name}, layer = {LayerMask.LayerToName(hit.collider.gameObject.layer)}");
+                //Debug.Log($"RayCast Hit a functional Object: {hit.collider.name}, layer = {LayerMask.LayerToName(hit.collider.gameObject.layer)}");
 
-                Debug.Log("RayCast Hit a functional Object");
+                
                 GameObject hitObject = hit.collider.gameObject;
                 CoffeeMachine coffeeMachine = hitObject.GetComponent<CoffeeMachine>();
                 
@@ -163,27 +163,37 @@ public class PlayerInteraction : MonoBehaviour
                     coffee = heldObjectLeft?.GetComponent<CoffeeInteraction>();
                 }
 
-                if (coffee != null)
+                SyrupBottle syrupBottle = hitObject.GetComponent<SyrupBottle>();
+
+                if (syrupBottle != null)
                 {
+
+                    SyrupSquirtyLid lidPress = hitObject.GetComponentInChildren<SyrupSquirtyLid>();
+
                     if (hitObject.CompareTag("SyrupPeanutButter"))
                     {
-                        coffee.AddSyrup("Peanut Butter");
+                        syrupBottle.TryAddSyrup(this);
                         return;
                     }
                     else if (hitObject.CompareTag("SyrupVanilla"))
                     {
-                        coffee.AddSyrup("Vanilla");
+                        syrupBottle.TryAddSyrup(this);
                         return;
                     }
                     else if (hitObject.CompareTag("SyrupIcedTea"))
                     {
-                        coffee.AddSyrup("Iced Tea");
+                        syrupBottle.TryAddSyrup(this);
                         return;
                     }
                     else if (hitObject.CompareTag("SyrupCaramel"))
                     {
-                        coffee.AddSyrup("Caramel");
+                        syrupBottle.TryAddSyrup(this);
                         return;
+                    }
+
+                    if (lidPress != null)
+                    {
+                        lidPress.PressSquirter();
                     }
                 }
 
@@ -196,14 +206,14 @@ public class PlayerInteraction : MonoBehaviour
                 if (coffeeButton != null)
                 {
                     coffeeButton.PressButton();
-                    Debug.Log("Pressed Coffee Machine Button");
+                   // Debug.Log("Pressed Coffee Machine Button");
                     return;
                 }
 
                 if (till != null)
                 {
                     UIUpgradeManager.Instance.EnableUpgradeMenu();
-                    Debug.Log("Pressed Till");
+                    //Debug.Log("Pressed Till");
                 }
 
                 if (coffeeMachine != null)
@@ -211,13 +221,13 @@ public class PlayerInteraction : MonoBehaviour
                     if (heldObjectRight)
                     {
                         heldObjectRight.GetComponent<BeanInteraction>().TryAddToCoffeeMachine(coffeeMachine);
-                        Debug.Log("Called tryAddToCoffeeMachine (Right hand)");
+                        //Debug.Log("Called tryAddToCoffeeMachine (Right hand)");
                         return;
                     }
                     else if (heldObjectLeft)
                     {
                         heldObjectLeft.GetComponent<BeanInteraction>().TryAddToCoffeeMachine(coffeeMachine);
-                        Debug.Log("Called tryAddToCoffeeMachine (Left hand)");
+                       // Debug.Log("Called tryAddToCoffeeMachine (Left hand)");
                         return;
 
                     }
@@ -231,14 +241,14 @@ public class PlayerInteraction : MonoBehaviour
                     {
                         heldObjectRight.GetComponent<BeanInteraction>().TryAddToCage(cage);
                         heldObjectRight = null;
-                        Debug.Log("Called cage (Right hand)");
+                       // Debug.Log("Called cage (Right hand)");
                         return;
                     }
                     else if (heldObjectLeft)
                     {
                         heldObjectLeft.GetComponent<BeanInteraction>().TryAddToCage(cage);
                         heldObjectLeft = null;
-                        Debug.Log("Called cage (Left hand)");
+                        //Debug.Log("Called cage (Left hand)");
                         return;
 
                     }
@@ -269,7 +279,7 @@ public class PlayerInteraction : MonoBehaviour
             }
             else
             {
-                Debug.Log("No hit on FunctionalObjectLayer!");
+              //  Debug.Log("No hit on FunctionalObjectLayer!");
             }
 
             
