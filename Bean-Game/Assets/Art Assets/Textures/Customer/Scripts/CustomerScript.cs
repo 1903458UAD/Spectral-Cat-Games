@@ -7,6 +7,7 @@ using TMPro;
 public class CustomerScript : MonoBehaviour
 {
     [SerializeField] private UpgradeData upgradeData;
+    [SerializeField] private UpgradeData tipUpgrade;
 
     private GameObject player;
     public GameObject driveThrough;
@@ -23,7 +24,7 @@ public class CustomerScript : MonoBehaviour
     private bool drive;
 
     private float threshold;
-    private float tipFactor = StaticData.tipAmount;
+    private float tipFactor;
 
     private PlayerHealth playerHealth;
 
@@ -42,6 +43,7 @@ public class CustomerScript : MonoBehaviour
 
         playerHealth = player?.GetComponent<PlayerHealth>();
         timerDisplay.text = null;
+        tipFactor = tipUpgrade.internalBaseValue;
 
         if (playerHealth == null)
         {
@@ -180,8 +182,6 @@ public class CustomerScript : MonoBehaviour
 
         if (initialTimer - patienceTimer <= tipTime)
         {
-            tipFactor = StaticData.tipAmount;
-
             income += tipFactor;
         }
 
