@@ -47,11 +47,25 @@ public class AgentLinkMover : MonoBehaviour
         }
     }
 
+
     IEnumerator Parabola(NavMeshAgent agent, float height, float duration)
     {
         OffMeshLinkData data = agent.currentOffMeshLinkData;
         Vector3 startPos = agent.transform.position;
         Vector3 endPos = data.endPos + Vector3.up * agent.baseOffset;
+
+        // Check if we are descending (jumping down)
+        bool isDescending = startPos.y > endPos.y;
+        if (isDescending)
+        {
+            // Force the height to be negative to produce a downward arc.
+            height = -Mathf.Abs(height);
+        }
+        else
+        {
+            height = Mathf.Abs(height);
+        }
+
         float normalizedTime = 0.0f;
         while (normalizedTime < 1.0f)
         {
@@ -60,7 +74,12 @@ public class AgentLinkMover : MonoBehaviour
             normalizedTime += Time.deltaTime / duration;
             yield return null;
         }
+        // Use Warp to force the agent's position onto the navmesh
+        agent.Warp(endPos);
     }
+
+
+
 
     IEnumerator Curve(NavMeshAgent agent, float duration)
     {

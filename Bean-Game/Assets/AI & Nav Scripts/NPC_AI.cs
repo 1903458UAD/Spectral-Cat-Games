@@ -263,6 +263,32 @@ public class NPC_AI : MonoBehaviour
         return isPickedUp;
     }
 
+
+    // method to check if the bean is on a shelf and to get an off-shelf target.
+    public bool IsOnShelf()
+    {
+        // Check if a small sphere around the bean's position overlaps any collider tagged "Shelf"
+        Collider[] hits = Physics.OverlapSphere(transform.position, 0.5f);
+        foreach (Collider hit in hits)
+        {
+            if (hit.CompareTag("Shelf"))
+                return true;
+        }
+        return false;
+    }
+
+    public Vector3 GetOffShelfTarget()
+    {
+        RaycastHit hit;
+        // Cast a ray downward from the bean's position.
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 5f))
+        {
+            return hit.point;
+        }
+        return transform.position;
+    }
+
+
     private void OnDestroy()
     {
         //if (AIManager.Instance != null)

@@ -72,6 +72,10 @@ public class GameManager : MonoBehaviour
         InitializeGame();
         Debug.Log("[GameManager] Spawning initial beans...");
 
+        AIManager.Instance.GatherShelfColliders();
+
+        AIManager.Instance.GatherShelfPositions();
+
         SpawnInitialBeans();  // Ensure this is called
         GameManager.Instance.SetIncome(StaticData.incomePassed);
         orderQuota = Random.Range(StaticData.lowerQuotaLimit, StaticData.higherQuotaLimit);
@@ -152,6 +156,27 @@ public class GameManager : MonoBehaviour
             Debug.LogError("[GameManager] Spawned bean is missing NPC_AI component!");
             return;
         }
+
+        Collider[] hitColliders = Physics.OverlapSphere(beanObj.transform.position, 0.5f);
+        bool tooClose = false;
+        foreach (Collider col in hitColliders)
+        {
+            if (col.CompareTag("Shelf"))
+            {
+                tooClose = true;
+                break;
+            }
+        }
+
+        if (tooClose)
+        {
+            Vector3 newPos = GetRandomNavMeshPosition();
+            // Optionally, you might loop a few times until a valid position is found.
+            beanObj.transform.position = newPos;
+            beanAI.navMeshAgent.Warp(newPos);
+            Debug.Log("[GameManager] Bean repositioned away from shelf.");
+        }
+
 
         Debug.Log($"[GameManager] Spawned bean at {spawnPos}");
         AIManager.Instance.RegisterNPC(beanAI);

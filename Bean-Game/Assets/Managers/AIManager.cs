@@ -36,12 +36,16 @@ public class AIManager : MonoBehaviour
     public int beansLow = 4;
     public int beanRestock = 6;
 
+    public float minDistanceFromShelf = .01f;
+
 
 
     public float maxRunTime = 8f; // Maximum timea bean is allowed to run continuously
     private Dictionary<NPC_AI, float> runStartTimes = new Dictionary<NPC_AI, float>();
 
 
+
+    private List<Collider> shelfColliders = new List<Collider>();
 
     private EventInstance beanFootsteps;
 
@@ -67,6 +71,7 @@ public class AIManager : MonoBehaviour
     private Dictionary<NPC_AI, float> activeTimers = new Dictionary<NPC_AI, float>(); // Only track selected beans time
     private HashSet<NPC_AI> recentlySwitched = new HashSet<NPC_AI>(); // Track recently moved beans
 
+    private List<Transform> shelfPositions = new List<Transform>();
 
 
 
@@ -89,11 +94,12 @@ public class AIManager : MonoBehaviour
         LoadNavGraphData();
         FindAllHidingSpots();
 
+
     }
 
     private void Start()
     {
-
+        GatherShelfPositions();
         player = GameObject.FindGameObjectWithTag("Player");
         beanFootsteps = AudioManager.instance.CreateInstance(FMODEvents.instance.beanFootsteps);
     }
@@ -127,7 +133,7 @@ public class AIManager : MonoBehaviour
                 continue;
             }
 
-            // Validate NPC: must have an active NavMeshAgent.
+            //must have an active NavMeshAgent.
             if (npc.navMeshAgent == null || !npc.navMeshAgent.enabled || !npc.navMeshAgent.isOnNavMesh)
             {
                // Debug.LogWarning($"[AIManager] {npc.gameObject.name} not on valid NavMesh. Skipping.");
@@ -184,12 +190,12 @@ public class AIManager : MonoBehaviour
             //Debug.LogError("[AIManager] NavGraph is missing! NPCs cannot navigate.");
             return;
         }
-        // Simply read the precomputed nodes from the asset.
+
         nodeDataList = navGraph.nodes;
        // Debug.Log($"[AIManager] Loaded {nodeDataList.Count} nodes from precomputed NavGraph.");
     }
 
-    // Returns the index of the given nodeData in the nodeDataList.
+
     private int GetNodeIndex(NavGraph.NavNodeData nodeData)
     {
         if(nodeData == null)
@@ -206,7 +212,6 @@ public class AIManager : MonoBehaviour
         return -1;
     }
 
-    // Look up a precomputed escape route 
 
     private List<NavGraph.NavNodeData> GetPrecomputedRoute(Vector3 startPos, Vector3 targetPos)
     {
@@ -221,7 +226,7 @@ public class AIManager : MonoBehaviour
         if (sourceIndex < 0 || destIndex < 0)
             return null;
 
-        // Look through your precomputed routes for one that goes directly from source to destination.
+        // Look through precomputed routes for directly from source to destination.
         foreach (var route in navGraph.precomputedRoutes)
         {
             if (route.sourceIndex == sourceIndex && route.destinationIndex == destIndex)
@@ -250,10 +255,10 @@ public class AIManager : MonoBehaviour
         if (startPos == null || targetPos == null)
             return null;
 
-        float tolerance = 1.0f; // Adjust this to what you consider "close enough" to the target.
+        float tolerance = 1.0f; 
         List<NavGraph.NavNodeData> combinedRoute = new List<NavGraph.NavNodeData>();
         Vector3 currentStart = startPos;
-        int maxIterations = 10; // To avoid potential infinite loops.
+        int maxIterations = 10; 
 
         for (int i = 0; i < maxIterations; i++)
         {
@@ -264,7 +269,7 @@ public class AIManager : MonoBehaviour
                 // No route found for this segment.
                 break;
             }
-            // If we already have some nodes, remove the duplicate starting node.
+      
             if (combinedRoute.Count > 0)
             {
                 if (Vector3.Distance(combinedRoute[combinedRoute.Count - 1].position, segment[0].position) < 0.01f)
@@ -273,33 +278,118 @@ public class AIManager : MonoBehaviour
                 }
             }
             combinedRoute.AddRange(segment);
-            // Update the current start to be the last node in our combined route.
+
             currentStart = combinedRoute[combinedRoute.Count - 1].position;
-            // If this last node is close enough to the target, we’re done.
+            
             if (Vector3.Distance(currentStart, targetPos) <= tolerance)
             {
                 return combinedRoute;
             }
         }
-        // Final check – if the last node is not within tolerance, return null.
+
         if (combinedRoute.Count > 0 && Vector3.Distance(combinedRoute[combinedRoute.Count - 1].position, targetPos) <= tolerance)
             return combinedRoute;
         return null;
     }
 
 
-
-
     public Vector3 GetRandomNavMeshPosition()
     {
         if (nodeDataList == null || nodeDataList.Count == 0)
         {
-           // Debug.LogError("[AIManager] No nav data available for spawning.");
+            Debug.LogError("No nav data available for spawning.");
             return Vector3.zero;
         }
-        int randomIndex = Random.Range(0, nodeDataList.Count);
-        return nodeDataList[randomIndex].position;
+
+        int floorLayer = LayerMask.NameToLayer("Floor");
+        List<NavGraph.NavNodeData> floorNodes = new List<NavGraph.NavNodeData>();
+
+        foreach (var nodeData in nodeDataList)
+        {
+            NavNode navNode = GetNavNodeFromNodeData(nodeData);
+            if (navNode != null && navNode.gameObject.layer == floorLayer)
+            {
+                floorNodes.Add(nodeData);
+            }
+        }
+
+        Debug.Log($"Found {floorNodes.Count} Floor nodes out of {nodeDataList.Count} total nodes.");
+
+        // If no floor node is found, fallback to all nodes.
+        if (floorNodes.Count == 0)
+        {
+            Debug.LogWarning("No Floor nav nodes found, falling back to all nodes.");
+            floorNodes = new List<NavGraph.NavNodeData>(nodeDataList);
+        }
+
+        int randomIndex = Random.Range(0, floorNodes.Count);
+        Vector3 spawnPosition = floorNodes[randomIndex].position;
+        Debug.Log($"Chosen spawn position: {spawnPosition}");
+        return spawnPosition;
     }
+
+
+
+    public void GatherShelfColliders()
+    {
+        shelfColliders.Clear();
+        GameObject[] shelves = GameObject.FindGameObjectsWithTag("Shelf");
+        foreach (GameObject shelf in shelves)
+        {
+            Collider col = shelf.GetComponent<Collider>();
+            if (col != null)
+            {
+                shelfColliders.Add(col);
+            }
+        }
+        Debug.Log("Found " + shelfColliders.Count + " shelf colliders.");
+    }
+
+
+
+    public void GatherShelfPositions()
+    {
+        //shelfPositions.Clear();
+        //foreach (Hiding_Spots spot in hidingSpots)
+        //{
+        //    // heck both the hiding type and the layer
+        //    if (spot.hidingType == Hiding_Spots.HidingType.Shelf || spot.gameObject.layer == LayerMask.NameToLayer("Shelf"))
+        //    {
+        //        shelfPositions.Add(spot.transform);
+        //    }
+        //}
+        //Debug.Log("Shelf positions gathered: " + shelfPositions.Count);
+    }
+
+
+
+    private NavNode GetNavNodeFromNodeData(NavGraph.NavNodeData nodeData)
+    {
+        foreach (NavNode nav in NavNode.GetAllNodes())
+        {
+            if (nav == null)
+            {
+                continue;
+            }
+
+            if (Vector3.Distance(nav.transform.position, nodeData.position) < 0.01f)
+            {
+                return nav;
+            }
+        }
+        return null;
+    }
+
+    //public Vector3 GetRandomNavMeshPosition()
+    //{
+    //    if (nodeDataList == null || nodeDataList.Count == 0)
+    //    {
+    //       // Debug.LogError("[AIManager] No nav data available for spawning.");
+    //        return Vector3.zero;
+    //    }
+    //    int randomIndex = Random.Range(0, nodeDataList.Count);
+    //    return nodeDataList[randomIndex].position;
+    //}
 
 
     public void RegisterNPC(NPC_AI npc)
@@ -371,10 +461,11 @@ public class AIManager : MonoBehaviour
 
     public void EvaluateNPCState(NPC_AI npc)
     {
-        // Validate that the NPC and its NavMeshAgent are active.
-        if (npc == null || !npc.navMeshAgent.enabled || !npc.navMeshAgent.isOnNavMesh)
-            return;
 
+        if (npc == null || !npc.navMeshAgent.enabled || !npc.navMeshAgent.isOnNavMesh)
+        {
+            return;
+        }
         
 
 
@@ -383,8 +474,27 @@ public class AIManager : MonoBehaviour
         // If the bean is already in Hiding, do nothing.
         if (npc.state == NPC_AI.NPCState.Hiding)
         {
+            Hiding_Spots currentSpot = npc.GetHidingSpot();
+
+            if (currentSpot != null && (currentSpot.hidingType == Hiding_Spots.HidingType.Shelf 
+                || currentSpot.gameObject.CompareTag("Shelf")))
+            {
+                // If the bean has moved away from the shelf hiding spot 
+                float distToSpot = Vector3.Distance(npc.transform.position, currentSpot.transform.position);
+
+                if (distToSpot > npc.navMeshAgent.stoppingDistance + 0.3f)
+                {
+                    // Immediately release the shelf hiding spot with teleportation
+                    npc.state = NPC_AI.NPCState.Idle;
+                    ReleaseCurrentHidingSpot(npc, teleportIfShelf: true);
+       
+                    return;
+                }
+            }
+
             MaintainCover(npc);
             npc.PlayBeanMoveSound(false);
+            return;
         }
 
         if (distanceToPlayer < npc.runRange)
@@ -497,12 +607,12 @@ public class AIManager : MonoBehaviour
             }
             else
             {
-                // If no valid node is found, fall back to direct escape.
+                // If no valid node is found, direct escape.
                 Vector3 escapeDir = npc.transform.position - GetPlayerPosition();
                 if (escapeDir.sqrMagnitude < 0.01f)
                 {
                     escapeDir = Random.onUnitSphere;
-                    escapeDir.y = 0; // Keep it horizontal.
+                    escapeDir.y = 0; 
                     if (escapeDir == Vector3.zero)
                         escapeDir = Vector3.forward;
                 }
@@ -556,9 +666,12 @@ public class AIManager : MonoBehaviour
             {
                 if (route.pathIndices != null && route.pathIndices.Count > 0)
                 {
-                    // For each route candidate, take the first candidate route.
+                    
                     List<int> candidate = route.pathIndices[0];
+
+
                     int lastIndex = candidate[candidate.Count - 1];
+
                     Vector3 finalPos = navGraph.nodes[lastIndex].position;
                     // Only consider routes that end sufficiently far from the player.
                     if (Vector3.Distance(finalPos, GetPlayerPosition()) >= targetDistance)
@@ -569,7 +682,7 @@ public class AIManager : MonoBehaviour
         if (candidateRoutes.Count == 0)
             return null;
 
-        // Sort candidate routes by hop count (using the first candidate route).
+        // Sort candidate routes by hop count 
         candidateRoutes.Sort((a, b) => a.pathIndices[0].Count.CompareTo(b.pathIndices[0].Count));
         NavGraph.RouteData bestRoute = candidateRoutes[0];
         List<int> chosenRoute = bestRoute.pathIndices[0];
@@ -607,19 +720,12 @@ public class AIManager : MonoBehaviour
                 yield break;
 
             npc.MoveTo(nodeData.position);
-            int maxIterations = 300; // for example, 300 iterations (adjust based on your frame rate)
+ 
             int iterations = 0;
 
-            while (npc.navMeshAgent.isOnNavMesh &&
-                   (npc.navMeshAgent.pathPending ||
+            while (npc.navMeshAgent.isOnNavMesh && (npc.navMeshAgent.pathPending ||
                     npc.navMeshAgent.remainingDistance > npc.navMeshAgent.stoppingDistance + 0.1f))
             {
-                iterations++;
-                if (iterations > maxIterations)
-                {
-                    Debug.LogWarning($"[AIManager] {npc.gameObject.name} exceeded maximum iterations waiting for destination {nodeData.position}. Exiting loop.");
-                    break;
-                }
                 yield return null;
             }
         }
@@ -634,19 +740,21 @@ public class AIManager : MonoBehaviour
 
 
 
-    public void ReleaseCurrentHidingSpot(NPC_AI npc)
+    public void ReleaseCurrentHidingSpot(NPC_AI npc, bool teleportIfShelf = true)
     {
         if (npc == null)
-        {
-            // Debug.LogError("[AIManager] Attempted to register a NULL NPC!");
             return;
-        }
-
-
 
         if (npc.GetHidingSpot() != null && npcHidingAssignments.ContainsKey(npc))
         {
             Hiding_Spots currentSpot = npc.GetHidingSpot();
+
+            if (teleportIfShelf &&
+                (currentSpot.hidingType == Hiding_Spots.HidingType.Shelf || currentSpot.gameObject.CompareTag("Shelf")))
+            {
+                TeleportBeanToNearestWarpNode(npc);
+            }
+
             currentSpot.DecrementOccupancy();
             npcHidingAssignments.Remove(npc);
             npc.SetHidingSpot(null);
@@ -655,21 +763,24 @@ public class AIManager : MonoBehaviour
 
 
 
-    public void AssignNewHidingSpot(NPC_AI npc, bool run)
+
+
+    public void AssignNewHidingSpot(NPC_AI npc, bool run, bool teleportIfShelf = false)
     {
 
 
         if (npc == null)
+        {
             return;
-
+        }
 
         if (npc.state == NPC_AI.NPCState.Running)
+        {
             return;
+        }
 
-        if (run == null)
-            return;
 
-        ReleaseCurrentHidingSpot(npc);
+        ReleaseCurrentHidingSpot(npc, teleportIfShelf);
         npc.state = NPC_AI.NPCState.Idle;
 
         if (hidingSpots == null || hidingSpots.Count == 0)
@@ -677,7 +788,7 @@ public class AIManager : MonoBehaviour
             return;
         }
 
-        // Build a list of valid hiding spots (same as before).
+        // Build a list of valid hiding spots
         List<Hiding_Spots> validSpots = new List<Hiding_Spots>();
         foreach (var spot in hidingSpots)
         {
@@ -689,25 +800,40 @@ public class AIManager : MonoBehaviour
             //    continue;
             if (run == true)
             {
-                if (Vector3.Distance(spot.transform.position, npc.transform.position) < npc.runRange*2)
+
+                if (Vector3.Distance(spot.transform.position, npc.transform.position) < npc.runRange * 2)
+                {
                     validSpots.Add(spot);
-                else
-                    continue;
-                continue;
+                }
+               
+                    
+
+            }
+            else
+            {
+                validSpots.Add(spot);
             }
 
-            if(spot.hidingType == Hiding_Spots.HidingType.Cage)
+            if (spot.hidingType == Hiding_Spots.HidingType.Cage)
             {
                 continue;
             }
 
 
-            validSpots.Add(spot);
+            //validSpots.Add(spot);
         }
 
         Hiding_Spots lastSpot = npc.GetLastHidingSpot();
+
+        if (lastSpot != null && (lastSpot.hidingType == Hiding_Spots.HidingType.Shelf || lastSpot.gameObject.CompareTag("Shelf")))
+        {
+            validSpots = validSpots.Where(spot => !(spot.hidingType == Hiding_Spots.HidingType.Shelf || spot.gameObject.CompareTag("Shelf"))).ToList();
+        }
+
         if (lastSpot != null)
+        {
             validSpots.Remove(lastSpot);
+        }
 
         // Use precomputed routes to choose a candidate spot.
         List<Hiding_Spots> candidateSpots = new List<Hiding_Spots>();
@@ -720,7 +846,7 @@ public class AIManager : MonoBehaviour
             List<NavGraph.NavNodeData> safeRoute = GetPrecomputedRoute(npc.transform.position, spot.transform.position);
             if (safeRoute != null && safeRoute.Count > 0)
             {
-                // Optionally, you can add additional checks (e.g. ensuring the final leg isn't blocked).
+                
                 candidateSpots.Add(spot);
                 spotRoutesData[spot] = safeRoute;
             }
@@ -746,15 +872,53 @@ public class AIManager : MonoBehaviour
                 Hiding_Spots chosenSpot = validSpots[Random.Range(0, validSpots.Count)];
                 npc.SetLastHidingSpot(chosenSpot);
                 npcHidingAssignments[npc] = chosenSpot;
-                //chosenSpot.IncrementOccupancy();
                 npc.SetHidingSpot(chosenSpot);
                 npc.MoveTo(chosenSpot.transform.position);
-               StartCoroutine(ResolveHidingSpotConflict(npc, chosenSpot));
-                //StartCoroutine(DelayedReassign(npc, 1.0f));
+
+                StartCoroutine(ResolveHidingSpotConflict(npc, chosenSpot));
             }
         }
     }
 
+    private bool IsOnShelf()
+    {
+        
+        Collider[] hits = Physics.OverlapSphere(transform.position, 0.5f);
+        foreach (Collider hit in hits)
+        {
+            if (hit.CompareTag("Shelf"))
+                return true;
+        }
+        return false;
+    }
+
+    private void TeleportBeanToNearestWarpNode(NPC_AI npc)
+    {
+        GameObject[] warpNodes = GameObject.FindGameObjectsWithTag("warpNode");
+        if (warpNodes.Length == 0)
+        {
+            Debug.LogError("No warpNodes found!");
+            return;
+        }
+
+        GameObject closestWarpNode = null;
+        float closestDistance = Mathf.Infinity;
+
+        foreach (var warpNode in warpNodes)
+        {
+            float distance = Vector3.Distance(npc.transform.position, warpNode.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestWarpNode = warpNode;
+            }
+        }
+
+        if (closestWarpNode != null)
+        {
+            npc.navMeshAgent.Warp(closestWarpNode.transform.position);
+        }
+    }
 
     /// you know what you did...
     ////////////////////////////////////private IEnumerator DelayedReassign(NPC_AI npc, float delay)
@@ -948,13 +1112,12 @@ public class AIManager : MonoBehaviour
             }
         }
 
-        // Print debug info for troubleshooting
+        
         //Debug.Log($"[AIManager] Checking capacity for {spot.name}: Occupancy = {spot.Occupancy}, Incoming = {incomingNPCs}, Max = {spot.MaxOccupancy}");
 
-        // If the number of NPCs currently at the spot + incoming NPCs is >= max, it's full
+       
         return (spot.Occupancy + incomingNPCs) >= spot.MaxOccupancy;
     }
-
 
 
 
@@ -964,123 +1127,150 @@ public class AIManager : MonoBehaviour
     {
         if (npc == null)
         {
-            // Debug.LogError("[AIManager] Attempted to register a NULL NPC!");
             return;
         }
 
-
-        if (npc.animator != null&& npc.playedOnce == false)
+        if (npc.animator != null && npc.playedOnce == false)
         {
-            //npc.stateInfo = animator.GetCurrentAnimatorStateInfo(0);
             float normalizedTime = npc.stateInfo.normalizedTime % 1f;
-
             npc.animator.Play(npc.nonLooping, 0, normalizedTime);
-
             npc.playedOnce = true;
         }
 
-
-        Hiding_Spots type = npc.GetHidingSpot();
+       
+        Hiding_Spots hidingSpot = npc.GetHidingSpot();
+        if (hidingSpot == null)
+        {
+            return;
+        }
 
         Vector3 playerPosition = GetPlayerPosition();
-        Vector3 hidingSpotPosition = npc.GetHidingSpotPosition();
+        Vector3 hidingSpotPosition = hidingSpot.transform.position;
         float distanceToPlayer = Vector3.Distance(npc.transform.position, playerPosition);
 
-        // timer check
+        // update position only at set intervals.
         if (!updateTimers.ContainsKey(npc))
         {
             updateTimers[npc] = Time.time + Random.Range(0f, updateInterval);
         }
-
-
         if (Time.time - updateTimers[npc] < updateInterval)
         {
-            return; // Skip update until interval has passed
+            return;
         }
+        updateTimers[npc] = Time.time; // Reset timer
 
-        updateTimers[npc] = Time.time; // Reset update timer
-
-
-
-        //  Continuously adjust position to stay behind cover while hiding
+        // Calculate the direction vector from the hiding spot to the player.
         Vector3 toPlayer = (playerPosition - hidingSpotPosition).normalized;
         Vector3 idealHidingPos = hidingSpotPosition - (toPlayer * 0.35f);
 
+        Vector3 targetPosition = Vector3.zero;
+        
 
 
 
-        if (Vector3.Distance(npc.transform.position, idealHidingPos) > 0.2f&&!type.IsCage())
+
+        switch (hidingSpot.hidingType)
         {
-            if (NavMesh.SamplePosition(idealHidingPos, out NavMeshHit hit, 1.5f, NavMesh.AllAreas))
+            case Hiding_Spots.HidingType.BehindCover:
+                {
+
+                    targetPosition = hidingSpotPosition - toPlayer * 0.35f;
+                    break;
+                }
+            case Hiding_Spots.HidingType.InsideCover:
+                {
+
+                    targetPosition = hidingSpotPosition;
+                    break;
+                }
+            case Hiding_Spots.HidingType.Underneath:
+                {
+
+                    targetPosition = hidingSpotPosition - toPlayer * 0.15f;
+                    break;
+                }
+            case Hiding_Spots.HidingType.Shelf:
+                {
+
+                    targetPosition = hidingSpotPosition - toPlayer * 0.35f;
+                    //targetPosition = CalculateSafeOffsetForShelf(hidingSpot, npc);
+                    break;
+                }
+            default:
+                {
+                    // Fallback: use BehindCover behavior.
+                    targetPosition = hidingSpotPosition - toPlayer * 0.35f;
+                    break;
+                }
+        }
+
+        // If the bean is not near the target and the spot is not a cage, move toward the target.
+        if (Vector3.Distance(npc.transform.position, targetPosition) > 0.2f && !hidingSpot.IsCage())
+        {
+            if (NavMesh.SamplePosition(targetPosition, out NavMeshHit hit, 1.5f, NavMesh.AllAreas))
             {
                 npc.MoveTo(hit.position);
             }
         }
-        else if(type.IsCage())
+        else if (hidingSpot.IsCage())
         {
-            npc.MoveTo(type.transform.position);
+            npc.MoveTo(hidingSpot.transform.position);
         }
 
-        //npc.setHiding(true);
-
-        // Ensure movment does not mess with hiding 
+        // If the player is very close, keep the bean hidden.
         if (distanceToPlayer < npc.runRange)
         {
-            return; // Stay hidden if player is close
+            return;
         }
 
-        if (!activeTimers.ContainsKey(npc) && type.IsTrap())
+        // Additional timing logic for switching hiding spots.
+        if (!activeTimers.ContainsKey(npc) && hidingSpot.IsTrap())
         {
             beansToSwitch.Add(npc);
             activeTimers[npc] = Time.time + 10;
         }
-
-        if (!activeTimers.ContainsKey(npc) && type.IsCage())
+        if (!activeTimers.ContainsKey(npc) && hidingSpot.IsCage())
         {
-            //beansToSwitch.Add(npc);
-           // activeTimers[npc] = Time.time + 10;
+            // Additional cage-specific logic (if needed).
         }
-
-        //limit number of beans that can switch
-        if (!activeTimers.ContainsKey(npc) && beansToSwitch.Count < maxBeansToSwitch && !recentlySwitched.Contains(npc) && !type.IsTrap()&&!type.IsCage())
+        if (!activeTimers.ContainsKey(npc) && beansToSwitch.Count < maxBeansToSwitch &&
+            !recentlySwitched.Contains(npc) && !hidingSpot.IsTrap() && !hidingSpot.IsCage())
         {
             beansToSwitch.Add(npc);
             activeTimers[npc] = Time.time + Random.Range(hidingDurationMin, hidingDurationMax);
         }
 
-
-
-
-
-        // track timers for selected beanss
+        // Check timers and reassign hiding spots if necessary.
         if (activeTimers.ContainsKey(npc))
         {
-
-
             if (Time.time >= activeTimers[npc])
             {
-                // Debug.Log($"[AIManager] {npc.gameObject.name} switching to a new hiding spot.");
-                //npc.setHiding(false);
-                AssignNewHidingSpot(npc, false);
-
+                ReleaseCurrentHidingSpot(npc, teleportIfShelf: true); // Explicitly release spot here with teleport check
+                AssignNewHidingSpot(npc, false); // Explicitly assign new spot afterward
                 npc.playedOnce = false;
-
                 npc.animator.Play(npc.looping);
-
-
-
-                // this bean just moved
                 recentlySwitched.Add(npc);
-
-                // Remove from timers & switch list after moving
                 activeTimers.Remove(npc);
                 beansToSwitch.Remove(npc);
-
-                //Remove from recently moved list after a cooldown
-                StartCoroutine(RemoveFromRecentlySwitched(npc, Random.Range(5f, 15f))); // Adjust cooldown time
+                StartCoroutine(RemoveFromRecentlySwitched(npc, Random.Range(5f, 15f)));
             }
         }
     }
+
+    private Vector3 CalculateSafeOffsetForShelf(Hiding_Spots shelfSpot, NPC_AI npc)
+    {
+        Vector3 shelfPos = shelfSpot.transform.position;
+        Vector3 playerPos = AIManager.Instance.GetPlayerPosition();
+        
+        playerPos.y = shelfPos.y;
+        Vector3 toPlayer = (playerPos - shelfPos).normalized;
+        float offsetDistance = 0.35f; 
+        return shelfPos - toPlayer * offsetDistance;
+    }
+
+
+
+
 
     // remove beanss from the recently switched list after a cooldown
     private IEnumerator RemoveFromRecentlySwitched(NPC_AI npc, float delay)
@@ -1147,7 +1337,7 @@ public class AIManager : MonoBehaviour
 
         for (int i = 0; i < count; i++)
         {
-            Vector3 spawnPosition = GetRandomNavMeshPosition();
+            Vector3 spawnPosition = AIManager.Instance.GetRandomNavMeshPosition();
             if (spawnPosition == Vector3.zero)
             {
                // Debug.LogError("[AIManager] No valid spawn location found!");

@@ -304,6 +304,8 @@ MonoBehaviour:
   holdHeightOffset: 0
   holdWidthOffset: 0.5
   pickupCooldown: 0.1
+  canRelease: 1
+  isHeld: 0
 --- !u!114 &-5769220843917721868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,6 +336,7 @@ MonoBehaviour:
   nonLooping: Take 002
   playedOnce: 0
   state: 0
+  inflated: 0
 --- !u!114 &147706845232554040
 MonoBehaviour:
   m_ObjectHideFlags: 0
