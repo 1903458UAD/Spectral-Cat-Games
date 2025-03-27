@@ -62,6 +62,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private EventReference startFX;
     [SerializeField] private EventReference exitFX;
 
+    public int restart = 0;
+
     private void Awake() // When instance is being loaded
     {
         if (Instance == null) //If no instance of the UIManager exists
@@ -236,6 +238,8 @@ public class UIManager : MonoBehaviour
 
     public void NextDayButton()
     {
+        restart = 1;
+
         string sceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(sceneName);
        
