@@ -168,7 +168,7 @@ public class PlayerInteraction : MonoBehaviour
                 if (syrupBottle != null)
                 {
 
-                    SyrupSquirtyLid lidPress = hitObject.GetComponentInChildren<SyrupSquirtyLid>();
+                   
 
                     if (hitObject.CompareTag("SyrupPeanutButter"))
                     {
@@ -191,10 +191,7 @@ public class PlayerInteraction : MonoBehaviour
                         return;
                     }
 
-                    if (lidPress != null)
-                    {
-                        lidPress.PressSquirter();
-                    }
+          
                 }
 
                 if (powercut != null)
