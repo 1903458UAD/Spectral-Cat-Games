@@ -259,15 +259,15 @@ public class UIManager : MonoBehaviour
         Debug.Log(StaticData.incomePassed);
     }
 
-    public void UpdateCustomerOrder(int requiredBeans)
+    public void UpdateCustomerOrder(int requiredBeans, string syrup)
     {
         if (requiredBeans == 1) //Correct wording when using 1 "bean" instead of multiple "beans"
         {
-            customerOrderText.text = $"Customer wants a coffee made with {requiredBeans} Bean";
+            customerOrderText.text = $"Order Coffee Strength: {requiredBeans} Bean with Syrup: {syrup}";
         }
         else
         {
-            customerOrderText.text = $"Customer wants a coffee made with {requiredBeans} Beans";
+            customerOrderText.text = $"Order Coffee Strength: {requiredBeans} Beans with Syrup: {syrup}";
         }
     }
 

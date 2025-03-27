@@ -46,11 +46,11 @@ public class Hiding_Spots : MonoBehaviour
         {
             occupancy++;
             currentOccupancy = occupancy;
-            Debug.Log($"[Hiding_Spots] {gameObject.name} occupancy increased: {occupancy}/{MaxOccupancy}");
+            //Debug.Log($"[Hiding_Spots] {gameObject.name} occupancy increased: {occupancy}/{MaxOccupancy}");
         }
         else
         {
-            Debug.LogWarning($"[Hiding_Spots] {gameObject.name} is already at max occupancy!");
+           // Debug.LogWarning($"[Hiding_Spots] {gameObject.name} is already at max occupancy!");
         }
     }
 
@@ -61,11 +61,11 @@ public class Hiding_Spots : MonoBehaviour
         {
             occupancy--;
             currentOccupancy = occupancy;
-            Debug.Log($"[Hiding_Spots] {gameObject.name} occupancy decreased: {occupancy}/{MaxOccupancy}");
+            //Debug.Log($"[Hiding_Spots] {gameObject.name} occupancy decreased: {occupancy}/{MaxOccupancy}");
         }
         else
         {
-            Debug.LogWarning($"[Hiding_Spots] {gameObject.name} occupancy is already zero!");      
+            //Debug.LogWarning($"[Hiding_Spots] {gameObject.name} occupancy is already zero!");      
         }
     }
 
@@ -134,7 +134,7 @@ public class Hiding_Spots : MonoBehaviour
         }
         else
         {
-            Debug.Log("Cannot add more beans! Cage is full.");
+            //Debug.Log("Cannot add more beans! Cage is full.");
         }
 
     }
@@ -143,14 +143,14 @@ public class Hiding_Spots : MonoBehaviour
     {
         occupancy = count;
         currentOccupancy = occupancy;
-        Debug.Log($"[Hiding_Spots] {gameObject.name} occupancy set to: {occupancy}/{MaxOccupancy}");
+        //Debug.Log($"[Hiding_Spots] {gameObject.name} occupancy set to: {occupancy}/{MaxOccupancy}");
     }
 
     public void ResetHidingSpot()
     {
         occupancy = 0;  // Clear any NPCs marked inside
         currentOccupancy = occupancy;
-        Debug.Log($"[Hiding_Spots] {gameObject.name} reset to empty.");
+        //Debug.Log($"[Hiding_Spots] {gameObject.name} reset to empty.");
     }
 
 
