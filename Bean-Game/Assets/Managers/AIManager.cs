@@ -617,7 +617,7 @@ public class AIManager : MonoBehaviour
                 iterations++;
                 if (iterations > maxIterations)
                 {
-                    Debug.LogWarning($"[AIManager] {npc.gameObject.name} exceeded maximum iterations waiting for destination {nodeData.position}. Exiting loop.");
+                    //Debug.LogWarning($"[AIManager] {npc.gameObject.name} exceeded maximum iterations waiting for destination {nodeData.position}. Exiting loop.");
                     break;
                 }
                 yield return null;

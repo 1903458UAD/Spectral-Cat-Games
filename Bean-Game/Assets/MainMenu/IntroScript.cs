@@ -19,6 +19,7 @@ public class IntroScript : MonoBehaviour
     public float animLength;
 
     public PowerCutScript PowerCut;
+    public FirstPersonLook fpLook;
     
     #endregion
 
@@ -50,10 +51,12 @@ public class IntroScript : MonoBehaviour
     {
         yield return new WaitForSeconds(animLength);
 
+
         PowerCut.InitialShutOff();
         anim.enabled = false;
         menuCamera.enabled = false;
         playerCamera.enabled = true;
+        fpLook.cameraControl = true;
 
         UIManager.Instance.ShowGameplayUI();
     }
