@@ -38,6 +38,7 @@ public class AIManager : MonoBehaviour
 
     public float minDistanceFromShelf = .01f;
 
+    private Dictionary<NPC_AI, float> lastSwitchTime = new Dictionary<NPC_AI, float>();
 
 
     public float maxRunTime = 8f; // Maximum timea bean is allowed to run continuously
@@ -474,28 +475,21 @@ public class AIManager : MonoBehaviour
         // If the bean is already in Hiding, do nothing.
         if (npc.state == NPC_AI.NPCState.Hiding)
         {
-            Hiding_Spots currentSpot = npc.GetHidingSpot();
-
-            if (currentSpot != null && (currentSpot.hidingType == Hiding_Spots.HidingType.Shelf 
-                || currentSpot.gameObject.CompareTag("Shelf")))
+            // For non-shelf hiding spots (and now for shelf as well), simply check if the bean is near its target.
+            if (npc.GetHidingSpot() != null)
             {
-                // If the bean has moved away from the shelf hiding spot 
-                float distToSpot = Vector3.Distance(npc.transform.position, currentSpot.transform.position);
-
-                if (distToSpot > npc.navMeshAgent.stoppingDistance + 0.3f)
+                float distanceToSpot = Vector3.Distance(npc.transform.position, npc.GetHidingSpot().transform.position);
+                if (distanceToSpot <= npc.navMeshAgent.stoppingDistance + 0.3f)
                 {
-                    // Immediately release the shelf hiding spot with teleportation
-                    npc.state = NPC_AI.NPCState.Idle;
-                    ReleaseCurrentHidingSpot(npc, teleportIfShelf: true);
-       
-                    return;
+                    npc.OnReachedHidingSpot();
                 }
+                // Otherwise, let MaintainCover drive the bean back.
             }
-
             MaintainCover(npc);
             npc.PlayBeanMoveSound(false);
             return;
         }
+
 
         if (distanceToPlayer < npc.runRange)
         {
@@ -778,9 +772,19 @@ public class AIManager : MonoBehaviour
         {
             return;
         }
+        
+        
+        Hiding_Spots currentSpot = npc.GetHidingSpot();
 
+        if (currentSpot != null && (currentSpot.hidingType == Hiding_Spots.HidingType.Shelf || currentSpot.gameObject.CompareTag("Shelf")))
+        {
+            ReleaseCurrentHidingSpot(npc, teleportIfShelf: true);
+        }
+        else
+        {
+            ReleaseCurrentHidingSpot(npc, teleportIfShelf);
+        }
 
-        ReleaseCurrentHidingSpot(npc, teleportIfShelf);
         npc.state = NPC_AI.NPCState.Idle;
 
         if (hidingSpots == null || hidingSpots.Count == 0)
@@ -1161,7 +1165,7 @@ public class AIManager : MonoBehaviour
 
         // Calculate the direction vector from the hiding spot to the player.
         Vector3 toPlayer = (playerPosition - hidingSpotPosition).normalized;
-        Vector3 idealHidingPos = hidingSpotPosition - (toPlayer * 0.35f);
+        Vector3 idealHidingPos = hidingSpotPosition - (toPlayer * 0.25f);
 
         Vector3 targetPosition = Vector3.zero;
         
@@ -1174,7 +1178,7 @@ public class AIManager : MonoBehaviour
             case Hiding_Spots.HidingType.BehindCover:
                 {
 
-                    targetPosition = hidingSpotPosition - toPlayer * 0.35f;
+                    targetPosition = hidingSpotPosition - toPlayer * 0.25f;
                     break;
                 }
             case Hiding_Spots.HidingType.InsideCover:
@@ -1192,14 +1196,14 @@ public class AIManager : MonoBehaviour
             case Hiding_Spots.HidingType.Shelf:
                 {
 
-                    targetPosition = hidingSpotPosition - toPlayer * 0.35f;
+                    targetPosition = hidingSpotPosition - toPlayer * 0.25f;
                     //targetPosition = CalculateSafeOffsetForShelf(hidingSpot, npc);
                     break;
                 }
             default:
                 {
                     // Fallback: use BehindCover behavior.
-                    targetPosition = hidingSpotPosition - toPlayer * 0.35f;
+                    targetPosition = hidingSpotPosition - toPlayer * 0.25f;
                     break;
                 }
         }
@@ -1241,21 +1245,52 @@ public class AIManager : MonoBehaviour
         }
 
         // Check timers and reassign hiding spots if necessary.
-        if (activeTimers.ContainsKey(npc))
-        {
-            if (Time.time >= activeTimers[npc])
-            {
-                ReleaseCurrentHidingSpot(npc, teleportIfShelf: true); // Explicitly release spot here with teleport check
-                AssignNewHidingSpot(npc, false); // Explicitly assign new spot afterward
-                npc.playedOnce = false;
-                npc.animator.Play(npc.looping);
-                recentlySwitched.Add(npc);
-                activeTimers.Remove(npc);
-                beansToSwitch.Remove(npc);
-                StartCoroutine(RemoveFromRecentlySwitched(npc, Random.Range(5f, 15f)));
-            }
-        }
+        //if (activeTimers.ContainsKey(npc))
+        //{
+        //    if (Time.time >= activeTimers[npc])
+        //    {
+        //        ReleaseCurrentHidingSpot(npc, teleportIfShelf: true); // Explicitly release spot here with teleport check
+        //        AssignNewHidingSpot(npc, false); // Explicitly assign new spot afterward
+        //        npc.playedOnce = false;
+        //        npc.animator.Play(npc.looping);
+        //        recentlySwitched.Add(npc);
+        //        activeTimers.Remove(npc);
+        //        beansToSwitch.Remove(npc);
+        //        StartCoroutine(RemoveFromRecentlySwitched(npc, Random.Range(5f, 15f)));
+        //    }
+        //}
     }
+
+    public void TrySwitchHidingSpot(NPC_AI npc)
+    {
+        // Check if at least 10 seconds have passed since the last switch.
+        if (lastSwitchTime.ContainsKey(npc) && Time.time - lastSwitchTime[npc] < 10f)
+            return;
+
+        // Ensure that only up to maxBeansToSwitch are switching.
+        if (beansToSwitch.Count >= maxBeansToSwitch)
+            return;
+
+        // Mark this bean as switching.
+        beansToSwitch.Add(npc);
+
+        // Record the time of the switch.
+        lastSwitchTime[npc] = Time.time;
+
+        // Now release the current hiding spot (with teleport for Shelf types)
+        ReleaseCurrentHidingSpot(npc, teleportIfShelf: true);
+
+        // And assign a new hiding spot (this call can have your usual logic)
+        AssignNewHidingSpot(npc, false);
+
+        // Optionally, trigger animations or sound resets here.
+        npc.playedOnce = false;
+        npc.animator.Play(npc.looping);
+
+        // Remove from switching list after a short delay or immediately.
+        beansToSwitch.Remove(npc);
+    }
+
 
     private Vector3 CalculateSafeOffsetForShelf(Hiding_Spots shelfSpot, NPC_AI npc)
     {
