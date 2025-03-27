@@ -53,7 +53,7 @@ public class CustomerScript : MonoBehaviour
         drive = true;
         orderDelivered = false;
         nextLocation = driveThrough;
-        AudioManager.instance.PlayOneShot(driveUpFX, this.transform.position);
+        AudioManager.instance.PlayOneShot(driveUpFX, driveThrough.transform.position);
 
         int rand = UnityEngine.Random.Range(0, 3);
 
@@ -187,7 +187,7 @@ public class CustomerScript : MonoBehaviour
         }
 
         drive = true;
-        AudioManager.instance.PlayOneShot(driveUpFX, this.transform.position);
+        AudioManager.instance.PlayOneShot(driveUpFX, driveThrough.transform.position);
     }
 
     void DisplayTime()
