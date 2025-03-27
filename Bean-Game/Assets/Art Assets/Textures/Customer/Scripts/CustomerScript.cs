@@ -102,13 +102,13 @@ public class CustomerScript : MonoBehaviour
 
         else if (!orderDelivered)
         {
-            UIManager.Instance.ShowPatienceBar();
             Wait();
         }
         else
         {
             Pay();
             UIManager.Instance.HidePatienceBar();
+            UIManager.Instance.HideReciept();
         }
     }
 
@@ -125,6 +125,8 @@ public class CustomerScript : MonoBehaviour
                 GameManager.Instance.RemoveCustomer(gameObject); // ✅ Moved customer removal to GameManager
             }
 
+            UIManager.Instance.ShowPatienceBar();
+            UIManager.Instance.ShowReciept();
             drive = false;
         }
     }

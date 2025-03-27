@@ -31,6 +31,13 @@ public class UIManager : MonoBehaviour
 
     [Header("Customer Order UI")]
     public TMP_Text customerOrderText; // New UI element to display coffee order
+    public GameObject reciept;
+    public GameObject recieptOverlay;
+
+    public Sprite overlay1;
+    public Sprite overlay2;
+    public Sprite overlay3;
+    public Sprite overlay4;
 
     [Header("Player Lives UI")]
     public Image[] lifeIcons;
@@ -72,7 +79,6 @@ public class UIManager : MonoBehaviour
 
     public GameObject customerMoodlet;
     public GameObject customerPatienceBar;
-    SpriteRenderer sprite;
 
     public GameObject IncomeIcon;
 
@@ -104,10 +110,10 @@ public class UIManager : MonoBehaviour
         SetCrosshairDefault(); //Set the crosshair to default
         HideDayEndScreen();
         HidePatienceBar();
+        HideReciept();
 
         interactKeyText.text = PlayerPrefs.GetString("InteractKey", "Mouse0");
         dropKeyText.text = PlayerPrefs.GetString("DropKey", "Mouse1");
-        sprite = customerMoodlet.GetComponent<SpriteRenderer>();
 
         developerCheats = FindObjectOfType<DeveloperCheats>();
 
@@ -442,6 +448,8 @@ public class UIManager : MonoBehaviour
         if (crosshair != null) crosshair.gameObject.SetActive(true);
         if (incomeText != null) incomeText.gameObject.SetActive(true);
         if (customerOrderText != null) customerOrderText.gameObject.SetActive(true);
+        ShowReciept();
+        ShowPatienceBar();
 
         foreach (Image life in lifeIcons)
         {
@@ -454,6 +462,8 @@ public class UIManager : MonoBehaviour
         if (crosshair != null) crosshair.gameObject.SetActive(false);
         if (incomeText != null) incomeText.gameObject.SetActive(false);
         if (customerOrderText != null) customerOrderText.gameObject.SetActive(false);
+        HideReciept();
+        HidePatienceBar();
 
         foreach (Image life in lifeIcons)
         {
@@ -505,12 +515,50 @@ public class UIManager : MonoBehaviour
 
     public void ShowPatienceBar()
     {
-        customerPatienceBar.gameObject.SetActive(true);
+        customerPatienceBar.SetActive(true);
     }
 
     public void HidePatienceBar()
     {
-        customerPatienceBar.gameObject.SetActive(false);
+        if (customerOrderText != null) customerOrderText.gameObject.SetActive(false);
+        customerPatienceBar.SetActive(false);
+    }
+
+    public void ShowReciept()
+    {
+        int randomNumber = Random.Range(0, 3);
+
+        switch (randomNumber)
+        {
+            case 0:
+                recieptOverlay.GetComponent<Image>().sprite = overlay1;
+                break;
+
+            case 1:
+                recieptOverlay.GetComponent<Image>().sprite = overlay2;
+                break;
+
+            case 2:
+                recieptOverlay.GetComponent<Image>().sprite = overlay3;
+                break;
+
+            case 3:
+                recieptOverlay.GetComponent<Image>().sprite = overlay4;
+                break;
+
+            default:
+                recieptOverlay.GetComponent<Image>().sprite = null;
+                break;
+        }
+
+        reciept.SetActive(true);
+        if (customerOrderText != null) customerOrderText.gameObject.SetActive(true);
+    }
+
+    public void HideReciept()
+    {
+        reciept.SetActive(false);
     }
 }
+
 
