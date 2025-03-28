@@ -103,6 +103,8 @@ public class UIUpgradeManager : MonoBehaviour
 
             currentIconSet = 1;
             iconSet1.SetActive(true);
+            iconSet2.SetActive(false);
+
 
             income = GameManager.Instance.GetIncome();
         }

@@ -158,7 +158,7 @@ public class CustomerScript : MonoBehaviour
         else
         {
             UnityEngine.Debug.Log("[CustomerScript] Customer ran out of patience!");
-            playerHealth.LoseLife();
+            playerHealth.LoseLife("Order not Fulfilled in time");
             nextLocation = exit;
             drive = true;
         }
@@ -170,10 +170,11 @@ public class CustomerScript : MonoBehaviour
         {
             Pay();
         }
+
         else
         {
             Debug.Log("Wrong coffee given! Customer Pissed.");
-            playerHealth?.LoseLife();
+            playerHealth.LoseLife("Wrong Order");
             nextLocation = exit;
             drive = true;
         }

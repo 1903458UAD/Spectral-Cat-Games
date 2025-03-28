@@ -44,6 +44,10 @@ public class UIManager : MonoBehaviour
     public UpgradeData coffeePriceData;
 
     [Header("Player Lives UI")]
+    public GameObject warningSlip;
+    public TMP_Text warningDescription;
+    public TMP_Text livesLeft;
+
     public Image[] lifeIcons;
 
     [Header("Camera Script")]
@@ -116,6 +120,8 @@ public class UIManager : MonoBehaviour
         HideDayEndScreen();
         HidePatienceBar();
         HideReciept();
+
+        warningSlip.SetActive(false);
 
         interactKeyText.text = PlayerPrefs.GetString("InteractKey", "Mouse0");
         dropKeyText.text = PlayerPrefs.GetString("DropKey", "Mouse1");
@@ -418,19 +424,29 @@ public class UIManager : MonoBehaviour
         AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
-    public void UpdateLifeUI(int currentLives)
+    public void UpdateLifeUI(int currentLives, string waringDesc)
     {
-        for (int i = 0; i < lifeIcons.Length; i++)
-        {
-            if (i < currentLives)
-            {
-                lifeIcons[i].color = Color.white; // Represents remaining lives
-            }
-            else
-            {
-                lifeIcons[i].color = Color.red; // Represents lost lives
-            }
-        }
+        warningSlip.SetActive(true);
+        warningDescription.text = $"Description of Infraction: {waringDesc}";
+        livesLeft.text = $"{currentLives} more chances!";
+        Invoke(nameof(HideLifeUI), 3f);
+
+        //for (int i = 0; i < lifeIcons.Length; i++)
+        //{
+        //    if (i < currentLives)
+        //    {
+        //        lifeIcons[i].color = Color.white; // Represents remaining lives
+        //    }
+        //    else
+        //    {
+        //        lifeIcons[i].color = Color.red; // Represents lost lives
+        //    }
+        //}
+    }
+
+    public void HideLifeUI()
+    {
+        warningSlip.SetActive(false);
     }
 
     public void ShowPauseMenu()
