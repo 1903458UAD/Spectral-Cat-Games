@@ -82,6 +82,7 @@ public class UIManager : MonoBehaviour
 
     public GameObject IncomeIcon;
 
+    public UpgradeDataManager upgradeDataManager;
 
     private void Awake() // When instance is being loaded
     {
@@ -166,6 +167,7 @@ public class UIManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         IncomeIcon.SetActive(true);
+        upgradeDataManager.ResetUpgrades();
 
         if (introScript != null)
         {

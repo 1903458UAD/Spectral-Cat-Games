@@ -16,5 +16,6 @@ public class Upgrade : MonoBehaviour
     public string GetUpgradeName() { return upgradeData.upgradeName; }
     public string GetUpgradeDescription() {  return upgradeData.upgradeDescription; }
     public int GetCost() { return upgradeData.cost; }
+    public int GetTier() { return upgradeData.internalBaseTier;}
 
 }

@@ -22,7 +22,7 @@ public class UIUpgradeManager : MonoBehaviour
 
     private Upgrade selectedUpgrade;
 
-    [SerializeField] public UpgradeData[] upgrades;
+   // [SerializeField] public UpgradeData[] upgrades;
     [SerializeField] private EventReference upgradePurchaseFX;
     [SerializeField] private EventReference upgradeFailedFX;
     [SerializeField] private EventReference upgradeSelectFX;
@@ -43,17 +43,7 @@ public class UIUpgradeManager : MonoBehaviour
     {
         if (upgradeMenu != null)
         {
-
-
             upgradeMenu.SetActive(false);
-
-
-            foreach (UpgradeData upgrade in upgrades)
-            {
-                upgrade.ResetUpgrade();
-                //Debug.Log(upgrade.upgradeEnabled);
-
-            }
         }
     }
 
