@@ -10,6 +10,11 @@ using Unity.VisualScripting;
 
 public class NPC_AI : MonoBehaviour
 {
+    [SerializeField] private UpgradeData inflateUpgrade;
+    [SerializeField] private UpgradeData exclamationUpgrade;
+
+    public GameObject spotted;
+
     public NavMeshAgent navMeshAgent;
     private Hiding_Spots currentHidingSpot;
 
@@ -58,7 +63,7 @@ public class NPC_AI : MonoBehaviour
     public NPCState state = NPCState.Idle;
 
     public bool inflated = false;
-
+    public bool alerted = false;
 
 
     // [SerializeField] private EventReference beanMoveSound;
@@ -69,6 +74,7 @@ public class NPC_AI : MonoBehaviour
         beanFootsteps = AudioManager.instance.CreateInstance(FMODEvents.instance.beanFootsteps);
         FMODUnity.RuntimeManager.AttachInstanceToGameObject(beanFootsteps, transform, this);
         animator = GetComponent<Animator>();
+        
 
     }
 
@@ -90,10 +96,16 @@ public class NPC_AI : MonoBehaviour
             return;
         }
 
-        if(StaticData.inflateBean == true && inflated == false)
+        if(inflateUpgrade.internalUpgradeEnabled == true && inflated == false)
         {
-            transform.localScale *= 1.1f;
+            transform.localScale *= inflateUpgrade.baseValue;
             inflated = true;
+        }
+
+        if (exclamationUpgrade.internalUpgradeEnabled == true && alerted == false)
+        {
+            spotted.SetActive(true);
+            alerted = true;
         }
 
 

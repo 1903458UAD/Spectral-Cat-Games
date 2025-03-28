@@ -10,8 +10,12 @@ using Debug = UnityEngine.Debug;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private UpgradeData inflationUpgrade;
+    [SerializeField] private UpgradeData trapUpgrade;
+    [SerializeField] private UpgradeData cageUpgrade;
 
     public GameObject trapHidingSpotPrefab;
+    public GameObject cageSpotPrefab;
 
     public static GameManager Instance { get; private set; }
 
@@ -68,8 +72,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        inflationUpgrade.internalUpgradeEnabled = false;
+        trapUpgrade.internalUpgradeEnabled = false;
+        trapUpgrade.internalBaseValue = 0;
 
         InitializeGame();
+
         Debug.Log("[GameManager] Spawning initial beans...");
 
         SpawnInitialBeans();  // Ensure this is called
@@ -80,12 +88,18 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if(StaticData.trapCheck == true)
+        if(trapUpgrade.internalUpgradeEnabled == true && trapUpgrade.internalBaseValue <= 3)
         {
             SpawnTrapHidingSpot();
 
 
-            StaticData.trapCheck = false;
+            trapUpgrade.internalUpgradeEnabled = false;
+        }
+
+        if (cageUpgrade.internalUpgradeEnabled == true)
+        {
+            SpawnCage();
+            cageUpgrade.internalUpgradeEnabled = false;
         }
     }
 
@@ -272,7 +286,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private Vector3 GetNavMeshPositionNear(Vector3 origin)
+    private void SpawnCage()
+    {
+        Vector3 playerPos = GetPlayerPosition();
+
+        Vector3 spawnPos = new Vector3(1.81799996f, 1.64100003f, -3.1329999f);
+
+        GameObject cage = Instantiate(cageSpotPrefab, spawnPos, Quaternion.identity);
+
+        Hiding_Spots cageSpot = cage.GetComponent<Hiding_Spots>();
+
+        if (cageSpot != null)
+        {
+            cageSpot.hidingType = Hiding_Spots.HidingType.Cage;
+
+            hidingSpots.Add(cageSpot);
+            Debug.Log($"[GameManager] cage hiding spot spawned at {spawnPos}");
+
+        }
+    }
+
+        private Vector3 GetNavMeshPositionNear(Vector3 origin)
     {
         UnityEngine.AI.NavMeshHit hit;
         

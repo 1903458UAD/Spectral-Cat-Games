@@ -20518,7 +20518,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1326512420
 RectTransform:
   m_ObjectHideFlags: 0
@@ -24906,7 +24906,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 55.88507, y: 83.20654}
+  m_AnchoredPosition: {x: 55.88501, y: 83.20654}
   m_SizeDelta: {x: 111.77, y: 338.799}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1655097076
@@ -29379,7 +29379,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1949350639
 RectTransform:
   m_ObjectHideFlags: 0
@@ -30469,7 +30469,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2025661535
 RectTransform:
   m_ObjectHideFlags: 0
@@ -37339,9 +37339,29 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7733263736665386137, guid: 5ffb7c3603600cc4490e9c9f8a500e16, type: 3}
+      propertyPath: cageUpgrade
+      value: 
+      objectReference: {fileID: 11400000, guid: 986d7d7e98f0c6044afba1f27f7af019, type: 2}
+    - target: {fileID: 7733263736665386137, guid: 5ffb7c3603600cc4490e9c9f8a500e16, type: 3}
+      propertyPath: trapUpgrade
+      value: 
+      objectReference: {fileID: 11400000, guid: fae89d385ab6ce84da345601dd5f06f0, type: 2}
+    - target: {fileID: 7733263736665386137, guid: 5ffb7c3603600cc4490e9c9f8a500e16, type: 3}
+      propertyPath: cageSpotPrefab
+      value: 
+      objectReference: {fileID: 673284425409670388, guid: 727c2f4eb83cdf84fae6c9a99122c294, type: 3}
+    - target: {fileID: 7733263736665386137, guid: 5ffb7c3603600cc4490e9c9f8a500e16, type: 3}
+      propertyPath: inflationUpgrade
+      value: 
+      objectReference: {fileID: 11400000, guid: e8631f8d59c2c754ca6ce2e15226d616, type: 2}
+    - target: {fileID: 7733263736665386137, guid: 5ffb7c3603600cc4490e9c9f8a500e16, type: 3}
       propertyPath: customerSpawnPoint
       value: 
       objectReference: {fileID: 1010181284}
+    - target: {fileID: 7733263736665386137, guid: 5ffb7c3603600cc4490e9c9f8a500e16, type: 3}
+      propertyPath: trapHidingSpotPrefab
+      value: 
+      objectReference: {fileID: 673284425409670388, guid: 32e5f3c69b27d2642a00dcc5bd384e1c, type: 3}
     - target: {fileID: 7827396688685678078, guid: 5ffb7c3603600cc4490e9c9f8a500e16, type: 3}
       propertyPath: m_LocalScale.z
       value: 1.1109
