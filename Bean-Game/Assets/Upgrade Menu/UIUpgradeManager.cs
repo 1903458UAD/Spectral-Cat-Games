@@ -17,6 +17,10 @@ public class UIUpgradeManager : MonoBehaviour
     public TMP_Text upgradeDescriptionText;
     public TMP_Text upgradeCostText;
 
+    public GameObject iconSet1;
+    public GameObject iconSet2;
+    public int currentIconSet = 1;
+
     [Header("Camera Script")]
     public MonoBehaviour cameraScript;
 
@@ -45,6 +49,24 @@ public class UIUpgradeManager : MonoBehaviour
         {
             upgradeMenu.SetActive(false);
         }
+    }
+
+    public void OnArrowClick()
+    {
+      if(currentIconSet == 1)
+      {
+          iconSet2.SetActive(true);
+          iconSet1.SetActive(false);
+          currentIconSet = 2;
+      }
+
+      else
+      {
+          iconSet2.SetActive(false);
+          iconSet1.SetActive(true);
+          currentIconSet = 1;
+      }
+      
     }
 
     public void OnUpgradeClick(Upgrade upgrade)
@@ -78,6 +100,9 @@ public class UIUpgradeManager : MonoBehaviour
             UIManager.Instance.HideGameplayUI();
             incomeText.text = string.Format("{0}", GameManager.Instance.GetIncome());
             upgradeMenu.SetActive(true);
+
+            currentIconSet = 1;
+            iconSet1.SetActive(true);
 
             income = GameManager.Instance.GetIncome();
         }
