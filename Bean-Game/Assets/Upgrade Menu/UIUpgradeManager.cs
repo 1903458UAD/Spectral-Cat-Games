@@ -17,12 +17,16 @@ public class UIUpgradeManager : MonoBehaviour
     public TMP_Text upgradeDescriptionText;
     public TMP_Text upgradeCostText;
 
+    public GameObject iconSet1;
+    public GameObject iconSet2;
+    public int currentIconSet = 1;
+
     [Header("Camera Script")]
     public MonoBehaviour cameraScript;
 
     private Upgrade selectedUpgrade;
 
-    [SerializeField] public UpgradeData[] upgrades;
+   // [SerializeField] public UpgradeData[] upgrades;
     [SerializeField] private EventReference upgradePurchaseFX;
     [SerializeField] private EventReference upgradeFailedFX;
     [SerializeField] private EventReference upgradeSelectFX;
@@ -43,18 +47,26 @@ public class UIUpgradeManager : MonoBehaviour
     {
         if (upgradeMenu != null)
         {
-
-
             upgradeMenu.SetActive(false);
-
-
-            foreach (UpgradeData upgrade in upgrades)
-            {
-                upgrade.ResetUpgrade();
-                //Debug.Log(upgrade.upgradeEnabled);
-
-            }
         }
+    }
+
+    public void OnArrowClick()
+    {
+      if(currentIconSet == 1)
+      {
+          iconSet2.SetActive(true);
+          iconSet1.SetActive(false);
+          currentIconSet = 2;
+      }
+
+      else
+      {
+          iconSet2.SetActive(false);
+          iconSet1.SetActive(true);
+          currentIconSet = 1;
+      }
+      
     }
 
     public void OnUpgradeClick(Upgrade upgrade)
@@ -68,7 +80,7 @@ public class UIUpgradeManager : MonoBehaviour
     {
         upgradeNameText.text = selectedUpgrade.GetUpgradeName();
         upgradeDescriptionText.text = selectedUpgrade.GetUpgradeDescription();
-        upgradeCostText.text = string.Format("�{0}", selectedUpgrade.GetCost());
+        upgradeCostText.text = string.Format("{0}", selectedUpgrade.GetCost());
     }
 
 
@@ -86,8 +98,13 @@ public class UIUpgradeManager : MonoBehaviour
 
             Time.timeScale = 0f;
             UIManager.Instance.HideGameplayUI();
-            incomeText.text = string.Format("�{0}", GameManager.Instance.GetIncome());
+            incomeText.text = string.Format("{0}", GameManager.Instance.GetIncome());
             upgradeMenu.SetActive(true);
+
+            currentIconSet = 1;
+            iconSet1.SetActive(true);
+            iconSet2.SetActive(false);
+
 
             income = GameManager.Instance.GetIncome();
         }
@@ -121,7 +138,7 @@ public class UIUpgradeManager : MonoBehaviour
             if (selectedUpgrade.GetCost() <= income)
             {
                income = selectedUpgrade.ApplyUpgrade(income);
-               incomeText.text = string.Format("�{0}", income);
+               incomeText.text = string.Format("{0}", income);
                AudioManager.instance.PlayOneShot(upgradePurchaseFX, this.transform.position);
             }
             else

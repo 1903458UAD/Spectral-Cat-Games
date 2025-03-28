@@ -264,6 +264,8 @@ MonoBehaviour:
   holdHeightOffset: 0
   holdWidthOffset: 0.5
   pickupCooldown: 0.1
+  canRelease: 1
+  isHeld: 0
 --- !u!114 &8221751553071798520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -276,6 +278,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e919348c71a67440b44f479f2dc1826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inflateUpgrade: {fileID: 11400000, guid: e8631f8d59c2c754ca6ce2e15226d616, type: 2}
+  exclamationUpgrade: {fileID: 11400000, guid: 1950012f4918e514680a3e95258d8cd2, type: 2}
+  spotted: {fileID: 8588016583301770929, guid: a287c8acb8cd8144998f7e86ff30712b, type: 3}
   navMeshAgent: {fileID: 6431538203433792566}
   runRange: 2
   escaping: 0
@@ -287,7 +292,15 @@ MonoBehaviour:
   hasEscapedOnce: 0
   initialHidingAssigned: 0
   hasReachedRouteEnd: 0
+  animator: {fileID: 0}
+  loopingClip: {fileID: 0}
+  nonLoopingClip: {fileID: 0}
+  looping: Take 001
+  nonLooping: Take 002
+  playedOnce: 0
   state: 0
+  inflated: 0
+  alerted: 0
 --- !u!114 &-2607984906849159018
 MonoBehaviour:
   m_ObjectHideFlags: 0
