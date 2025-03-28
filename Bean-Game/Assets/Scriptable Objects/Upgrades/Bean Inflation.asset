@@ -12,16 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43cc78156c55170449f4a6ce73befc9c, type: 3}
   m_Name: Bean Inflation
   m_EditorClassIdentifier: 
-  upgradeName: Traps
-  technicalName: Mouse Traps
-  upgradeDescription: We've never caught a mouse with these traps so hopefully they
-    can catch beans instead.
-  cost: 2000
+  upgradeName: Bean Inflation
+  technicalName: Inflate
+  upgradeDescription: The devs must have added a second one by mistake, right?
+  cost: 1500
   baseValue: 1
-  increaseValue: 0.1
+  increaseValue: 1
   tier: 0
   maxTier: 1
   upgradeEnabled: 1
   internalBaseValue: 1
-  internalBaseTier: 0
+  internalBaseTier: 1
   internalUpgradeEnabled: 1

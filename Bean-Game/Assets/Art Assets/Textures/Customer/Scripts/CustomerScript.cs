@@ -8,6 +8,7 @@ public class CustomerScript : MonoBehaviour
 {
     [SerializeField] private UpgradeData upgradeData;
     [SerializeField] private UpgradeData tipUpgrade;
+    [SerializeField] private UpgradeData coffeePriceUpgrade;
 
     private GameObject player;
     public GameObject driveThrough;
@@ -180,7 +181,7 @@ public class CustomerScript : MonoBehaviour
 
     public void Pay()
     {
-        float income = 100.0f;
+        float income = coffeePriceUpgrade.internalBaseValue;
 
         if (initialTimer - patienceTimer <= tipTime)
         {

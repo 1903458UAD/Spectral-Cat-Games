@@ -6,6 +6,7 @@ using System.Collections;
 using FMODUnity;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
+using UnityEngine.SocialPlatforms;
 
 public class UIManager : MonoBehaviour
 {
@@ -38,6 +39,9 @@ public class UIManager : MonoBehaviour
     public Sprite overlay2;
     public Sprite overlay3;
     public Sprite overlay4;
+
+    public TMP_Text coffeePrice; 
+    public UpgradeData coffeePriceData;
 
     [Header("Player Lives UI")]
     public Image[] lifeIcons;
@@ -555,6 +559,7 @@ public class UIManager : MonoBehaviour
 
         reciept.SetActive(true);
         if (customerOrderText != null) customerOrderText.gameObject.SetActive(true);
+        coffeePrice.text = string.Format("{0}", coffeePriceData.internalBaseValue);
     }
 
     public void HideReciept()

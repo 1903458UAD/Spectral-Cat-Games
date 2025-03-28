@@ -12911,7 +12911,7 @@ PrefabInstance:
     - target: {fileID: 8048286646647513308, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
       propertyPath: upgradeData
       value: 
-      objectReference: {fileID: 11400000, guid: 6832acb0dc7d6c542a967bd20ae735a3, type: 2}
+      objectReference: {fileID: 11400000, guid: a9a46982ab2035d469756031c68dfd14, type: 2}
     - target: {fileID: 8048286646647513308, guid: e625f5df662b0a14a8c9c7d65f142122, type: 3}
       propertyPath: parameterName
       value: Activate Bass
@@ -24405,7 +24405,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 5.814}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 28.1, y: -114.8}
+  m_AnchoredPosition: {x: 22.9, y: -115.7}
   m_SizeDelta: {x: 135.3089, y: 100.7344}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1663371630
@@ -24428,7 +24428,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: KYS!
+  m_text: PRICE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 42fbe02c20cd2c942821e86af613438c, type: 2}
   m_sharedMaterial: {fileID: -2522993248981552784, guid: 42fbe02c20cd2c942821e86af613438c, type: 2}
@@ -28719,7 +28719,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1949350639
 RectTransform:
   m_ObjectHideFlags: 0
@@ -37390,6 +37390,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8006590190938990795, guid: c329068809f49224cac66596156c921e, type: 3}
+      propertyPath: coffeePrice
+      value: 
+      objectReference: {fileID: 1663371630}
+    - target: {fileID: 8006590190938990795, guid: c329068809f49224cac66596156c921e, type: 3}
       propertyPath: dropKeyText
       value: 
       objectReference: {fileID: 486519863}
@@ -37441,6 +37445,10 @@ PrefabInstance:
       propertyPath: recieptOverlay
       value: 
       objectReference: {fileID: 515452815}
+    - target: {fileID: 8006590190938990795, guid: c329068809f49224cac66596156c921e, type: 3}
+      propertyPath: coffeePriceData
+      value: 
+      objectReference: {fileID: 11400000, guid: 6832acb0dc7d6c542a967bd20ae735a3, type: 2}
     - target: {fileID: 8006590190938990795, guid: c329068809f49224cac66596156c921e, type: 3}
       propertyPath: customerMoodlet
       value: 
