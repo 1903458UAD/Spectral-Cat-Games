@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Scene Elements")]
 
-    public List<NavNode> navNodes = new List<NavNode>();
+  
 
 
     [Header("Bean Management")]
@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     public GameObject customerPrefab;
     public GameObject customerSpawnPoint;
     private List<GameObject> activeCustomers = new List<GameObject>();
-    public float nodeConnectionRadius = 3.0f;
+    
     [SerializeField] private int orderQuota;
     public int servedCustomers;
 
@@ -80,9 +80,7 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("[GameManager] Spawning initial beans...");
 
-        AIManager.Instance.GatherShelfColliders();
 
-        AIManager.Instance.GatherShelfPositions();
 
         SpawnInitialBeans();  // Ensure this is called
         GameManager.Instance.SetIncome(StaticData.incomePassed);
@@ -116,22 +114,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    void FindAllNavNodes()
-    {
-        navNodes.Clear();
-
-        navNodes = new List<NavNode>(FindObjectsOfType<NavNode>());
-
-        if (navNodes.Count == 0)
-        {
-            Debug.LogError("[GameManager] No NavNodes found in the scene! NPCs cannot move.");
-        }
-        else
-        {
-            Debug.Log($"[GameManager] Found {navNodes.Count} NavNodes.");
-        }
-
-    }
+    
 
     private void SpawnInitialBeans()
     {
@@ -150,7 +133,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        Vector3 spawnPos = GetRandomNavMeshPosition();
+        Vector3 spawnPos = AIManager.Instance.GetRandomSpawnPositionUsingNodes();
         if (spawnPos == Vector3.zero)
         {
             Debug.LogError("[GameManager] Failed to find a valid spawn position.");
@@ -199,7 +182,7 @@ public class GameManager : MonoBehaviour
 
     private Vector3 GetRandomNavMeshPosition()
     {
-        return AIManager.Instance.GetRandomNavMeshPosition();  //AIManager now handles nav positions
+        return AIManager.Instance.GetRandomSpawnPositionUsingNodes();  //AIManager now handles nav positions
     }
 
     public void CheckOrderQuota()
@@ -271,10 +254,7 @@ public class GameManager : MonoBehaviour
         customersServed++;
     }
 
-    public List<NavNode> GetNavNodes()
-    {
-        return navNodes;
-    }
+    
 
     public Vector3 GetPlayerPosition()
     {
@@ -351,13 +331,7 @@ public class GameManager : MonoBehaviour
 
 
 
-    void DebugNavNodes()
-    {
-        foreach (NavNode node in navNodes)
-        {
-            //Debug.Log("[Debug] " + node.name + " has " + node.connectedNodes.Count + " connections.");
-        }
-    }
+  
 }
 
 
