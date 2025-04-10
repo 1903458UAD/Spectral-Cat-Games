@@ -17,7 +17,7 @@ public class PlayerHealth : MonoBehaviour
     }
 
    
-    public void LoseLife() // Reduce player health (Called when get an order wrong)
+    public void LoseLife(string lifeLossDesc) // Reduce player health (Called when get an order wrong)
     {
    
         Debug.Log("Player lost a life! Remaining lives: " + currentLives);
@@ -25,7 +25,7 @@ public class PlayerHealth : MonoBehaviour
         if (currentLives > 0)
         {
             currentLives--;
-            UpdateLifeUI();
+            UpdateLifeUI(lifeLossDesc);
         }
         if (currentLives <= 0)
         {
@@ -34,9 +34,9 @@ public class PlayerHealth : MonoBehaviour
     }
 
 
-    void UpdateLifeUI()
+    void UpdateLifeUI(string lifeLossDesc)
     {
-        UIManager.Instance.UpdateLifeUI(currentLives);
+        UIManager.Instance.UpdateLifeUI(currentLives, lifeLossDesc);
     }
 
     private void GameOver()

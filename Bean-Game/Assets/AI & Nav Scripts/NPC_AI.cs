@@ -10,6 +10,11 @@ using Unity.VisualScripting;
 
 public class NPC_AI : MonoBehaviour
 {
+    [SerializeField] private UpgradeData inflateUpgrade;
+    [SerializeField] private UpgradeData exclamationUpgrade;
+
+    public GameObject spotted;
+
     public NavMeshAgent navMeshAgent;
     private Hiding_Spots currentHidingSpot;
 
@@ -58,7 +63,9 @@ public class NPC_AI : MonoBehaviour
     public NPCState state = NPCState.Idle;
 
     public bool inflated = false;
+    public bool alerted = false;
 
+    public float maxVerticalDifference = 0.2f;
 
 
     // [SerializeField] private EventReference beanMoveSound;
@@ -70,6 +77,7 @@ public class NPC_AI : MonoBehaviour
         FMODUnity.RuntimeManager.AttachInstanceToGameObject(beanFootsteps, transform, this);
         animator = GetComponent<Animator>();
 
+        AIManager.Instance.AssignNewHidingSpot(this, false);
     }
 
     private void Awake()
@@ -90,10 +98,16 @@ public class NPC_AI : MonoBehaviour
             return;
         }
 
-        if(StaticData.inflateBean == true && inflated == false)
+        if(inflateUpgrade.internalUpgradeEnabled == true && inflated == false)
         {
-            transform.localScale *= 1.1f;
+            transform.localScale *= inflateUpgrade.baseValue;
             inflated = true;
+        }
+
+        if (exclamationUpgrade.internalUpgradeEnabled == true && alerted == false)
+        {
+            spotted.SetActive(true);
+            alerted = true;
         }
 
 
@@ -124,7 +138,27 @@ public class NPC_AI : MonoBehaviour
 
         if (navMeshAgent.isOnNavMesh)
         {
-            navMeshAgent.SetDestination(destination);
+            NavMeshHit hit;
+
+
+            float targetY = (currentHidingSpot != null) ? currentHidingSpot.transform.position.y : destination.y;
+           
+            Vector3 samplePosition = new Vector3(destination.x, targetY, destination.z);
+            
+            float maxVerticalDifference = 0.5f;  // adjust as needed
+
+            if (NavMesh.SamplePosition(samplePosition, out hit, 2.0f, NavMesh.AllAreas))
+            {
+                if (Mathf.Abs(hit.position.y - samplePosition.y) <= maxVerticalDifference)
+                {
+                    navMeshAgent.SetDestination(hit.position);
+                }
+                else
+                {
+                    Vector3 adjustedTarget = new Vector3(hit.position.x, samplePosition.y, hit.position.z);
+                    navMeshAgent.SetDestination(adjustedTarget);
+                }
+            }
         }
     }
 
@@ -262,6 +296,32 @@ public class NPC_AI : MonoBehaviour
     {
         return isPickedUp;
     }
+
+
+    // method to check if the bean is on a shelf and to get an off-shelf target.
+    public bool IsOnShelf()
+    {
+        // Check if a small sphere around the bean's position overlaps any collider tagged "Shelf"
+        Collider[] hits = Physics.OverlapSphere(transform.position, 0.5f);
+        foreach (Collider hit in hits)
+        {
+            if (hit.CompareTag("Shelf"))
+                return true;
+        }
+        return false;
+    }
+
+    public Vector3 GetOffShelfTarget()
+    {
+        RaycastHit hit;
+        // Cast a ray downward from the bean's position.
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 5f))
+        {
+            return hit.point;
+        }
+        return transform.position;
+    }
+
 
     private void OnDestroy()
     {

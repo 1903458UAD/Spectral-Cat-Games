@@ -10,14 +10,18 @@ using Debug = UnityEngine.Debug;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private UpgradeData inflationUpgrade;
+    [SerializeField] private UpgradeData trapUpgrade;
+    [SerializeField] private UpgradeData cageUpgrade;
 
     public GameObject trapHidingSpotPrefab;
+    public GameObject cageSpotPrefab;
 
     public static GameManager Instance { get; private set; }
 
     [Header("Scene Elements")]
 
-    public List<NavNode> navNodes = new List<NavNode>();
+  
 
 
     [Header("Bean Management")]
@@ -33,7 +37,7 @@ public class GameManager : MonoBehaviour
     public GameObject customerPrefab;
     public GameObject customerSpawnPoint;
     private List<GameObject> activeCustomers = new List<GameObject>();
-    public float nodeConnectionRadius = 3.0f;
+    
     [SerializeField] private int orderQuota;
     public int servedCustomers;
 
@@ -68,9 +72,15 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        inflationUpgrade.internalUpgradeEnabled = false;
+        trapUpgrade.internalUpgradeEnabled = false;
+        trapUpgrade.internalBaseValue = 0;
 
         InitializeGame();
+
         Debug.Log("[GameManager] Spawning initial beans...");
+
+
 
         SpawnInitialBeans();  // Ensure this is called
         GameManager.Instance.SetIncome(StaticData.incomePassed);
@@ -80,12 +90,18 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if(StaticData.trapCheck == true)
+        if(trapUpgrade.internalUpgradeEnabled == true && trapUpgrade.internalBaseValue <= 3)
         {
             SpawnTrapHidingSpot();
 
 
-            StaticData.trapCheck = false;
+            trapUpgrade.internalUpgradeEnabled = false;
+        }
+
+        if (cageUpgrade.internalUpgradeEnabled == true)
+        {
+            SpawnCage();
+            cageUpgrade.internalUpgradeEnabled = false;
         }
     }
 
@@ -98,22 +114,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    void FindAllNavNodes()
-    {
-        navNodes.Clear();
-
-        navNodes = new List<NavNode>(FindObjectsOfType<NavNode>());
-
-        if (navNodes.Count == 0)
-        {
-            Debug.LogError("[GameManager] No NavNodes found in the scene! NPCs cannot move.");
-        }
-        else
-        {
-            Debug.Log($"[GameManager] Found {navNodes.Count} NavNodes.");
-        }
-
-    }
+    
 
     private void SpawnInitialBeans()
     {
@@ -132,7 +133,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        Vector3 spawnPos = GetRandomNavMeshPosition();
+        Vector3 spawnPos = AIManager.Instance.GetRandomSpawnPositionUsingNodes();
         if (spawnPos == Vector3.zero)
         {
             Debug.LogError("[GameManager] Failed to find a valid spawn position.");
@@ -153,6 +154,27 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        Collider[] hitColliders = Physics.OverlapSphere(beanObj.transform.position, 0.5f);
+        bool tooClose = false;
+        foreach (Collider col in hitColliders)
+        {
+            if (col.CompareTag("Shelf"))
+            {
+                tooClose = true;
+                break;
+            }
+        }
+
+        if (tooClose)
+        {
+            Vector3 newPos = GetRandomNavMeshPosition();
+            // Optionally, you might loop a few times until a valid position is found.
+            beanObj.transform.position = newPos;
+            beanAI.navMeshAgent.Warp(newPos);
+            Debug.Log("[GameManager] Bean repositioned away from shelf.");
+        }
+
+
         Debug.Log($"[GameManager] Spawned bean at {spawnPos}");
         AIManager.Instance.RegisterNPC(beanAI);
 
@@ -160,7 +182,7 @@ public class GameManager : MonoBehaviour
 
     private Vector3 GetRandomNavMeshPosition()
     {
-        return AIManager.Instance.GetRandomNavMeshPosition();  //AIManager now handles nav positions
+        return AIManager.Instance.GetRandomSpawnPositionUsingNodes();  //AIManager now handles nav positions
     }
 
     public void CheckOrderQuota()
@@ -232,10 +254,7 @@ public class GameManager : MonoBehaviour
         customersServed++;
     }
 
-    public List<NavNode> GetNavNodes()
-    {
-        return navNodes;
-    }
+    
 
     public Vector3 GetPlayerPosition()
     {
@@ -272,7 +291,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private Vector3 GetNavMeshPositionNear(Vector3 origin)
+    private void SpawnCage()
+    {
+        Vector3 playerPos = GetPlayerPosition();
+
+        Vector3 spawnPos = new Vector3(1.81799996f, 1.64100003f, -3.1329999f);
+
+        GameObject cage = Instantiate(cageSpotPrefab, spawnPos, Quaternion.identity);
+
+        Hiding_Spots cageSpot = cage.GetComponent<Hiding_Spots>();
+
+        if (cageSpot != null)
+        {
+            cageSpot.hidingType = Hiding_Spots.HidingType.Cage;
+
+            hidingSpots.Add(cageSpot);
+            Debug.Log($"[GameManager] cage hiding spot spawned at {spawnPos}");
+
+        }
+    }
+
+        private Vector3 GetNavMeshPositionNear(Vector3 origin)
     {
         UnityEngine.AI.NavMeshHit hit;
         
@@ -292,13 +331,7 @@ public class GameManager : MonoBehaviour
 
 
 
-    void DebugNavNodes()
-    {
-        foreach (NavNode node in navNodes)
-        {
-            //Debug.Log("[Debug] " + node.name + " has " + node.connectedNodes.Count + " connections.");
-        }
-    }
+  
 }
 
 
