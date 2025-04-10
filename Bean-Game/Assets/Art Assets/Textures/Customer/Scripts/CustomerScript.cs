@@ -148,11 +148,13 @@ public class CustomerScript : MonoBehaviour
                 if (initialTimer - patienceTimer > tipTime)
                 { 
                     UIManager.Instance.setMoodlet("bored");
+                    AudioManager.instance.SetAmbianceParameter("Activate CMel", 1);
                 }
 
                 if (patienceTimer < initialTimer * 0.30)
                 {
                     UIManager.Instance.setMoodlet("angry");
+                    AudioManager.instance.SetAmbianceParameter("Activate CMel", 2);
                 }
             
 
