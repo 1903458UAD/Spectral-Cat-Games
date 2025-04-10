@@ -19,7 +19,7 @@ public class AgentLinkMover : MonoBehaviour
     IEnumerator Start()
     {
         NavMeshAgent agent = GetComponent<NavMeshAgent>();
-        agent.autoTraverseOffMeshLink = false;
+        agent.autoTraverseOffMeshLink = true;
         while (true)
         {
             if (agent.isOnOffMeshLink)

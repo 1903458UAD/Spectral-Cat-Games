@@ -70,6 +70,10 @@ public class AIManager : MonoBehaviour
     private List<Transform> shelfPositions = new List<Transform>();
 
 
+    private float globalSwitchCycleTimer = 0f;
+    private float lastGlobalCountdownDebug = 0f;
+
+
 
     private GameObject player;
 
@@ -854,7 +858,7 @@ public class AIManager : MonoBehaviour
 
         // Calculate the direction vector from the hiding spot to the player.
         Vector3 toPlayer = (playerPosition - hidingSpotPosition).normalized;
-       Vector3 targetPosition = hidingSpotPosition - toPlayer * 0.25f;
+        Vector3 targetPosition = hidingSpotPosition - toPlayer * 0.25f;
 
         
 
@@ -880,7 +884,7 @@ public class AIManager : MonoBehaviour
                 }
             default:
                 {
-                    // Fallback: use BehindCover behavior.
+                    
                     targetPosition = hidingSpotPosition - toPlayer * 0.25f;
                     break;
                 }
@@ -890,9 +894,23 @@ public class AIManager : MonoBehaviour
         if (Vector3.Distance(npc.transform.position, targetPosition) > 0.2f && !hidingSpot.IsCage())
         {
             NavMeshHit hit;
-            if (NavMesh.SamplePosition(targetPosition, out hit, 1.5f, NavMesh.AllAreas))
+            float maxVerticalDifference = 0.5f; // adjust this threshold as needed
+
+
+
+            if (NavMesh.SamplePosition(targetPosition, out hit, 2.0f, NavMesh.AllAreas))
             {
-                npc.MoveTo(hit.position);
+                
+                if (Mathf.Abs(hit.position.y - targetPosition.y) <= maxVerticalDifference)
+                {
+                    npc.MoveTo(hit.position);
+                }
+                else
+                {
+            
+                    Vector3 adjustedTarget = new Vector3(hit.position.x, targetPosition.y, hit.position.z);
+                    npc.MoveTo(adjustedTarget);
+                }
             }
         }
         else if (hidingSpot.IsCage())
@@ -900,60 +918,109 @@ public class AIManager : MonoBehaviour
             npc.MoveTo(hidingSpot.transform.position);
         }
 
-        // If the player is very close, keep the bean hidden.
+        // If the player is very close stay hidden.
         if (distanceToPlayer < npc.runRange)
         {
             return;
         }
 
-        // Additional timing logic for switching hiding spots.
-        if (!activeTimers.ContainsKey(npc) && hidingSpot.IsTrap())
+        if (hidingSpot.IsTrap())
         {
-            beansToSwitch.Add(npc);
-            activeTimers[npc] = Time.time + 10; //This determins the time that a bean stays trapped, adjust if wanting longer or shorter trap times.
+            if (activeTimers.ContainsKey(npc) && Time.time > activeTimers[npc])
+            {
+                activeTimers.Remove(npc);
+            }
+            if (!activeTimers.ContainsKey(npc))
+            {
+                beansToSwitch.Add(npc);
+                activeTimers[npc] = Time.time + 10f;  // 10 second interval for traps
+            }
         }
-        if (!activeTimers.ContainsKey(npc) && hidingSpot.IsCage())
+        else if (!hidingSpot.IsCage())
         {
-            // Additional cage-specific logic (if needed).
-        }
-        if (!activeTimers.ContainsKey(npc) && beansToSwitch.Count < maxBeansToSwitch &&
-            !recentlySwitched.Contains(npc) && !hidingSpot.IsTrap() && !hidingSpot.IsCage())
-        {
-            beansToSwitch.Add(npc);
-            activeTimers[npc] = Time.time + Random.Range(hidingDurationMin, hidingDurationMax);
-        }
 
+            if (Time.time >= globalSwitchCycleTimer)
+            {
+                
+                List<NPC_AI> beansToProcess = new List<NPC_AI>();
+
+                foreach (NPC_AI bean in beansToSwitch.ToArray())
+                {
+                    
+                    if (Vector3.Distance(bean.transform.position, GetPlayerPosition()) >= bean.runRange)
+                    {
+                        beansToProcess.Add(bean);
+                    }
+                    else
+                    {
+                        // bean too close select diffrent bean
+                        beansToSwitch.Remove(bean);
+                    }
+                }
+
+
+                while (beansToProcess.Count < maxBeansToSwitch)
+                {
+
+                    NPC_AI candidate = npcList.FirstOrDefault(n =>
+                        !beansToSwitch.Contains(n) &&
+                        !recentlySwitched.Contains(n) &&
+                        n.state == NPC_AI.NPCState.Idle &&
+                        Vector3.Distance(n.transform.position, GetPlayerPosition()) >= n.runRange);
+
+                    if (candidate == null)
+                    {
+                        
+                        break;
+                    }
+                    beansToProcess.Add(candidate);
+                    beansToSwitch.Add(candidate);
+                }
+
+
+                foreach (NPC_AI bean in beansToProcess)
+                {
+                    ReleaseCurrentHidingSpot(bean);       
+                    AssignNewHidingSpot(bean, false);   
+                    lastSwitchTime[bean] = Time.time;
+                    recentlySwitched.Add(bean);
+
+
+
+                }
+
+                beansToSwitch.Clear();
+
+                // Restart the global cycle.
+                globalSwitchCycleTimer = Time.time + (10f + Random.Range(hidingDurationMin, hidingDurationMax));
+                recentlySwitched.Clear();
+                Debug.Log($"[Cycle] New cycle started; next cycle at: {globalSwitchCycleTimer:F2}");
+                lastGlobalCountdownDebug = Time.time;
+            }
+            else
+            {
+                // Add this NPC for switching if it qualifies and we haven't yet reached the max number.
+                if (beansToSwitch.Count < maxBeansToSwitch && !recentlySwitched.Contains(npc))
+                {
+                    if (!beansToSwitch.Contains(npc))
+                    {
+                        beansToSwitch.Add(npc);
+                    }
+                }
+
+                // Log a countdown once per second.
+                if (Time.time - lastGlobalCountdownDebug >= 1f)
+                {
+                    lastGlobalCountdownDebug = Time.time;
+                    float countdown = globalSwitchCycleTimer - Time.time;
+                    string selectedBeans = string.Join(", ", beansToSwitch.Select(b => b.gameObject.name).ToArray());
+                    Debug.Log($"[Cycle Countdown] {Mathf.Ceil(countdown)} sec until next switch. Selected beans: {selectedBeans}");
+                }
+            }
+        }
     }
 
-    public void TrySwitchHidingSpot(NPC_AI npc)
-    {
-        // Check if at least 10 seconds have passed since the last switch.
-        if (lastSwitchTime.ContainsKey(npc) && Time.time - lastSwitchTime[npc] < 10f)
-            return;
-
-        // Ensure that only up to maxBeansToSwitch are switching.
-        if (beansToSwitch.Count >= maxBeansToSwitch)
-            return;
-
-        // Mark this bean as switching.
-        beansToSwitch.Add(npc);
-
-        // Record the time of the switch.
-        lastSwitchTime[npc] = Time.time;
-
-        // Now release the current hiding spot (with teleport for Shelf types)
-        ReleaseCurrentHidingSpot(npc);
-
-        // And assign a new hiding spot (this call can have your usual logic)
-        AssignNewHidingSpot(npc, false);
-
-        // Optionally, trigger animations or sound resets here.
-        npc.playedOnce = false;
-        npc.animator.Play(npc.looping);
-
-        // Remove from switching list after a short delay or immediately.
-        beansToSwitch.Remove(npc);
-    }
+  
 
 
     private Vector3 CalculateSafeOffsetForShelf(Hiding_Spots shelfSpot, NPC_AI npc)

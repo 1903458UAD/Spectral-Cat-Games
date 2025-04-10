@@ -65,6 +65,8 @@ public class NPC_AI : MonoBehaviour
     public bool inflated = false;
     public bool alerted = false;
 
+    public float maxVerticalDifference = 0.2f;
+
 
     // [SerializeField] private EventReference beanMoveSound;
     public EventInstance beanFootsteps;
@@ -136,7 +138,27 @@ public class NPC_AI : MonoBehaviour
 
         if (navMeshAgent.isOnNavMesh)
         {
-            navMeshAgent.SetDestination(destination);
+            NavMeshHit hit;
+
+
+            float targetY = (currentHidingSpot != null) ? currentHidingSpot.transform.position.y : destination.y;
+           
+            Vector3 samplePosition = new Vector3(destination.x, targetY, destination.z);
+            
+            float maxVerticalDifference = 0.5f;  // adjust as needed
+
+            if (NavMesh.SamplePosition(samplePosition, out hit, 2.0f, NavMesh.AllAreas))
+            {
+                if (Mathf.Abs(hit.position.y - samplePosition.y) <= maxVerticalDifference)
+                {
+                    navMeshAgent.SetDestination(hit.position);
+                }
+                else
+                {
+                    Vector3 adjustedTarget = new Vector3(hit.position.x, samplePosition.y, hit.position.z);
+                    navMeshAgent.SetDestination(adjustedTarget);
+                }
+            }
         }
     }
 
