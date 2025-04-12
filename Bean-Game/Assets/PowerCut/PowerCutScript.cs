@@ -16,7 +16,7 @@ public class PowerCutScript : MonoBehaviour
     public float randDelay;
     public float delayMin;
     public float delayMax;
-    public bool lightsOnly;
+    //public bool lightsOnly;
 
     #endregion
     [SerializeField] private EventReference powerCutsOff;
@@ -40,19 +40,19 @@ public class PowerCutScript : MonoBehaviour
         till.enabled = false;
         AudioManager.instance.PlayOneShot(powerCutsOff, this.transform.position);
     }
-
+    //No longer being used.
     private void lightsOff()
     {
         lights.SetActive(false);
         playerTorch.SetActive(true);
     }
-
+    //No longer being used.
     private void lightsOn()
     {
         lights.SetActive(true);
         playerTorch.SetActive(false);
     }
-
+    
     private void powerOn()
     {
         machineButton.enabled = true;
@@ -62,17 +62,14 @@ public class PowerCutScript : MonoBehaviour
 
     public void tripPower()
     {
-        lightsOff();
+        //lightsOff();
 
-        if (!lightsOnly)
-        {
-            powerOff();
-        }
+        powerOff();
     }
 
     public void fixPower()
     {
-        lightsOn();
+        //lightsOn();
         powerOn();
         StartCoroutine(powerCooldown());
     }
