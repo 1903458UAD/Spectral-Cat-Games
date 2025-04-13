@@ -1,6 +1,8 @@
 using TMPro;
 using UnityEngine;
 using System.Collections;
+using UnityEditorInternal;
+using FMODUnity;
 
 public class SyrupBottle : MonoBehaviour
 {
@@ -12,6 +14,8 @@ public class SyrupBottle : MonoBehaviour
 
     public float pressDepth = 0.05f; 
     public float pressDuration = 0.1f;
+
+    [SerializeField] private EventReference syrupFX;
 
     void Start()
     {
@@ -83,6 +87,8 @@ public class SyrupBottle : MonoBehaviour
 
             StartCoroutine(MoveLid(initialPosition - new Vector3(0f, pressDepth, 0f)));
 
+            AudioManager.instance.PlayOneShot(syrupFX, this.transform.position);
+
         }
         else if (player.heldObjectLeft != null && player.heldObjectLeft.GetComponent<CoffeeInteraction>())
         {
@@ -92,6 +98,8 @@ public class SyrupBottle : MonoBehaviour
 
 
             StartCoroutine(MoveLid(initialPosition - new Vector3(0f, pressDepth, 0f)));
+
+            AudioManager.instance.PlayOneShot(syrupFX, this.transform.position);
 
         }
         else

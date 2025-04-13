@@ -129,7 +129,7 @@ public class AIManager : MonoBehaviour
 
             if (npc.IsPickedUp())
             {
-                
+                //npc.PlayBeanMoveSound(false);
                 continue;
             }
 

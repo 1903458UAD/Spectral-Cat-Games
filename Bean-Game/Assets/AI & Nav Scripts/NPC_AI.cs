@@ -246,6 +246,8 @@ public class NPC_AI : MonoBehaviour
     {
         isPickedUp = true;
 
+        PlayBeanMoveSound(false);
+
         animator.enabled = false;
 
         if (currentHidingSpot != null)
