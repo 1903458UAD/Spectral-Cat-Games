@@ -30,6 +30,10 @@ public class UIManager : MonoBehaviour
     private DeveloperCheats developerCheats;
     public GameObject endOfDayScreen;
 
+    public GameObject newDayPanel; // The GameObject for the "New Day" panel
+    public CanvasGroup nextDayPanelGroup; // CanvasGroup attached to the "New Day" panel
+    public TextMeshProUGUI dayText; // Text component for displaying the current day
+
 
     [Header("Customer Order UI")]
     public TMP_Text customerOrderText; // New UI element to display coffee order
@@ -113,6 +117,7 @@ public class UIManager : MonoBehaviour
         else
         {
             // Skip menu + cutscene
+            introScript.PlayIntro();
             mainMenuUI.SetActive(false);
             SpawnPlayerAtStart();
             ShowGameplayUI();
@@ -201,29 +206,6 @@ public class UIManager : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        //if (player == null)
-        //{
-        //    Debug.LogError("Player reference is missing in UIManager!");
-        //    return;
-        //}
-
-        //if (playerSpawnPoint == null)
-        //{
-        //    Debug.LogError("Player spawn point is not set!");
-        //    return;
-        //}
-
-        //// Move player to the spawn point
-        //player.transform.position = playerSpawnPoint.position;
-        //player.transform.rotation = playerSpawnPoint.rotation;
-
-
-
-        //// Enable player control
-        //player.GetComponent<CharacterController>().enabled = true;
-
-        // Enable movement/look scripts if they were disabled
 
 
         Debug.Log("Player spawned at start point.");
@@ -530,5 +512,49 @@ public class UIManager : MonoBehaviour
         Debug.Log("Quit Game button clicked!");
         AudioManager.instance.PlayOneShot(exitFX, this.transform.position);
         Application.Quit(); // Quits the game to desktop 
+    }
+
+
+    public void ShowNextDayPanel(int currentDay)
+    {
+        if (newDayPanel == null || nextDayPanelGroup == null || dayText == null)
+        {
+            Debug.LogError("UIManager: New Day Panel references are missing.");
+            return;
+        }
+
+        if (currentDay != 1)
+        {
+            newDayPanel.SetActive(true);
+            dayText.text = "Day " + currentDay;
+            StartCoroutine(FadeSequence());
+        }
+
+    }
+
+    private IEnumerator FadeSequence()
+    {
+        yield return StartCoroutine(FadeCanvasGroup(nextDayPanelGroup, 0f, 1f, 0.01f)); // Fade in
+        yield return new WaitForSeconds(5f); // Pause
+        yield return StartCoroutine(FadeCanvasGroup(nextDayPanelGroup, 1f, 0f, 1f)); // Fade out
+        newDayPanel.SetActive(false); // Hide the panel after fade
+    }
+
+    private IEnumerator FadeCanvasGroup(CanvasGroup group, float from, float to, float duration)
+    {
+        if (group == null || group.gameObject == null)
+        {
+            Debug.LogError("CanvasGroup or its GameObject is null! Cannot fade.");
+            yield break;
+        }
+
+        float time = 0f;
+        while (time < duration)
+        {
+            group.alpha = Mathf.Lerp(from, to, time / duration);
+            time += Time.deltaTime;
+            yield return null;
+        }
+        group.alpha = to;
     }
 }
