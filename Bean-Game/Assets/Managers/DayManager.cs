@@ -10,7 +10,7 @@ public class DayManager : MonoBehaviour
 
     public int currentDay = 1;
 
-    //private DayManager dayManager;
+
   
 
 
@@ -29,19 +29,6 @@ public class DayManager : MonoBehaviour
             Destroy(gameObject); // Prevent duplicate managers if reloaded
         }
     }
-
-    private void Start()
-    {
-
-        // Trigger UI on start if it's not the first day
-        if (currentDay > 1)
-        {
-            UIManager.Instance?.ShowNextDayPanel(currentDay);
-        }
-    }
-
-
-
 
     private void OnEnable()
     {
@@ -64,13 +51,11 @@ public class DayManager : MonoBehaviour
 
 
 
-
     public void NextDay()
     {
         currentDay++;
         Debug.Log("It is now day: " + currentDay);
-
-        // Trigger new day splash from UI
+                
         UIManager.Instance?.ShowNextDayPanel(currentDay);
     }
 
