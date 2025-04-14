@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: Banks/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638802451100000000
+  lastModified: 638800841826278730
   FileSizes: []
   Exists: 1
 --- !u!114 &-8835242747485883243
@@ -42,33 +42,6 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
---- !u!114 &-8199785661070947556
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Paper Cup Fall
-  m_EditorClassIdentifier: 
-  Path: event:/Paper Cup Fall
-  Guid:
-    Data1: 1957123623
-    Data2: 1136031116
-    Data3: 958738361
-    Data4: 775357488
-  Banks:
-  - {fileID: 5106001434441971322}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &-8128086700588681466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -333,7 +306,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 2380
+  Length: 0
 --- !u!114 &-4947290428873047856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,60 +356,6 @@ MonoBehaviour:
   - {fileID: 5106001434441971322}
   IsStream: 0
   Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
---- !u!114 &-4141869409641293750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Till Open
-  m_EditorClassIdentifier: 
-  Path: event:/Till Open
-  Guid:
-    Data1: -1328580589
-    Data2: 1212890264
-    Data3: -2123824511
-    Data4: 1915562266
-  Banks:
-  - {fileID: 5106001434441971322}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
---- !u!114 &-4002598260146874644
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Mug Fall
-  m_EditorClassIdentifier: 
-  Path: event:/Mug Fall
-  Guid:
-    Data1: 1966458976
-    Data2: 1221463900
-    Data3: 100962988
-    Data4: -75686875
-  Banks:
-  - {fileID: 5106001434441971322}
-  IsStream: 0
-  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
@@ -594,7 +513,7 @@ MonoBehaviour:
   Path: Banks/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638799190900000000
+  lastModified: 638800841826354894
   FileSizes: []
   Exists: 1
 --- !u!114 &-1155502097939431443
@@ -615,33 +534,6 @@ MonoBehaviour:
     Data2: 1335141284
     Data3: 1818059930
     Data4: -275215582
-  Banks:
-  - {fileID: 5106001434441971322}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
---- !u!114 &-337264354307957313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Car Arrive
-  m_EditorClassIdentifier: 
-  Path: event:/Car Arrive
-  Guid:
-    Data1: -459172524
-    Data2: 1249498791
-    Data3: -153883488
-    Data4: 1628201255
   Banks:
   - {fileID: 5106001434441971322}
   IsStream: 0
@@ -700,22 +592,12 @@ MonoBehaviour:
   - {fileID: 7624261728247412960}
   - {fileID: -2217590469546616363}
   - {fileID: -5876213391622187580}
-  - {fileID: -337264354307957313}
-  - {fileID: -8199785661070947556}
-  - {fileID: -4002598260146874644}
-  - {fileID: 6742880654895775349}
-  - {fileID: 916631315067412364}
-  - {fileID: 1801428687258368662}
-  - {fileID: 2380072936211568886}
-  - {fileID: -4141869409641293750}
-  - {fileID: 4545051985137614962}
-  - {fileID: 3385210603192105167}
   EditorParameters: []
   MasterBanks:
   - {fileID: -8860318759763364349}
   StringsBanks:
   - {fileID: 2989309110241945906}
-  cacheTime: 638802453520000000
+  cacheTime: 638800841826406202
   cacheVersion: 131622
 --- !u!114 &555584066494134003
 MonoBehaviour:
@@ -735,33 +617,6 @@ MonoBehaviour:
     Data2: 1080028403
     Data3: 1762918831
     Data4: -543143970
-  Banks:
-  - {fileID: 5106001434441971322}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
---- !u!114 &916631315067412364
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Chair Fall
-  m_EditorClassIdentifier: 
-  Path: event:/Chair Fall
-  Guid:
-    Data1: 1059902671
-    Data2: 1337200796
-    Data3: -1234225229
-    Data4: -686741683
   Banks:
   - {fileID: 5106001434441971322}
   IsStream: 0
@@ -793,60 +648,6 @@ MonoBehaviour:
   - {fileID: 5106001434441971322}
   IsStream: 0
   Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
---- !u!114 &1801428687258368662
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Plastic Bottle Fall
-  m_EditorClassIdentifier: 
-  Path: event:/Plastic Bottle Fall
-  Guid:
-    Data1: 2083178481
-    Data2: 1307693441
-    Data3: 1918806675
-    Data4: -645378552
-  Banks:
-  - {fileID: 5106001434441971322}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
---- !u!114 &2380072936211568886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Spoon Fall NEED ASSET
-  m_EditorClassIdentifier: 
-  Path: event:/Spoon Fall NEED ASSET
-  Guid:
-    Data1: 942818883
-    Data2: 1105469451
-    Data3: 1382395277
-    Data4: -1345058185
-  Banks:
-  - {fileID: 5106001434441971322}
-  IsStream: 0
-  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
@@ -894,10 +695,10 @@ MonoBehaviour:
   Path: Banks/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638802451100000000
+  lastModified: 638800841826278730
   FileSizes:
   - Name: 
-    Value: 3104
+    Value: 2660
   Exists: 1
 --- !u!114 &3033862013831128854
 MonoBehaviour:
@@ -957,7 +758,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 3500
+  Length: 0
 --- !u!114 &3313930488370565777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -980,33 +781,6 @@ MonoBehaviour:
   - {fileID: 5106001434441971322}
   IsStream: 0
   Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
---- !u!114 &3385210603192105167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Till Close
-  m_EditorClassIdentifier: 
-  Path: event:/Till Close
-  Guid:
-    Data1: -789221272
-    Data2: 1160089600
-    Data3: -236099199
-    Data4: 275320304
-  Banks:
-  - {fileID: 5106001434441971322}
-  IsStream: 0
-  Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
@@ -1063,33 +837,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &4545051985137614962
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Till Tab
-  m_EditorClassIdentifier: 
-  Path: event:/Till Tab
-  Guid:
-    Data1: -215323304
-    Data2: 1336127515
-    Data3: -1604393822
-    Data4: -2049294212
-  Banks:
-  - {fileID: 5106001434441971322}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &5088361981039272395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1105,7 +852,7 @@ MonoBehaviour:
   Path: Banks/Ambiance.bank
   Name: Ambiance
   StudioPath: bank:/Ambiance
-  lastModified: 638799189880000000
+  lastModified: 638800841826268634
   FileSizes: []
   Exists: 1
 --- !u!114 &5106001434441971322
@@ -1123,7 +870,7 @@ MonoBehaviour:
   Path: Banks/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638802453520000000
+  lastModified: 638800841826406202
   FileSizes: []
   Exists: 1
 --- !u!114 &5938261025919519424
@@ -1202,33 +949,6 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
---- !u!114 &6742880654895775349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Book Fall
-  m_EditorClassIdentifier: 
-  Path: event:/Book Fall
-  Guid:
-    Data1: -1356338316
-    Data2: 1101235393
-    Data3: -1588013170
-    Data4: 982304682
-  Banks:
-  - {fileID: 5106001434441971322}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &6774336628892015627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1352,7 +1072,7 @@ MonoBehaviour:
   Name: Activate CMel
   StudioPath: 
   Min: 0
-  Max: 2
+  Max: 1
   Default: 0
   ID:
     data1: 3253896331
