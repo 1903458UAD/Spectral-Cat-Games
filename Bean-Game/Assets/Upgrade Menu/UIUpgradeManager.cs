@@ -30,6 +30,9 @@ public class UIUpgradeManager : MonoBehaviour
     [SerializeField] private EventReference upgradePurchaseFX;
     [SerializeField] private EventReference upgradeFailedFX;
     [SerializeField] private EventReference upgradeSelectFX;
+    [SerializeField] private EventReference nextPageFX;
+    [SerializeField] private EventReference menuOpenFX;
+    [SerializeField] private EventReference menuCloseFX;
 
     private void Awake() 
     {
@@ -55,6 +58,7 @@ public class UIUpgradeManager : MonoBehaviour
     {
       if(currentIconSet == 1)
       {
+          AudioManager.instance.PlayOneShot(nextPageFX, this.transform.position);
           iconSet2.SetActive(true);
           iconSet1.SetActive(false);
           currentIconSet = 2;
@@ -62,6 +66,7 @@ public class UIUpgradeManager : MonoBehaviour
 
       else
       {
+          AudioManager.instance.PlayOneShot(nextPageFX, this.transform.position);
           iconSet2.SetActive(false);
           iconSet1.SetActive(true);
           currentIconSet = 1;
@@ -93,6 +98,8 @@ public class UIUpgradeManager : MonoBehaviour
                 cameraScript.enabled = false;
             }
 
+            AudioManager.instance.PlayOneShot(menuOpenFX, this.transform.position);
+
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
@@ -121,6 +128,8 @@ public class UIUpgradeManager : MonoBehaviour
             {
                 cameraScript.enabled = true;
             }
+
+            AudioManager.instance.PlayOneShot(menuCloseFX, this.transform.position);
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;

@@ -11200,7 +11200,6 @@ MonoBehaviour:
   randDelay: 0
   delayMin: 30
   delayMax: 120
-  lightsOnly: 0
   powerCutsOff:
     Guid:
       Data1: 1454186259
@@ -25810,11 +25809,32 @@ MonoBehaviour:
     Path: event:/Upgrade Purchase Failed
   upgradeSelectFX:
     Guid:
-      Data1: -1664469687
-      Data2: 1196552380
-      Data3: -272741742
-      Data4: 2047515011
-    Path: event:/Page Turn SHORT
+      Data1: -215323304
+      Data2: 1336127515
+      Data3: -1604393822
+      Data4: -2049294212
+    Path: event:/Till Tab
+  nextPageFX:
+    Guid:
+      Data1: -215323304
+      Data2: 1336127515
+      Data3: -1604393822
+      Data4: -2049294212
+    Path: event:/Till Tab
+  menuOpenFX:
+    Guid:
+      Data1: -1328580589
+      Data2: 1212890264
+      Data3: -2123824511
+      Data4: 1915562266
+    Path: event:/Till Open
+  menuCloseFX:
+    Guid:
+      Data1: -789221272
+      Data2: 1160089600
+      Data3: -236099199
+      Data4: 275320304
+    Path: event:/Till Close
 --- !u!4 &1701829780
 Transform:
   m_ObjectHideFlags: 0
