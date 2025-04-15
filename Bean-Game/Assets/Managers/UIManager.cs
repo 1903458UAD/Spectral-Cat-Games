@@ -80,7 +80,7 @@ public class UIManager : MonoBehaviour
 
     private bool isPaused = false; // Pause state
 
-    [SerializeField] private Transform playerSpawnPoint; 
+    //[SerializeField] private Transform playerSpawnPoint; 
     [SerializeField] private GameObject player;
 
     [SerializeField] private EventReference menuSoundA;
@@ -155,7 +155,7 @@ public class UIManager : MonoBehaviour
             // Skip menu + cutscene
             introScript.PlayIntro();
             mainMenuUI.SetActive(false);
-            SpawnPlayerAtStart();
+            //SpawnPlayerAtStart();
             ShowGameplayUI();
 
             // Lock the cursor for gameplay
@@ -220,34 +220,34 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void SpawnPlayerAtStart()
-    {
-        if (player == null)
-        {
-            Debug.LogError("[UIManager] Player reference is missing!");
-            return;
-        }
+    //private void SpawnPlayerAtStart()
+    //{
+    //    if (player == null)
+    //    {
+    //        Debug.LogError("[UIManager] Player reference is missing!");
+    //        return;
+    //    }
 
-        Transform spawnPoint = GameObject.FindGameObjectWithTag("PlayerSpawn")?.transform;
+    //    Transform spawnPoint = GameObject.FindGameObjectWithTag("PlayerSpawn")?.transform;
 
-        if (spawnPoint == null)
-        {
-            Debug.LogWarning("[UIManager] No GameObject found with tag 'PlayerSpawn'. Player won't be repositioned.");
-        }
-        else
-        {
-            player.transform.position = spawnPoint.position;
-            player.transform.rotation = spawnPoint.rotation;
-            Debug.Log("[UIManager] Player spawned at: " + spawnPoint.position);
-        }
-
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+    //    if (spawnPoint == null)
+    //    {
+    //        Debug.LogWarning("[UIManager] No GameObject found with tag 'PlayerSpawn'. Player won't be repositioned.");
+    //    }
+    //    else
+    //    {
+    //        player.transform.position = spawnPoint.position;
+    //        player.transform.rotation = spawnPoint.rotation;
+    //        Debug.Log("[UIManager] Player spawned at: " + spawnPoint.position);
+    //    }
 
 
-        Debug.Log("Player spawned at start point.");
-    }
+    //    Cursor.lockState = CursorLockMode.Locked;
+    //    Cursor.visible = false;
+
+
+    //    Debug.Log("Player spawned at start point.");
+    //}
 
     public void ToggleDeveloperCheats(bool isEnabled)
     {
@@ -648,7 +648,7 @@ public class UIManager : MonoBehaviour
     {
         reciept.SetActive(false);
     }
-}
+
 
 
 
