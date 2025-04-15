@@ -72,6 +72,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 093b48fcaa925c6448eee53603a207dc, type: 3}
+      propertyPath: m_TagString
+      value: Mug
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -85,6 +89,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 093b48fcaa925c6448eee53603a207dc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5254848255523807757}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 093b48fcaa925c6448eee53603a207dc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -2627302420223381037}
   m_SourcePrefab: {fileID: 100100000, guid: 093b48fcaa925c6448eee53603a207dc, type: 3}
 --- !u!1 &6680994245082911223 stripped
 GameObject:
@@ -134,6 +141,8 @@ MonoBehaviour:
   holdHeightOffset: 0
   holdWidthOffset: 0.5
   pickupCooldown: 0.1
+  canRelease: 1
+  isHeld: 0
 --- !u!65 &5254848255523807757
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -155,3 +164,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.027163384, y: 0.035995264, z: 0.027163384}
   m_Center: {x: 0, y: 0.017997632, z: 0}
+--- !u!114 &-2627302420223381037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6680994245082911223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81cf38de5c50f064099a140019c3b8f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallFX:
+    Guid:
+      Data1: 1966458976
+      Data2: 1221463900
+      Data3: 100962988
+      Data4: -75686875
+    Path: event:/Mug Fall

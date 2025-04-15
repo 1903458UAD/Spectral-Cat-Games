@@ -5,7 +5,7 @@ using Debug = UnityEngine.Debug;
 
 public class Hiding_Spots : MonoBehaviour
 {
-    public enum HidingType { Normal, Small, Medium, Trap , Cage}
+    public enum HidingType { BehindCover, InsideCover, Underneath, Shelf, Normal, Small, Medium, Trap , Cage}
 
     [Header("Hiding Spot Settings")]
     public HidingType hidingType = HidingType.Normal;
@@ -153,6 +153,20 @@ public class Hiding_Spots : MonoBehaviour
         //Debug.Log($"[Hiding_Spots] {gameObject.name} reset to empty.");
     }
 
+    public bool IsOnSameShelf(NPC_AI bean)
+    {
+       
+        Collider shelfCol = GetComponent<Collider>();
+        if (shelfCol == null) return false;
+
+        Collider[] hits = Physics.OverlapSphere(bean.transform.position, 0.5f);
+        foreach (Collider hit in hits)
+        {
+            if (hit == shelfCol)
+                return true;
+        }
+        return false;
+    }
 
 
 }

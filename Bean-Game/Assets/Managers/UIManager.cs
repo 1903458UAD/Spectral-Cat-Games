@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using FMODUnity;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
+using UnityEngine.SocialPlatforms;
 
 public class UIManager : MonoBehaviour
 {
@@ -37,8 +39,22 @@ public class UIManager : MonoBehaviour
 
     [Header("Customer Order UI")]
     public TMP_Text customerOrderText; // New UI element to display coffee order
+    public GameObject reciept;
+    public GameObject recieptOverlay;
+
+    public Sprite overlay1;
+    public Sprite overlay2;
+    public Sprite overlay3;
+    public Sprite overlay4;
+
+    public TMP_Text coffeePrice; 
+    public UpgradeData coffeePriceData;
 
     [Header("Player Lives UI")]
+    public GameObject warningSlip;
+    public TMP_Text warningDescription;
+    public TMP_Text livesLeft;
+
     public Image[] lifeIcons;
 
     [Header("Camera Script")]
@@ -72,6 +88,20 @@ public class UIManager : MonoBehaviour
     [SerializeField] private EventReference startFX;
     [SerializeField] private EventReference exitFX;
 
+    [Header("Customer Patience Bar")]
+    public Slider slider;
+
+    public Sprite happy;
+    public Sprite bored;
+    public Sprite angry;
+
+    public GameObject customerMoodlet;
+    public GameObject customerPatienceBar;
+
+    public GameObject IncomeIcon;
+
+    public UpgradeDataManager upgradeDataManager;
+
     private void Awake() // When instance is being loaded
     {
         if (Instance == null) //If no instance of the UIManager exists
@@ -98,11 +128,17 @@ public class UIManager : MonoBehaviour
         HideGameOverScreen(); //Set the game over screen is hidden
         SetCrosshairDefault(); //Set the crosshair to default
         HideDayEndScreen();
+        HidePatienceBar();
+        HideReciept();
+
+        warningSlip.SetActive(false);
 
         interactKeyText.text = PlayerPrefs.GetString("InteractKey", "Mouse0");
         dropKeyText.text = PlayerPrefs.GetString("DropKey", "Mouse1");
 
         developerCheats = FindObjectOfType<DeveloperCheats>();
+
+        IncomeIcon.SetActive(false);
 
         // Show main menu at the start
         dayManager = DayManager.Instance;
@@ -168,6 +204,8 @@ public class UIManager : MonoBehaviour
         AudioManager.instance.PlayOneShot(startFX, this.transform.position);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        IncomeIcon.SetActive(true);
+        upgradeDataManager.ResetUpgrades();
 
   
 
@@ -452,19 +490,29 @@ public class UIManager : MonoBehaviour
         AudioManager.instance.PlayOneShot(menuSoundA, this.transform.position);
     }
 
-    public void UpdateLifeUI(int currentLives)
+    public void UpdateLifeUI(int currentLives, string waringDesc)
     {
-        for (int i = 0; i < lifeIcons.Length; i++)
-        {
-            if (i < currentLives)
-            {
-                lifeIcons[i].color = Color.white; // Represents remaining lives
-            }
-            else
-            {
-                lifeIcons[i].color = Color.red; // Represents lost lives
-            }
-        }
+        warningSlip.SetActive(true);
+        warningDescription.text = $"Description of Infraction: {waringDesc}";
+        livesLeft.text = $"{currentLives} more chances!";
+        Invoke(nameof(HideLifeUI), 3f);
+
+        //for (int i = 0; i < lifeIcons.Length; i++)
+        //{
+        //    if (i < currentLives)
+        //    {
+        //        lifeIcons[i].color = Color.white; // Represents remaining lives
+        //    }
+        //    else
+        //    {
+        //        lifeIcons[i].color = Color.red; // Represents lost lives
+        //    }
+        //}
+    }
+
+    public void HideLifeUI()
+    {
+        warningSlip.SetActive(false);
     }
 
     public void ShowPauseMenu()
@@ -488,6 +536,8 @@ public class UIManager : MonoBehaviour
         if (crosshair != null) crosshair.gameObject.SetActive(true);
         if (incomeText != null) incomeText.gameObject.SetActive(true);
         if (customerOrderText != null) customerOrderText.gameObject.SetActive(true);
+        ShowReciept();
+        ShowPatienceBar();
 
         foreach (Image life in lifeIcons)
         {
@@ -500,6 +550,8 @@ public class UIManager : MonoBehaviour
         if (crosshair != null) crosshair.gameObject.SetActive(false);
         if (incomeText != null) incomeText.gameObject.SetActive(false);
         if (customerOrderText != null) customerOrderText.gameObject.SetActive(false);
+        HideReciept();
+        HidePatienceBar();
 
         foreach (Image life in lifeIcons)
         {
@@ -513,6 +565,92 @@ public class UIManager : MonoBehaviour
         AudioManager.instance.PlayOneShot(exitFX, this.transform.position);
         Application.Quit(); // Quits the game to desktop 
     }
+
+    public void GetStartTime(float startTime)
+    {
+        slider.maxValue = startTime;
+        slider.value = startTime;
+
+        customerMoodlet.GetComponent<Image>().sprite = happy;
+    }
+
+    public void GetCurrentTime(float currentTime)
+    {
+        slider.value = currentTime;
+    }
+
+    public void setMoodlet(string mood)
+    {
+        switch (mood)
+        {
+            case "happy":
+                customerMoodlet.GetComponent<Image>().sprite = happy;
+                break;
+
+            case "bored":
+                customerMoodlet.GetComponent<Image>().sprite = bored;
+                break;
+
+            case "angry":
+                customerMoodlet.GetComponent<Image>().sprite = angry;
+                break;
+
+            default:
+                customerMoodlet.GetComponent<Image>().sprite = happy;
+                break;
+        }
+    }
+
+    public void ShowPatienceBar()
+    {
+        customerPatienceBar.SetActive(true);
+    }
+
+    public void HidePatienceBar()
+    {
+        if (customerOrderText != null) customerOrderText.gameObject.SetActive(false);
+        customerPatienceBar.SetActive(false);
+    }
+
+    public void ShowReciept()
+    {
+        int randomNumber = Random.Range(0, 3);
+
+        switch (randomNumber)
+        {
+            case 0:
+                recieptOverlay.GetComponent<Image>().sprite = overlay1;
+                break;
+
+            case 1:
+                recieptOverlay.GetComponent<Image>().sprite = overlay2;
+                break;
+
+            case 2:
+                recieptOverlay.GetComponent<Image>().sprite = overlay3;
+                break;
+
+            case 3:
+                recieptOverlay.GetComponent<Image>().sprite = overlay4;
+                break;
+
+            default:
+                recieptOverlay.GetComponent<Image>().sprite = null;
+                break;
+        }
+
+        reciept.SetActive(true);
+        if (customerOrderText != null) customerOrderText.gameObject.SetActive(true);
+        coffeePrice.text = string.Format("{0}", coffeePriceData.internalBaseValue);
+    }
+
+    public void HideReciept()
+    {
+        reciept.SetActive(false);
+    }
+}
+
+
 
 
     public void ShowNextDayPanel(int currentDay)

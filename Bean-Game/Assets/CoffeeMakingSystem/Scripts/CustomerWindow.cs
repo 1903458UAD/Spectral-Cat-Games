@@ -11,6 +11,7 @@ public class CustomerWindow : MonoBehaviour
 
     [SerializeField] private EventReference correctOrderFX;
     [SerializeField] private EventReference wrongOrderFX;
+    [SerializeField] private EventReference moneyGetFX;
 
     public void GiveCoffeeToWindow(CoffeeInteraction coffee)
     {
@@ -27,6 +28,7 @@ public class CustomerWindow : MonoBehaviour
             {
                 customerScript = customer.GetComponent<CustomerScript>();
             }
+
             if (customerScript != null)
             {
                 // Check if enough beans are present to create coffee
@@ -36,8 +38,11 @@ public class CustomerWindow : MonoBehaviour
                     {
                         CustomerTakesCoffee();
                         AudioManager.instance.PlayOneShot(correctOrderFX, this.transform.position);
+                        AudioManager.instance.PlayOneShot(moneyGetFX, this.transform.position);
+                        AudioManager.instance.SetAmbianceParameter("Activate CMel", 0);
                         Debug.Log("Coffee Given to window: Correct order");
                     }
+
                     else
                     {
                         Debug.Log("Coffee Given to window: Incorrect order");
@@ -91,9 +96,10 @@ public class CustomerWindow : MonoBehaviour
     {
         // Ensure you call this method to penalize the player for a wrong order
         PlayerHealth playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
+
         if (playerHealth != null)
         {
-            playerHealth.LoseLife();  // Decrease the player's health
+            playerHealth.LoseLife("Wrong Order");  // Decrease the player's health
             Debug.Log("Player lost a life for wrong order");
         }
         else

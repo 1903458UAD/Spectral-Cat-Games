@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using FMODUnity;
 
 public class CustomerScript : MonoBehaviour
 {
     [SerializeField] private UpgradeData upgradeData;
+    [SerializeField] private UpgradeData tipUpgrade;
+    [SerializeField] private UpgradeData coffeePriceUpgrade;
 
     private GameObject player;
     public GameObject driveThrough;
@@ -23,12 +26,14 @@ public class CustomerScript : MonoBehaviour
     private bool drive;
 
     private float threshold;
-    private float tipFactor = StaticData.tipAmount;
+    private float tipFactor;
 
     private PlayerHealth playerHealth;
 
     public int requiredBeans;
     public string requiredSyrup;
+
+    [SerializeField] private EventReference driveUpFX;
 
     public void SetIsOrderedTrue()
     {
@@ -39,8 +44,10 @@ public class CustomerScript : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+
         playerHealth = player?.GetComponent<PlayerHealth>();
         timerDisplay.text = null;
+        tipFactor = tipUpgrade.internalBaseValue;
 
         if (playerHealth == null)
         {
@@ -50,6 +57,7 @@ public class CustomerScript : MonoBehaviour
         drive = true;
         orderDelivered = false;
         nextLocation = driveThrough;
+        AudioManager.instance.PlayOneShot(driveUpFX, driveThrough.transform.position);
 
         int rand = UnityEngine.Random.Range(0, 3);
 
@@ -59,24 +67,26 @@ public class CustomerScript : MonoBehaviour
                 threshold = 0.10f;
                 patienceTimer = 120;
                 initialTimer = 120;
-                tipTime = 55;
+                tipTime = 50;
                 break;
             case 1:
                 threshold = 0.25f;
                 patienceTimer = 90;
                 initialTimer = 90;
-                tipTime = 45;
+                tipTime = 40;
                 break;
             case 2:
                 threshold = 0.50f;
                 patienceTimer = 60;
                 initialTimer = 60;
-                tipTime = 30;
+                tipTime = 20;
                 break;
         }
 
         patienceTimer = patienceTimer * upgradeData.internalBaseValue;
         initialTimer = initialTimer * upgradeData.internalBaseValue;
+
+        UIManager.Instance.GetStartTime(initialTimer);
 
         requiredBeans = UnityEngine.Random.Range(1, 4);
 
@@ -102,6 +112,8 @@ public class CustomerScript : MonoBehaviour
         else
         {
             Pay();
+            UIManager.Instance.HidePatienceBar();
+            UIManager.Instance.HideReciept();
         }
     }
 
@@ -118,6 +130,8 @@ public class CustomerScript : MonoBehaviour
                 GameManager.Instance.RemoveCustomer(gameObject); // ✅ Moved customer removal to GameManager
             }
 
+            UIManager.Instance.ShowPatienceBar();
+            UIManager.Instance.ShowReciept();
             drive = false;
         }
     }
@@ -127,13 +141,30 @@ public class CustomerScript : MonoBehaviour
         if (patienceTimer > 0)
         {
             patienceTimer -= Time.deltaTime;
+
+
+                UIManager.Instance.GetCurrentTime(patienceTimer);
+
+                if (initialTimer - patienceTimer > tipTime)
+                { 
+                    UIManager.Instance.setMoodlet("bored");
+                    AudioManager.instance.SetAmbianceParameter("Activate CMel", 1);
+                }
+
+                if (patienceTimer < initialTimer * 0.30)
+                {
+                    UIManager.Instance.setMoodlet("angry");
+                    AudioManager.instance.SetAmbianceParameter("Activate CMel", 2);
+                }
+            
+
             DisplayTime();
         }
 
         else
         {
             UnityEngine.Debug.Log("[CustomerScript] Customer ran out of patience!");
-            playerHealth.LoseLife();
+            playerHealth.LoseLife("Order not Fulfilled in time");
             nextLocation = exit;
             drive = true;
         }
@@ -145,10 +176,11 @@ public class CustomerScript : MonoBehaviour
         {
             Pay();
         }
+
         else
         {
             Debug.Log("Wrong coffee given! Customer Pissed.");
-            playerHealth?.LoseLife();
+            playerHealth.LoseLife("Wrong Order");
             nextLocation = exit;
             drive = true;
         }
@@ -156,12 +188,10 @@ public class CustomerScript : MonoBehaviour
 
     public void Pay()
     {
-        float income = 100.0f;
+        float income = coffeePriceUpgrade.internalBaseValue;
 
         if (initialTimer - patienceTimer <= tipTime)
         {
-            tipFactor = StaticData.tipAmount;
-
             income += tipFactor;
         }
 
@@ -183,6 +213,7 @@ public class CustomerScript : MonoBehaviour
         }
 
         drive = true;
+        AudioManager.instance.PlayOneShot(driveUpFX, driveThrough.transform.position);
     }
 
     void DisplayTime()

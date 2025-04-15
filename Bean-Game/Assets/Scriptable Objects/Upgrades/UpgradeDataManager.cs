@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class UpgradeDataManager : MonoBehaviour
 {
+    public static UpgradeDataManager Instance; //Instance of UIManager
     [SerializeField] private UpgradeData[] upgrades;
 
     public void ResetUpgrades()

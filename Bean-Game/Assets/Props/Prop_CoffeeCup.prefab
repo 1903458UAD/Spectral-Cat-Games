@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 34aa9bd43ee78d44984a3db6da01031a, type: 3}
+      propertyPath: m_TagString
+      value: Mug
+      objectReference: {fileID: 0}
     - target: {fileID: 1220468753929994659, guid: 34aa9bd43ee78d44984a3db6da01031a, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -93,6 +97,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 34aa9bd43ee78d44984a3db6da01031a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8549356976713384474}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 34aa9bd43ee78d44984a3db6da01031a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8938070845398657344}
   m_SourcePrefab: {fileID: 100100000, guid: 34aa9bd43ee78d44984a3db6da01031a, type: 3}
 --- !u!1 &2584898550361632752 stripped
 GameObject:
@@ -163,3 +170,24 @@ MonoBehaviour:
   holdHeightOffset: 0
   holdWidthOffset: 0.5
   pickupCooldown: 0.1
+  canRelease: 1
+  isHeld: 0
+--- !u!114 &8938070845398657344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2584898550361632752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81cf38de5c50f064099a140019c3b8f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallFX:
+    Guid:
+      Data1: 1966458976
+      Data2: 1221463900
+      Data3: 100962988
+      Data4: -75686875
+    Path: event:/Mug Fall
