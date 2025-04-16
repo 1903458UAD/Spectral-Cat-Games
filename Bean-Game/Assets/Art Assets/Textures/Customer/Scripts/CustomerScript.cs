@@ -132,8 +132,11 @@ public class CustomerScript : MonoBehaviour
                 GameManager.Instance.RemoveCustomer(gameObject); // ✅ Moved customer removal to GameManager
             }
 
-            UIManager.Instance.ShowPatienceBar();
-            UIManager.Instance.ShowReciept();
+            if (playerCamera.GetComponent<Camera>().enabled)
+            {
+                UIManager.Instance.ShowPatienceBar();
+                UIManager.Instance.ShowReciept();
+            }
             drive = false;
         }
     }
