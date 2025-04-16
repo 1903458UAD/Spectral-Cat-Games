@@ -12,13 +12,14 @@ public class CustomerScript : MonoBehaviour
     [SerializeField] private UpgradeData coffeePriceUpgrade;
 
     private GameObject player;
+    private GameObject playerCamera;
     public GameObject driveThrough;
     public GameObject exit;
     private GameObject nextLocation;
 
     public TMP_Text timerDisplay;
 
-    private float speed = 0.01f;
+    private float speed = 0.1f;
     private float patienceTimer;
     private float initialTimer;
     private float tipTime; 
@@ -44,6 +45,7 @@ public class CustomerScript : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        playerCamera = GameObject.FindGameObjectWithTag("MainCamera");
 
         playerHealth = player?.GetComponent<PlayerHealth>();
         timerDisplay.text = null;
@@ -140,22 +142,24 @@ public class CustomerScript : MonoBehaviour
     {
         if (patienceTimer > 0)
         {
-            patienceTimer -= Time.deltaTime;
+            if (playerCamera.GetComponent<Camera>().enabled)
+            {
+                patienceTimer -= Time.deltaTime;
+            }
 
+            UIManager.Instance.GetCurrentTime(patienceTimer);
 
-                UIManager.Instance.GetCurrentTime(patienceTimer);
+            if (initialTimer - patienceTimer > tipTime)
+            { 
+                UIManager.Instance.setMoodlet("bored");
+                AudioManager.instance.SetAmbianceParameter("Activate CMel", 1);
+            }
 
-                if (initialTimer - patienceTimer > tipTime)
-                { 
-                    UIManager.Instance.setMoodlet("bored");
-                    AudioManager.instance.SetAmbianceParameter("Activate CMel", 1);
-                }
-
-                if (patienceTimer < initialTimer * 0.30)
-                {
-                    UIManager.Instance.setMoodlet("angry");
-                    AudioManager.instance.SetAmbianceParameter("Activate CMel", 2);
-                }
+            if (patienceTimer < initialTimer * 0.30)
+            {
+                UIManager.Instance.setMoodlet("angry");
+                AudioManager.instance.SetAmbianceParameter("Activate CMel", 2);
+            }
             
 
             DisplayTime();

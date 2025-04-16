@@ -16,6 +16,7 @@ public class IntroScript : MonoBehaviour
 
     //Animator
     private Animator anim;
+    private Animator lidAnim;
     public float animLength;
 
     public PowerCutScript PowerCut;
@@ -31,6 +32,7 @@ public class IntroScript : MonoBehaviour
 
         playerStart = playerCamera.transform;
         menuStart = menuCamera.transform;
+        UIManager.Instance.HideGameplayUI();
     }
 
     private void Update()
@@ -45,6 +47,12 @@ public class IntroScript : MonoBehaviour
     {
         anim.enabled = true;
         StartCoroutine(ChangeViewDelay());
+    }
+
+    public void PlaySplosion()
+    {
+        lidAnim = GameObject.Find("lid").GetComponent<Animator>();
+        lidAnim.enabled = true;
     }
 
     private IEnumerator ChangeViewDelay()
