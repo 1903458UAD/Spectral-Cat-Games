@@ -444,55 +444,36 @@ public class AIManager : MonoBehaviour
         npc.navMeshAgent.velocity = Vector3.zero;
         npc.navMeshAgent.isStopped = false;
 
-
-
-        // move opposite to the player
-        Vector3 escapeDir = (npc.transform.position - GetPlayerPosition()).normalized;
-
-        if (escapeDir == Vector3.zero)
-        {
-            escapeDir = Vector3.forward; // fallback if overlapping
-        }
-
-
         float minDistance = npc.runRange * 3f;
-
         float clearanceThreshold = npc.runRange;
-
-
         Vector3 nodeTarget = GetRandomEscapeNode(npc.transform.position, GetPlayerPosition(), minDistance, clearanceThreshold);
-
 
         npc.MoveTo(nodeTarget);
 
-        
-        StartCoroutine(WaitForDestinationAndCheck(npc, nodeTarget));
+        StartCoroutine(WaitForDestinationAndTransition(npc));
     }
 
 
 
-    private IEnumerator WaitForDestinationAndCheck(NPC_AI npc, Vector3 targetNode)
+
+    private IEnumerator WaitForDestinationAndTransition(NPC_AI npc)
     {
-        // Wait until the NPC reaches the target node
-        while (npc.navMeshAgent.pathPending ||npc.navMeshAgent.remainingDistance > npc.navMeshAgent.stoppingDistance)
+
+        while (npc.navMeshAgent != null &&
+               npc.navMeshAgent.enabled &&
+               npc.navMeshAgent.isOnNavMesh &&
+               (npc.navMeshAgent.pathPending ||
+                npc.navMeshAgent.remainingDistance > npc.navMeshAgent.stoppingDistance))
         {
             yield return null;
         }
 
-        // Once at the node check distance to player
-        float distanceToPlayer = Vector3.Distance(npc.transform.position, GetPlayerPosition());
+        if (npc.navMeshAgent == null || !npc.navMeshAgent.isOnNavMesh)
+            yield break;
 
-        if (distanceToPlayer < npc.runRange)
-        {
-            // still in danger, assign a new escape route.
-            AssignEscapeRoute(npc);
-        }
-        else
-        {
-            // Safe: transition to idle and assign a new hiding spot.
-            npc.state = NPC_AI.NPCState.Idle;
-            AssignNewHidingSpot(npc, true);
-        }
+
+        npc.state = NPC_AI.NPCState.Idle;
+        AIManager.Instance.AssignNewHidingSpot(npc, true);
     }
 
 
