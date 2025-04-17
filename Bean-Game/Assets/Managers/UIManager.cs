@@ -676,7 +676,7 @@ public class UIManager : MonoBehaviour
     private IEnumerator FadeSequence()
     {
         yield return StartCoroutine(FadeCanvasGroup(nextDayPanelGroup, 0f, 1f, 0.01f)); // Fade in
-        yield return new WaitForSeconds(5f); // Pause
+        yield return new WaitForSeconds(8.7f); // Pause
         yield return StartCoroutine(FadeCanvasGroup(nextDayPanelGroup, 1f, 0f, 1f)); // Fade out
         newDayPanel.SetActive(false); // Hide the panel after fade
     }
