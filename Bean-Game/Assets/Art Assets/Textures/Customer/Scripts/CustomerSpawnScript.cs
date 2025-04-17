@@ -5,9 +5,13 @@ using UnityEngine;
 public class CustomerSpawnScript : MonoBehaviour
 {
     public GameObject customerPrefab; // Customer prefab
+    public Camera playerCam;
 
     void Update()
     {
-        GameManager.Instance.SpawnCustomer();
+        if(playerCam.enabled == true)
+        {
+            GameManager.Instance.SpawnCustomer();
+        }
     }
 }

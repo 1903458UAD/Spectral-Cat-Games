@@ -17,8 +17,6 @@ public class UIManager : MonoBehaviour
     public Button quitButton; // Reference to the quit Button
     public IntroScript introScript;
 
-    private DayManager dayManager;
-
     [Header("UI Elements")] //Headers that show up in inspector
     public GameObject gameOverScreen; //Reference to game over ui
     public Image crosshair; //Refeerence to Crosshair UI
@@ -31,11 +29,6 @@ public class UIManager : MonoBehaviour
     public Toggle developerCheatsToggle;
     private DeveloperCheats developerCheats;
     public GameObject endOfDayScreen;
-
-    public GameObject newDayPanel; // The GameObject for the "New Day" panel
-    public CanvasGroup nextDayPanelGroup; // CanvasGroup attached to the "New Day" panel
-    public TextMeshProUGUI dayText; // Text component for displaying the current day
-
 
     [Header("Customer Order UI")]
     public TMP_Text customerOrderText; // New UI element to display coffee order
@@ -60,7 +53,7 @@ public class UIManager : MonoBehaviour
     [Header("Camera Script")]
     public MonoBehaviour cameraScript;
 
-    [Header("Cridits buttons")]
+    [Header("Camera Script")]
     public Button Credits;
     public Button CreditsBackButton;
 
@@ -79,9 +72,6 @@ public class UIManager : MonoBehaviour
     private Color interactableCrosshairColor = Color.red;//Colour of the crosshair when looking at an interactable object
 
     private bool isPaused = false; // Pause state
-
-    //[SerializeField] private Transform playerSpawnPoint; 
-    [SerializeField] private GameObject player;
 
     [SerializeField] private EventReference menuSoundA;
     [SerializeField] private EventReference menuSoundB;
@@ -130,8 +120,6 @@ public class UIManager : MonoBehaviour
         HideDayEndScreen();
         HidePatienceBar();
         HideReciept();
-        HideGameplayUI();
-        reciept.SetActive(false);
 
         warningSlip.SetActive(false);
 
@@ -143,27 +131,7 @@ public class UIManager : MonoBehaviour
         IncomeIcon.SetActive(false);
 
         // Show main menu at the start
-        dayManager = DayManager.Instance;
-
-        if (dayManager != null && dayManager.currentDay == 1)
-        {
-            // Show menu + intro
-            mainMenuUI.SetActive(true);
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-        else
-        {
-            // Skip menu + cutscene
-            introScript.PlayIntro();
-            mainMenuUI.SetActive(false);
-            //SpawnPlayerAtStart();
-            ShowGameplayUI();
-
-            // Lock the cursor for gameplay
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
+        mainMenuUI.SetActive(true);
 
         // Find the IntroScript in the scene
         introScript = FindObjectOfType<IntroScript>();
@@ -173,6 +141,8 @@ public class UIManager : MonoBehaviour
             Debug.LogError("IntroScript not found in the scene!");
         }
 
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
         // Assign the Play button function
         playButton.onClick.AddListener(StartGame);
@@ -208,9 +178,6 @@ public class UIManager : MonoBehaviour
         Cursor.visible = false;
         IncomeIcon.SetActive(true);
         upgradeDataManager.ResetUpgrades();
-        HideGameplayUI();
-
-  
 
         if (introScript != null)
         {
@@ -222,35 +189,6 @@ public class UIManager : MonoBehaviour
             Debug.LogError("Introscript is null");
         }
     }
-
-    //private void SpawnPlayerAtStart()
-    //{
-    //    if (player == null)
-    //    {
-    //        Debug.LogError("[UIManager] Player reference is missing!");
-    //        return;
-    //    }
-
-    //    Transform spawnPoint = GameObject.FindGameObjectWithTag("PlayerSpawn")?.transform;
-
-    //    if (spawnPoint == null)
-    //    {
-    //        Debug.LogWarning("[UIManager] No GameObject found with tag 'PlayerSpawn'. Player won't be repositioned.");
-    //    }
-    //    else
-    //    {
-    //        player.transform.position = spawnPoint.position;
-    //        player.transform.rotation = spawnPoint.rotation;
-    //        Debug.Log("[UIManager] Player spawned at: " + spawnPoint.position);
-    //    }
-
-
-    //    Cursor.lockState = CursorLockMode.Locked;
-    //    Cursor.visible = false;
-
-
-    //    Debug.Log("Player spawned at start point.");
-    //}
 
     public void ToggleDeveloperCheats(bool isEnabled)
     {
@@ -337,16 +275,9 @@ public class UIManager : MonoBehaviour
     public void NextDayButton()
     {
         string sceneName = SceneManager.GetActiveScene().name;
-        DayManager.Instance.NextDay(); 
         SceneManager.LoadScene(sceneName);
        
         GameManager.Instance.SetIncome(StaticData.incomePassed);
-    }
-
-    public void OnNewGame()
-    {
-        DayManager.Instance.ResetDay();
-        SceneManager.LoadScene("GameScene"); // Starts Day 1 again
     }
 
     public void SetCrosshairInteractable() //Set the colour of crosshair when not targeting an interactable object
@@ -439,7 +370,7 @@ public class UIManager : MonoBehaviour
         
             if (cameraScript != null)
             {
-                cameraScript.enabled = true;
+                cameraScript.enabled = true;// Enable camera movement
             }
         }
 
@@ -651,51 +582,6 @@ public class UIManager : MonoBehaviour
     {
         reciept.SetActive(false);
     }
-
-
-
-
-
-    public void ShowNextDayPanel(int currentDay)
-    {
-        if (newDayPanel == null || nextDayPanelGroup == null || dayText == null)
-        {
-            Debug.LogError("UIManager: New Day Panel references are missing.");
-            return;
-        }
-
-        if (currentDay != 1)
-        {
-            newDayPanel.SetActive(true);
-            dayText.text = "Day " + currentDay;
-            StartCoroutine(FadeSequence());
-        }
-
-    }
-
-    private IEnumerator FadeSequence()
-    {
-        yield return StartCoroutine(FadeCanvasGroup(nextDayPanelGroup, 0f, 1f, 0.01f)); // Fade in
-        yield return new WaitForSeconds(8.7f); // Pause
-        yield return StartCoroutine(FadeCanvasGroup(nextDayPanelGroup, 1f, 0f, 1f)); // Fade out
-        newDayPanel.SetActive(false); // Hide the panel after fade
-    }
-
-    private IEnumerator FadeCanvasGroup(CanvasGroup group, float from, float to, float duration)
-    {
-        if (group == null || group.gameObject == null)
-        {
-            Debug.LogError("CanvasGroup or its GameObject is null! Cannot fade.");
-            yield break;
-        }
-
-        float time = 0f;
-        while (time < duration)
-        {
-            group.alpha = Mathf.Lerp(from, to, time / duration);
-            time += Time.deltaTime;
-            yield return null;
-        }
-        group.alpha = to;
-    }
 }
+
+

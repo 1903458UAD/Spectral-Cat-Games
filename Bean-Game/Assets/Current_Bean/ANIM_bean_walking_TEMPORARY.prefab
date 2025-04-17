@@ -65,13 +65,9 @@ PrefabInstance:
       value: 9
       objectReference: {fileID: 0}
     - target: {fileID: -7759185970682338521, guid: 185a8e26d523bf14ca99f9c673565eb3, type: 3}
-      propertyPath: m_CastShadows
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -7759185970682338521, guid: 185a8e26d523bf14ca99f9c673565eb3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 5359f2d7833c14c448c2ba3f68ab9ec5, type: 2}
+      objectReference: {fileID: 2100000, guid: f024d408d0ee9ea4d8f4aeaa8adde897, type: 2}
     - target: {fileID: -6930296673090974833, guid: 185a8e26d523bf14ca99f9c673565eb3, type: 3}
       propertyPath: m_Layer
       value: 9
@@ -116,10 +112,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
-    - target: {fileID: -294369257914641595, guid: 185a8e26d523bf14ca99f9c673565eb3, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 2099827280847466625, guid: 6475267c9e358a14ea4f4a601b351bd1, type: 3}
     - target: {fileID: -294369257914641595, guid: 185a8e26d523bf14ca99f9c673565eb3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -369,7 +361,6 @@ MonoBehaviour:
   state: 0
   inflated: 0
   alerted: 0
-  maxVerticalDifference: 0.2
 --- !u!114 &147706845232554040
 MonoBehaviour:
   m_ObjectHideFlags: 0

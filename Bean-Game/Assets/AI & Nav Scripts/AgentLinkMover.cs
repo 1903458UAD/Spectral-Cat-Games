@@ -19,9 +19,7 @@ public class AgentLinkMover : MonoBehaviour
     IEnumerator Start()
     {
         NavMeshAgent agent = GetComponent<NavMeshAgent>();
-        
-        agent.autoTraverseOffMeshLink = false;
-        
+        agent.autoTraverseOffMeshLink = true;
         while (true)
         {
             if (agent.isOnOffMeshLink)
@@ -32,11 +30,7 @@ public class AgentLinkMover : MonoBehaviour
                     yield return StartCoroutine(Parabola(agent, 2.0f, 0.5f));
                 else if (m_Method == OffMeshLinkMoveMethod.Curve)
                     yield return StartCoroutine(Curve(agent, 0.5f));
-                
-                if (agent != null && agent.enabled && agent.isOnNavMesh)
-                {
-                    agent.CompleteOffMeshLink();
-                }
+                agent.CompleteOffMeshLink();
             }
             yield return null;
         }
