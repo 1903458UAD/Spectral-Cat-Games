@@ -10,6 +10,8 @@ public class CarBehaviour : MonoBehaviour
 
     public Transform currentNode;
     public float carSpeed;
+    private Vector3 newDirection;
+    private float singleStep;
 
     public PassingCarsScript PCS;
 
@@ -20,16 +22,19 @@ public class CarBehaviour : MonoBehaviour
         node1 = PCS.node1;
         node2 = PCS.node2;
         node3 = PCS.node3;
-        carSpeed = .5f;
+        carSpeed = 0.1f;
 
         currentNode = node1;
     }
 
     private void Update()
     {
+        singleStep = 10f * Time.deltaTime;
         if (currentNode == node1)
         {
             transform.position = Vector3.MoveTowards(transform.position, node2.position, carSpeed);
+            newDirection = Vector3.RotateTowards(transform.forward, (node2.position - transform.position), 1f, 0.0f);
+            transform.rotation = Quaternion.LookRotation(newDirection);
 
             if (Vector3.Distance(transform.position, node2.position) < 0.001f)
             {
@@ -39,6 +44,8 @@ public class CarBehaviour : MonoBehaviour
         else if (currentNode == node2)
         {
             transform.position = Vector3.MoveTowards(transform.position, node3.position, carSpeed);
+            newDirection = Vector3.RotateTowards(transform.forward, (node3.position - transform.position), singleStep, 0.0f);
+            transform.rotation = Quaternion.LookRotation(newDirection);
 
             if (Vector3.Distance(transform.position, node3.position) < 0.001f)
             {

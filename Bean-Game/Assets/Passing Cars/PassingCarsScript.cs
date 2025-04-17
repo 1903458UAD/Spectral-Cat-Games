@@ -24,7 +24,7 @@ public class PassingCarsScript : MonoBehaviour
         carCounter = 0;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if (spawnable && carCounter < 2)
         {
@@ -35,19 +35,20 @@ public class PassingCarsScript : MonoBehaviour
 
     private void SpawnCar(GameObject car)
     {
-        if (car_1 == null)
-        {
-            car_1 = Instantiate(car, node1.position, Quaternion.identity, this.transform);
-            carCounter += 1;
-        }
-        else if (car_2 == null)
+        if (car_1 == null && car_2 == null)
         {
             car_2 = Instantiate(car, node1.position, Quaternion.identity, this.transform);
             carCounter += 1;
+            spawnable = false;
+            StartCoroutine(SpawnCooldown());
         }
-        
-        spawnable = false;
-        StartCoroutine(SpawnCooldown());
+        else if (car_1 == null)
+        {
+            car_1 = Instantiate(car, node1.position, Quaternion.identity, this.transform);
+            carCounter += 1;
+            spawnable = false;
+            StartCoroutine(SpawnCooldown());
+        }
     }
 
     public void DespawnCar(GameObject car)
