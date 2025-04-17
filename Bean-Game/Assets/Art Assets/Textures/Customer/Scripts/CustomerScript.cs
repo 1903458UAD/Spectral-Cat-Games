@@ -93,10 +93,19 @@ public class CustomerScript : MonoBehaviour
         requiredBeans = UnityEngine.Random.Range(1, 4);
 
         // Debug.Log($"Customer wants a coffee with {requiredBeans} beans.");
+        
+        int currentDay = DayManager.Instance != null ? DayManager.Instance.currentDay : 1;
 
+        if (currentDay == 1)
+        {
+            requiredSyrup = "None";
+        }
+        else
+        {
+            string[] syrups = { "Peanut Butter", "Vanilla", "Iced Tea", "Caramel", "None" };
+            requiredSyrup = syrups[UnityEngine.Random.Range(0, syrups.Length)];
+        }
 
-        string[] syrups = { "Peanut Butter", "Vanilla", "Iced Tea", "Caramel", "None" };
-        requiredSyrup = syrups[UnityEngine.Random.Range(0, syrups.Length)];
         UIManager.Instance.UpdateCustomerOrder(requiredBeans, requiredSyrup);
     }
 
