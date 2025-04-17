@@ -22,8 +22,12 @@ public class PowerCutScript : MonoBehaviour
     [SerializeField] private EventReference powerCutsOff;
     [SerializeField] private EventReference powerTurnsOn;
 
+    GameObject powerexcla;
+
     private void Start()
     {
+        powerexcla = GameObject.Find("powerexcla");
+        powerexcla.SetActive(false);
         lights = GameObject.Find("LightsContainer");
         playerTorch = GameObject.Find("Torch");
         playerTorch.SetActive(false);
@@ -38,6 +42,7 @@ public class PowerCutScript : MonoBehaviour
     {
         machineButton.enabled = false;
         till.enabled = false;
+        powerexcla.SetActive(true);
         AudioManager.instance.PlayOneShot(powerCutsOff, this.transform.position);
     }
     //No longer being used.
@@ -57,6 +62,7 @@ public class PowerCutScript : MonoBehaviour
     {
         machineButton.enabled = true;
         till.enabled= true;
+        powerexcla.SetActive(false);
         AudioManager.instance.PlayOneShot(powerTurnsOn, this.transform.position);
     }
 
