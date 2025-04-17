@@ -19,7 +19,7 @@ public class IntroScript : MonoBehaviour
     private Animator lidAnim;
     public float animLength;
 
-    public PowerCutScript PowerCut;
+    //public PowerCutScript PowerCut;
     public FirstPersonLook fpLook;
     
     #endregion
@@ -60,7 +60,7 @@ public class IntroScript : MonoBehaviour
         yield return new WaitForSeconds(animLength);
 
 
-        PowerCut.InitialShutOff();
+        //PowerCut.InitialShutOff();
         anim.enabled = false;
         menuCamera.enabled = false;
         playerCamera.enabled = true;

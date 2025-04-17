@@ -89,14 +89,11 @@ private AudioClip playRandom()
 
 public void ActivateMachine()
 {
-
-
-        if (isCoffeeMaking)
-        {
-           
-            return; //Needed to fix bug with placing bean while machine active
-        }
-        if (CanActivateMachine() == true)
+    if (isCoffeeMaking)
+    {
+        return; //Needed to fix bug with placing bean while machine active
+    }
+    if (CanActivateMachine() == true)
     {
         isCoffeeMaking = true;
         Debug.Log("Enough beans! Starting coffee creation...");
@@ -118,41 +115,41 @@ public void ActivateMachine()
         Debug.Log("Not enough beans! Add more beans to activate.");
     }
 }
-    public void CreateCoffee()
+public void CreateCoffee()
+{
+    Debug.Log("[CoffeeMachine] CreateCoffee() function called!");
+    GameObject coffeeToSpawn = null;
+
+    if (currentBeans == 1)
     {
-        Debug.Log("[CoffeeMachine] CreateCoffee() function called!");
-        GameObject coffeeToSpawn = null;
-
-        if (currentBeans == 1)
-        {
-            coffeeToSpawn = coffeeCup1Bean;
-            coffeeToSpawn.GetComponent<CoffeeInteraction>().SetBeanCount(1); // Set 1 bean
-        }
-        else if (currentBeans == 2)
-        {
-            coffeeToSpawn = coffeeCup2Beans;
-            coffeeToSpawn.GetComponent<CoffeeInteraction>().SetBeanCount(2); // Set 2 beans
-        }
-        else if (currentBeans == 3)
-        {
-            coffeeToSpawn = coffeeCup3Beans;
-            coffeeToSpawn.GetComponent<CoffeeInteraction>().SetBeanCount(3); // Set 3 beans
-        }
-
-        if (coffeeToSpawn != null)
-        {
-            Vector3 spawnPosition = spawnPoint ? spawnPoint.position : transform.position;
-
-            Instantiate(coffeeToSpawn, spawnPosition, Quaternion.identity);
-            Debug.Log($"Brewed coffee with {currentBeans} beans.");
-
-            currentBeans = 0;
-        }
-        else
-        {
-           // Debug.LogError("[CoffeeMachine] No coffee prefab assigned or incorrect bean count!");
-        }
-        buttonLid.transform.rotation = lidOpen;
-        isCoffeeMaking = false;
+        coffeeToSpawn = coffeeCup1Bean;
+        coffeeToSpawn.GetComponent<CoffeeInteraction>().SetBeanCount(1); // Set 1 bean
     }
+    else if (currentBeans == 2)
+    {
+        coffeeToSpawn = coffeeCup2Beans;
+        coffeeToSpawn.GetComponent<CoffeeInteraction>().SetBeanCount(2); // Set 2 beans
+    }
+    else if (currentBeans == 3)
+    {
+        coffeeToSpawn = coffeeCup3Beans;
+        coffeeToSpawn.GetComponent<CoffeeInteraction>().SetBeanCount(3); // Set 3 beans
+    }
+
+    if (coffeeToSpawn != null)
+    {
+        Vector3 spawnPosition = spawnPoint ? spawnPoint.position : transform.position;
+
+        Instantiate(coffeeToSpawn, spawnPosition, Quaternion.identity);
+        Debug.Log($"Brewed coffee with {currentBeans} beans.");
+
+        currentBeans = 0;
+    }
+    else
+    {
+       // Debug.LogError("[CoffeeMachine] No coffee prefab assigned or incorrect bean count!");
+    }
+    buttonLid.transform.rotation = lidOpen;
+    isCoffeeMaking = false;
+}
 }
