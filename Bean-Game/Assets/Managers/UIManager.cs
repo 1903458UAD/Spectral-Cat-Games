@@ -130,6 +130,8 @@ public class UIManager : MonoBehaviour
         HideDayEndScreen();
         HidePatienceBar();
         HideReciept();
+        HideGameplayUI();
+        reciept.SetActive(false);
 
         warningSlip.SetActive(false);
 
@@ -206,6 +208,7 @@ public class UIManager : MonoBehaviour
         Cursor.visible = false;
         IncomeIcon.SetActive(true);
         upgradeDataManager.ResetUpgrades();
+        HideGameplayUI();
 
   
 
