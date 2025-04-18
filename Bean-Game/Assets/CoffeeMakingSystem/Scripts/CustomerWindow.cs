@@ -53,6 +53,11 @@ public class CustomerWindow : MonoBehaviour
 
                     currentCoffeeCount = 0; // Reset beans for the next coffee
                 }
+
+                else
+                {
+                    AudioManager.instance.PlayOneShot(wrongOrderFX, this.transform.position);
+                }
             }
            
             else
