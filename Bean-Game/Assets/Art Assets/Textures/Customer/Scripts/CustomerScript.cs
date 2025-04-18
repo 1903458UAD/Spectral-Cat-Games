@@ -172,6 +172,7 @@ public class CustomerScript : MonoBehaviour
         {
             UnityEngine.Debug.Log("[CustomerScript] Customer ran out of patience!");
             playerHealth.LoseLife("Order not Fulfilled in time");
+            AudioManager.instance.SetAmbianceParameter("Activate CMel", 0);
             nextLocation = exit;
             drive = true;
         }

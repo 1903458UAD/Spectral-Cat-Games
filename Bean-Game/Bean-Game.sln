@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{A72DEF75-6E96-A720-7C29-E08F1A44198F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMODUnityEditor", "FMODUnityEditor.csproj", "{9DD0DEEC-B470-75B5-0A56-0CB652634382}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMODUnityResonanceEditor", "FMODUnityResonanceEditor.csproj", "{5894FCB8-1F4A-4E11-00C1-7E2BF95CF8E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMODUnityEditor", "FMODUnityEditor.csproj", "{9DD0DEEC-B470-75B5-0A56-0CB652634382}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMODUnity", "FMODUnity.csproj", "{543483EC-5280-791C-CA09-DD6CC7FD3FB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{9C66E980-2B09-2806-0CA4-72C10A5A5856}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMODUnityResonance", "FMODUnityResonance.csproj", "{088C0A12-9A64-03C6-7189-6BD885FD14BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{9C66E980-2B09-2806-0CA4-72C10A5A5856}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,26 +23,26 @@ Global
 		{A72DEF75-6E96-A720-7C29-E08F1A44198F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A72DEF75-6E96-A720-7C29-E08F1A44198F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A72DEF75-6E96-A720-7C29-E08F1A44198F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9DD0DEEC-B470-75B5-0A56-0CB652634382}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9DD0DEEC-B470-75B5-0A56-0CB652634382}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9DD0DEEC-B470-75B5-0A56-0CB652634382}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9DD0DEEC-B470-75B5-0A56-0CB652634382}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5894FCB8-1F4A-4E11-00C1-7E2BF95CF8E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5894FCB8-1F4A-4E11-00C1-7E2BF95CF8E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5894FCB8-1F4A-4E11-00C1-7E2BF95CF8E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5894FCB8-1F4A-4E11-00C1-7E2BF95CF8E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DD0DEEC-B470-75B5-0A56-0CB652634382}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DD0DEEC-B470-75B5-0A56-0CB652634382}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DD0DEEC-B470-75B5-0A56-0CB652634382}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DD0DEEC-B470-75B5-0A56-0CB652634382}.Release|Any CPU.Build.0 = Release|Any CPU
 		{543483EC-5280-791C-CA09-DD6CC7FD3FB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{543483EC-5280-791C-CA09-DD6CC7FD3FB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{543483EC-5280-791C-CA09-DD6CC7FD3FB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{543483EC-5280-791C-CA09-DD6CC7FD3FB2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9C66E980-2B09-2806-0CA4-72C10A5A5856}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9C66E980-2B09-2806-0CA4-72C10A5A5856}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9C66E980-2B09-2806-0CA4-72C10A5A5856}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9C66E980-2B09-2806-0CA4-72C10A5A5856}.Release|Any CPU.Build.0 = Release|Any CPU
 		{088C0A12-9A64-03C6-7189-6BD885FD14BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{088C0A12-9A64-03C6-7189-6BD885FD14BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{088C0A12-9A64-03C6-7189-6BD885FD14BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{088C0A12-9A64-03C6-7189-6BD885FD14BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C66E980-2B09-2806-0CA4-72C10A5A5856}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C66E980-2B09-2806-0CA4-72C10A5A5856}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C66E980-2B09-2806-0CA4-72C10A5A5856}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C66E980-2B09-2806-0CA4-72C10A5A5856}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
