@@ -19,6 +19,7 @@ public class CoffeeMachine : MonoBehaviour
 
     [SerializeField] private GameObject hopperSpawn;
     [SerializeField] private GameObject hopperBeanPrefab;
+    [SerializeField] private GameObject shatteredBeanPrefab;
     private GameObject[] hopperBeansArray;
     private AudioSource audioSource;
     public AudioClip[] clips;
@@ -32,6 +33,7 @@ public class CoffeeMachine : MonoBehaviour
     private bool isCoffeeMaking = false;
 
 
+ 
     public void AddBean(BeanInteraction bean)
     {
         //Debug.Log($"[CoffeeMachine] Instance ID: {this.GetInstanceID()}, Beans: {currentBeans}");
@@ -46,6 +48,12 @@ public class CoffeeMachine : MonoBehaviour
             currentBeans++;
             Debug.Log($"[CoffeeMachine] Beans added: {currentBeans}");
             Destroy(bean.gameObject); // Destroy the bean after adding it to the machine
+
+            if (shatteredBeanPrefab == null)
+            {
+                Debug.LogError("[CoffeeMachine] shatteredBeanPrefab is STILL null at runtime!");
+                return;
+            }
 
             if (!isCoffeeMaking)
             {
@@ -89,27 +97,56 @@ private AudioClip playRandom()
 
 public void ActivateMachine()
 {
-
+        Debug.Log($"[DEBUG] CoffeeMachine instance: {this.name}, shatteredBeanPrefab: {shatteredBeanPrefab}");
 
         if (isCoffeeMaking)
         {
            
             return; //Needed to fix bug with placing bean while machine active
         }
+
+
+
         if (CanActivateMachine() == true)
     {
-        isCoffeeMaking = true;
+            hopperBeansArray = GameObject.FindGameObjectsWithTag("Respawn");
+
+
+
+            foreach (GameObject bean in hopperBeansArray)
+            {
+                if (bean != null)
+                {
+                   
+                    Vector3 beanPosition = bean.transform.position;
+                    Quaternion beanRotation = bean.transform.rotation;
+
+                    
+                    Destroy(bean);
+
+                    
+                    if (shatteredBeanPrefab != null)
+                    {
+                        GameObject shatteredBean = Instantiate(shatteredBeanPrefab, beanPosition, beanRotation);
+                        
+                        foreach (Rigidbody rb in shatteredBean.GetComponentsInChildren<Rigidbody>())
+                        {
+                            rb.AddExplosionForce(1f, beanPosition, 1f);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("Shattered bean prefab not assigned!");
+                    }
+                }
+            }
+                isCoffeeMaking = true;
         Debug.Log("Enough beans! Starting coffee creation...");
         AudioManager.instance.PlayOneShot(buttonSound, this.transform.position);
         AudioManager.instance.PlayOneShot(coffeeMachineSound, this.transform.position);
         hopperBeansArray = GameObject.FindGameObjectsWithTag("Respawn");
         audioSource.PlayOneShot(playRandom(), volume);
 
-
-        foreach(GameObject hopperBeans in hopperBeansArray)
-        {
-            Destroy(hopperBeans);
-        }
 
         Invoke(nameof(CreateCoffee), coffeeCreationTime);
     }
@@ -120,6 +157,33 @@ public void ActivateMachine()
 }
     public void CreateCoffee()
     {
+
+        GameObject[] shatteredBeans = GameObject.FindGameObjectsWithTag("ShatteredBean");
+        foreach (GameObject bean in shatteredBeans)
+        {
+            if (bean != null)
+            {
+                Destroy(bean);
+            }
+        }
+
+        // Destroy all shattered beans now that coffee is made
+        foreach (GameObject bean in hopperBeansArray)
+        {
+            if (bean != null)
+            {
+                BeanInteraction beanScript = bean.GetComponent<BeanInteraction>();
+                if (beanScript != null)
+                {
+                    beanScript.DestroyShatter();
+                }
+                else
+                {
+                    Destroy(bean); 
+                }
+            }
+        }
+
         Debug.Log("[CoffeeMachine] CreateCoffee() function called!");
         GameObject coffeeToSpawn = null;
 
