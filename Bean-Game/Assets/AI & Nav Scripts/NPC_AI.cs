@@ -327,7 +327,7 @@ public class NPC_AI : MonoBehaviour
 
     private void OnDestroy()
     {
-        //if (AIManager.Instance != null)
+        if (AIManager.Instance != null)
         {
             AIManager.Instance.UnregisterNPC(this);
             //Debug.Log($"[NPC_AI] {gameObject.name} removed from AIManager before destruction.");

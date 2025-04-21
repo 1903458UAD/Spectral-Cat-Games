@@ -126,9 +126,15 @@ public class Hiding_Spots : MonoBehaviour
                 beanNPC.SetHidingSpot(this);
             }
 
-            beanNPC.state = NPC_AI.NPCState.Hiding;
+            if (beanNPC != null)
+            {
+                beanNPC.state = NPC_AI.NPCState.Hiding;
 
-            IncrementOccupancy();
+                IncrementOccupancy();
+            }
+                
+
+
 
 
         }

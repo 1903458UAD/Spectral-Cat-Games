@@ -276,6 +276,15 @@ public class AIManager : MonoBehaviour
         if (npcList.Contains(npc))
         {
             npcList.Remove(npc);
+            hidingTimers.Remove(npc);
+            nextDecisionTimes.Remove(npc);
+            updateTimers.Remove(npc);
+            activeTimers.Remove(npc);
+            lastSwitchTime.Remove(npc);
+            runStartTimes.Remove(npc);
+            npcHidingAssignments.Remove(npc);
+            beansToSwitch.Remove(npc);
+            recentlySwitched.Remove(npc);
         }
     }
 
