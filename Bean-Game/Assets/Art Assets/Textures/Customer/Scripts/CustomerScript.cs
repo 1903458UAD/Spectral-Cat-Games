@@ -35,6 +35,7 @@ public class CustomerScript : MonoBehaviour
     public string requiredSyrup;
 
     [SerializeField] private EventReference driveUpFX;
+    [SerializeField] private EventReference outOfTimeFX;
 
     public void SetIsOrderedTrue()
     {
@@ -181,6 +182,7 @@ public class CustomerScript : MonoBehaviour
         {
             UnityEngine.Debug.Log("[CustomerScript] Customer ran out of patience!");
             playerHealth.LoseLife("Order not Fulfilled in time");
+            AudioManager.instance.PlayOneShot(outOfTimeFX, driveThrough.transform.position);
             AudioManager.instance.SetAmbianceParameter("Activate CMel", 0);
             nextLocation = exit;
             drive = true;
