@@ -128,7 +128,13 @@ public void ActivateMachine()
                     if (shatteredBeanPrefab != null)
                     {
                         GameObject shatteredBean = Instantiate(shatteredBeanPrefab, beanPosition, beanRotation);
-                        
+
+                        ShatteredBeanSwirl swirlScript = shatteredBean.GetComponent<ShatteredBeanSwirl>();
+                        if (swirlScript != null)
+                        {
+                            swirlScript.swirlCenter = this.transform; 
+                        }
+
                         foreach (Rigidbody rb in shatteredBean.GetComponentsInChildren<Rigidbody>())
                         {
                             rb.AddExplosionForce(1f, beanPosition, 1f);

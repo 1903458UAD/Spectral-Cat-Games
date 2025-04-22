@@ -3409,6 +3409,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9044123528902357977}
+  - component: {fileID: -5107943109209300287}
   m_Layer: 0
   m_Name: RB_SM_bean_fracture 1
   m_TagString: ShatteredBean
@@ -3468,6 +3469,21 @@ Transform:
   - {fileID: 9137670223215613149}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-5107943109209300287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6379907940646347497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20dbfde57b581704e868a9fa12c1b56f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  swirlCenter: {fileID: 0}
+  swirlSpeed: 40
+  inwardForce: 5
 --- !u!1 &6410367410162867200
 GameObject:
   m_ObjectHideFlags: 0
