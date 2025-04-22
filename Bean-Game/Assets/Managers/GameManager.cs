@@ -47,6 +47,9 @@ public class GameManager : MonoBehaviour
 
     private List<Hiding_Spots> hidingSpots = new List<Hiding_Spots>();
 
+    [Header("Spawn Points")]
+    public Transform trapSpawnPoint;
+
 
     //private Dictionary<NPC_AI, Hiding_Spots> npcHidingAssignments = new Dictionary<NPC_AI, Hiding_Spots>();
 
@@ -65,6 +68,19 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        if (trapSpawnPoint == null)
+        {
+            var sPointObj = GameObject.FindGameObjectWithTag("TrapSpawn");
+            
+            if (sPointObj != null)
+            {
+                trapSpawnPoint = sPointObj.transform;
+            }
+            else
+            {
+                Debug.LogWarning("[GameManager] No TrapSpawn object found or assigned!");
+            }
+        }
 
 
         player = GameObject.FindGameObjectWithTag("Player");
@@ -273,9 +289,17 @@ public class GameManager : MonoBehaviour
 
     private void SpawnTrapHidingSpot()
     {
-        Vector3 playerPos = GetPlayerPosition();
+        if (trapSpawnPoint == null)
+        {
+            Debug.LogWarning("[GameManager] No trapSpawnPoint assigned!");
+            return;
+        }
 
-        Vector3 spawnPos = GetNavMeshPositionNear(playerPos);
+        Vector3 spawnPos = trapSpawnPoint.position;
+
+        //Vector3 playerPos = GetPlayerPosition();
+
+        //Vector3 spawnPos = GetNavMeshPositionNear(playerPos);
 
         GameObject trapGO = Instantiate(trapHidingSpotPrefab, spawnPos, Quaternion.identity);
 
@@ -287,8 +311,8 @@ public class GameManager : MonoBehaviour
 
             hidingSpots.Add(trapSpot);
             Debug.Log($"[GameManager] Trap hiding spot spawned at {spawnPos}");
-
         }
+       
     }
 
     private void SpawnCage()

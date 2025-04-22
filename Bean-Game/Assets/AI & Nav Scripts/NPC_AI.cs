@@ -104,10 +104,21 @@ public class NPC_AI : MonoBehaviour
             inflated = true;
         }
 
-        if (exclamationUpgrade.internalUpgradeEnabled == true && alerted == false)
+        if (exclamationUpgrade.internalUpgradeEnabled)
         {
-            spotted.SetActive(true);
-            alerted = true;
+            float distToPlayer = Vector3.Distance(transform.position,AIManager.Instance.GetPlayerPosition());
+            bool inRange = distToPlayer <= runRange * 2f;
+
+            if (inRange && !alerted)
+            {
+                spotted.SetActive(true);
+                alerted = true;
+            }
+            else if (!inRange && alerted)
+            {
+                spotted.SetActive(false);
+                alerted = false;
+            }
         }
 
 
@@ -327,7 +338,7 @@ public class NPC_AI : MonoBehaviour
 
     private void OnDestroy()
     {
-        //if (AIManager.Instance != null)
+        if (AIManager.Instance != null)
         {
             AIManager.Instance.UnregisterNPC(this);
             //Debug.Log($"[NPC_AI] {gameObject.name} removed from AIManager before destruction.");

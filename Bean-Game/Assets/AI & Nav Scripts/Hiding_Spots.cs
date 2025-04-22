@@ -15,7 +15,15 @@ public class Hiding_Spots : MonoBehaviour
 
     public int Occupancy => occupancy; // Read-only property to get current occupancy
 
-    
+    private Collider _collider;
+
+    private void Awake()
+    {
+        _collider = GetComponent<Collider>();
+    }
+
+
+
     public void ReserveSpot()
     {
         if (occupancy < MaxOccupancy)
@@ -47,6 +55,11 @@ public class Hiding_Spots : MonoBehaviour
             occupancy++;
             currentOccupancy = occupancy;
             //Debug.Log($"[Hiding_Spots] {gameObject.name} occupancy increased: {occupancy}/{MaxOccupancy}");
+
+            if (_collider != null && hidingType == HidingType.Trap)
+            {
+                _collider.isTrigger = false;
+            }
         }
         else
         {
@@ -62,6 +75,12 @@ public class Hiding_Spots : MonoBehaviour
             occupancy--;
             currentOccupancy = occupancy;
             //Debug.Log($"[Hiding_Spots] {gameObject.name} occupancy decreased: {occupancy}/{MaxOccupancy}");
+
+            if (_collider != null && hidingType == HidingType.Trap && occupancy == 0)
+            {
+                _collider.isTrigger = true;
+            }
+
         }
         else
         {
@@ -126,9 +145,15 @@ public class Hiding_Spots : MonoBehaviour
                 beanNPC.SetHidingSpot(this);
             }
 
-            beanNPC.state = NPC_AI.NPCState.Hiding;
+            if (beanNPC != null)
+            {
+                beanNPC.state = NPC_AI.NPCState.Hiding;
 
-            IncrementOccupancy();
+                IncrementOccupancy();
+            }
+                
+
+
 
 
         }
