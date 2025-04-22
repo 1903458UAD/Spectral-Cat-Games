@@ -38,7 +38,6 @@ public class CustomerWindow : MonoBehaviour
                     {
                         CustomerTakesCoffee();
                         AudioManager.instance.PlayOneShot(correctOrderFX, this.transform.position);
-                        AudioManager.instance.PlayOneShot(moneyGetFX, this.transform.position);
                         AudioManager.instance.SetAmbianceParameter("Activate CMel", 0);
                         Debug.Log("Coffee Given to window: Correct order");
                     }
@@ -52,6 +51,11 @@ public class CustomerWindow : MonoBehaviour
 
 
                     currentCoffeeCount = 0; // Reset beans for the next coffee
+                }
+
+                else
+                {
+                    AudioManager.instance.PlayOneShot(wrongOrderFX, this.transform.position);
                 }
             }
            

@@ -11,11 +11,6 @@ public class DayManager : MonoBehaviour
     public int currentDay = 1;
 
 
-  
-
-
-
-
 
     private void Awake()
     {

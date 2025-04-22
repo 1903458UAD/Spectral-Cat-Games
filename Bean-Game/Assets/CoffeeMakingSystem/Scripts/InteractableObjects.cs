@@ -81,6 +81,11 @@ public class InteractableObject : MonoBehaviour
         transform.position = offsetPosition;
         transform.rotation = Quaternion.identity;
 
+        if (CompareTag("Bean"))
+        {
+            FacePlayer();
+        }
+
         // Mark the object as held
         isHeld = true;
 
@@ -160,5 +165,16 @@ public class InteractableObject : MonoBehaviour
 
         //Debug.Log(gameObject.name + " released!"); //Commented out log incase needed again
 
+    }
+
+    private void FacePlayer()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            Vector3 directionToPlayer = player.transform.position - transform.position;
+            directionToPlayer.y = 0; 
+            transform.rotation = Quaternion.LookRotation(directionToPlayer);
+        }
     }
 }
