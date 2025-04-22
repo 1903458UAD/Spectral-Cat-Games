@@ -42,7 +42,7 @@ MonoBehaviour:
   Path: Banks/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638786008321861707
+  lastModified: 638808489500000000
   FileSizes: []
   Exists: 1
 --- !u!114 &-8835242747485883243
@@ -388,6 +388,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-5710931445657287816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Time Out
+  m_EditorClassIdentifier: 
+  Path: event:/Time Out
+  Guid:
+    Data1: -912009138
+    Data2: 1211172551
+    Data3: 643397261
+    Data4: -1171461344
+  Banks:
+  - {fileID: 5106001434441971322}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-5624580995515497047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -621,7 +648,7 @@ MonoBehaviour:
   Path: Banks/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638808342825859629
+  lastModified: 638808493660000000
   FileSizes: []
   Exists: 1
 --- !u!114 &-1155502097939431443
@@ -764,12 +791,13 @@ MonoBehaviour:
   - {fileID: 5204829575467466370}
   - {fileID: 880563365868984505}
   - {fileID: -535134309054674715}
+  - {fileID: -5710931445657287816}
   EditorParameters: []
   MasterBanks:
   - {fileID: -8860318759763364349}
   StringsBanks:
   - {fileID: 2989309110241945906}
-  cacheTime: 638808342825904693
+  cacheTime: 638808493660000000
   cacheVersion: 131622
 --- !u!114 &555584066494134003
 MonoBehaviour:
@@ -921,10 +949,10 @@ MonoBehaviour:
   Path: Banks/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638808342825781515
+  lastModified: 638808489500000000
   FileSizes:
   - Name: 
-    Value: 3104
+    Value: 3154
   Exists: 1
 --- !u!114 &3033862013831128854
 MonoBehaviour:
@@ -1078,7 +1106,7 @@ MonoBehaviour:
   Path: Banks/Ambiance.bank
   Name: Ambiance
   StudioPath: bank:/Ambiance
-  lastModified: 638786008321861707
+  lastModified: 638799189880000000
   FileSizes: []
   Exists: 1
 --- !u!114 &5106001434441971322
@@ -1096,7 +1124,7 @@ MonoBehaviour:
   Path: Banks/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638808342825904693
+  lastModified: 638808492520000000
   FileSizes: []
   Exists: 1
 --- !u!114 &5204829575467466370
