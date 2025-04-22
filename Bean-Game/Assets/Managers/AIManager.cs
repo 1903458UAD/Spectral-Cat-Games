@@ -817,6 +817,11 @@ public class AIManager : MonoBehaviour
             return;
         }
 
+        if (npcList.Any(b => b.state == NPC_AI.NPCState.Running))
+        {
+            return;
+        }
+
         if (npc.animator != null && npc.playedOnce == false)
         {
             float normalizedTime = npc.stateInfo.normalizedTime % 1f;
