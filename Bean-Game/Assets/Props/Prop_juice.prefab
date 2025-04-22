@@ -10,27 +10,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: ff253f60a25c87a4990d4df43c3f2912, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.5041668
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ff253f60a25c87a4990d4df43c3f2912, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.5041666
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ff253f60a25c87a4990d4df43c3f2912, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.5041668
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ff253f60a25c87a4990d4df43c3f2912, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.699
+      value: -2.0187633
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ff253f60a25c87a4990d4df43c3f2912, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.617
+      value: 0.7667842
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ff253f60a25c87a4990d4df43c3f2912, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.60590005
+      value: -0.42547247
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ff253f60a25c87a4990d4df43c3f2912, type: 3}
       propertyPath: m_LocalRotation.w
@@ -60,13 +60,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ff253f60a25c87a4990d4df43c3f2912, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: ff253f60a25c87a4990d4df43c3f2912, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: b52658ee39178994d87b5c376b4ad823, type: 2}
     - target: {fileID: 919132149155446097, guid: ff253f60a25c87a4990d4df43c3f2912, type: 3}
       propertyPath: m_Name
-      value: SM_JUICE (1)
+      value: Prop_juice
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ff253f60a25c87a4990d4df43c3f2912, type: 3}
       propertyPath: m_Layer
@@ -78,7 +82,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ff253f60a25c87a4990d4df43c3f2912, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

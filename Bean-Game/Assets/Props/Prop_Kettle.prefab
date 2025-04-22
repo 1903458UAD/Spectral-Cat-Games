@@ -57,6 +57,10 @@ PrefabInstance:
       value: Prop_Kettle
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0a5c4f058cd7abd4cacf10e3f800e3a1, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0a5c4f058cd7abd4cacf10e3f800e3a1, type: 3}
       propertyPath: m_TagString
       value: Mug
       objectReference: {fileID: 0}
@@ -67,6 +71,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0a5c4f058cd7abd4cacf10e3f800e3a1, type: 3}
       insertIndex: -1
       addedObject: {fileID: -7085195705474133078}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0a5c4f058cd7abd4cacf10e3f800e3a1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9205527911797705785}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0a5c4f058cd7abd4cacf10e3f800e3a1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8346698189856012554}
   m_SourcePrefab: {fileID: 100100000, guid: 0a5c4f058cd7abd4cacf10e3f800e3a1, type: 3}
 --- !u!1 &8011816295852376221 stripped
 GameObject:
@@ -92,3 +102,48 @@ MonoBehaviour:
       Data3: 100962988
       Data4: -75686875
     Path: event:/Mug Fall
+--- !u!54 &9205527911797705785
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8011816295852376221}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &-8346698189856012554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8011816295852376221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a35d27e0125c7214e98243ac5b70a5c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  holdDistance: 1
+  holdHeightOffset: 0
+  holdWidthOffset: 0.5
+  pickupCooldown: 0.1
+  canRelease: 1
+  isHeld: 0
