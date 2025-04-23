@@ -15,6 +15,10 @@ public class BeanInteraction : MonoBehaviour
 
     private GameObject spawnedShatter;
 
+    [SerializeField] private GameObject cryingParticles;
+    private GameObject spawnedTears;
+
+
     //Beans are only added if held in the player's hand, Removed the Colliding Code
     public void TryAddToCoffeeMachine(CoffeeMachine coffeeMachine)
     {
@@ -26,6 +30,23 @@ public class BeanInteraction : MonoBehaviour
             
         }
        
+    }
+
+    public void OnPickUp()
+    {
+        if (cryingParticles != null && spawnedTears == null)
+        {
+            spawnedTears = Instantiate(cryingParticles, transform.position, Quaternion.identity, transform);
+        }
+    }
+
+    public void OnDrop()
+    {
+        if (spawnedTears != null)
+        {
+            Destroy(spawnedTears);
+            spawnedTears = null;
+        }
     }
 
     public void ShatterBean()
