@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7090085356546161568}
   - component: {fileID: -1649406570101799599}
   - component: {fileID: -354641800715417561}
+  - component: {fileID: 8476137804124896854}
   m_Layer: 9
   m_Name: Prop_large_coffee_bag
   m_TagString: Untagged
@@ -132,3 +133,22 @@ MonoBehaviour:
   pickupCooldown: 0.1
   canRelease: 1
   isHeld: 0
+--- !u!114 &8476137804124896854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812108526337878545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81cf38de5c50f064099a140019c3b8f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallFX:
+    Guid:
+      Data1: 1933453839
+      Data2: 1304764098
+      Data3: -311614579
+      Data4: 1084393565
+    Path: event:/CBag Fall

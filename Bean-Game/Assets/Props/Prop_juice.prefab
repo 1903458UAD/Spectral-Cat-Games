@@ -97,6 +97,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ff253f60a25c87a4990d4df43c3f2912, type: 3}
       insertIndex: -1
       addedObject: {fileID: 631546824610979211}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ff253f60a25c87a4990d4df43c3f2912, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -2049161188732711772}
   m_SourcePrefab: {fileID: 100100000, guid: ff253f60a25c87a4990d4df43c3f2912, type: 3}
 --- !u!1 &2805426913198712989 stripped
 GameObject:
@@ -169,3 +172,22 @@ MonoBehaviour:
   pickupCooldown: 0.1
   canRelease: 1
   isHeld: 0
+--- !u!114 &-2049161188732711772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2805426913198712989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81cf38de5c50f064099a140019c3b8f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallFX:
+    Guid:
+      Data1: 2083178481
+      Data2: 1307693441
+      Data3: 1918806675
+      Data4: -645378552
+    Path: event:/Plastic Bottle Fall

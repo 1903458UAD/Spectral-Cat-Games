@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1542378692781598999}
   - component: {fileID: 6844293727071753350}
   - component: {fileID: 8957089500718075838}
+  - component: {fileID: 4387975492620739038}
   m_Layer: 9
   m_Name: Prop_smallcoffebag
   m_TagString: CoffeeBag
@@ -170,3 +171,22 @@ MonoBehaviour:
   hidingType: 4
   MaxOccupancy: 0
   currentOccupancy: 0
+--- !u!114 &4387975492620739038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4256839135500361147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81cf38de5c50f064099a140019c3b8f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallFX:
+    Guid:
+      Data1: 1933453839
+      Data2: 1304764098
+      Data3: -311614579
+      Data4: 1084393565
+    Path: event:/CBag Fall

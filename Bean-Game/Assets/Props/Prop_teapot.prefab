@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3784647514891672620}
   - component: {fileID: 5717303564290153365}
   - component: {fileID: 5525713057716845754}
+  - component: {fileID: -5525394517395851723}
   m_Layer: 9
   m_Name: Prop_teapot
   m_TagString: Cup
@@ -154,3 +155,22 @@ MonoBehaviour:
   pickupCooldown: 0.1
   canRelease: 1
   isHeld: 0
+--- !u!114 &-5525394517395851723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2566772821614754501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81cf38de5c50f064099a140019c3b8f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallFX:
+    Guid:
+      Data1: 824018566
+      Data2: 1190202041
+      Data3: 239127962
+      Data4: 1749831025
+    Path: event:/Ceramic Fall
