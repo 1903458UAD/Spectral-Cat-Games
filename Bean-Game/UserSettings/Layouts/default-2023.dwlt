@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PixelRect:
     serializedVersion: 2
-    x: 1920
-    y: 88
+    x: -1920
+    y: 139
     width: 1920
     height: 1009
   m_ShowMode: 0
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 87
+  controlID: 154
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -142,8 +142,8 @@ MonoBehaviour:
     y: 0
     width: 284
     height: 659.3333
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 20}
   m_Panes:
   - {fileID: 20}
@@ -169,8 +169,8 @@ MonoBehaviour:
     y: 0
     width: 248.66667
     height: 373.33334
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 21}
   m_Panes:
   - {fileID: 21}
@@ -299,7 +299,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 88
+  controlID: 99
 --- !u!114 &13
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -324,7 +324,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 89
+  controlID: 100
 --- !u!114 &14
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -344,14 +344,14 @@ MonoBehaviour:
     y: 0
     width: 747.3333
     height: 373.33334
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 22}
   m_Panes:
   - {fileID: 22}
   - {fileID: 17}
   m_Selected: 0
-  m_LastSelected: 0
+  m_LastSelected: 1
 --- !u!114 &15
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -409,8 +409,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Game\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 0
-    y: 21
+    x: -1920
+    y: 139
     width: 1920
     height: 988
   m_SerializedDataModeController:
@@ -509,10 +509,10 @@ MonoBehaviour:
     m_TextWithWhitespace: "Animator\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 241.33334
+    x: 248.66667
     y: 72.66667
-    width: 735.3334
-    height: 369.66666
+    width: 745.3333
+    height: 352.33334
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -621,7 +621,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 392.33334
+    y: 446
     width: 995
     height: 264.99997
   m_SerializedDataModeController:
@@ -646,7 +646,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Art Assets
+    - Assets
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -656,16 +656,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Art Assets
+  - Assets
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\barki\Documents\GitHub\SpectralCatGames_Clone\Bean-Game
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 79}
-    m_SelectedIDs: 32cc0000
-    m_LastClickedID: 52274
-    m_ExpandedIDs: 00000000fecb000000cc000002cc000004cc000006cc000008cc00000acc00000ccc0000
+    m_SelectedIDs: 28ce0000
+    m_LastClickedID: 52776
+    m_ExpandedIDs: 0000000028ce00002ace00002cce00002ece000030ce000032ce000034ce000036ce0000c2cf000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -694,7 +694,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000fecb000000cc000002cc000004cc000006cc000008cc00000acc00000ccc0000
+    m_ExpandedIDs: 0000000028ce00002ace00002cce00002ece000030ce000032ce000034ce000036ce0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -773,8 +773,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Inspector\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 997
-    y: 19
+    x: 996
+    y: 72.66667
     width: 283
     height: 638.3333
   m_SerializedDataModeController:
@@ -823,7 +823,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 19
+    y: 72.66667
     width: 247.66667
     height: 352.33334
   m_SerializedDataModeController:
@@ -839,10 +839,10 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 0}
+      scrollPos: {x: 0, y: 132.66666}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: b8faffff
+      m_ExpandedIDs: 86faffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -888,8 +888,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Scene\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 249.66667
-    y: 19
+    x: 248.66667
+    y: 72.66667
     width: 745.3333
     height: 352.33334
   m_SerializedDataModeController:
@@ -976,10 +976,10 @@ MonoBehaviour:
       displayed: 1
       id: unity-transform-toolbar
       index: 0
-      contents: '{"m_Layout":2,"m_Collapsed":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":24.0,"y":0.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      contents: '{"m_Layout":2,"m_Collapsed":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":24.0,"y":24.66666603088379},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
       floating: 0
       collapsed: 0
-      snapOffset: {x: 24, y: 0}
+      snapOffset: {x: 24, y: 24.666666}
       snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 0
       layout: 2
@@ -1348,9 +1348,9 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: -25.027147, y: 3.9558969, z: 9.564964}
+    m_Target: {x: 2.864536, y: 2.1722946, z: -2.4762754}
     speed: 2
-    m_Value: {x: -25.027147, y: 3.9558969, z: 9.564964}
+    m_Value: {x: 2.864536, y: 2.1722946, z: -2.4762754}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1396,13 +1396,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.035192817, y: 0.5723912, z: 0.022979913, w: -0.819556}
+    m_Target: {x: -0.13119283, y: -0.7620746, z: 0.16594762, w: -0.6130662}
     speed: 2
-    m_Value: {x: 0.035192814, y: 0.5723912, z: 0.022979911, w: -0.81955594}
+    m_Value: {x: -0.13110384, y: -0.76155764, z: 0.16583505, w: -0.61265033}
   m_Size:
-    m_Target: 12.124355
+    m_Target: 0.14291877
     speed: 2
-    m_Value: 12.124355
+    m_Value: 0.14291877
   m_Ortho:
     m_Target: 0
     speed: 2
