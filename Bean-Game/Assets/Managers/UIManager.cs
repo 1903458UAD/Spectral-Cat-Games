@@ -206,7 +206,7 @@ public class UIManager : MonoBehaviour
         AudioManager.instance.PlayOneShot(startFX, this.transform.position);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        IncomeIcon.SetActive(true);
+        //IncomeIcon.SetActive(true);
         upgradeDataManager.ResetUpgrades();
         HideGameplayUI();
 
@@ -539,6 +539,7 @@ public class UIManager : MonoBehaviour
         if (crosshair != null) crosshair.gameObject.SetActive(true);
         if (incomeText != null) incomeText.gameObject.SetActive(true);
         if (customerOrderText != null) customerOrderText.gameObject.SetActive(true);
+        IncomeIcon.SetActive(true);
         ShowReciept();
         ShowPatienceBar();
 
@@ -553,6 +554,7 @@ public class UIManager : MonoBehaviour
         if (crosshair != null) crosshair.gameObject.SetActive(false);
         if (incomeText != null) incomeText.gameObject.SetActive(false);
         if (customerOrderText != null) customerOrderText.gameObject.SetActive(false);
+        IncomeIcon.SetActive(false);
         HideReciept();
         HidePatienceBar();
 
