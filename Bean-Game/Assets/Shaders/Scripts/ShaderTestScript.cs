@@ -39,6 +39,7 @@ public class ChangeColor : MonoBehaviour
             ButtonForCoffeeMachine coffeeButton = hitObject.GetComponent<ButtonForCoffeeMachine>();
             CoffeeMachine coffeeMachine = hitObject.GetComponent<CoffeeMachine>();
             CustomerWindow customerWindow = hitObject.GetComponent<CustomerWindow>();
+            Till till = hitObject.GetComponent<Till>();
 
             if (coffeeButton != null)
             {
@@ -63,6 +64,16 @@ public class ChangeColor : MonoBehaviour
                 {
                     Renderer r = obj.GetComponent<Renderer>();
                     r.material.SetFloat("_OutlineThickness", 0.0035f);
+                }
+            }
+
+            if (till != null)
+            {
+                var objs = GameObject.FindGameObjectsWithTag("Till");
+                foreach (var obj in objs)
+                {
+                    Renderer r = obj.GetComponent<Renderer>();
+                    r.material.SetFloat("_OutlineThickness", 0.0025f);
                 }
             }
 
@@ -104,6 +115,13 @@ public class ChangeColor : MonoBehaviour
             {
                 Renderer r = obj.GetComponent<Renderer>();
                 r.material.SetFloat("_OutlineThickness", 0);
+            }
+
+            var objss = GameObject.FindGameObjectsWithTag("Till");
+            foreach (var obj in objss)
+            {
+                Renderer r = obj.GetComponent<Renderer>();
+                r.material.SetFloat("_OutlineThickness", 0.0f);
             }
 
         }

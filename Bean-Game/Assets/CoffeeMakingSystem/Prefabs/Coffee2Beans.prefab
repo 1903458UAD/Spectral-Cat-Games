@@ -130,6 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   beanCount: 2
+  syrup: None
 --- !u!114 &5063306607037525705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,6 +147,8 @@ MonoBehaviour:
   holdHeightOffset: 0
   holdWidthOffset: 0.5
   pickupCooldown: 0.1
+  canRelease: 1
+  isHeld: 0
 --- !u!65 &3550622385195229343
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -238,7 +241,7 @@ PrefabInstance:
     - target: {fileID: 2770324832858192405, guid: 4900599b4e301734ca06d1804d9997bb, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 1732047cfced971499ec99c26850ee40, type: 2}
+      objectReference: {fileID: 2100000, guid: cd4ffa85b402f6642bfd701721b6456a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

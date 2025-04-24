@@ -9157,7 +9157,7 @@ Transform:
   m_GameObject: {fileID: 444785974}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.865, y: 1.3592, z: -5.2922}
+  m_LocalPosition: {x: 1.865, y: 1.3592, z: -5.151}
   m_LocalScale: {x: 0.5226281, y: 0.22569613, z: 0.709692}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -16237,6 +16237,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2155116749526593584, guid: 32caf25de675395408e47249b23855eb, type: 3}
+      propertyPath: m_TagString
+      value: Till
+      objectReference: {fileID: 0}
+    - target: {fileID: 2155116749526593584, guid: 32caf25de675395408e47249b23855eb, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -16279,6 +16283,10 @@ PrefabInstance:
     - target: {fileID: 7214410061675662298, guid: 32caf25de675395408e47249b23855eb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7392684743111306454, guid: 32caf25de675395408e47249b23855eb, type: 3}
+      propertyPath: m_TagString
+      value: Till
       objectReference: {fileID: 0}
     - target: {fileID: 7392684743111306454, guid: 32caf25de675395408e47249b23855eb, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -35745,7 +35753,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4766491bf5eb08d49a5b71d8c248ad2e, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.20392157}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -48677,7 +48685,7 @@ PrefabInstance:
     - target: {fileID: 3650820809094337087, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: a82b3619e0a4f7d47a77fb46bb20e10d, type: 2}
+      objectReference: {fileID: 2100000, guid: 6bbf47abaca79dc46966864a10bd60be, type: 2}
     - target: {fileID: 3932151469443076231, guid: e058281f665b9eb4d859cfaed0e909d9, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
