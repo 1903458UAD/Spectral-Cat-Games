@@ -394,8 +394,14 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        // If the settings menu is open, go back to the pause menu instead of resuming
-        if (settingsMenuUI.activeSelf)
+        if (upgradeMenu.activeSelf)
+        {
+
+            return;
+        }
+
+            // If the settings menu is open, go back to the pause menu instead of resuming
+            if (settingsMenuUI.activeSelf)
         {
             ShowPauseMenu();
             return; // Prevent the game from unpausing
