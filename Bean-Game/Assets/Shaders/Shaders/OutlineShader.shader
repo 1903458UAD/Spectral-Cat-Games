@@ -74,7 +74,7 @@ Shader "Assets/Shaders/OutlineShaderTest"
         [HideInInspector][NoScaleOffset]unity_ShadowMasks("unity_ShadowMasks", 2DArray) = "" {}
 
         _OutlineColour ("Outline Colour", Color) = (1, 1, 1, 1)
-        _OutlineThickness ("Outline Thickness", Range(0, 0.1)) = 0.1
+        _OutlineThickness ("Outline Thickness", Range(0, 0.1)) = 0
     }
 
     SubShader

@@ -46,7 +46,7 @@ public class ChangeColor : MonoBehaviour
                 currentObject = GameObject.FindGameObjectWithTag("ButtonMain");
                 rend = currentObject.GetComponentsInChildren<Renderer>();
 
-                SetShaderParameters(gameObjects, rend, 1);
+                SetShaderParameters(gameObjects, rend, 0.0025f);
             }
 
             if (coffeeMachine != null)
@@ -55,14 +55,14 @@ public class ChangeColor : MonoBehaviour
                 currentObject = GameObject.FindGameObjectWithTag("HopperMain");
                 rend = currentObject.GetComponentsInChildren<Renderer>();
 
-                SetShaderParameters(gameObjects, rend, 1);
+                SetShaderParameters(gameObjects, rend, 0.0025f);
 
                 var objects = GameObject.FindGameObjectsWithTag("MachineComponent");
                 var objectCount = objects.Length;
                 foreach (var obj in objects)
                 {
                     Renderer r = obj.GetComponent<Renderer>();
-                    r.material.SetFloat("_HighlightObject", 1);
+                    r.material.SetFloat("_OutlineThickness", 0.0025f);
                 }
             }
 
@@ -72,7 +72,7 @@ public class ChangeColor : MonoBehaviour
                 foreach (var obj in objs)
                 {
                     Renderer r = obj.GetComponent<Renderer>();
-                    r.material.SetFloat("_HighlightObject", 1);
+                    r.material.SetFloat("_OutlineThickness", 0.0025f);
                 }
             }
         }
@@ -96,14 +96,14 @@ public class ChangeColor : MonoBehaviour
                 foreach (var obj in objects)
                 {
                     Renderer r = obj.GetComponent<Renderer>();
-                    r.material.SetFloat("_HighlightObject", 0);
+                    r.material.SetFloat("_OutlineThickness", 0);
                 }
 
             var objs = GameObject.FindGameObjectsWithTag("CarComp");
             foreach (var obj in objs)
             {
                 Renderer r = obj.GetComponent<Renderer>();
-                r.material.SetFloat("_HighlightObject", 0);
+                r.material.SetFloat("_OutlineThickness", 0);
             }
 
         }
@@ -126,7 +126,7 @@ public class ChangeColor : MonoBehaviour
 
                 for(int i = 0; i < children.Length; i++)
                 {
-                    children[i].material.SetFloat("_HighlightObject", 1);
+                    children[i].material.SetFloat("_OutlineThickness", 0.0025f);
                 }
 
                 //Destroy(foundObject);
@@ -145,7 +145,7 @@ public class ChangeColor : MonoBehaviour
             foreach (var obj in objs)
             {
                 Renderer r = obj.GetComponent<Renderer>();
-                r.material.SetFloat("_HighlightObject", 0);
+                r.material.SetFloat("_OutlineThickness", 0);
             }
         }
 
@@ -157,7 +157,7 @@ public class ChangeColor : MonoBehaviour
     {
         for (int i = 0; i < go.Length; i++)
         {
-            r[i].material.SetFloat("_HighlightObject", highlight);
+            r[i].material.SetFloat("_OutlineThickness", highlight);
         }
     }
 
