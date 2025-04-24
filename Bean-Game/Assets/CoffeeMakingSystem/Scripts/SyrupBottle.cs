@@ -78,7 +78,21 @@ public class SyrupBottle : MonoBehaviour
 
     public void TryAddSyrup(PlayerInteraction player)
     {
-        if (player.heldObjectRight != null && player.heldObjectRight.GetComponent<CoffeeInteraction>())
+        if ((player.heldObjectRight != null && player.heldObjectRight.GetComponent<CoffeeInteraction>()) && (player.heldObjectLeft != null && player.heldObjectLeft.GetComponent<CoffeeInteraction>()))
+        {
+            CoffeeInteraction coffee1 = player.heldObjectRight.GetComponent<CoffeeInteraction>();
+            CoffeeInteraction coffee2 = player.heldObjectLeft.GetComponent<CoffeeInteraction>();
+            coffee1.AddSyrup(syrupType);
+            coffee2.AddSyrup(syrupType);
+            //Debug.Log($"Added {syrupType} syrup to coffee");
+
+
+            StartCoroutine(MoveLid(initialPosition - new Vector3(0f, pressDepth, 0f)));
+
+            AudioManager.instance.PlayOneShot(syrupFX, this.transform.position);
+
+        }
+        else if (player.heldObjectRight != null && player.heldObjectRight.GetComponent<CoffeeInteraction>())
         {
             CoffeeInteraction coffee = player.heldObjectRight.GetComponent<CoffeeInteraction>();
             coffee.AddSyrup(syrupType);

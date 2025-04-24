@@ -50,6 +50,9 @@ public class UIManager : MonoBehaviour
     public TMP_Text coffeePrice; 
     public UpgradeData coffeePriceData;
 
+    public TMP_Text orderNo;
+    public int orderNoCount;
+
     [Header("Player Lives UI")]
     public GameObject warningSlip;
     public TMP_Text warningDescription;
@@ -121,6 +124,8 @@ public class UIManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
+
+        orderNoCount = GameObject.Find("CustomerWindow").GetComponent<CustomerWindow>().customerOrderNo;
     }
 
     private void Start() 
@@ -144,6 +149,8 @@ public class UIManager : MonoBehaviour
 
         // Show main menu at the start
         dayManager = DayManager.Instance;
+        
+
 
         if (dayManager != null && dayManager.currentDay == 1)
         {
@@ -223,34 +230,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    //private void SpawnPlayerAtStart()
-    //{
-    //    if (player == null)
-    //    {
-    //        Debug.LogError("[UIManager] Player reference is missing!");
-    //        return;
-    //    }
-
-    //    Transform spawnPoint = GameObject.FindGameObjectWithTag("PlayerSpawn")?.transform;
-
-    //    if (spawnPoint == null)
-    //    {
-    //        Debug.LogWarning("[UIManager] No GameObject found with tag 'PlayerSpawn'. Player won't be repositioned.");
-    //    }
-    //    else
-    //    {
-    //        player.transform.position = spawnPoint.position;
-    //        player.transform.rotation = spawnPoint.rotation;
-    //        Debug.Log("[UIManager] Player spawned at: " + spawnPoint.position);
-    //    }
-
-
-    //    Cursor.lockState = CursorLockMode.Locked;
-    //    Cursor.visible = false;
-
-
-    //    Debug.Log("Player spawned at start point.");
-    //}
 
     public void ToggleDeveloperCheats(bool isEnabled)
     {
@@ -311,11 +290,19 @@ public class UIManager : MonoBehaviour
     public void ShowGameOverScreen() // Show death screen when player dies
     {
         gameOverScreen.SetActive(true); //Activate the game over UI (Which shows it to player)
+        HideGameplayUI();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Time.timeScale = 0f;
     }
 
     public void HideGameOverScreen() //Hide Death screen, To be called when reset
     {
         gameOverScreen.SetActive(false); //De-Activate the game over UI (Which hides it from the player)
+        Time.timeScale = 1f;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void ShowDayEndScreen() //Hide Death screen, To be called when reset
@@ -324,6 +311,8 @@ public class UIManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         cameraScript.enabled = false;
+        Time.timeScale = 0f;
+
     }
 
     public void HideDayEndScreen() //Hide Death screen, To be called when reset
@@ -332,6 +321,7 @@ public class UIManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         cameraScript.enabled = true;
+        Time.timeScale = 1f;
     }
 
     public void NextDayButton()
@@ -342,6 +332,14 @@ public class UIManager : MonoBehaviour
        
         GameManager.Instance.SetIncome(StaticData.incomePassed);
     }
+
+    public void RestartButton()
+    {
+        string sceneName = SceneManager.GetActiveScene().name;
+        DayManager.Instance.ResetDay();
+        SceneManager.LoadScene(sceneName);
+    }
+
 
     public void OnNewGame()
     {
@@ -384,6 +382,28 @@ public class UIManager : MonoBehaviour
         if (mainMenuUI.activeSelf)
         {
            
+            return;
+        }
+
+        if (upgradeMenu.activeSelf)
+        {
+
+            return;
+        }
+
+        if (gameOverScreen.activeSelf)
+        {
+
+            return;
+        }
+        if (newDayPanel.activeSelf)
+        {
+
+            return;
+        }
+        if (endOfDayScreen.activeSelf)
+        {
+
             return;
         }
 
@@ -647,6 +667,7 @@ public class UIManager : MonoBehaviour
         reciept.SetActive(true);
         if (customerOrderText != null) customerOrderText.gameObject.SetActive(true);
         coffeePrice.text = string.Format("{0}", coffeePriceData.internalBaseValue);
+        orderNo.text = string.Format($"Order #{orderNoCount}");
     }
 
     public void HideReciept()

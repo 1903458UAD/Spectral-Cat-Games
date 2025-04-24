@@ -103,6 +103,7 @@ public class UIUpgradeManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
+            //UIManager.Instance.TogglePause();
             Time.timeScale = 0f;
             UIManager.Instance.HideGameplayUI();
             incomeText.text = string.Format("{0}", GameManager.Instance.GetIncome());

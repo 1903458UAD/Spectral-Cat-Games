@@ -50,6 +50,8 @@ public class GameManager : MonoBehaviour
     [Header("Spawn Points")]
     public Transform trapSpawnPoint;
 
+    private GameObject exclamation;
+
 
     //private Dictionary<NPC_AI, Hiding_Spots> npcHidingAssignments = new Dictionary<NPC_AI, Hiding_Spots>();
 
@@ -82,7 +84,6 @@ public class GameManager : MonoBehaviour
             }
         }
 
-
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
@@ -96,7 +97,8 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("[GameManager] Spawning initial beans...");
 
-
+        exclamation = GameObject.Find("exclamation_cm");
+        exclamation.SetActive(false);
 
         SpawnInitialBeans();  // Ensure this is called
         GameManager.Instance.SetIncome(StaticData.incomePassed);
@@ -354,8 +356,15 @@ public class GameManager : MonoBehaviour
     }
 
 
+    public void ExclamationOn()
+    {
+        exclamation.SetActive(true);
+    }
 
-  
+    public void ExclamationOff()
+    {
+        exclamation.SetActive(false);
+    }
 }
 
 

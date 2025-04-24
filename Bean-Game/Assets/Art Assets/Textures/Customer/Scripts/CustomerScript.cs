@@ -209,7 +209,6 @@ public class CustomerScript : MonoBehaviour
         {
             Pay();
         }
-
         else
         {
             Debug.Log("Wrong coffee given! Customer Pissed.");
