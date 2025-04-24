@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ChangeColor : MonoBehaviour
@@ -39,6 +40,8 @@ public class ChangeColor : MonoBehaviour
             ButtonForCoffeeMachine coffeeButton = hitObject.GetComponent<ButtonForCoffeeMachine>();
             CoffeeMachine coffeeMachine = hitObject.GetComponent<CoffeeMachine>();
             CustomerWindow customerWindow = hitObject.GetComponent<CustomerWindow>();
+            Till till = hitObject.GetComponent<Till>();
+            SyrupBottle syrupbottle = hitObject.GetComponent<SyrupBottle>();
 
             if (coffeeButton != null)
             {
@@ -46,7 +49,7 @@ public class ChangeColor : MonoBehaviour
                 currentObject = GameObject.FindGameObjectWithTag("ButtonMain");
                 rend = currentObject.GetComponentsInChildren<Renderer>();
 
-                SetShaderParameters(gameObjects, rend, 1);
+                SetShaderParameters(gameObjects, rend, 0.0025f);
             }
 
             if (coffeeMachine != null)
@@ -55,15 +58,57 @@ public class ChangeColor : MonoBehaviour
                 currentObject = GameObject.FindGameObjectWithTag("HopperMain");
                 rend = currentObject.GetComponentsInChildren<Renderer>();
 
-                SetShaderParameters(gameObjects, rend, 1);
+                SetShaderParameters(gameObjects, rend, 0.0025f);
 
                 var objects = GameObject.FindGameObjectsWithTag("MachineComponent");
                 var objectCount = objects.Length;
                 foreach (var obj in objects)
                 {
                     Renderer r = obj.GetComponent<Renderer>();
-                    r.material.SetFloat("_HighlightObject", 1);
+                    r.material.SetFloat("_OutlineThickness", 0.0035f);
                 }
+            }
+
+            if (till != null)
+            {
+                var objs = GameObject.FindGameObjectsWithTag("Till");
+                foreach (var obj in objs)
+                {
+                    Renderer r = obj.GetComponent<Renderer>();
+                    r.material.SetFloat("_OutlineThickness", 0.0025f);
+                }
+            }
+
+            if (syrupbottle != null)
+            {
+                string tag = syrupbottle.tag;
+                string childrentag;
+
+                switch(tag)
+                {
+                    case "SyrupPeanutButter":
+                        childrentag = "PeanutButter";
+                        break;
+
+                    case "SyrupVanilla":
+                        childrentag = "Vanilla";
+                        break;
+
+                    case "SyrupIcedTea":
+                        childrentag = "IcedTea";
+                        break;
+
+                    default:
+                        childrentag = "Caramel";
+                        break;
+
+                }
+
+                gameObjects = GameObject.FindGameObjectsWithTag(childrentag);
+                currentObject = GameObject.FindGameObjectWithTag(tag);
+                rend = currentObject.GetComponentsInChildren<Renderer>();
+
+                SetShaderParameters(gameObjects, rend, 0.0025f);
             }
 
             if (customerWindow != null)
@@ -72,7 +117,7 @@ public class ChangeColor : MonoBehaviour
                 foreach (var obj in objs)
                 {
                     Renderer r = obj.GetComponent<Renderer>();
-                    r.material.SetFloat("_HighlightObject", 1);
+                    r.material.SetFloat("_OutlineThickness", 0.0015f);
                 }
             }
         }
@@ -91,21 +136,51 @@ public class ChangeColor : MonoBehaviour
 
             SetShaderParameters(gameObjects, rend, 0);
 
-                var objects = GameObject.FindGameObjectsWithTag("MachineComponent");
+            gameObjects = GameObject.FindGameObjectsWithTag("PeanutButter");
+            currentObject = GameObject.FindGameObjectWithTag("SyrupPeanutButter");
+            rend = currentObject.GetComponentsInChildren<Renderer>();
+
+            SetShaderParameters(gameObjects, rend, 0);
+
+            gameObjects = GameObject.FindGameObjectsWithTag("Vanilla");
+            currentObject = GameObject.FindGameObjectWithTag("SyrupVanilla");
+            rend = currentObject.GetComponentsInChildren<Renderer>();
+
+            SetShaderParameters(gameObjects, rend, 0);
+
+            gameObjects = GameObject.FindGameObjectsWithTag("IcedTea");
+            currentObject = GameObject.FindGameObjectWithTag("SyrupIcedTea");
+            rend = currentObject.GetComponentsInChildren<Renderer>();
+
+            SetShaderParameters(gameObjects, rend, 0);
+
+            gameObjects = GameObject.FindGameObjectsWithTag("Caramel");
+            currentObject = GameObject.FindGameObjectWithTag("SyrupCaramel");
+            rend = currentObject.GetComponentsInChildren<Renderer>();
+
+            SetShaderParameters(gameObjects, rend, 0);
+
+            var objects = GameObject.FindGameObjectsWithTag("MachineComponent");
                 var objectCount = objects.Length;
                 foreach (var obj in objects)
                 {
                     Renderer r = obj.GetComponent<Renderer>();
-                    r.material.SetFloat("_HighlightObject", 0);
+                    r.material.SetFloat("_OutlineThickness", 0);
                 }
 
             var objs = GameObject.FindGameObjectsWithTag("CarComp");
             foreach (var obj in objs)
             {
                 Renderer r = obj.GetComponent<Renderer>();
-                r.material.SetFloat("_HighlightObject", 0);
+                r.material.SetFloat("_OutlineThickness", 0);
             }
 
+            var objss = GameObject.FindGameObjectsWithTag("Till");
+            foreach (var obj in objss)
+            {
+                Renderer r = obj.GetComponent<Renderer>();
+                r.material.SetFloat("_OutlineThickness", 0.0f);
+            }
         }
 
         if(Physics.Raycast(ray, out hit, interactionDistance, InteractableObjectLayer))
@@ -117,25 +192,12 @@ public class ChangeColor : MonoBehaviour
 
             if (coffee != null)
             {
-              //  hitObjectName = hit.collider.gameObject.name;
-                //Debug.Log(hitObjectName);
-                //GameObject foundObject = GameObject.Find(hitObjectName);
                 Renderer[] children = coffee.GetComponentsInChildren<Renderer>();
-                //Renderer r = foundObject.GetComponent<Renderer>();
-               // r.material.SetFloat("_HighlightObject", 1);
-
+              
                 for(int i = 0; i < children.Length; i++)
                 {
-                    children[i].material.SetFloat("_HighlightObject", 1);
+                    children[i].material.SetFloat("_OutlineThickness", 0.0035f);
                 }
-
-                //Destroy(foundObject);
-                //var objs = GameObject.FindGameObjectsWithTag("CupComponent");
-                //foreach (var obj in objs)
-                //{
-                //    Renderer r = obj.GetComponent<Renderer>();
-                //    r.material.SetFloat("_HighlightObject", 1);
-                //}
             }
         }
 
@@ -145,7 +207,7 @@ public class ChangeColor : MonoBehaviour
             foreach (var obj in objs)
             {
                 Renderer r = obj.GetComponent<Renderer>();
-                r.material.SetFloat("_HighlightObject", 0);
+                r.material.SetFloat("_OutlineThickness", 0);
             }
         }
 
@@ -157,7 +219,7 @@ public class ChangeColor : MonoBehaviour
     {
         for (int i = 0; i < go.Length; i++)
         {
-            r[i].material.SetFloat("_HighlightObject", highlight);
+            r[i].material.SetFloat("_OutlineThickness", highlight);
         }
     }
 
