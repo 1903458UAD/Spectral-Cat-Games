@@ -37,6 +37,8 @@ public class CustomerScript : MonoBehaviour
     [SerializeField] private EventReference driveUpFX;
     [SerializeField] private EventReference outOfTimeFX;
 
+    string moodAud;
+
     public void SetIsOrderedTrue()
     {
         orderDelivered = true;
@@ -165,15 +167,27 @@ public class CustomerScript : MonoBehaviour
             if (initialTimer - patienceTimer > tipTime)
             { 
                 UIManager.Instance.setMoodlet("bored");
-                AudioManager.instance.SetAmbianceParameter("Activate CMel", 1);
+                moodAud = ("bored");
+                //AudioManager.instance.SetAmbianceParameter("Activate CMel", 1);
             }
 
             if (patienceTimer < initialTimer * 0.30)
             {
                 UIManager.Instance.setMoodlet("angry");
+                moodAud = ("angry");
+                //AudioManager.instance.SetAmbianceParameter("Activate CMel", 2);
+            }
+
+            if (moodAud == ("bored"))
+            {
+                AudioManager.instance.SetAmbianceParameter("Activate CMel", 1);
+            }
+
+            if (moodAud == ("bored"))
+            {
                 AudioManager.instance.SetAmbianceParameter("Activate CMel", 2);
             }
-            
+
 
             DisplayTime();
         }

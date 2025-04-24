@@ -1,0 +1,108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &7345067264389971296
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1217572062863468986, guid: d461f2f154f4c8e41baddbf10f68b97c, type: 3}
+      propertyPath: m_Name
+      value: Prop_Laptop (1) Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 1217572062863468986, guid: d461f2f154f4c8e41baddbf10f68b97c, type: 3}
+      propertyPath: m_TagString
+      value: HidingSpot
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994672403365163776, guid: d461f2f154f4c8e41baddbf10f68b97c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.3840046
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994672403365163776, guid: d461f2f154f4c8e41baddbf10f68b97c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.7855563
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994672403365163776, guid: d461f2f154f4c8e41baddbf10f68b97c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.352149
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994672403365163776, guid: d461f2f154f4c8e41baddbf10f68b97c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994672403365163776, guid: d461f2f154f4c8e41baddbf10f68b97c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994672403365163776, guid: d461f2f154f4c8e41baddbf10f68b97c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994672403365163776, guid: d461f2f154f4c8e41baddbf10f68b97c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994672403365163776, guid: d461f2f154f4c8e41baddbf10f68b97c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994672403365163776, guid: d461f2f154f4c8e41baddbf10f68b97c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994672403365163776, guid: d461f2f154f4c8e41baddbf10f68b97c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1217572062863468986, guid: d461f2f154f4c8e41baddbf10f68b97c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9007390856895598768}
+    - targetCorrespondingSourceObject: {fileID: 1217572062863468986, guid: d461f2f154f4c8e41baddbf10f68b97c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -1059314806942835878}
+  m_SourcePrefab: {fileID: 100100000, guid: d461f2f154f4c8e41baddbf10f68b97c, type: 3}
+--- !u!1 &8433910137382163674 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1217572062863468986, guid: d461f2f154f4c8e41baddbf10f68b97c, type: 3}
+  m_PrefabInstance: {fileID: 7345067264389971296}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &9007390856895598768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8433910137382163674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef7f494a3b14f4478f2ec12dc2f2117, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hidingType: 4
+  MaxOccupancy: 0
+  currentOccupancy: 0
+--- !u!114 &-1059314806942835878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8433910137382163674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81cf38de5c50f064099a140019c3b8f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallFX:
+    Guid:
+      Data1: 1957123623
+      Data2: 1136031116
+      Data3: 958738361
+      Data4: 775357488
+    Path: event:/Paper Cup Fall

@@ -158,7 +158,19 @@ public class InteractableObject : MonoBehaviour
 
         if (aiScript != null)
             aiScript.OnDropped();
-            //aiScript.enabled = true;
+        //aiScript.enabled = true;
+
+        var spot = GetComponent<Hiding_Spots>();
+        if (spot != null)
+        {
+            var col = GetComponent<Collider>();
+
+            if (col != null)
+            {
+                col.isTrigger = false;
+            }
+        }
+
 
         canRelease = false;
         Invoke(nameof(EnableRelease), pickupCooldown);

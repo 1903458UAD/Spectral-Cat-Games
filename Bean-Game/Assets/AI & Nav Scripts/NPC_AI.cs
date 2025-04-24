@@ -67,6 +67,8 @@ public class NPC_AI : MonoBehaviour
 
     public float maxVerticalDifference = 0.2f;
 
+    public bool isFrozen = false;
+
 
     // [SerializeField] private EventReference beanMoveSound;
     public EventInstance beanFootsteps;
@@ -125,6 +127,46 @@ public class NPC_AI : MonoBehaviour
         distanceToSpot = Vector3.Distance(transform.position, GetHidingSpotPosition());
 
         stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+    }
+
+
+    public void Freeze(float duration)
+    {
+        if (isFrozen) return;
+
+        StartCoroutine(FreezeCoroutine(duration));
+    }
+
+    private IEnumerator FreezeCoroutine(float duration)
+    {
+        isFrozen = true;
+
+
+        if (navMeshAgent != null)
+        {
+            navMeshAgent.isStopped = true;
+        }
+        if (animator != null)
+        {
+            animator.enabled = false;
+        }
+
+        yield return new WaitForSeconds(duration);
+
+        // restore
+        if (animator != null)
+        {
+            animator.enabled = true;
+        }
+
+        if (navMeshAgent != null)
+        {
+            navMeshAgent.isStopped = false;
+        }
+        // set to idle so they can pick a new action
+        state = NPCState.Idle;
+
+        isFrozen = false;
     }
 
     public void MoveTo(Vector3 destination)

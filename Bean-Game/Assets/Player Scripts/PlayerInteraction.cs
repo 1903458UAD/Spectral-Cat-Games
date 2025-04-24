@@ -64,12 +64,25 @@ public class PlayerInteraction : MonoBehaviour
 
         if (heldObjectLeft != null && Input.GetKeyDown(Drop)) 
         {
+
+            BeanInteraction bean = heldObjectLeft.GetComponent<BeanInteraction>();
+            if (bean != null)
+            {
+                bean.OnDrop();
+            }
+
             heldObjectLeft.ReleaseObject(); //Call function to release object being held from left hand
             heldObjectLeft = null;// Clear reference after release
             return;
         }
         else if (heldObjectRight != null && Input.GetKeyDown(Drop))
         {
+            BeanInteraction bean = heldObjectRight.GetComponent<BeanInteraction>();
+            if (bean != null)
+            {
+                bean.OnDrop();
+            }
+
             heldObjectRight.ReleaseObject(); //Call function to release object being held from left hand
             heldObjectRight = null;// Clear reference after release
             return;
@@ -119,12 +132,25 @@ public class PlayerInteraction : MonoBehaviour
                         interactable.PickUpObject(true);
                         heldObjectRight = interactable;
                         //return;
+
+                        BeanInteraction bean = interactable.GetComponent<BeanInteraction>();
+                        if (bean != null)
+                        {
+                            bean.OnPickUp();
+                        }
                     }
                     else if (heldObjectLeft == null && upgradeData.internalUpgradeEnabled) // Allow left-hand pickup if dual-wielding is active
                     {
                         interactable.PickUpObject(false);
                         heldObjectLeft = interactable;
                         //return;
+
+
+                        BeanInteraction bean = interactable.GetComponent<BeanInteraction>();
+                        if (bean != null)
+                        {
+                            bean.OnPickUp();
+                        }
                     }
 
                     if (heldObjectRight != null || heldObjectLeft != null)

@@ -12,14 +12,11 @@ public class DeveloperCheats : MonoBehaviour
 	//Keycodes
 	private KeyCode addCashKey;
 	private KeyCode fillOrderKey;
-	private KeyCode togglePowerKey;
 
 	//Script references
 	private CustomerScript CustomerScript;
-	[SerializeField] private PowerCutScript PowerCutScript;
 
 	//Object references
-	[SerializeField] private GameObject lights;
 	private GameObject customer;
 	[SerializeField] private GameObject cheatSheet;
 
@@ -29,7 +26,6 @@ public class DeveloperCheats : MonoBehaviour
 	{
 		addCashKey = KeyCode.Alpha9;
 		fillOrderKey = KeyCode.Alpha8;
-		togglePowerKey = KeyCode.Alpha7;
 		cheatSheet.SetActive(false);
 		cheatsEnabled = false;
 	}
@@ -44,18 +40,6 @@ public class DeveloperCheats : MonoBehaviour
 		customer = GameObject.Find("Customer(Clone)");
 		CustomerScript = customer.GetComponent<CustomerScript>();
 		CustomerScript.Pay();
-	}
-
-	private void togglePower()
-	{
-		if (lights.activeSelf)
-		{
-			PowerCutScript.tripPower();
-		}
-		else
-		{
-			PowerCutScript.fixPower();
-		}	
 	}
 
 	private void Update()
@@ -74,10 +58,6 @@ public class DeveloperCheats : MonoBehaviour
 				fillOrder();
 			}
 
-			if (Input.GetKeyDown(togglePowerKey))
-			{
-				togglePower();
-			}
 		}
 		else 
 		{
