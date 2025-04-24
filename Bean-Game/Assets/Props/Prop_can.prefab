@@ -93,6 +93,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2aedb455b235af946aa26eb74aabc996, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2094480307206092852}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2aedb455b235af946aa26eb74aabc996, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -5726743792992919537}
   m_SourcePrefab: {fileID: 100100000, guid: 2aedb455b235af946aa26eb74aabc996, type: 3}
 --- !u!1 &2659050107436576868 stripped
 GameObject:
@@ -165,3 +168,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.06171078, y: 0.10401986, z: 0.06171078}
   m_Center: {x: 0, y: 0, z: 0.00000011920929}
+--- !u!114 &-5726743792992919537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2659050107436576868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81cf38de5c50f064099a140019c3b8f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallFX:
+    Guid:
+      Data1: -1166766343
+      Data2: 1227022469
+      Data3: -287244657
+      Data4: 1945999090
+    Path: event:/Can Fall

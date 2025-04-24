@@ -77,6 +77,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0a5c4f058cd7abd4cacf10e3f800e3a1, type: 3}
       insertIndex: -1
       addedObject: {fileID: -8346698189856012554}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0a5c4f058cd7abd4cacf10e3f800e3a1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -2700930287858279052}
   m_SourcePrefab: {fileID: 100100000, guid: 0a5c4f058cd7abd4cacf10e3f800e3a1, type: 3}
 --- !u!1 &8011816295852376221 stripped
 GameObject:
@@ -147,3 +150,22 @@ MonoBehaviour:
   pickupCooldown: 0.1
   canRelease: 1
   isHeld: 0
+--- !u!114 &-2700930287858279052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8011816295852376221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81cf38de5c50f064099a140019c3b8f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallFX:
+    Guid:
+      Data1: -1892765323
+      Data2: 1132052460
+      Data3: -2069559369
+      Data4: 69047990
+    Path: event:/Jar Fall

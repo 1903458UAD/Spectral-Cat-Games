@@ -63,6 +63,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1217572062863468986, guid: d461f2f154f4c8e41baddbf10f68b97c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9007390856895598768}
+    - targetCorrespondingSourceObject: {fileID: 1217572062863468986, guid: d461f2f154f4c8e41baddbf10f68b97c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -1059314806942835878}
   m_SourcePrefab: {fileID: 100100000, guid: d461f2f154f4c8e41baddbf10f68b97c, type: 3}
 --- !u!1 &8433910137382163674 stripped
 GameObject:
@@ -84,3 +87,22 @@ MonoBehaviour:
   hidingType: 4
   MaxOccupancy: 0
   currentOccupancy: 0
+--- !u!114 &-1059314806942835878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8433910137382163674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81cf38de5c50f064099a140019c3b8f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallFX:
+    Guid:
+      Data1: 1957123623
+      Data2: 1136031116
+      Data3: 958738361
+      Data4: 775357488
+    Path: event:/Paper Cup Fall
