@@ -48,6 +48,7 @@ public class CoffeeMachine : MonoBehaviour
             currentBeans++;
             Debug.Log($"[CoffeeMachine] Beans added: {currentBeans}");
             Destroy(bean.gameObject); // Destroy the bean after adding it to the machine
+            GameManager.Instance.ExclamationOff();
 
             if (shatteredBeanPrefab == null)
             {
