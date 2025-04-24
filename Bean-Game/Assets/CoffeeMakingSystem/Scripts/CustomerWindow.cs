@@ -13,6 +13,13 @@ public class CustomerWindow : MonoBehaviour
     [SerializeField] private EventReference wrongOrderFX;
     [SerializeField] private EventReference moneyGetFX;
 
+    public int customerOrderNo = 1;
+
+    public void Start()
+    {
+        customerOrderNo = 1;
+    }
+
     public void GiveCoffeeToWindow(CoffeeInteraction coffee)
     {
         if (coffee != null)
@@ -39,6 +46,7 @@ public class CustomerWindow : MonoBehaviour
                         CustomerTakesCoffee();
                         AudioManager.instance.PlayOneShot(correctOrderFX, this.transform.position);
                         AudioManager.instance.SetAmbianceParameter("Activate CMel", 0);
+                        customerOrderNo = customerOrderNo + 1;
                         Debug.Log("Coffee Given to window: Correct order");
                     }
 
@@ -110,5 +118,10 @@ public class CustomerWindow : MonoBehaviour
         {
             Debug.LogError("PlayerHealth component not found!");
         }
+    }
+
+    public int CustomerOrderNumber()
+    {
+        return customerOrderNo;
     }
 }

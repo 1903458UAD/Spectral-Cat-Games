@@ -53,6 +53,8 @@ public class PlayerInteraction : MonoBehaviour
 
         if (UIManager.Instance.IsGamePaused())
         {
+
+            Debug.Log("NO PICK UP SOZ");
             return; //To fix bug where player can interact when paused
         }
 
