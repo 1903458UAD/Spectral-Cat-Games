@@ -62,7 +62,7 @@ public class ChangeColor : MonoBehaviour
                 foreach (var obj in objects)
                 {
                     Renderer r = obj.GetComponent<Renderer>();
-                    r.material.SetFloat("_OutlineThickness", 0.0025f);
+                    r.material.SetFloat("_OutlineThickness", 0.0035f);
                 }
             }
 
@@ -72,7 +72,7 @@ public class ChangeColor : MonoBehaviour
                 foreach (var obj in objs)
                 {
                     Renderer r = obj.GetComponent<Renderer>();
-                    r.material.SetFloat("_OutlineThickness", 0.0025f);
+                    r.material.SetFloat("_OutlineThickness", 0.0015f);
                 }
             }
         }
@@ -126,7 +126,7 @@ public class ChangeColor : MonoBehaviour
 
                 for(int i = 0; i < children.Length; i++)
                 {
-                    children[i].material.SetFloat("_OutlineThickness", 0.0025f);
+                    children[i].material.SetFloat("_OutlineThickness", 0.0035f);
                 }
 
                 //Destroy(foundObject);
