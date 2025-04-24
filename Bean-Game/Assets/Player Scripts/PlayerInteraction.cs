@@ -71,6 +71,7 @@ public class PlayerInteraction : MonoBehaviour
             if (bean != null)
             {
                 bean.OnDrop();
+                GameManager.Instance.ExclamationOff();
             }
 
             heldObjectLeft.ReleaseObject(); //Call function to release object being held from left hand
@@ -83,6 +84,7 @@ public class PlayerInteraction : MonoBehaviour
             if (bean != null)
             {
                 bean.OnDrop();
+                GameManager.Instance.ExclamationOff();
             }
 
             heldObjectRight.ReleaseObject(); //Call function to release object being held from left hand
@@ -139,6 +141,7 @@ public class PlayerInteraction : MonoBehaviour
                         if (bean != null)
                         {
                             bean.OnPickUp();
+                            GameManager.Instance.ExclamationOn();
                         }
                     }
                     else if (heldObjectLeft == null && upgradeData.internalUpgradeEnabled) // Allow left-hand pickup if dual-wielding is active
@@ -152,6 +155,7 @@ public class PlayerInteraction : MonoBehaviour
                         if (bean != null)
                         {
                             bean.OnPickUp();
+                            GameManager.Instance.ExclamationOn();
                         }
                     }
 
