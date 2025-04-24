@@ -58,20 +58,23 @@ public class AIManager : MonoBehaviour
 
     public float hidingDurationMax = 10f; // track the max hiding time
 
+    public float switchPeriod = 10f;
+    private float switchElapsed = 0f;
+
 
     private Dictionary<NPC_AI, float> updateTimers = new Dictionary<NPC_AI, float>();
 
     public int maxBeansToSwitch = 3; // Num beans that can switch spots at the same time
-    private List<NPC_AI> beansToSwitch = new List<NPC_AI>(); // beans chosen to switch
+    //private List<NPC_AI> beansToSwitch = new List<NPC_AI>(); // beans chosen to switch
 
-    private Dictionary<NPC_AI, float> activeTimers = new Dictionary<NPC_AI, float>(); // Only track selected beans time
-    private HashSet<NPC_AI> recentlySwitched = new HashSet<NPC_AI>(); // Track recently moved beans
+    //private Dictionary<NPC_AI, float> activeTimers = new Dictionary<NPC_AI, float>(); // Only track selected beans time
+    //private HashSet<NPC_AI> recentlySwitched = new HashSet<NPC_AI>(); // Track recently moved beans
 
-    private List<Transform> shelfPositions = new List<Transform>();
+    //private List<Transform> shelfPositions = new List<Transform>();
 
 
-    private float globalSwitchCycleTimer = 0f;
-    private float lastGlobalCountdownDebug = 0f;
+    //private float globalSwitchCycleTimer = 0f;
+    //private float lastGlobalCountdownDebug = 0f;
 
 
 
@@ -106,7 +109,7 @@ public class AIManager : MonoBehaviour
 
     private void Update()
     {
-        
+
 
 
         // Reset game if bean count is low.
@@ -121,7 +124,7 @@ public class AIManager : MonoBehaviour
         // Process each NPC in the list.
         foreach (NPC_AI npc in npcList)
         {
-            if(npc==null)
+            if (npc == null)
             {
                 continue;
             }
@@ -136,7 +139,7 @@ public class AIManager : MonoBehaviour
             //must have an active NavMeshAgent.
             if (npc.navMeshAgent == null || !npc.navMeshAgent.enabled || !npc.navMeshAgent.isOnNavMesh)
             {
-               // Debug.LogWarning($"[AIManager] {npc.gameObject.name} not on valid NavMesh. Skipping.");
+                // Debug.LogWarning($"[AIManager] {npc.gameObject.name} not on valid NavMesh. Skipping.");
                 continue;
             }
 
@@ -151,7 +154,7 @@ public class AIManager : MonoBehaviour
             {
                 hidingTimers[npc] = Time.time;
             }
-                
+
 
             // Centralize all state transitions.
             EvaluateNPCState(npc);
@@ -162,7 +165,7 @@ public class AIManager : MonoBehaviour
             {
                 nextDecisionTimes[npc] = Time.time + Random.Range(0.2f, 1.0f);
             }
-                
+
             if (Time.time >= nextDecisionTimes[npc])
             {
 
@@ -178,12 +181,43 @@ public class AIManager : MonoBehaviour
             {
                 npc.PlayBeanMoveSound(false);
             }
-                
+
         }
+
+        bool anyRunning = npcList.Any(b => b.state == NPC_AI.NPCState.Running);
+        if (!anyRunning)
+        {
+            switchElapsed += Time.deltaTime;
+        }
+
+
+
+        if (switchElapsed >= switchPeriod)
+        {
+
+            var candidates = npcList.Where(b => b.state == NPC_AI.NPCState.Hiding
+                             && Vector3.Distance(b.transform.position, GetPlayerPosition()) >= b.runRange)
+                            .ToList();
+
+
+            for (int i = 0; i < maxBeansToSwitch && candidates.Count > 0; i++)
+            {
+                int indx = Random.Range(0, candidates.Count);
+                var bean = candidates[indx];
+                candidates.RemoveAt(indx);
+
+
+                ReleaseCurrentHidingSpot(bean);
+                AssignNewHidingSpot(bean, false);
+            }
+
+
+            switchElapsed = 0f;
+
+        }
+
+
     }
-
-
-
 
     public Vector3 GetRandomSpawnPositionUsingNodes()
     {
@@ -279,12 +313,9 @@ public class AIManager : MonoBehaviour
             hidingTimers.Remove(npc);
             nextDecisionTimes.Remove(npc);
             updateTimers.Remove(npc);
-            activeTimers.Remove(npc);
             lastSwitchTime.Remove(npc);
             runStartTimes.Remove(npc);
             npcHidingAssignments.Remove(npc);
-            beansToSwitch.Remove(npc);
-            recentlySwitched.Remove(npc);
         }
     }
 
@@ -338,8 +369,8 @@ public class AIManager : MonoBehaviour
         {
             return;
         }
-        
 
+        if (npc.isFrozen) return;
 
         float distanceToPlayer = Vector3.Distance(npc.transform.position, GetPlayerPosition());
 
@@ -383,16 +414,16 @@ public class AIManager : MonoBehaviour
                 AssignEscapeRoute(npc);
             }
         }
-        else if (distanceToPlayer > npc.runRange * 2)
-        {
-            if (npc.state == NPC_AI.NPCState.Running)
-            {
-               // Debug.Log($"[EvaluateNPCState] {npc.gameObject.name} has run far enough. Transitioning from Running to Idle.");
-                npc.state = NPC_AI.NPCState.Idle;
-                npc.navMeshAgent.ResetPath(); // Clear the previous escape route.
-                AssignNewHidingSpot(npc, true);
-            }
-        }
+        //else if (distanceToPlayer > npc.runRange * 2)
+        //{
+        //    if (npc.state == NPC_AI.NPCState.Running)
+        //    {
+        //       // Debug.Log($"[EvaluateNPCState] {npc.gameObject.name} has run far enough. Transitioning from Running to Idle.");
+        //        npc.state = NPC_AI.NPCState.Idle;
+        //        npc.navMeshAgent.ResetPath(); // Clear the previous escape route.
+        //        AssignNewHidingSpot(npc, true);
+        //    }
+        //}
         
         if (npc.state == NPC_AI.NPCState.Idle)
         {
@@ -817,7 +848,7 @@ public class AIManager : MonoBehaviour
             return;
         }
 
-        if (npcList.Any(b => b.state == NPC_AI.NPCState.Running))
+        if (npcList.Any(b => b.navMeshAgent.hasPath && b.state == NPC_AI.NPCState.Running))
         {
             return;
         }
@@ -913,110 +944,109 @@ public class AIManager : MonoBehaviour
             npc.MoveTo(hidingSpot.transform.position);
         }
 
-        // If the player is very close stay hidden.
-        if (distanceToPlayer < npc.runRange)
-        {
-            return;
-        }
+        //// If the player is very close stay hidden.
+        //if (distanceToPlayer < npc.runRange)
+        //{
+        //    return;
+        //}
 
-        if (hidingSpot.IsTrap())
-        {
-            if (activeTimers.ContainsKey(npc) && Time.time > activeTimers[npc])
-            {
-                activeTimers.Remove(npc);
-            }
-            if (!activeTimers.ContainsKey(npc))
-            {
-                beansToSwitch.Add(npc);
-                activeTimers[npc] = Time.time + 10f;  // 10 second interval for traps
-            }
-        }
-        else if (!hidingSpot.IsCage())
-        {
+        //if (hidingSpot.IsTrap())
+        //{
+        //    if (activeTimers.ContainsKey(npc) && Time.time > activeTimers[npc])
+        //    {
+        //        activeTimers.Remove(npc);
+        //    }
+        //    if (!activeTimers.ContainsKey(npc))
+        //    {
+        //        beansToSwitch.Add(npc);
+        //        activeTimers[npc] = Time.time + 10f;  // 10 second interval for traps
+        //    }
+        //}
+        //else if (!hidingSpot.IsCage())
+        //{
 
-            if (Time.time >= globalSwitchCycleTimer)
-            {
+        //    if (Time.time >= globalSwitchCycleTimer)
+        //    {
                 
-                List<NPC_AI> beansToProcess = new List<NPC_AI>();
+        //        List<NPC_AI> beansToProcess = new List<NPC_AI>();
 
-                foreach (NPC_AI bean in beansToSwitch.ToArray())
-                {
+        //        foreach (NPC_AI bean in beansToSwitch.ToArray())
+        //        {
                     
-                    if (Vector3.Distance(bean.transform.position, GetPlayerPosition()) >= bean.runRange)
-                    {
-                        beansToProcess.Add(bean);
-                    }
-                    else
-                    {
-                        // bean too close select diffrent bean
-                        beansToSwitch.Remove(bean);
-                    }
-                }
+        //            if (Vector3.Distance(bean.transform.position, GetPlayerPosition()) >= bean.runRange)
+        //            {
+        //                beansToProcess.Add(bean);
+        //            }
+        //            else
+        //            {
+        //                // bean too close select diffrent bean
+        //                beansToSwitch.Remove(bean);
+        //            }
+        //        }
 
 
-                while (beansToProcess.Count < maxBeansToSwitch)
-                {
+        //        while (beansToProcess.Count < maxBeansToSwitch)
+        //        {
 
-                    NPC_AI candidate = npcList.FirstOrDefault(n =>
-                        !beansToSwitch.Contains(n) &&
-                        !recentlySwitched.Contains(n) &&
-                        n.state == NPC_AI.NPCState.Idle &&
-                        Vector3.Distance(n.transform.position, GetPlayerPosition()) >= n.runRange);
+        //            NPC_AI candidate = npcList.FirstOrDefault(n =>
+        //                !beansToSwitch.Contains(n) &&
+        //                !recentlySwitched.Contains(n) &&
+        //                n.state == NPC_AI.NPCState.Idle &&
+        //                Vector3.Distance(n.transform.position, GetPlayerPosition()) >= n.runRange);
 
-                    if (candidate == null)
-                    {
+        //            if (candidate == null)
+        //            {
                         
-                        break;
-                    }
-                    beansToProcess.Add(candidate);
-                    beansToSwitch.Add(candidate);
-                }
+        //                break;
+        //            }
+        //            beansToProcess.Add(candidate);
+        //            beansToSwitch.Add(candidate);
+        //        }
 
 
-                foreach (NPC_AI bean in beansToProcess)
-                {
-                    ReleaseCurrentHidingSpot(bean);       
-                    AssignNewHidingSpot(bean, false);   
-                    lastSwitchTime[bean] = Time.time;
-                    recentlySwitched.Add(bean);
+        //        foreach (NPC_AI bean in beansToProcess)
+        //        {
+        //            ReleaseCurrentHidingSpot(bean);       
+        //            AssignNewHidingSpot(bean, false);   
+        //            lastSwitchTime[bean] = Time.time;
+        //            recentlySwitched.Add(bean);
 
 
 
-                }
+        //        }
 
-                beansToSwitch.Clear();
+        //        beansToSwitch.Clear();
 
-                // Restart the global cycle.
-                globalSwitchCycleTimer = Time.time + (10f + Random.Range(hidingDurationMin, hidingDurationMax));
-                recentlySwitched.Clear();
-                Debug.Log($"[Cycle] New cycle started; next cycle at: {globalSwitchCycleTimer:F2}");
-                lastGlobalCountdownDebug = Time.time;
-            }
-            else
-            {
-                // Add this NPC for switching if it qualifies and we haven't yet reached the max number.
-                if (beansToSwitch.Count < maxBeansToSwitch && !recentlySwitched.Contains(npc))
-                {
-                    if (!beansToSwitch.Contains(npc))
-                    {
-                        beansToSwitch.Add(npc);
-                    }
-                }
+        //        // Restart the global cycle.
+        //        globalSwitchCycleTimer = Time.time + (10f + Random.Range(hidingDurationMin, hidingDurationMax));
+        //        recentlySwitched.Clear();
+        //        Debug.Log($"[Cycle] New cycle started; next cycle at: {globalSwitchCycleTimer:F2}");
+        //        lastGlobalCountdownDebug = Time.time;
+        //    }
+        //    else
+        //    {
+        //        // Add this NPC for switching if it qualifies and we haven't yet reached the max number.
+        //        if (beansToSwitch.Count < maxBeansToSwitch && !recentlySwitched.Contains(npc))
+        //        {
+        //            if (!beansToSwitch.Contains(npc))
+        //            {
+        //                beansToSwitch.Add(npc);
+        //            }
+        //        }
 
-                // Log a countdown once per second.
-                if (Time.time - lastGlobalCountdownDebug >= 1f)
-                {
-                    lastGlobalCountdownDebug = Time.time;
-                    float countdown = globalSwitchCycleTimer - Time.time;
-                    string selectedBeans = string.Join(", ", beansToSwitch.Select(b => b.gameObject.name).ToArray());
-                    Debug.Log($"[Cycle Countdown] {Mathf.Ceil(countdown)} sec until next switch. Selected beans: {selectedBeans}");
-                }
-            }
-        }
+        //        // Log a countdown once per second.
+        //        if (Time.time - lastGlobalCountdownDebug >= 1f)
+        //        {
+        //            lastGlobalCountdownDebug = Time.time;
+        //            float countdown = globalSwitchCycleTimer - Time.time;
+        //            string selectedBeans = string.Join(", ", beansToSwitch.Select(b => b.gameObject.name).ToArray());
+        //            Debug.Log($"[Cycle Countdown] {Mathf.Ceil(countdown)} sec until next switch. Selected beans: {selectedBeans}");
+        //        }
+        //    }
+        //}
     }
 
-  
-
+    
 
     private Vector3 CalculateSafeOffsetForShelf(Hiding_Spots shelfSpot, NPC_AI npc)
     {
@@ -1033,12 +1063,12 @@ public class AIManager : MonoBehaviour
 
 
 
-    // remove beanss from the recently switched list after a cooldown
-    private IEnumerator RemoveFromRecentlySwitched(NPC_AI npc, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        recentlySwitched.Remove(npc);
-    }
+    //// remove beanss from the recently switched list after a cooldown
+    //private IEnumerator RemoveFromRecentlySwitched(NPC_AI npc, float delay)
+    //{
+    //    yield return new WaitForSeconds(delay);
+    //    recentlySwitched.Remove(npc);
+    //}
 
 
 
@@ -1060,9 +1090,8 @@ public class AIManager : MonoBehaviour
         npcHidingAssignments.Clear();
         hidingTimers.Clear();
         nextDecisionTimes.Clear();
-        recentlySwitched.Clear();
-        activeTimers.Clear();
-        beansToSwitch.Clear();
+
+
 
         // Reset all hiding spots
         foreach (var spot in hidingSpots)

@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using Random = UnityEngine.Random;
 using Debug = UnityEngine.Debug;
+using System.Collections.Generic;
+using System.Collections;
 
 
 public class Hiding_Spots : MonoBehaviour
@@ -13,13 +15,48 @@ public class Hiding_Spots : MonoBehaviour
     private int occupancy = 0;    // Current number of NPCs in this spot
     public int currentOccupancy = 0;
 
+
+    //Reset the hiding spot pos after drop
+    private Quaternion originalRotation;
+
+    private Vector3 originalPosition;
+
+    private bool isValidSpot = true;
+
+    private bool isResetting = false;
+
+    private List<BeanInteraction> assignedBeans = new List<BeanInteraction>();
+
+    //Reset after player looks away, spooooky
+    [SerializeField, Range(0f, 90f)]
+    private float viewAngleThreshold = 30f;
+
+
     public int Occupancy => occupancy; // Read-only property to get current occupancy
 
-    private Collider _collider;
+    private Collider collider;
+
+    private void Update()
+    {
+       
+        if (hidingType != HidingType.Trap && isValidSpot)
+        {
+            if (Vector3.Distance(transform.position, originalPosition) > 0.01f)
+            {
+                InvalidateSpot();
+            }
+        }
+    }
+
+
+
 
     private void Awake()
     {
-        _collider = GetComponent<Collider>();
+        collider = GetComponent<Collider>();
+
+        originalPosition = transform.position;
+        originalRotation = transform.rotation;
     }
 
 
@@ -44,8 +81,73 @@ public class Hiding_Spots : MonoBehaviour
 
     public bool IsAvailable()
     {
-        return occupancy < MaxOccupancy;
+        return isValidSpot && occupancy < MaxOccupancy;
     }
+
+
+    private void InvalidateSpot()
+    {
+        isValidSpot = false;
+
+
+        foreach (var bean in assignedBeans)
+        {
+            var beanInst = bean.GetComponent<NPC_AI>();
+            if (beanInst != null)
+            {
+                beanInst.SetHidingSpot(null);
+                beanInst.state = NPC_AI.NPCState.Idle;
+
+                beanInst.Freeze(3f);
+            }
+            bean.GetComponent<InteractableObject>()?.ReleaseObject();
+        }
+        assignedBeans.Clear();
+
+
+        ResetHidingSpot();
+
+        if (collider != null)
+        {
+            collider.isTrigger = true;
+        }
+
+        if (!isResetting)
+        {
+            StartCoroutine(WatchForReset());
+        }
+    }
+
+    private IEnumerator WatchForReset()
+    {
+        isResetting = true;
+        var cam = Camera.main;
+
+        bool LookingAt(Vector3 worldPos)
+        {
+            var dir = (worldPos - cam.transform.position).normalized;
+            return Vector3.Angle(cam.transform.forward, dir) < viewAngleThreshold;
+        }
+
+        while (true)
+        {  
+            if (!LookingAt(transform.position) && !LookingAt(originalPosition))
+            {
+                transform.rotation = originalRotation;
+                transform.position = originalPosition;
+                isValidSpot = true;
+                isResetting = false;
+
+                // restore collider to solid
+                if (collider != null)
+                    collider.isTrigger = false;
+
+                yield break;
+            }
+            yield return null;
+        }
+    }
+
 
 
     public void IncrementOccupancy()
@@ -56,9 +158,9 @@ public class Hiding_Spots : MonoBehaviour
             currentOccupancy = occupancy;
             //Debug.Log($"[Hiding_Spots] {gameObject.name} occupancy increased: {occupancy}/{MaxOccupancy}");
 
-            if (_collider != null && hidingType == HidingType.Trap)
+            if (collider != null && hidingType == HidingType.Trap)
             {
-                _collider.isTrigger = false;
+                collider.isTrigger = false;
             }
         }
         else
@@ -76,9 +178,9 @@ public class Hiding_Spots : MonoBehaviour
             currentOccupancy = occupancy;
             //Debug.Log($"[Hiding_Spots] {gameObject.name} occupancy decreased: {occupancy}/{MaxOccupancy}");
 
-            if (_collider != null && hidingType == HidingType.Trap && occupancy == 0)
+            if (collider != null && hidingType == HidingType.Trap && occupancy == 0)
             {
-                _collider.isTrigger = true;
+                collider.isTrigger = true;
             }
 
         }
@@ -118,6 +220,7 @@ public class Hiding_Spots : MonoBehaviour
     public void AddBean(BeanInteraction bean)
     {
        
+
         if (occupancy < 3)
         {
           
@@ -150,6 +253,7 @@ public class Hiding_Spots : MonoBehaviour
                 beanNPC.state = NPC_AI.NPCState.Hiding;
 
                 IncrementOccupancy();
+                assignedBeans.Add(bean);
             }
                 
 
