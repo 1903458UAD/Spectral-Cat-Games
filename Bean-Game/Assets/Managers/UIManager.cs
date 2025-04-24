@@ -50,6 +50,9 @@ public class UIManager : MonoBehaviour
     public TMP_Text coffeePrice; 
     public UpgradeData coffeePriceData;
 
+    public TMP_Text orderNo;
+    public int orderNoCount;
+
     [Header("Player Lives UI")]
     public GameObject warningSlip;
     public TMP_Text warningDescription;
@@ -121,6 +124,8 @@ public class UIManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
+
+        orderNoCount = GameObject.Find("CustomerWindow").GetComponent<CustomerWindow>().customerOrderNo;
     }
 
     private void Start() 
@@ -144,6 +149,8 @@ public class UIManager : MonoBehaviour
 
         // Show main menu at the start
         dayManager = DayManager.Instance;
+        
+
 
         if (dayManager != null && dayManager.currentDay == 1)
         {
@@ -647,6 +654,7 @@ public class UIManager : MonoBehaviour
         reciept.SetActive(true);
         if (customerOrderText != null) customerOrderText.gameObject.SetActive(true);
         coffeePrice.text = string.Format("{0}", coffeePriceData.internalBaseValue);
+        orderNo.text = string.Format($"Order #{orderNoCount}");
     }
 
     public void HideReciept()
