@@ -16,6 +16,5 @@ public class HopperBeanSpawn : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         rb.AddForce(Random.onUnitSphere);
-        Debug.Log("Bean splode");
     }
 }
