@@ -230,34 +230,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    //private void SpawnPlayerAtStart()
-    //{
-    //    if (player == null)
-    //    {
-    //        Debug.LogError("[UIManager] Player reference is missing!");
-    //        return;
-    //    }
-
-    //    Transform spawnPoint = GameObject.FindGameObjectWithTag("PlayerSpawn")?.transform;
-
-    //    if (spawnPoint == null)
-    //    {
-    //        Debug.LogWarning("[UIManager] No GameObject found with tag 'PlayerSpawn'. Player won't be repositioned.");
-    //    }
-    //    else
-    //    {
-    //        player.transform.position = spawnPoint.position;
-    //        player.transform.rotation = spawnPoint.rotation;
-    //        Debug.Log("[UIManager] Player spawned at: " + spawnPoint.position);
-    //    }
-
-
-    //    Cursor.lockState = CursorLockMode.Locked;
-    //    Cursor.visible = false;
-
-
-    //    Debug.Log("Player spawned at start point.");
-    //}
 
     public void ToggleDeveloperCheats(bool isEnabled)
     {
@@ -318,11 +290,19 @@ public class UIManager : MonoBehaviour
     public void ShowGameOverScreen() // Show death screen when player dies
     {
         gameOverScreen.SetActive(true); //Activate the game over UI (Which shows it to player)
+        HideGameplayUI();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Time.timeScale = 0f;
     }
 
     public void HideGameOverScreen() //Hide Death screen, To be called when reset
     {
         gameOverScreen.SetActive(false); //De-Activate the game over UI (Which hides it from the player)
+        Time.timeScale = 1f;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void ShowDayEndScreen() //Hide Death screen, To be called when reset
@@ -331,6 +311,8 @@ public class UIManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         cameraScript.enabled = false;
+        Time.timeScale = 0f;
+
     }
 
     public void HideDayEndScreen() //Hide Death screen, To be called when reset
@@ -339,6 +321,7 @@ public class UIManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         cameraScript.enabled = true;
+        Time.timeScale = 1f;
     }
 
     public void NextDayButton()
@@ -349,6 +332,14 @@ public class UIManager : MonoBehaviour
        
         GameManager.Instance.SetIncome(StaticData.incomePassed);
     }
+
+    public void RestartButton()
+    {
+        string sceneName = SceneManager.GetActiveScene().name;
+        DayManager.Instance.ResetDay();
+        SceneManager.LoadScene(sceneName);
+    }
+
 
     public void OnNewGame()
     {
@@ -400,8 +391,24 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-            // If the settings menu is open, go back to the pause menu instead of resuming
-            if (settingsMenuUI.activeSelf)
+        if (gameOverScreen.activeSelf)
+        {
+
+            return;
+        }
+        if (newDayPanel.activeSelf)
+        {
+
+            return;
+        }
+        if (endOfDayScreen.activeSelf)
+        {
+
+            return;
+        }
+
+        // If the settings menu is open, go back to the pause menu instead of resuming
+        if (settingsMenuUI.activeSelf)
         {
             ShowPauseMenu();
             return; // Prevent the game from unpausing
