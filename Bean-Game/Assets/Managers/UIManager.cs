@@ -224,17 +224,11 @@ public class UIManager : MonoBehaviour
             mainMenuUI.SetActive(false); // Hide the main menu
             introScript.PlayIntro(); // Start the cutscene
         }
-        else
-        {
-            Debug.LogError("Introscript is null");
-        }
     }
-
 
     public void ToggleDeveloperCheats(bool isEnabled)
     {
         developerCheats.cheatsEnabled = isEnabled;
-        Debug.Log($"[UIManager] Developer Cheats state updated: {developerCheats.cheatsEnabled}");
     }
 
     public void Rebinding(string action)
