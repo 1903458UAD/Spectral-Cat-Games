@@ -158,6 +158,36 @@ public class PlayerInteraction : MonoBehaviour
                 PowerCutScript powercut = hitObject.GetComponent<PowerCutScript>();
                 Hiding_Spots cage = hitObject.GetComponent<Hiding_Spots>();
 
+                if (cage != null && cage.IsCage())
+                {
+                    // extract a bean from the cage if hands empty
+                    if (heldObjectRight == null && heldObjectLeft == null)
+                    {
+                        var bean = cage.ExtractRandomBean();
+                        if (bean != null)
+                        {
+                            var io = bean.GetComponent<InteractableObject>();
+                            io.PickUpObject(true);
+                            heldObjectRight = io;
+                        }
+                    }
+                    else
+                    {
+                        var held = heldObjectRight ?? heldObjectLeft;
+                        var bean = held.GetComponent<BeanInteraction>();
+                        if (bean != null && cage.AddBeanToCage(bean))
+                        {
+                            // release from player
+                            held.ReleaseObject();
+                            if (heldObjectRight != null) heldObjectRight = null;
+                            else heldObjectLeft = null;
+                        }
+                    }
+                    return;
+                }
+
+
+
                 CoffeeInteraction coffee = null;
                    
                 if (heldObjectRight != null)

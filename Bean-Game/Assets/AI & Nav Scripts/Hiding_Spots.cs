@@ -27,6 +27,8 @@ public class Hiding_Spots : MonoBehaviour
 
     private List<BeanInteraction> assignedBeans = new List<BeanInteraction>();
 
+    private List<BeanInteraction> beansInCage = new List<BeanInteraction>();
+
     //Reset after player looks away, spooooky
     [SerializeField, Range(0f, 90f)]
     private float viewAngleThreshold = 30f;
@@ -36,17 +38,17 @@ public class Hiding_Spots : MonoBehaviour
 
     private Collider collider;
 
-    private void Update()
-    {
+    //private void Update()
+    //{
        
-        if (hidingType != HidingType.Trap && isValidSpot)
-        {
-            if (Vector3.Distance(transform.position, originalPosition) > 0.01f)
-            {
-                InvalidateSpot();
-            }
-        }
-    }
+    //    if (hidingType != HidingType.Trap && isValidSpot)
+    //    {
+    //        if (Vector3.Distance(transform.position, originalPosition) > 0.01f)
+    //        {
+    //            InvalidateSpot();
+    //        }
+    //    }
+    //}
 
 
 
@@ -105,48 +107,48 @@ public class Hiding_Spots : MonoBehaviour
         assignedBeans.Clear();
 
 
-        ResetHidingSpot();
+        //ResetHidingSpot();
 
-        if (collider != null)
-        {
-            collider.isTrigger = true;
-        }
+        //if (collider != null)
+        //{
+        //    collider.isTrigger = true;
+        //}
 
-        if (!isResetting)
-        {
-            StartCoroutine(WatchForReset());
-        }
+        //if (!isResetting)
+        //{
+        //    StartCoroutine(WatchForReset());
+        //}
     }
 
-    private IEnumerator WatchForReset()
-    {
-        isResetting = true;
-        var cam = Camera.main;
+    //private IEnumerator WatchForReset()
+    //{
+    //    isResetting = true;
+    //    var cam = Camera.main;
 
-        bool LookingAt(Vector3 worldPos)
-        {
-            var dir = (worldPos - cam.transform.position).normalized;
-            return Vector3.Angle(cam.transform.forward, dir) < viewAngleThreshold;
-        }
+    //    bool LookingAt(Vector3 worldPos)
+    //    {
+    //        var dir = (worldPos - cam.transform.position).normalized;
+    //        return Vector3.Angle(cam.transform.forward, dir) < viewAngleThreshold;
+    //    }
 
-        while (true)
-        {  
-            if (!LookingAt(transform.position) && !LookingAt(originalPosition))
-            {
-                transform.rotation = originalRotation;
-                transform.position = originalPosition;
-                isValidSpot = true;
-                isResetting = false;
+    //    while (true)
+    //    {  
+    //        if (!LookingAt(transform.position) && !LookingAt(originalPosition))
+    //        {
+    //            transform.rotation = originalRotation;
+    //            transform.position = originalPosition;
+    //            isValidSpot = true;
+    //            isResetting = false;
 
-                // restore collider to solid
-                if (collider != null)
-                    collider.isTrigger = false;
+    //            // restore collider to solid
+    //            if (collider != null)
+    //                collider.isTrigger = false;
 
-                yield break;
-            }
-            yield return null;
-        }
-    }
+    //            yield break;
+    //        }
+    //        yield return null;
+    //    }
+    //}
 
 
 
@@ -221,7 +223,7 @@ public class Hiding_Spots : MonoBehaviour
     {
        
 
-        if (occupancy < 3)
+        if (occupancy < MaxOccupancy)
         {
           
             bean.gameObject.transform.position = this.transform.position;
@@ -229,14 +231,16 @@ public class Hiding_Spots : MonoBehaviour
 
 
 
-            NPC_AI beanNPC = bean.GetComponent<NPC_AI>();
 
+            NPC_AI beanNPC = bean.GetComponent<NPC_AI>();
 
             if (interactable != null)
             {
                 //fully drop the bean.
                 
             }
+
+            
 
 
             if (beanNPC != null)
@@ -267,6 +271,87 @@ public class Hiding_Spots : MonoBehaviour
         }
 
     }
+
+    public bool AddBeanToCage(BeanInteraction bean)
+    {
+        if (!IsCage() || beansInCage.Count >= MaxOccupancy)
+        {
+            return false;
+        }
+
+     
+        var io = bean.GetComponent<InteractableObject>();
+
+        if (io != null && io.GetIsHeld())
+        {
+            io.ReleaseObject();
+        }
+
+
+        bean.gameObject.layer = LayerMask.NameToLayer("Default");
+
+ 
+        if (io != null)
+        {
+            io.enabled = false;
+        }
+
+
+        bean.transform.SetParent(transform, worldPositionStays: true);
+        var b = GetComponent<Collider>().bounds;
+
+        bean.transform.position = new Vector3(
+            Random.Range(b.min.x, b.max.x),
+            transform.position.y,
+            Random.Range(b.min.z, b.max.z));
+
+
+        var beanNPC = bean.GetComponent<NPC_AI>();
+
+        if (beanNPC != null)
+        {
+            beanNPC.navMeshAgent.Warp(bean.transform.position);
+            beanNPC.SetHidingSpot(this);
+            beanNPC.state = NPC_AI.NPCState.Hiding;
+            AIManager.Instance.ResetHidingTimerForNPC(beanNPC);
+        }
+
+        beansInCage.Add(bean);
+        IncrementOccupancy();
+        assignedBeans.Add(bean);
+        return true;
+    }
+
+    public BeanInteraction ExtractRandomBean()
+    {
+        if (!IsCage() || beansInCage.Count == 0)
+        {
+            return null;
+        }
+
+        int idx = Random.Range(0, beansInCage.Count);
+        var bean = beansInCage[idx];
+        beansInCage.RemoveAt(idx);
+
+
+        bean.transform.SetParent(null, true);
+
+
+        bean.gameObject.layer = LayerMask.NameToLayer("Interactable");
+
+
+        var io = bean.GetComponent<InteractableObject>();
+        if (io != null)
+        {
+            io.enabled = true;
+        }
+
+        DecrementOccupancy();
+        assignedBeans.Remove(bean);
+        return bean;
+    }
+
+
 
     public void SetOccupancy(int count)
     {
