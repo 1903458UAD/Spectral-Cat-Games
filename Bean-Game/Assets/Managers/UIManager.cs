@@ -370,12 +370,29 @@ public class UIManager : MonoBehaviour
     {
         if (requiredBeans == 1) //Correct wording when using 1 "bean" instead of multiple "beans"
         {
-            customerOrderText.text = $"Order Coffee Strength: {requiredBeans} Bean with Syrup: {syrup}";
+            if(syrup == "None")
+            customerOrderText.text = $"- {requiredBeans} Shot Espresso";
+
+            else
+            customerOrderText.text = $"- {requiredBeans} Shot Espresso \n\n - Add {syrup}";
         }
         else
         {
-            customerOrderText.text = $"Order Coffee Strength: {requiredBeans} Beans with Syrup: {syrup}";
+            if (syrup == "None")
+            customerOrderText.text = $"- {requiredBeans} Shots Espresso";
+
+            else
+            customerOrderText.text = $"- {requiredBeans} Shots Espresso \n\n - Add {syrup}";
         }
+
+        //if (requiredBeans == 1) //Correct wording when using 1 "bean" instead of multiple "beans"
+        //{
+        //    customerOrderText.text = $"Order Coffee Strength: {requiredBeans} Bean with Syrup: {syrup}";
+        //}
+        //else
+        //{
+        //    customerOrderText.text = $"Order Coffee Strength: {requiredBeans} Beans with Syrup: {syrup}";
+        //}
     }
 
     public void TogglePause()
@@ -632,11 +649,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void DOKill()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public void ShowPatienceBar()
     {
         customerPatienceBar.SetActive(true);
@@ -685,10 +697,6 @@ public class UIManager : MonoBehaviour
     {
         reciept.SetActive(false);
     }
-
-
-
-
 
     public void ShowNextDayPanel(int currentDay)
     {
