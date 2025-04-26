@@ -34,6 +34,10 @@ public class CustomerScript : MonoBehaviour
     public int requiredBeans;
     public string requiredSyrup;
 
+    bool sethappy = false;
+    bool setbored = false;
+    bool setangry = false;
+
     [SerializeField] private EventReference driveUpFX;
     [SerializeField] private EventReference outOfTimeFX;
 
@@ -164,16 +168,32 @@ public class CustomerScript : MonoBehaviour
 
             UIManager.Instance.GetCurrentTime(patienceTimer);
 
+            if(!sethappy)
+            {
+                UIManager.Instance.setMoodlet("happy");
+                sethappy = true;
+            }
+
             if (initialTimer - patienceTimer > tipTime)
-            { 
-                UIManager.Instance.setMoodlet("bored");
+            {
+                if(!setbored)
+                {
+                    UIManager.Instance.setMoodlet("bored");
+                    setbored = true;
+                }
+
                 moodAud = ("bored");
                 //AudioManager.instance.SetAmbianceParameter("Activate CMel", 1);
             }
 
             if (patienceTimer < initialTimer * 0.30)
             {
-                UIManager.Instance.setMoodlet("angry");
+                if (!setangry)
+                {
+                    UIManager.Instance.setMoodlet("angry");
+                    setangry = true;
+                }
+
                 moodAud = ("angry");
                 //AudioManager.instance.SetAmbianceParameter("Activate CMel", 2);
             }

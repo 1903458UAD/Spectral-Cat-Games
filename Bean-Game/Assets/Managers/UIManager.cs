@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using UnityEngine.SocialPlatforms;
 
+using DG.Tweening;
+
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance; //Instance of UIManager
@@ -610,20 +612,29 @@ public class UIManager : MonoBehaviour
         {
             case "happy":
                 customerMoodlet.GetComponent<Image>().sprite = happy;
+                customerMoodlet.GetComponent<RectTransform>().DORotate(new Vector3(0, 0, 5f), 1.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
                 break;
 
             case "bored":
                 customerMoodlet.GetComponent<Image>().sprite = bored;
+                customerMoodlet.GetComponent<RectTransform>().DORotate(new Vector3(0, 0, 10f), 1f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
                 break;
 
             case "angry":
                 customerMoodlet.GetComponent<Image>().sprite = angry;
+                customerMoodlet.GetComponent<RectTransform>().DORotate(new Vector3(0, 0, 20f), 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
                 break;
 
             default:
                 customerMoodlet.GetComponent<Image>().sprite = happy;
+                customerMoodlet.GetComponent<RectTransform>().DORotate(new Vector3(0, 0, 5f), 1.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
                 break;
         }
+    }
+
+    private void DOKill()
+    {
+        throw new System.NotImplementedException();
     }
 
     public void ShowPatienceBar()
