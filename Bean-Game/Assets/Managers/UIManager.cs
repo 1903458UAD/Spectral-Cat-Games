@@ -532,9 +532,22 @@ public class UIManager : MonoBehaviour
 
     public void UpdateLifeUI(int currentLives, string waringDesc)
     {
-        warningSlip.SetActive(true);
         warningDescription.text = $"Description of Infraction: {waringDesc}";
         livesLeft.text = $"{currentLives} more chances!";
+
+        Vector2 originalPosition = warningSlip.GetComponent<RectTransform>().anchoredPosition; 
+        Quaternion originalRotation = warningSlip.GetComponent<RectTransform>().rotation;
+
+        warningSlip.GetComponent<RectTransform>().anchoredPosition += new Vector2(30, 0);  
+        warningSlip.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, 30);
+
+        warningSlip.SetActive(true);
+
+        DG.Tweening.Sequence sequence = DOTween.Sequence();
+
+        sequence.Append(warningSlip.GetComponent<RectTransform>().DOAnchorPos(originalPosition, 0.4f).SetEase(Ease.InBack));
+        sequence.Join(warningSlip.GetComponent<RectTransform>().DORotateQuaternion(originalRotation, 0.4f).SetEase(Ease.OutBack));
+
         Invoke(nameof(HideLifeUI), 3f);
 
         //for (int i = 0; i < lifeIcons.Length; i++)
@@ -685,10 +698,22 @@ public class UIManager : MonoBehaviour
                 break;
         }
 
-        reciept.SetActive(true);
+        Vector3 originalScale = reciept.GetComponent<RectTransform>().localScale;
+        Vector3 originalPos = reciept.GetComponent<RectTransform>().anchoredPosition;
+
+        reciept.GetComponent<RectTransform>().localScale = reciept.GetComponent<RectTransform>().localScale * 1.25f;
+        reciept.GetComponent<RectTransform>().anchoredPosition += new Vector2(30, -10);
+
         if (customerOrderText != null) customerOrderText.gameObject.SetActive(true);
         coffeePrice.text = string.Format("{0}", coffeePriceData.internalBaseValue);
         orderNo.text = string.Format($"Order #{orderNoCount}");
+
+        reciept.SetActive(true);
+
+        DG.Tweening.Sequence sequence = DOTween.Sequence();
+
+        sequence.Append(reciept.GetComponent<RectTransform>().DOScale(originalScale * 0.75f, 1.5f).SetEase(Ease.OutBack).SetDelay(0.25f));
+        sequence.Join(reciept.GetComponent<RectTransform>().DOAnchorPos(originalPos, 1.5f).SetEase(Ease.OutBack).SetDelay(0.25f));
     }
 
     public void HideReciept()
