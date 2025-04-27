@@ -323,6 +323,10 @@ public class UIManager : MonoBehaviour
         string sceneName = SceneManager.GetActiveScene().name;
         DayManager.Instance.NextDay(); 
         SceneManager.LoadScene(sceneName);
+
+        StaticData.dailyIncome = 0;
+        StaticData.dailyTips = 0;
+        StaticData.dailyBeans = 0;
        
         GameManager.Instance.SetIncome(StaticData.incomePassed);
     }
