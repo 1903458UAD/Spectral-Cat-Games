@@ -17,6 +17,13 @@ public class StaticData : MonoBehaviour
     public static int lowerQuotaLimit = 3;
     public static int higherQuotaLimit = 5;
 
+    public static float dailyIncome;
+    public static float dailyTips;
+    public static int dailyBeans;
+
+    public static float totalIncome;
+    public static float totalTips;
+    public static int totalBeans;
 
     public static bool dualWieldUpgrade = false;
     public static bool alert = false;

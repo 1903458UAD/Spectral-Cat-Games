@@ -214,7 +214,6 @@ public class CustomerScript : MonoBehaviour
 
         else
         {
-            UnityEngine.Debug.Log("[CustomerScript] Customer ran out of patience!");
             playerHealth.LoseLife("Order not Fulfilled in time");
             AudioManager.instance.PlayOneShot(outOfTimeFX, driveThrough.transform.position);
             AudioManager.instance.SetAmbianceParameter("Activate CMel", 0);
@@ -231,7 +230,6 @@ public class CustomerScript : MonoBehaviour
         }
         else
         {
-            Debug.Log("Wrong coffee given! Customer Pissed.");
             playerHealth.LoseLife("Wrong Order");
             nextLocation = exit;
             drive = true;
@@ -245,6 +243,8 @@ public class CustomerScript : MonoBehaviour
         if (initialTimer - patienceTimer <= tipTime)
         {
             income += tipFactor;
+            StaticData.dailyTips += tipFactor;
+            StaticData.totalTips += tipFactor;
         }
 
         nextLocation = exit; // Move customer towards exit //Reverted back to heathers orginal code as the game manager code currently breaks it
@@ -257,11 +257,6 @@ public class CustomerScript : MonoBehaviour
             GameManager.Instance.IncreaseServedAmount();
             GameManager.Instance.CheckOrderQuota();
             GameManager.Instance.RemoveCustomer(gameObject);
-        }
-
-        else
-        {
-            UnityEngine.Debug.LogError("[CustomerScript] GameManager instance is null! Cannot update income.");
         }
 
         drive = true;

@@ -21,6 +21,9 @@ public class IntroScript : MonoBehaviour
 
     //public PowerCutScript PowerCut;
     public FirstPersonLook fpLook;
+
+    //Intro Control
+    public bool playIntro;
     
     #endregion
 
