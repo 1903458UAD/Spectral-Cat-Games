@@ -21,14 +21,17 @@ public class IntroScript : MonoBehaviour
 
     //public PowerCutScript PowerCut;
     public FirstPersonLook fpLook;
-    
+
     #endregion
+    public bool gameplayStart = false;
 
     private void Start()
     {
         playerCamera = GameObject.Find("First Person Camera").GetComponent<Camera>();
         menuCamera = GameObject.Find("MenuCam").GetComponent<Camera>();
         anim = menuCamera.GetComponent<Animator>();
+
+        gameplayStart = false;
 
         playerStart = playerCamera.transform;
         menuStart = menuCamera.transform;
@@ -67,5 +70,7 @@ public class IntroScript : MonoBehaviour
         fpLook.cameraControl = true;
 
         UIManager.Instance.ShowGameplayUI();
+
+        gameplayStart = true;
     }
 }
