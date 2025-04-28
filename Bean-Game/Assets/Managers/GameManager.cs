@@ -323,7 +323,7 @@ public class GameManager : MonoBehaviour
     {
         Vector3 playerPos = GetPlayerPosition();
 
-        Vector3 spawnPos = new Vector3(1.81799996f, 1.64100003f, -3.1329999f);
+        Vector3 spawnPos = new Vector3(2.088f, 1.24f, -1.457484f);
 
         GameObject cage = Instantiate(cageSpotPrefab, spawnPos, Quaternion.identity);
 

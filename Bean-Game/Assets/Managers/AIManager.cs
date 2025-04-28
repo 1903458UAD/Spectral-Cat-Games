@@ -65,7 +65,10 @@ public class AIManager : MonoBehaviour
     private Dictionary<NPC_AI, float> updateTimers = new Dictionary<NPC_AI, float>();
 
     public int maxBeansToSwitch = 3; // Num beans that can switch spots at the same time
-    //private List<NPC_AI> beansToSwitch = new List<NPC_AI>(); // beans chosen to switch
+                                     //private List<NPC_AI> beansToSwitch = new List<NPC_AI>(); // beans chosen to switch
+
+    // Track how long each bean has been trapped
+    private Dictionary<NPC_AI, float> trapEntryTimes = new Dictionary<NPC_AI, float>();
 
     //private Dictionary<NPC_AI, float> activeTimers = new Dictionary<NPC_AI, float>(); // Only track selected beans time
     //private HashSet<NPC_AI> recentlySwitched = new HashSet<NPC_AI>(); // Track recently moved beans
@@ -133,6 +136,7 @@ public class AIManager : MonoBehaviour
             if (npc.IsPickedUp())
             {
                 //npc.PlayBeanMoveSound(false);
+                trapEntryTimes.Remove(npc);
                 continue;
             }
 
@@ -194,12 +198,15 @@ public class AIManager : MonoBehaviour
 
         if (switchElapsed >= switchPeriod)
         {
+            
+            var candidates = npcList.Where(b =>
+                b.state == NPC_AI.NPCState.Hiding
+                && b.GetHidingSpot() != null
+                && !b.GetHidingSpot().IsTrap()
+                && !b.GetHidingSpot().IsCage()
+                && Vector3.Distance(b.transform.position, GetPlayerPosition()) >= b.runRange).ToList();
 
-            var candidates = npcList.Where(b => b.state == NPC_AI.NPCState.Hiding
-                             && Vector3.Distance(b.transform.position, GetPlayerPosition()) >= b.runRange)
-                            .ToList();
-
-
+            
             for (int i = 0; i < maxBeansToSwitch && candidates.Count > 0; i++)
             {
                 int indx = Random.Range(0, candidates.Count);
@@ -316,6 +323,7 @@ public class AIManager : MonoBehaviour
             lastSwitchTime.Remove(npc);
             runStartTimes.Remove(npc);
             npcHidingAssignments.Remove(npc);
+            trapEntryTimes.Remove(npc);
         }
     }
 
@@ -377,7 +385,7 @@ public class AIManager : MonoBehaviour
         // If the bean is already in Hiding, do nothing.
         if (npc.state == NPC_AI.NPCState.Hiding)
         {
-            // For non-shelf hiding spots (and now for shelf as well), simply check if the bean is near its target.
+       
             if (npc.GetHidingSpot() != null)
             {
                 float distanceToSpot = Vector3.Distance(npc.transform.position, npc.GetHidingSpot().transform.position);
@@ -385,7 +393,7 @@ public class AIManager : MonoBehaviour
                 {
                     npc.OnReachedHidingSpot();
                 }
-                // Otherwise, let MaintainCover drive the bean back.
+               
             }
             MaintainCover(npc);
             npc.PlayBeanMoveSound(false);
@@ -908,6 +916,12 @@ public class AIManager : MonoBehaviour
                     targetPosition = hidingSpotPosition - toPlayer * 0.15f;
                     break;
                 }
+            case Hiding_Spots.HidingType.Trap:
+                {
+
+                    targetPosition = hidingSpotPosition;
+                    break;
+                }
             default:
                 {
                     
@@ -941,7 +955,49 @@ public class AIManager : MonoBehaviour
         }
         else if (hidingSpot.IsCage())
         {
-            npc.MoveTo(hidingSpot.transform.position);
+
+            var col = hidingSpot.GetComponent<Collider>();
+            if (col != null)
+            {
+
+                Bounds b = col.bounds;
+
+                const float margin = 0.1f;
+
+                float x = Random.Range(b.min.x + margin, b.max.x - margin);
+                float z = Random.Range(b.min.z + margin, b.max.z - margin);
+                Vector3 randomInside = new Vector3(x, npc.transform.position.y, z);
+
+
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(randomInside, out hit, 1f, NavMesh.AllAreas))
+                {
+                    npc.MoveTo(hit.position);
+                }
+            }
+            return;
+        }
+
+        if (hidingSpot.IsTrap())
+        {
+            if (!trapEntryTimes.ContainsKey(npc))
+            {
+                trapEntryTimes[npc] = Time.time;
+            }
+
+            if (Time.time - trapEntryTimes[npc] >= 10f)
+            {
+                trapEntryTimes.Remove(npc);
+                ReleaseCurrentHidingSpot(npc);
+                AssignNewHidingSpot(npc, false);
+            }
+
+            return;
+
+        }
+        else
+        {
+            trapEntryTimes.Remove(npc);
         }
 
         //// If the player is very close stay hidden.
@@ -967,12 +1023,12 @@ public class AIManager : MonoBehaviour
 
         //    if (Time.time >= globalSwitchCycleTimer)
         //    {
-                
+
         //        List<NPC_AI> beansToProcess = new List<NPC_AI>();
 
         //        foreach (NPC_AI bean in beansToSwitch.ToArray())
         //        {
-                    
+
         //            if (Vector3.Distance(bean.transform.position, GetPlayerPosition()) >= bean.runRange)
         //            {
         //                beansToProcess.Add(bean);
@@ -996,7 +1052,7 @@ public class AIManager : MonoBehaviour
 
         //            if (candidate == null)
         //            {
-                        
+
         //                break;
         //            }
         //            beansToProcess.Add(candidate);
@@ -1046,7 +1102,7 @@ public class AIManager : MonoBehaviour
         //}
     }
 
-    
+
 
     private Vector3 CalculateSafeOffsetForShelf(Hiding_Spots shelfSpot, NPC_AI npc)
     {
