@@ -19,7 +19,7 @@ public class CustomerScript : MonoBehaviour
 
     public TMP_Text timerDisplay;
 
-    private float speed = 0.1f;
+    private float speed = 0.02f;
     private float patienceTimer;
     private float initialTimer;
     private float tipTime; 
@@ -33,6 +33,10 @@ public class CustomerScript : MonoBehaviour
 
     public int requiredBeans;
     public string requiredSyrup;
+
+    bool sethappy = false;
+    bool setbored = false;
+    bool setangry = false;
 
     [SerializeField] private EventReference driveUpFX;
     [SerializeField] private EventReference outOfTimeFX;
@@ -140,15 +144,19 @@ public class CustomerScript : MonoBehaviour
             if (nextLocation == exit)
             {
 
-               // Destroy(gameObject); // Destroy customer //Reverted back to heathers orginal code as the game manager code currently breaks it
+                // Destroy(gameObject); // Destroy customer //Reverted back to heathers orginal code as the game manager code currently breaks it
                 GameManager.Instance.RemoveCustomer(gameObject); // ✅ Moved customer removal to GameManager
             }
 
-            if (playerCamera.GetComponent<Camera>().enabled)
+            else
             {
-                UIManager.Instance.ShowPatienceBar();
-                UIManager.Instance.ShowReciept();
+                if (playerCamera.GetComponent<Camera>().enabled)
+                {
+                    UIManager.Instance.ShowPatienceBar();
+                    UIManager.Instance.ShowReciept();
+                }
             }
+
             drive = false;
         }
     }
@@ -164,16 +172,32 @@ public class CustomerScript : MonoBehaviour
 
             UIManager.Instance.GetCurrentTime(patienceTimer);
 
+            if(!sethappy)
+            {
+                UIManager.Instance.setMoodlet("happy");
+                sethappy = true;
+            }
+
             if (initialTimer - patienceTimer > tipTime)
-            { 
-                UIManager.Instance.setMoodlet("bored");
+            {
+                if(!setbored)
+                {
+                    UIManager.Instance.setMoodlet("bored");
+                    setbored = true;
+                }
+
                 moodAud = ("bored");
                 //AudioManager.instance.SetAmbianceParameter("Activate CMel", 1);
             }
 
             if (patienceTimer < initialTimer * 0.30)
             {
-                UIManager.Instance.setMoodlet("angry");
+                if (!setangry)
+                {
+                    UIManager.Instance.setMoodlet("angry");
+                    setangry = true;
+                }
+
                 moodAud = ("angry");
                 //AudioManager.instance.SetAmbianceParameter("Activate CMel", 2);
             }
@@ -194,7 +218,6 @@ public class CustomerScript : MonoBehaviour
 
         else
         {
-            UnityEngine.Debug.Log("[CustomerScript] Customer ran out of patience!");
             playerHealth.LoseLife("Order not Fulfilled in time");
             AudioManager.instance.PlayOneShot(outOfTimeFX, driveThrough.transform.position);
             AudioManager.instance.SetAmbianceParameter("Activate CMel", 0);
@@ -211,7 +234,6 @@ public class CustomerScript : MonoBehaviour
         }
         else
         {
-            Debug.Log("Wrong coffee given! Customer Pissed.");
             playerHealth.LoseLife("Wrong Order");
             nextLocation = exit;
             drive = true;
@@ -225,6 +247,8 @@ public class CustomerScript : MonoBehaviour
         if (initialTimer - patienceTimer <= tipTime)
         {
             income += tipFactor;
+            StaticData.dailyTips += tipFactor;
+            StaticData.totalTips += tipFactor;
         }
 
         nextLocation = exit; // Move customer towards exit //Reverted back to heathers orginal code as the game manager code currently breaks it
@@ -237,11 +261,6 @@ public class CustomerScript : MonoBehaviour
             GameManager.Instance.IncreaseServedAmount();
             GameManager.Instance.CheckOrderQuota();
             GameManager.Instance.RemoveCustomer(gameObject);
-        }
-
-        else
-        {
-            UnityEngine.Debug.LogError("[CustomerScript] GameManager instance is null! Cannot update income.");
         }
 
         drive = true;

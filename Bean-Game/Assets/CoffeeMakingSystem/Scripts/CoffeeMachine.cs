@@ -122,7 +122,8 @@ public void ActivateMachine()
                     Vector3 beanPosition = bean.transform.position;
                     Quaternion beanRotation = bean.transform.rotation;
 
-                    
+                    StaticData.dailyBeans += 1;
+                    StaticData.totalBeans += 1;
                     Destroy(bean);
 
                     

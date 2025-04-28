@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using UnityEngine.SocialPlatforms;
 
+using DG.Tweening;
+
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance; //Instance of UIManager
@@ -105,6 +107,10 @@ public class UIManager : MonoBehaviour
 
     public UpgradeDataManager upgradeDataManager;
 
+    private Vector3 recieptoriginalScale;
+    private Vector2 recieptoriginalPosition;
+    private Vector2 recieptOffScreenPosition;
+
     private void Awake() // When instance is being loaded
     {
         if (Instance == null) //If no instance of the UIManager exists
@@ -136,7 +142,11 @@ public class UIManager : MonoBehaviour
         HidePatienceBar();
         HideReciept();
         HideGameplayUI();
+
         reciept.SetActive(false);
+        recieptoriginalScale = reciept.GetComponent<RectTransform>().localScale;
+        recieptoriginalPosition = reciept.GetComponent<RectTransform>().anchoredPosition;
+        recieptOffScreenPosition = recieptoriginalPosition + new Vector2(0f, 200);
 
         warningSlip.SetActive(false);
 
@@ -224,17 +234,11 @@ public class UIManager : MonoBehaviour
             mainMenuUI.SetActive(false); // Hide the main menu
             introScript.PlayIntro(); // Start the cutscene
         }
-        else
-        {
-            Debug.LogError("Introscript is null");
-        }
     }
-
 
     public void ToggleDeveloperCheats(bool isEnabled)
     {
         developerCheats.cheatsEnabled = isEnabled;
-        Debug.Log($"[UIManager] Developer Cheats state updated: {developerCheats.cheatsEnabled}");
     }
 
     public void Rebinding(string action)
@@ -329,6 +333,10 @@ public class UIManager : MonoBehaviour
         string sceneName = SceneManager.GetActiveScene().name;
         DayManager.Instance.NextDay(); 
         SceneManager.LoadScene(sceneName);
+
+        StaticData.dailyIncome = 0;
+        StaticData.dailyTips = 0;
+        StaticData.dailyBeans = 0;
        
         GameManager.Instance.SetIncome(StaticData.incomePassed);
     }
@@ -368,12 +376,29 @@ public class UIManager : MonoBehaviour
     {
         if (requiredBeans == 1) //Correct wording when using 1 "bean" instead of multiple "beans"
         {
-            customerOrderText.text = $"Order Coffee Strength: {requiredBeans} Bean with Syrup: {syrup}";
+            if(syrup == "None")
+            customerOrderText.text = $"- {requiredBeans} Shot Espresso";
+
+            else
+            customerOrderText.text = $"- {requiredBeans} Shot Espresso \n\n - Add {syrup}";
         }
         else
         {
-            customerOrderText.text = $"Order Coffee Strength: {requiredBeans} Beans with Syrup: {syrup}";
+            if (syrup == "None")
+            customerOrderText.text = $"- {requiredBeans} Shots Espresso";
+
+            else
+            customerOrderText.text = $"- {requiredBeans} Shots Espresso \n\n - Add {syrup}";
         }
+
+        //if (requiredBeans == 1) //Correct wording when using 1 "bean" instead of multiple "beans"
+        //{
+        //    customerOrderText.text = $"Order Coffee Strength: {requiredBeans} Bean with Syrup: {syrup}";
+        //}
+        //else
+        //{
+        //    customerOrderText.text = $"Order Coffee Strength: {requiredBeans} Beans with Syrup: {syrup}";
+        //}
     }
 
     public void TogglePause()
@@ -515,10 +540,28 @@ public class UIManager : MonoBehaviour
 
     public void UpdateLifeUI(int currentLives, string waringDesc)
     {
-        warningSlip.SetActive(true);
         warningDescription.text = $"Description of Infraction: {waringDesc}";
         livesLeft.text = $"{currentLives} more chances!";
+
+        Vector3 originalScale = warningSlip.GetComponent<RectTransform>().localScale;
+        Vector2 originalPosition = warningSlip.GetComponent<RectTransform>().anchoredPosition;
+        Quaternion originalRotation = warningSlip.GetComponent<RectTransform>().rotation;
+       
+
+        warningSlip.GetComponent<RectTransform>().localScale = originalScale * 2;
+        warningSlip.GetComponent<RectTransform>().anchoredPosition = originalPosition + new Vector2(-100, 20);
+        warningSlip.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, originalRotation.z + 200);
+
+        warningSlip.SetActive(true);
+
+        DG.Tweening.Sequence seq = DOTween.Sequence();
+
+        seq.Append(warningSlip.GetComponent<RectTransform>().DOScale(originalScale, 0.7f));
+        seq.Join(warningSlip.GetComponent<RectTransform>().DOAnchorPos(originalPosition, 0.7f));
+        seq.Join(warningSlip.GetComponent<RectTransform>().DORotateQuaternion(originalRotation, 0.7f));
+
         Invoke(nameof(HideLifeUI), 3f);
+        
 
         //for (int i = 0; i < lifeIcons.Length; i++)
         //{
@@ -610,18 +653,22 @@ public class UIManager : MonoBehaviour
         {
             case "happy":
                 customerMoodlet.GetComponent<Image>().sprite = happy;
+                customerMoodlet.GetComponent<RectTransform>().DORotate(new Vector3(0, 0, 5f), 1.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
                 break;
 
             case "bored":
                 customerMoodlet.GetComponent<Image>().sprite = bored;
+                customerMoodlet.GetComponent<RectTransform>().DORotate(new Vector3(0, 0, 10f), 1f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
                 break;
 
             case "angry":
                 customerMoodlet.GetComponent<Image>().sprite = angry;
+                customerMoodlet.GetComponent<RectTransform>().DORotate(new Vector3(0, 0, 20f), 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
                 break;
 
             default:
                 customerMoodlet.GetComponent<Image>().sprite = happy;
+                customerMoodlet.GetComponent<RectTransform>().DORotate(new Vector3(0, 0, 5f), 1.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
                 break;
         }
     }
@@ -664,20 +711,26 @@ public class UIManager : MonoBehaviour
                 break;
         }
 
-        reciept.SetActive(true);
+        reciept.GetComponent<RectTransform>().localScale = recieptoriginalScale * 1.25f;
+        reciept.GetComponent<RectTransform>().anchoredPosition = recieptOffScreenPosition;
+
         if (customerOrderText != null) customerOrderText.gameObject.SetActive(true);
         coffeePrice.text = string.Format("{0}", coffeePriceData.internalBaseValue);
         orderNo.text = string.Format($"Order #{orderNoCount}");
+
+        reciept.SetActive(true);
+
+        DG.Tweening.Sequence sequence = DOTween.Sequence();
+
+        sequence.Append(reciept.GetComponent<RectTransform>().DOAnchorPos(recieptoriginalPosition * 1.25f, 1.0f).SetEase(Ease.OutBack));
+        sequence.Join(reciept.GetComponent<RectTransform>().DOScale(recieptoriginalScale, 1.5f).SetEase(Ease.OutBack).SetDelay(0.75f));
+        sequence.Join(reciept.GetComponent<RectTransform>().DOAnchorPos(recieptoriginalPosition, 1.5f).SetEase(Ease.Unset));
     }
 
     public void HideReciept()
     {
         reciept.SetActive(false);
     }
-
-
-
-
 
     public void ShowNextDayPanel(int currentDay)
     {
