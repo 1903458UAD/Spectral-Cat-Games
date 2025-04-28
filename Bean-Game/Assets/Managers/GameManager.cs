@@ -257,6 +257,8 @@ public class GameManager : MonoBehaviour
     public void UpdateIncome(float amount)
     {
         totalIncome += amount;
+        StaticData.dailyIncome += amount;
+        StaticData.totalIncome += amount;
         UIManager.Instance.UpdateIncomeDisplay(totalIncome);
     }
 
