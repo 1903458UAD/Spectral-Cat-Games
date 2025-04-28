@@ -200,19 +200,21 @@ public class NPC_AI : MonoBehaviour
             
             float maxVerticalDifference = 0.5f;  // adjust as needed
 
-            if (NavMesh.SamplePosition(samplePosition, out hit, 2.0f, NavMesh.AllAreas))
-            {
-                if (Mathf.Abs(hit.position.y - samplePosition.y) <= maxVerticalDifference)
-                {
-                    navMeshAgent.SetDestination(hit.position);
-                }
-                else
-                {
-                    Vector3 adjustedTarget = new Vector3(hit.position.x, samplePosition.y, hit.position.z);
-                    navMeshAgent.SetDestination(adjustedTarget);
-                }
-            }
+            //if (NavMesh.SamplePosition(samplePosition, out hit, 2.0f, NavMesh.AllAreas))
+            //{
+            //    if (Mathf.Abs(hit.position.y - samplePosition.y) <= maxVerticalDifference)
+            //    {
+            //        navMeshAgent.SetDestination(hit.position);
+            //    }
+            //    else
+            //    {
+            //        Vector3 adjustedTarget = new Vector3(hit.position.x, samplePosition.y, hit.position.z);
+            //        navMeshAgent.SetDestination(adjustedTarget);
+            //    }
+            //}
+            navMeshAgent.SetDestination(samplePosition);
         }
+       
     }
 
     public void SetLastHidingSpot(Hiding_Spots spot)
