@@ -107,6 +107,10 @@ public class UIManager : MonoBehaviour
 
     public UpgradeDataManager upgradeDataManager;
 
+    private Vector3 recieptoriginalScale;
+    private Vector2 recieptoriginalPosition;
+    private Vector2 recieptOffScreenPosition;
+
     private void Awake() // When instance is being loaded
     {
         if (Instance == null) //If no instance of the UIManager exists
@@ -138,7 +142,11 @@ public class UIManager : MonoBehaviour
         HidePatienceBar();
         HideReciept();
         HideGameplayUI();
+
         reciept.SetActive(false);
+        recieptoriginalScale = reciept.GetComponent<RectTransform>().localScale;
+        recieptoriginalPosition = reciept.GetComponent<RectTransform>().anchoredPosition;
+        recieptOffScreenPosition = recieptoriginalPosition + new Vector2(0f, 200);
 
         warningSlip.SetActive(false);
 
@@ -535,20 +543,25 @@ public class UIManager : MonoBehaviour
         warningDescription.text = $"Description of Infraction: {waringDesc}";
         livesLeft.text = $"{currentLives} more chances!";
 
-        Vector2 originalPosition = warningSlip.GetComponent<RectTransform>().anchoredPosition; 
+        Vector3 originalScale = warningSlip.GetComponent<RectTransform>().localScale;
+        Vector2 originalPosition = warningSlip.GetComponent<RectTransform>().anchoredPosition;
         Quaternion originalRotation = warningSlip.GetComponent<RectTransform>().rotation;
+       
 
-        warningSlip.GetComponent<RectTransform>().anchoredPosition += new Vector2(30, 0);  
-        warningSlip.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, 30);
+        warningSlip.GetComponent<RectTransform>().localScale = originalScale * 2;
+        warningSlip.GetComponent<RectTransform>().anchoredPosition = originalPosition + new Vector2(-100, 20);
+        warningSlip.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, originalRotation.z + 200);
 
         warningSlip.SetActive(true);
 
-        DG.Tweening.Sequence sequence = DOTween.Sequence();
+        DG.Tweening.Sequence seq = DOTween.Sequence();
 
-        sequence.Append(warningSlip.GetComponent<RectTransform>().DOAnchorPos(originalPosition, 0.4f).SetEase(Ease.InBack));
-        sequence.Join(warningSlip.GetComponent<RectTransform>().DORotateQuaternion(originalRotation, 0.4f).SetEase(Ease.OutBack));
+        seq.Append(warningSlip.GetComponent<RectTransform>().DOScale(originalScale, 0.7f));
+        seq.Join(warningSlip.GetComponent<RectTransform>().DOAnchorPos(originalPosition, 0.7f));
+        seq.Join(warningSlip.GetComponent<RectTransform>().DORotateQuaternion(originalRotation, 0.7f));
 
         Invoke(nameof(HideLifeUI), 3f);
+        
 
         //for (int i = 0; i < lifeIcons.Length; i++)
         //{
@@ -698,11 +711,8 @@ public class UIManager : MonoBehaviour
                 break;
         }
 
-        Vector3 originalScale = reciept.GetComponent<RectTransform>().localScale;
-        Vector3 originalPos = reciept.GetComponent<RectTransform>().anchoredPosition;
-
-        reciept.GetComponent<RectTransform>().localScale = reciept.GetComponent<RectTransform>().localScale * 1.25f;
-        reciept.GetComponent<RectTransform>().anchoredPosition += new Vector2(30, -10);
+        reciept.GetComponent<RectTransform>().localScale = recieptoriginalScale * 1.25f;
+        reciept.GetComponent<RectTransform>().anchoredPosition = recieptOffScreenPosition;
 
         if (customerOrderText != null) customerOrderText.gameObject.SetActive(true);
         coffeePrice.text = string.Format("{0}", coffeePriceData.internalBaseValue);
@@ -712,8 +722,9 @@ public class UIManager : MonoBehaviour
 
         DG.Tweening.Sequence sequence = DOTween.Sequence();
 
-        sequence.Append(reciept.GetComponent<RectTransform>().DOScale(originalScale * 0.75f, 1.5f).SetEase(Ease.OutBack).SetDelay(0.25f));
-        sequence.Join(reciept.GetComponent<RectTransform>().DOAnchorPos(originalPos, 1.5f).SetEase(Ease.OutBack).SetDelay(0.25f));
+        sequence.Append(reciept.GetComponent<RectTransform>().DOAnchorPos(recieptoriginalPosition * 1.25f, 1.0f).SetEase(Ease.OutBack));
+        sequence.Join(reciept.GetComponent<RectTransform>().DOScale(recieptoriginalScale, 1.5f).SetEase(Ease.OutBack).SetDelay(0.75f));
+        sequence.Join(reciept.GetComponent<RectTransform>().DOAnchorPos(recieptoriginalPosition, 1.5f).SetEase(Ease.Unset));
     }
 
     public void HideReciept()

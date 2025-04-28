@@ -19,7 +19,7 @@ public class CustomerScript : MonoBehaviour
 
     public TMP_Text timerDisplay;
 
-    private float speed = 0.1f;
+    private float speed = 0.02f;
     private float patienceTimer;
     private float initialTimer;
     private float tipTime; 
@@ -144,15 +144,19 @@ public class CustomerScript : MonoBehaviour
             if (nextLocation == exit)
             {
 
-               // Destroy(gameObject); // Destroy customer //Reverted back to heathers orginal code as the game manager code currently breaks it
+                // Destroy(gameObject); // Destroy customer //Reverted back to heathers orginal code as the game manager code currently breaks it
                 GameManager.Instance.RemoveCustomer(gameObject); // ✅ Moved customer removal to GameManager
             }
 
-            if (playerCamera.GetComponent<Camera>().enabled)
+            else
             {
-                UIManager.Instance.ShowPatienceBar();
-                UIManager.Instance.ShowReciept();
+                if (playerCamera.GetComponent<Camera>().enabled)
+                {
+                    UIManager.Instance.ShowPatienceBar();
+                    UIManager.Instance.ShowReciept();
+                }
             }
+
             drive = false;
         }
     }
