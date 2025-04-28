@@ -310,17 +310,22 @@ public class GameManager : MonoBehaviour
         //Vector3 spawnPos = GetNavMeshPositionNear(playerPos);
 
         GameObject trapGO = Instantiate(trapHidingSpotPrefab, spawnPos, Quaternion.identity);
+        
+        var trapSpot = trapGO.GetComponent<Hiding_Spots>();
 
-        Hiding_Spots trapSpot = trapGO.GetComponent<Hiding_Spots>();
+        trapSpot.hidingType = Hiding_Spots.HidingType.Trap;
 
-        if (trapSpot != null)
+        var col = trapGO.GetComponent<Collider>();
+
+        if (col != null)
         {
-            trapSpot.hidingType = Hiding_Spots.HidingType.Trap;
-
-            hidingSpots.Add(trapSpot);
-            Debug.Log($"[GameManager] Trap hiding spot spawned at {spawnPos}");
+            col.isTrigger = true;
         }
-       
+          
+        AIManager.Instance.GetAvailableHidingSpots().Add(trapSpot);
+
+        Debug.Log($"[GameManager] Trap hiding spot spawned at {spawnPos}");
+
     }
 
     private void SpawnCage()
