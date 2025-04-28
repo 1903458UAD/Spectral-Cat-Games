@@ -5,6 +5,7 @@ using FMODUnity;
 
 public class DroppedAssetScript : MonoBehaviour
 {
+    public bool introStopped = false;
     [SerializeField] private EventReference fallFX;
     /*[SerializeField] private EventReference bookFallFX;
     [SerializeField] private EventReference mugFallFX;
@@ -15,20 +16,23 @@ public class DroppedAssetScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        introStopped = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        introStopped = GameObject.Find("MenuCam").GetComponent<IntroScript>().gameplayStart;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.relativeVelocity.magnitude > 1)
+        if (introStopped == true)
         {
-            AudioManager.instance.PlayOneShot(fallFX, this.transform.position);
+            if (collision.relativeVelocity.magnitude > 1)
+            {
+                AudioManager.instance.PlayOneShot(fallFX, this.transform.position);
+            }
         }
 
         /*if (gameObject.CompareTag("Book"))
