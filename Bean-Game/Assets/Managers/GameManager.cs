@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
     public Transform trapSpawnPoint;
 
     private GameObject exclamation;
+    private GameObject exclamation2;
 
 
     //private Dictionary<NPC_AI, Hiding_Spots> npcHidingAssignments = new Dictionary<NPC_AI, Hiding_Spots>();
@@ -99,6 +100,9 @@ public class GameManager : MonoBehaviour
 
         exclamation = GameObject.Find("exclamation_cm");
         exclamation.SetActive(false);
+
+        //exclamation2 = GameObject.Find("e");
+        //exclamation2.SetActive(false);
 
         SpawnInitialBeans();  // Ensure this is called
         GameManager.Instance.SetIncome(StaticData.incomePassed);
@@ -365,6 +369,16 @@ public class GameManager : MonoBehaviour
     {
         exclamation.SetActive(false);
     }
+
+    /*public void Exclamation2On()
+    {
+        exclamation2.SetActive(true);
+    }
+
+    public void Exclamation2Off()
+    {
+        exclamation2.SetActive(false);
+    }*/
 }
 
 
