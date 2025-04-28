@@ -53,14 +53,11 @@ public class PlayerInteraction : MonoBehaviour
 
         if (UIManager.Instance.IsGamePaused())
         {
-
-            Debug.Log("NO PICK UP SOZ");
             return; //To fix bug where player can interact when paused
         }
 
         if (cameraTransform == null)
         {
-           // Debug.LogError("[PlayerInteraction] cameraTransform is not assigned!");
             return;
         }
 
@@ -90,14 +87,7 @@ public class PlayerInteraction : MonoBehaviour
             heldObjectRight.ReleaseObject(); //Call function to release object being held from left hand
             heldObjectRight = null;// Clear reference after release
             return;
-
         }
-
-
-
-       
-
-        
 
         if (heldObjectLeft == null && heldObjectRight == null)
         {
@@ -111,31 +101,23 @@ public class PlayerInteraction : MonoBehaviour
 
             Debug.DrawRay(ray.origin, ray.direction * interactionDistance, Color.red, 0.1f);
 
-            RaycastHit[] hits = Physics.RaycastAll(ray, interactionDistance, ~0); // ~0 = "all layers"
+            RaycastHit[] hits = Physics.RaycastAll(ray, interactionDistance, ~0);
             foreach (var h in hits)
             {
-                //Debug.Log($"RaycastAll hit: {h.collider.name}, layer = {LayerMask.LayerToName(h.collider.gameObject.layer)}");
             }
 
             if (Physics.Raycast(ray, out hit, interactionDistance, InteractableObjectLayer))
             {
-                //Debug.Log("RayCast Hit a Interactable Object");
                 GameObject hitObject = hit.collider.gameObject;
                 InteractableObject interactable = hitObject.GetComponent<InteractableObject>();
-                
-                
-               
 
                 if (interactable != null)
                 {
-
-
                     // Pick up object if hand is free
                     if (heldObjectRight == null)
                     {
                         interactable.PickUpObject(true);
                         heldObjectRight = interactable;
-                        //return;
 
                         BeanInteraction bean = interactable.GetComponent<BeanInteraction>();
                         if (bean != null)
@@ -148,9 +130,7 @@ public class PlayerInteraction : MonoBehaviour
                     {
                         interactable.PickUpObject(false);
                         heldObjectLeft = interactable;
-                        //return;
-
-
+                        
                         BeanInteraction bean = interactable.GetComponent<BeanInteraction>();
                         if (bean != null)
                         {
@@ -166,14 +146,9 @@ public class PlayerInteraction : MonoBehaviour
                     }
                 }
             }
-            
 
             else if (Physics.Raycast(ray, out hit, interactionDistance, FunctionalObjectLayer)) //-- Prioritise function over pick up
             {
-
-                //Debug.Log($"RayCast Hit a functional Object: {hit.collider.name}, layer = {LayerMask.LayerToName(hit.collider.gameObject.layer)}");
-
-                
                 GameObject hitObject = hit.collider.gameObject;
                 CoffeeMachine coffeeMachine = hitObject.GetComponent<CoffeeMachine>();
                 
@@ -199,9 +174,6 @@ public class PlayerInteraction : MonoBehaviour
 
                 if (syrupBottle != null)
                 {
-
-                   
-
                     if (hitObject.CompareTag("SyrupPeanutButter"))
                     {
                         syrupBottle.TryAddSyrup(this);
@@ -222,8 +194,6 @@ public class PlayerInteraction : MonoBehaviour
                         syrupBottle.TryAddSyrup(this);
                         return;
                     }
-
-          
                 }
 
                 if (powercut != null)
@@ -235,14 +205,12 @@ public class PlayerInteraction : MonoBehaviour
                 if (coffeeButton != null)
                 {
                     coffeeButton.PressButton();
-                   // Debug.Log("Pressed Coffee Machine Button");
                     return;
                 }
 
                 if (till != null)
                 {
                     UIUpgradeManager.Instance.EnableUpgradeMenu();
-                    //Debug.Log("Pressed Till");
                 }
 
                 if (coffeeMachine != null)
@@ -250,19 +218,14 @@ public class PlayerInteraction : MonoBehaviour
                     if (heldObjectRight)
                     {
                         heldObjectRight.GetComponent<BeanInteraction>().TryAddToCoffeeMachine(coffeeMachine);
-                        //Debug.Log("Called tryAddToCoffeeMachine (Right hand)");
                         return;
                     }
                     else if (heldObjectLeft)
                     {
                         heldObjectLeft.GetComponent<BeanInteraction>().TryAddToCoffeeMachine(coffeeMachine);
-                       // Debug.Log("Called tryAddToCoffeeMachine (Left hand)");
                         return;
-
                     }
-
                 }
-                
                 
                 if (cage != null)
                 {
@@ -270,48 +233,35 @@ public class PlayerInteraction : MonoBehaviour
                     {
                         heldObjectRight.GetComponent<BeanInteraction>().TryAddToCage(cage);
                         heldObjectRight = null;
-                       // Debug.Log("Called cage (Right hand)");
                         return;
                     }
                     else if (heldObjectLeft)
                     {
                         heldObjectLeft.GetComponent<BeanInteraction>().TryAddToCage(cage);
                         heldObjectLeft = null;
-                        //Debug.Log("Called cage (Left hand)");
                         return;
-
                     }
-
                 }
-
 
                 if (customerWindow != null)
                 {
-
                     if (heldObjectRight && heldObjectRight.GetComponent<CoffeeInteraction>())
                     {
-
                         heldObjectRight.GetComponent<CoffeeInteraction>().TryAddToCustomerWindow();
                         return;
                     }
                     else if (heldObjectLeft && heldObjectLeft.GetComponent<CoffeeInteraction>())
                     {
-
                         heldObjectLeft.GetComponent<CoffeeInteraction>().TryAddToCustomerWindow();
-
                         return;
                     }
 
                     return;
                 }
-
             }
             else
             {
-              //  Debug.Log("No hit on FunctionalObjectLayer!");
-            }
-
-            
+            } 
         }
     }
 }
