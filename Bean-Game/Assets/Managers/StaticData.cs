@@ -30,4 +30,6 @@ public class StaticData : MonoBehaviour
     public static bool trapCheck = false;
 
     public static bool inflateBean = false;
+
+    public static bool skipIntro = false;
 }

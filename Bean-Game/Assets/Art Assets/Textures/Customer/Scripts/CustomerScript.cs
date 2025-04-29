@@ -190,6 +190,7 @@ public class CustomerScript : MonoBehaviour
 
     void DriveForward()
     {
+        
         transform.position = Vector3.MoveTowards(transform.position, nextLocation.transform.position, speed);
 
         if (Vector3.Distance(transform.position, nextLocation.transform.position) < 0.001f)
@@ -203,7 +204,7 @@ public class CustomerScript : MonoBehaviour
 
             else
             {
-                if (playerCamera.GetComponent<Camera>().enabled)
+                if (playerCamera.GetComponent<Camera>().enabled && Time.timeScale > 0)
                 {
                     UIManager.Instance.ShowPatienceBar();
                     UIManager.Instance.ShowReciept();
