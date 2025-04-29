@@ -65,7 +65,10 @@ public class AIManager : MonoBehaviour
     private Dictionary<NPC_AI, float> updateTimers = new Dictionary<NPC_AI, float>();
 
     public int maxBeansToSwitch = 3; // Num beans that can switch spots at the same time
-                                     //private List<NPC_AI> beansToSwitch = new List<NPC_AI>(); // beans chosen to switch
+
+    private List<NPC_AI> beansToSwitch = new List<NPC_AI>(); // beans chosen to switch this cycle
+
+
 
     // Track how long each bean has been trapped
     private Dictionary<NPC_AI, float> trapEntryTimes = new Dictionary<NPC_AI, float>();
@@ -204,18 +207,19 @@ public class AIManager : MonoBehaviour
         if (switchElapsed >= switchPeriod)
         {
             
-            var candidates = npcList.Where(b =>
-                b.state == NPC_AI.NPCState.Hiding
-                && b.GetHidingSpot() != null
-                && !b.GetHidingSpot().IsTrap()
-                && !b.GetHidingSpot().IsCage()
-                && Vector3.Distance(b.transform.position, GetPlayerPosition()) >= b.runRange).ToList();
-
+            beansToSwitch.Clear();
             
+            var candidates = npcList.Where(b =>
+            b.state == NPC_AI.NPCState.Hiding
+            && b.GetHidingSpot() != null&& !b.GetHidingSpot().IsTrap()
+            && !b.GetHidingSpot().IsCage()&& Vector3.Distance(b.transform.position, GetPlayerPosition()) >= b.runRange).ToList();
+
+
             for (int i = 0; i < maxBeansToSwitch && candidates.Count > 0; i++)
             {
                 int indx = Random.Range(0, candidates.Count);
                 var bean = candidates[indx];
+                beansToSwitch.Add(bean);
                 candidates.RemoveAt(indx);
 
 
@@ -629,6 +633,10 @@ public class AIManager : MonoBehaviour
     public void AssignNewHidingSpot(NPC_AI npc, bool run)
     {
 
+        if (beansToSwitch.Count > 0 && !beansToSwitch.Contains(npc))
+        {
+            return;
+        }
 
         if (npc == null || npc.state == NPC_AI.NPCState.Running)
         {
@@ -1195,6 +1203,8 @@ public class AIManager : MonoBehaviour
 
         //Debug.Log($"[AIManager] Spawning {count} new beans...");
 
+        beansToSwitch.Clear();
+
         for (int i = 0; i < count; i++)
         {
             Vector3 spawnPosition = AIManager.Instance.GetRandomSpawnPositionUsingNodes();
@@ -1204,7 +1214,6 @@ public class AIManager : MonoBehaviour
                 continue;
             }
 
-            // Use GameManager's beanPrefab instead of Resources.Load()
             GameObject beanPrefab = GameManager.Instance.beanPrefab;
           
             GameObject newBean = Instantiate(beanPrefab, spawnPosition, Quaternion.identity);
@@ -1213,6 +1222,7 @@ public class AIManager : MonoBehaviour
             if (newNPC != null)
             {
                 RegisterNPC(newNPC);
+                AssignNewHidingSpot(newNPC, false);
             }
         }
         
