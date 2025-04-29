@@ -115,14 +115,19 @@ public class AIManager : MonoBehaviour
 
 
 
-        // Reset game if bean count is low.
-        if (npcList.Count == beansLow && !isResetting)
+        //// Reset game if bean count is low.
+        //if (npcList.Count == beansLow && !isResetting)
+        //{
+        //    //Debug.LogWarning("[AIManager] Bean count low! Triggering reset...");
+        //    StartCoroutine(ResetGameCoroutine());
+        //}
+
+        if (npcList.Count <= beansLow && !isResetting)
         {
-            //Debug.LogWarning("[AIManager] Bean count low! Triggering reset...");
-            StartCoroutine(ResetGameCoroutine());
+            isResetting = true;
+            int deficit = beanRestock - npcList.Count;
+            StartCoroutine(RespawnBeans(deficit));
         }
-
-
 
         // Process each NPC in the list.
         foreach (NPC_AI npc in npcList)
@@ -1172,16 +1177,16 @@ public class AIManager : MonoBehaviour
         StartCoroutine(RespawnBeans(beanRestock));
     }
 
-    private IEnumerator ResetGameCoroutine()
-    {
-        isResetting = true;
+    //private IEnumerator ResetGameCoroutine()
+    //{
+    //    isResetting = true;
 
-        ResetGame();
+    //    ResetGame();
 
-        yield return new WaitForSeconds(5f); // Wait to prevent instant looping
+    //    yield return new WaitForSeconds(5f); // Wait to prevent instant looping
 
-        isResetting = false;
-    }
+    //    isResetting = false;
+    //}
 
 
     private IEnumerator RespawnBeans(int count)
@@ -1210,6 +1215,8 @@ public class AIManager : MonoBehaviour
                 RegisterNPC(newNPC);
             }
         }
+        
+        isResetting = false;
     }
 
 
