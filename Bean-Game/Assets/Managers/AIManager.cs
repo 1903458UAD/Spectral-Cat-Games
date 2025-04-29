@@ -687,8 +687,17 @@ public class AIManager : MonoBehaviour
         npcHidingAssignments[npc] = chosenSpot;
         npc.SetHidingSpot(chosenSpot);
 
-        // Directly move the NPC to the chosen hiding spot.
-        npc.MoveTo(chosenSpot.transform.position);
+        Vector3 hideTarget = chosenSpot.transform.position;
+
+        if (chosenSpot.hidingType == Hiding_Spots.HidingType.BehindCover)
+        {
+            //keep it away from the player by your cover offset (0.25f)
+            Vector3 toPlayer = (player.transform.position - hideTarget).normalized;
+            hideTarget -= toPlayer * 0.25f;
+        }
+
+        // move straight to the offset position
+        npc.MoveTo(hideTarget);
 
         StartCoroutine(ResolveHidingSpotConflict(npc, chosenSpot));
     }
@@ -856,7 +865,7 @@ public class AIManager : MonoBehaviour
             return;
         }
 
-        if (npcList.Any(b => b.navMeshAgent.hasPath && b.state == NPC_AI.NPCState.Running))
+        if (npc.state == NPC_AI.NPCState.Running)
         {
             return;
         }
