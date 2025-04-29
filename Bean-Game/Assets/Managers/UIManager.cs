@@ -218,6 +218,11 @@ public class UIManager : MonoBehaviour
         } 
     }
 
+    public void Reset()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
     public void StartGame()
     {
         AudioManager.instance.PlayOneShot(startFX, this.transform.position);
@@ -293,8 +298,11 @@ public class UIManager : MonoBehaviour
 
     public void ShowGameOverScreen() // Show death screen when player dies
     {
+        StaticData.skipIntro = false;
+
         gameOverScreen.SetActive(true); //Activate the game over UI (Which shows it to player)
         HideGameplayUI();
+        cameraScript.enabled = false;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Time.timeScale = 0f;
@@ -311,6 +319,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowDayEndScreen() //Hide Death screen, To be called when reset
     {
+        HideGameplayUI();
         endOfDayScreen.SetActive(true); //De-Activate the game over UI (Which hides it from the player)
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -343,9 +352,11 @@ public class UIManager : MonoBehaviour
 
     public void RestartButton()
     {
+        HideGameOverScreen();
         string sceneName = SceneManager.GetActiveScene().name;
         DayManager.Instance.ResetDay();
         SceneManager.LoadScene(sceneName);
+        Start();
     }
 
 
@@ -752,7 +763,7 @@ public class UIManager : MonoBehaviour
     private IEnumerator FadeSequence()
     {
         yield return StartCoroutine(FadeCanvasGroup(nextDayPanelGroup, 0f, 1f, 0.01f)); // Fade in
-        yield return new WaitForSeconds(8.7f); // Pause
+        yield return new WaitForSeconds(1.0f); // Pause
         yield return StartCoroutine(FadeCanvasGroup(nextDayPanelGroup, 1f, 0f, 1f)); // Fade out
         newDayPanel.SetActive(false); // Hide the panel after fade
     }

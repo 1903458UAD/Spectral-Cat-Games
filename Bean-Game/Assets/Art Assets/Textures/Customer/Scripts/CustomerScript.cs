@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using FMODUnity;
+using UnityEditor;
+using Unity.VisualScripting;
 
 public class CustomerScript : MonoBehaviour
 {
@@ -43,6 +45,20 @@ public class CustomerScript : MonoBehaviour
 
     string moodAud;
 
+    public GameObject carBody;
+    public GameObject carTop;
+
+    public Material blueBody;
+    public Material blueTop;
+    public Material greenBody;
+    public Material greenTop;
+    public Material lightblueBody;
+    public Material lightblueTop;
+    public Material pinkBody;
+    public Material pinkTop;
+    public Material yellowBody;
+    public Material yellowTop;
+
     public void SetIsOrderedTrue()
     {
         orderDelivered = true;
@@ -51,6 +67,43 @@ public class CustomerScript : MonoBehaviour
 
     void Start()
     {
+        // Set car colour
+
+        int random = UnityEngine.Random.Range(0, 5);
+
+        switch(random)
+        {
+            case 0:
+                carBody.GetComponent<Renderer>().material = blueBody;
+                carTop.GetComponent<Renderer>().material = blueTop;
+                break;
+
+            case 1:
+                carBody.GetComponent<Renderer>().material = greenBody;
+                carTop.GetComponent<Renderer>().material = greenTop;
+                break;
+
+            case 2:
+                carBody.GetComponent<Renderer>().material = lightblueBody;
+                carTop.GetComponent<Renderer>().material = lightblueTop;
+                break;
+
+            case 3:
+                carBody.GetComponent<Renderer>().material = pinkBody;
+                carTop.GetComponent<Renderer>().material = pinkTop;
+                break;
+
+            case 4:
+                carBody.GetComponent<Renderer>().material = yellowBody;
+                carTop.GetComponent<Renderer>().material = yellowTop;
+                break;
+
+            default:
+                carBody.GetComponent<Renderer>().material = blueBody;
+                carTop.GetComponent<Renderer>().material = blueTop;
+                break;
+        }
+
         player = GameObject.FindGameObjectWithTag("Player");
         playerCamera = GameObject.FindGameObjectWithTag("MainCamera");
 
@@ -137,6 +190,7 @@ public class CustomerScript : MonoBehaviour
 
     void DriveForward()
     {
+        
         transform.position = Vector3.MoveTowards(transform.position, nextLocation.transform.position, speed);
 
         if (Vector3.Distance(transform.position, nextLocation.transform.position) < 0.001f)
@@ -150,7 +204,7 @@ public class CustomerScript : MonoBehaviour
 
             else
             {
-                if (playerCamera.GetComponent<Camera>().enabled)
+                if (playerCamera.GetComponent<Camera>().enabled && Time.timeScale > 0)
                 {
                     UIManager.Instance.ShowPatienceBar();
                     UIManager.Instance.ShowReciept();

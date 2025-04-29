@@ -43,34 +43,54 @@ public class IntroScript : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            PlayIntro();
-        }
+      
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                PlayIntro();
+            }
+        
     }
 
     public void PlayIntro()
     {
-        anim.enabled = true;
+        if (!StaticData.skipIntro)
+        {
+            anim.enabled = true;
+        }
+
         StartCoroutine(ChangeViewDelay());
     }
 
     public void PlaySplosion()
     {
-        lidAnim = GameObject.Find("lid").GetComponent<Animator>();
-        lidAnim.enabled = true;
+        if (!StaticData.skipIntro)
+        {
+            lidAnim = GameObject.Find("lid").GetComponent<Animator>();
+            lidAnim.enabled = true;
+        }
     }
 
     private IEnumerator ChangeViewDelay()
     {
-        yield return new WaitForSeconds(animLength);
 
+        if (!StaticData.skipIntro)
+        {
+            yield return new WaitForSeconds(animLength);
+
+        }
+
+        else
+        {
+            yield return new WaitForSeconds(0);
+        }
+         
 
         //PowerCut.InitialShutOff();
         anim.enabled = false;
         menuCamera.enabled = false;
         playerCamera.enabled = true;
         fpLook.cameraControl = true;
+        StaticData.skipIntro = true;
 
         UIManager.Instance.ShowGameplayUI();
 

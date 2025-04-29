@@ -65,7 +65,10 @@ public class AIManager : MonoBehaviour
     private Dictionary<NPC_AI, float> updateTimers = new Dictionary<NPC_AI, float>();
 
     public int maxBeansToSwitch = 3; // Num beans that can switch spots at the same time
-                                     //private List<NPC_AI> beansToSwitch = new List<NPC_AI>(); // beans chosen to switch
+
+    private List<NPC_AI> beansToSwitch = new List<NPC_AI>(); // beans chosen to switch this cycle
+
+
 
     // Track how long each bean has been trapped
     private Dictionary<NPC_AI, float> trapEntryTimes = new Dictionary<NPC_AI, float>();
@@ -115,14 +118,19 @@ public class AIManager : MonoBehaviour
 
 
 
-        // Reset game if bean count is low.
-        if (npcList.Count == beansLow && !isResetting)
+        //// Reset game if bean count is low.
+        //if (npcList.Count == beansLow && !isResetting)
+        //{
+        //    //Debug.LogWarning("[AIManager] Bean count low! Triggering reset...");
+        //    StartCoroutine(ResetGameCoroutine());
+        //}
+
+        if (npcList.Count <= beansLow && !isResetting)
         {
-            //Debug.LogWarning("[AIManager] Bean count low! Triggering reset...");
-            StartCoroutine(ResetGameCoroutine());
+            isResetting = true;
+            int deficit = beanRestock - npcList.Count;
+            StartCoroutine(RespawnBeans(deficit));
         }
-
-
 
         // Process each NPC in the list.
         foreach (NPC_AI npc in npcList)
@@ -199,18 +207,19 @@ public class AIManager : MonoBehaviour
         if (switchElapsed >= switchPeriod)
         {
             
-            var candidates = npcList.Where(b =>
-                b.state == NPC_AI.NPCState.Hiding
-                && b.GetHidingSpot() != null
-                && !b.GetHidingSpot().IsTrap()
-                && !b.GetHidingSpot().IsCage()
-                && Vector3.Distance(b.transform.position, GetPlayerPosition()) >= b.runRange).ToList();
-
+            beansToSwitch.Clear();
             
+            var candidates = npcList.Where(b =>
+            b.state == NPC_AI.NPCState.Hiding
+            && b.GetHidingSpot() != null&& !b.GetHidingSpot().IsTrap()
+            && !b.GetHidingSpot().IsCage()&& Vector3.Distance(b.transform.position, GetPlayerPosition()) >= b.runRange).ToList();
+
+
             for (int i = 0; i < maxBeansToSwitch && candidates.Count > 0; i++)
             {
                 int indx = Random.Range(0, candidates.Count);
                 var bean = candidates[indx];
+                beansToSwitch.Add(bean);
                 candidates.RemoveAt(indx);
 
 
@@ -624,6 +633,10 @@ public class AIManager : MonoBehaviour
     public void AssignNewHidingSpot(NPC_AI npc, bool run)
     {
 
+        if (beansToSwitch.Count > 0 && !beansToSwitch.Contains(npc))
+        {
+            return;
+        }
 
         if (npc == null || npc.state == NPC_AI.NPCState.Running)
         {
@@ -687,8 +700,17 @@ public class AIManager : MonoBehaviour
         npcHidingAssignments[npc] = chosenSpot;
         npc.SetHidingSpot(chosenSpot);
 
-        // Directly move the NPC to the chosen hiding spot.
-        npc.MoveTo(chosenSpot.transform.position);
+        Vector3 hideTarget = chosenSpot.transform.position;
+
+        if (chosenSpot.hidingType == Hiding_Spots.HidingType.BehindCover)
+        {
+            //keep it away from the player by your cover offset (0.25f)
+            Vector3 toPlayer = (player.transform.position - hideTarget).normalized;
+            hideTarget -= toPlayer * 0.25f;
+        }
+
+        // move straight to the offset position
+        npc.MoveTo(hideTarget);
 
         StartCoroutine(ResolveHidingSpotConflict(npc, chosenSpot));
     }
@@ -856,7 +878,7 @@ public class AIManager : MonoBehaviour
             return;
         }
 
-        if (npcList.Any(b => b.navMeshAgent.hasPath && b.state == NPC_AI.NPCState.Running))
+        if (npc.state == NPC_AI.NPCState.Running)
         {
             return;
         }
@@ -1163,16 +1185,16 @@ public class AIManager : MonoBehaviour
         StartCoroutine(RespawnBeans(beanRestock));
     }
 
-    private IEnumerator ResetGameCoroutine()
-    {
-        isResetting = true;
+    //private IEnumerator ResetGameCoroutine()
+    //{
+    //    isResetting = true;
 
-        ResetGame();
+    //    ResetGame();
 
-        yield return new WaitForSeconds(5f); // Wait to prevent instant looping
+    //    yield return new WaitForSeconds(5f); // Wait to prevent instant looping
 
-        isResetting = false;
-    }
+    //    isResetting = false;
+    //}
 
 
     private IEnumerator RespawnBeans(int count)
@@ -1180,6 +1202,8 @@ public class AIManager : MonoBehaviour
         yield return new WaitForSeconds(1f); // Small delay before respawning
 
         //Debug.Log($"[AIManager] Spawning {count} new beans...");
+
+        beansToSwitch.Clear();
 
         for (int i = 0; i < count; i++)
         {
@@ -1190,7 +1214,6 @@ public class AIManager : MonoBehaviour
                 continue;
             }
 
-            // Use GameManager's beanPrefab instead of Resources.Load()
             GameObject beanPrefab = GameManager.Instance.beanPrefab;
           
             GameObject newBean = Instantiate(beanPrefab, spawnPosition, Quaternion.identity);
@@ -1199,8 +1222,11 @@ public class AIManager : MonoBehaviour
             if (newNPC != null)
             {
                 RegisterNPC(newNPC);
+                AssignNewHidingSpot(newNPC, false);
             }
         }
+        
+        isResetting = false;
     }
 
 
