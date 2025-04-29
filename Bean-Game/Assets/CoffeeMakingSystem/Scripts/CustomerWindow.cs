@@ -38,10 +38,9 @@ public class CustomerWindow : MonoBehaviour
 
             if (customerScript != null)
             {
-                // Check if enough beans are present to create coffee
-                if (currentCoffeeCount >= requiredCoffee && coffee.syrup == customerScript.requiredSyrup)
+                if (currentCoffeeCount >= requiredCoffee)
                 {
-                    if (coffee.beanCount == customerScript.requiredBeans)
+                    if (coffee.beanCount == customerScript.requiredBeans  && coffee.syrup == customerScript.requiredSyrup)
                     {
                         CustomerTakesCoffee();
                         AudioManager.instance.PlayOneShot(correctOrderFX, this.transform.position);
