@@ -2859,6 +2859,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.6789087, y: 5.7017555, z: 0.6804434}
   m_Center: {x: 0.0000001937151, y: 0.7026048, z: -0.000000029802322}
+--- !u!208 &78303607
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78303601}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.33900002, y: 2.851, z: 0.34}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.703, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &84909967
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5049,6 +5065,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.3248639, y: 5.4567294, z: 0.3288213}
   m_Center: {x: -2.9279332, y: -5.9614344, z: 1.5217373}
+--- !u!208 &138592858
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 138592852}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.66200006, y: 2.7280002, z: 0.164}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -2.9280002, y: -5.9610004, z: 1.5220001}
+  m_TimeToStationary: 0.5
 --- !u!1 &139576026
 GameObject:
   m_ObjectHideFlags: 0
@@ -31636,6 +31668,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.6789087, y: 6.5119715, z: 0.6804434}
   m_Center: {x: 0.0000001937151, y: 0.2974968, z: -0.000000029802322}
+--- !u!208 &972261239
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 972261233}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.33900002, y: 3.256, z: 0.34}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.29700002, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &972307072
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32590,6 +32638,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.6789087, y: 6.258053, z: 0.6804434}
   m_Center: {x: 0.0000001937151, y: 0.42445624, z: -0.000000029802322}
+--- !u!208 &993649241
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 993649235}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.33900002, y: 3.1290002, z: 0.34}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.42400002, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &998970902
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -51908,12 +51972,21 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4502705932271098881, guid: dec5754df62565f44b8d137886020ae1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 993649237}
+    - targetCorrespondingSourceObject: {fileID: 4502705932271098881, guid: dec5754df62565f44b8d137886020ae1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 993649241}
     - targetCorrespondingSourceObject: {fileID: 6928142888778484798, guid: dec5754df62565f44b8d137886020ae1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 78303603}
+    - targetCorrespondingSourceObject: {fileID: 6928142888778484798, guid: dec5754df62565f44b8d137886020ae1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 78303607}
     - targetCorrespondingSourceObject: {fileID: 5642088534510938515, guid: dec5754df62565f44b8d137886020ae1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 972261235}
+    - targetCorrespondingSourceObject: {fileID: 5642088534510938515, guid: dec5754df62565f44b8d137886020ae1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 972261239}
     - targetCorrespondingSourceObject: {fileID: -2307042190348304239, guid: dec5754df62565f44b8d137886020ae1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 261881654}
@@ -51929,6 +52002,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -4004051805444044680, guid: dec5754df62565f44b8d137886020ae1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 138592854}
+    - targetCorrespondingSourceObject: {fileID: -4004051805444044680, guid: dec5754df62565f44b8d137886020ae1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 138592858}
     - targetCorrespondingSourceObject: {fileID: -6758646846774717275, guid: dec5754df62565f44b8d137886020ae1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2026503540}
