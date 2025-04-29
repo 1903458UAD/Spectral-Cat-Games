@@ -155,7 +155,7 @@ public class PlayerInteraction : MonoBehaviour
                 CustomerWindow customerWindow = hitObject.GetComponent<CustomerWindow>();
                 Till till = hitObject.GetComponent<Till>();
                 ButtonForCoffeeMachine coffeeButton = hitObject.GetComponent<ButtonForCoffeeMachine>();
-                PowerCutScript powercut = hitObject.GetComponent<PowerCutScript>();
+               // PowerCutScript powercut = hitObject.GetComponent<PowerCutScript>();
                 Hiding_Spots cage = hitObject.GetComponent<Hiding_Spots>();
 
                 if (cage != null && cage.IsCage())
@@ -226,11 +226,11 @@ public class PlayerInteraction : MonoBehaviour
                     }
                 }
 
-                if (powercut != null)
-                {
-                    powercut.fixPower();
-                    return;
-                }
+                //if (powercut != null)
+                //{
+                //    powercut.fixPower();
+                //    return;
+                //}
 
                 if (coffeeButton != null)
                 {
