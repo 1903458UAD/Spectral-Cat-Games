@@ -335,17 +335,18 @@ public class UIManager : MonoBehaviour
         Cursor.visible = false;
         cameraScript.enabled = true;
         Time.timeScale = 1f;
+
+        StaticData.dailyIncome = 0;
+        StaticData.dailyTips = 0;
+        StaticData.dailyBeans = 0;
     }
 
     public void NextDayButton()
     {
         string sceneName = SceneManager.GetActiveScene().name;
-        DayManager.Instance.NextDay(); 
+        HideDayEndScreen();
+        DayManager.Instance.NextDay();
         SceneManager.LoadScene(sceneName);
-
-        StaticData.dailyIncome = 0;
-        StaticData.dailyTips = 0;
-        StaticData.dailyBeans = 0;
        
         GameManager.Instance.SetIncome(StaticData.incomePassed);
     }
@@ -762,11 +763,13 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator FadeSequence()
     {
-        yield return StartCoroutine(FadeCanvasGroup(nextDayPanelGroup, 0f, 1f, 0.01f)); // Fade in
-        yield return new WaitForSeconds(1.0f); // Pause
+        yield return StartCoroutine(FadeCanvasGroup(nextDayPanelGroup, 1f, 1f, 0.01f)); // Fade in
+        yield return new WaitForSeconds(1.5f); // Pause
         yield return StartCoroutine(FadeCanvasGroup(nextDayPanelGroup, 1f, 0f, 1f)); // Fade out
         newDayPanel.SetActive(false); // Hide the panel after fade
+
     }
+
 
     private IEnumerator FadeCanvasGroup(CanvasGroup group, float from, float to, float duration)
     {

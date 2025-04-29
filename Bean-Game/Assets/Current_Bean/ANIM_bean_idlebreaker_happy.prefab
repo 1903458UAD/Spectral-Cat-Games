@@ -367,7 +367,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 1
 --- !u!114 &-2228155897081429440
 MonoBehaviour:
@@ -423,6 +423,7 @@ MonoBehaviour:
   inflated: 0
   alerted: 0
   maxVerticalDifference: 0.2
+  isFrozen: 0
 --- !u!114 &-5831555590463276234
 MonoBehaviour:
   m_ObjectHideFlags: 0
