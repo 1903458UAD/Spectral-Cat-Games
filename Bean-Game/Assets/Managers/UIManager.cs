@@ -218,6 +218,11 @@ public class UIManager : MonoBehaviour
         } 
     }
 
+    public void Reset()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
     public void StartGame()
     {
         AudioManager.instance.PlayOneShot(startFX, this.transform.position);
@@ -295,6 +300,7 @@ public class UIManager : MonoBehaviour
     {
         gameOverScreen.SetActive(true); //Activate the game over UI (Which shows it to player)
         HideGameplayUI();
+        cameraScript.enabled = false;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Time.timeScale = 0f;
@@ -343,9 +349,11 @@ public class UIManager : MonoBehaviour
 
     public void RestartButton()
     {
+        HideGameOverScreen();
         string sceneName = SceneManager.GetActiveScene().name;
         DayManager.Instance.ResetDay();
         SceneManager.LoadScene(sceneName);
+        Start();
     }
 
 
